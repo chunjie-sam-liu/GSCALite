@@ -10,3 +10,5 @@ output: html_document
 The `ui` directory contains the UI design of every modules.
 
 The modules should be followed the design.
+
+> Every script file should be ended with _ui.R

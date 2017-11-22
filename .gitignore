@@ -2,3 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+
+.log
+.session
+.command
+.rds
+.png
+.jpg

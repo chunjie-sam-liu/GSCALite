@@ -9,3 +9,4 @@ output: html_document
 ------
 The `logs` directory contains the logs, please write the server reaction logs to this file.
 
+> Every log file should be ended with .log

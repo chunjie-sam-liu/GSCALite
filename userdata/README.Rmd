@@ -8,3 +8,4 @@ output: html_document
 ------
 The `userdata` directory contains the temporary user data, if nessary, put the temp data in this directory. After session connection closed, the user data should deleted.
 
+> Every user data should be ended with .session

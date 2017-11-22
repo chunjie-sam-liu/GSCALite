@@ -10,3 +10,5 @@ output: html_document
 The `server` directory contains the server reaction of every ui modules.
 
 The modules should be followed the design.
+
+> Every script file should be ended with _server.R
