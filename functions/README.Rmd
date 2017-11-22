@@ -1,0 +1,11 @@
+---
+title: "functions content"
+author: "Chun-Jie Liu"
+date: "11/22/2017"
+output: html_document
+---
+
+## Content 
+------
+The `functions` directory contains the extra R functions.
+

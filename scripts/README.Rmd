@@ -1,0 +1,12 @@
+---
+title: "scripts content"
+author: "Chun-Jie Liu"
+date: "11/22/2017"
+output: html_document
+---
+
+
+## Content 
+------
+The `scripts` directory contains the scripts writen by perl, python, et al.
+

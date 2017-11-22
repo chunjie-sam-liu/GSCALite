@@ -1,0 +1,12 @@
+---
+title: "SERVER content"
+author: "Chun-Jie Liu"
+date: "11/22/2017"
+output: html_document
+---
+
+## Content
+------
+The `server` directory contains the server reaction of every ui modules.
+
+The modules should be followed the design.

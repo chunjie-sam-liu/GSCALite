@@ -1,0 +1,12 @@
+---
+title: "UI content"
+author: "Chun-Jie Liu"
+date: "11/22/2017"
+output: html_document
+---
+
+## Content 
+------
+The `ui` directory contains the UI design of every modules.
+
+The modules should be followed the design.

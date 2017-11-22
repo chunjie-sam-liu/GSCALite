@@ -1,0 +1,11 @@
+---
+title: "logs content"
+author: "Chun-Jie Liu"
+date: "11/22/2017"
+output: html_document
+---
+
+## Content 
+------
+The `logs` directory contains the logs, please write the server reaction logs to this file.
+

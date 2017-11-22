@@ -1,0 +1,10 @@
+---
+title: "userdata content"
+author: "Chun-Jie Liu"
+date: "11/22/2017"
+output: html_document
+---
+## Content 
+------
+The `userdata` directory contains the temporary user data, if nessary, put the temp data in this directory. After session connection closed, the user data should deleted.
+
