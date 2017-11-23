@@ -15,3 +15,5 @@ Please try to collaborate with each other through GitHub, you can read two artic
 1. [Git Workflows for Pros: A Good Git Guide](https://www.toptal.com/git/git-workflows-for-pros-a-good-git-guide)
 
 2. [Collaboration: Git Development Workflow](https://github.com/structureddynamics/OSF-Web-Services/wiki/Collaboration:-Git-Development-Workflow)
+
+> Huffyphenix Joined the team
