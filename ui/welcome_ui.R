@@ -15,7 +15,7 @@ tabItem(tabName = "welcome", align = "center",
                        <div class='container text-center'>
                        <div class='row'>
                        <div class='col-md-12'>
-                       <img src='./images/CRISPRAnalyzR_logo5.png' class='center-block img-responsive'
+                       <img src='./imgs/CRISPRAnalyzR_logo5.png' class='center-block img-responsive'
                        style='height: 200px;'>
                        </div>
                        </div>

@@ -38,7 +38,7 @@ header <- dashboardHeader(
   # Title
   title = HTML(paste(
     shiny::tags$img(
-      src = "./imgsCRISPRAnalyzR_logo4_small.png",
+      src = "./imgs/CRISPRAnalyzR_logo4_small.png",
       align = "middle",
       class = "img-responsvie",
       style = "height:55px !important;"
@@ -151,9 +151,10 @@ body <- dashboardBody(
 
 shinyUI(dashboardPage( 
   title = "CRISPRAnalyzeR - Analyze pooled CRISPR screens",
-  header,
-  sidebar,
-  body )) -> ui
+  header = header,
+  sidebar = sidebar,
+  body = body )) -> ui
 
 # Test --------------------------------------------------------------------
 shinyApp(ui = ui, server = function(input, output){})
+
