@@ -11,6 +11,7 @@ library(shinyBS)
 library(shinyWidgets)
 
 library(magrittr)
+library(highcharter)
 
 
 # Load configuration ------------------------------------------------------
@@ -130,7 +131,7 @@ body <- dashboardBody(
     
     # TCGA ----
     # expr ----
-    source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
+    #source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value
     # cnv ----
     source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
     # snv ----

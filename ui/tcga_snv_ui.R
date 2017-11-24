@@ -29,6 +29,29 @@ for you to visualize the SNV of your gene set for your seleted cancer types.</p>
         source(file = file.path(config$wd, "ui", "tcga_snv_help.R"))[1],
         
         shiny::tags$br(),
-        shiny::tags$hr(width="100%")
+        shiny::tags$hr(width="100%"),
+        fluidRow(
+          column(width = 10, offset = 1,
+                 box(width = 12, title = "SNV summary",solidHeader = TRUE,
+                     collapsible = TRUE,status = "primary",
+                     shiny::tags$br(),
+                     highcharter::highchartOutput(
+                       "snv_summary",
+                       width = "700px",
+                       height = "100%")
+                     ),
+                 shiny::tags$br(),
+                 box(width = 12, title = "SNV percentage profile",solidHeader = TRUE,
+                     collapsible = TRUE,status = "primary",
+                     shiny::tags$br(),
+                     highcharter::highchartOutput(
+                       "snv_per",
+                       width = "700px",
+                       height = "100%")
+                 ),
+                 shiny::tags$br()
+                 )
+        )
+        # Tabset Panel
         
 )
