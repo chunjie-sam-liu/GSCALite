@@ -15,7 +15,7 @@ library(magrittr)
 
 # Load configuration ------------------------------------------------------
 
-source(file = "config.R", local = TRUE)
+source(file = "config.R", local = TRUE) 
 
 # Load ui function --------------------------------------------------------
 
@@ -42,9 +42,7 @@ header <- dashboardHeader(
       align = "middle",
       class = "img-responsvie",
       style = "height:55px !important;"
-    ),
-    ""
-  )),
+    ),"")),
   
   dropdownMenuOutput("infoMenu"),
   
@@ -57,57 +55,58 @@ header <- dashboardHeader(
 # Sidebar Start -----------------------------------------------------------
 
 sidebar <- dashboardSidebar(
-  # Welcome ----
-  menuItem("Welcome", tabName = "welcome", icon = icon("home")),
-  
-  # GTEx ----
-  menuItem(
-    "GTEx Normal Tissue", 
-    tabName = "gtex", 
-    icon = icon("gear"),
-    collapsible = TRUE,
-    menuSubItem("GTEx expression", tabName = "gtex_expr"),
-    menuSubItem("GTEx eQTL", tabName = "gtex_eqtl")
-  ),
-  
-  # TCGA ----
-  menuItem(
-    "TCGA Cancer",
-    tabName = "tcga",
-    icon = icon("thumbs-up"),
-    collapsible = TRUE,
-    menuSubItem("Expression", tabName = "tcga_expr"),
-    menuSubItem("Single Nucleotide Mutation", tabName = "tcga_snv"),
-    menuSubItem("Copy Number Mutation", tabName = "tcga_cnv"),
-    menuSubItem("Methylation", tabName = "tcga_meth"),
-    menuSubItem("Protein Expression", tabName = "tcga_rppa"),
-    menuSubItem("miRNA Network", tabName = "tcga_mirna")
-  ),
-  
-  # Drug ----
-  menuItem(
-    "Drug Reponse",
-    tabName = "drug",
-    icon = icon("list"),
-    collapsible = TRUE,
-    menuSubItem("GDSC", tabName = "gdsc"),
-    menuSubItem("CTRP", tabName = "ctrp")
-  ),
-  
-  # Downloads ----
-  menuItem("Report", tabName = "downloads", icon = icon("floppy-o")),
-  
-  # Help ----
-  menuItem(
-    "Help", 
-    tabName = "help", 
-    icon = icon("question"), 
-    collapsible = TRUE
-  ),
-  
-  # About ----
-  menuItem("About", tabName = "about", icon = icon("graduation-cap"))
- 
+  sidebarMenu(
+    # Welcome ----
+    menuItem("Welcome", tabName = "welcome", icon = icon("home")),
+    
+    # GTEx ----
+    menuItem(
+      "GTEx Normal Tissue", 
+      tabName = "gtex", 
+      icon = icon("gear"),
+      collapsible = TRUE,
+      menuSubItem("GTEx expression", tabName = "gtex_expr"),
+      menuSubItem("GTEx eQTL", tabName = "gtex_eqtl")
+    ),
+    
+    # TCGA ----
+    menuItem(
+      "TCGA Cancer",
+      tabName = "tcga",
+      icon = icon("thumbs-up"),
+      collapsible = TRUE,
+      menuSubItem("Expression", tabName = "tcga_expr"),
+      menuSubItem("Single Nucleotide Mutation", tabName = "tcga_snv"),
+      menuSubItem("Copy Number Mutation", tabName = "tcga_cnv"),
+      menuSubItem("Methylation", tabName = "tcga_meth"),
+      menuSubItem("Protein Expression", tabName = "tcga_rppa"),
+      menuSubItem("miRNA Network", tabName = "tcga_mirna")
+    ),
+    
+    # Drug ----
+    menuItem(
+      "Drug Reponse",
+      tabName = "drug",
+      icon = icon("list"),
+      collapsible = TRUE,
+      menuSubItem("GDSC", tabName = "gdsc"),
+      menuSubItem("CTRP", tabName = "ctrp")
+    ),
+    
+    # Downloads ----
+    menuItem("Report", tabName = "downloads", icon = icon("floppy-o")),
+    
+    # Help ----
+    menuItem(
+      "Help", 
+      tabName = "help", 
+      icon = icon("question"), 
+      collapsible = TRUE
+    ),
+    
+    # About ----
+    menuItem("About", tabName = "about", icon = icon("graduation-cap"))
+  )
 )
 
 # Sidebar End -------------------------------------------------------------
@@ -118,19 +117,24 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(
   shiny::tags$head(
     shiny::tags$style(HTML(config$stylesheet)),
-    shiny::includeScript(file.path(config$wd, "www", "js", "tooltip-delay.js"))
-  ),
+    shiny::includeScript(file.path(config$wd, "www", "js", "tooltip-delay.js"))),
   
   # Main body ----
   tabItems(
     
     # Welcome ----
-    source(file = file.path(config$wd, "ui", "welcome_ui.R"), local = TRUE)$value
+    source(file = file.path(config$wd, "ui", "welcome_ui.R"), local = TRUE)$value,
+
     
     # GTEx ----
     
     # TCGA ----
-    
+    # expr ----
+    source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
+    # cnv ----
+    source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
+    # snv ----
+    source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value
     # Drug ----
     
     # Download ----
@@ -138,23 +142,25 @@ body <- dashboardBody(
     # Help ----
     
     # About ----
-  ),
+  )
   
   # Modals ----
-  source(file = file.path(config$wd, "ui", "modals_ui.R"), local = TRUE)$value
+  # source(file = file.path(config$wd, "ui", "modals_ui.R"), local = TRUE)$value
 )
+
 
 # Body End ----------------------------------------------------------------
 
 
 # Shiny UI ----------------------------------------------------------------
-
 shinyUI(dashboardPage( 
-  title = "CRISPRAnalyzeR - Analyze pooled CRISPR screens",
+  title = "GSCA - Gene Set Cancer Analysis",
   header = header,
   sidebar = sidebar,
   body = body )) -> ui
 
 # Test --------------------------------------------------------------------
-shinyApp(ui = ui, server = function(input, output){})
+shinyApp(ui = ui, server = function(input, output, session){
+  cdata <<- session$clientData
+  })
 

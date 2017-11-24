@@ -1,0 +1,45 @@
+# save as "server.R"
+# shiny server
+
+
+# Load library ------------------------------------------------------------
+
+library(ggplot2)
+library(shiny)
+library(shinyjs)
+
+library(magrittr)
+
+# Options -----------------------------------------------------------------
+
+options(shiny.reactlog = FALSE) 
+options(shiny.sanitize.errors = FALSE)
+
+
+# Load configuration ------------------------------------------------------
+
+source(file = "config.R", local = TRUE) 
+
+
+# Load server functions ---------------------------------------------------
+
+source(file = file.path(config$server, "functions_server.R"))
+
+
+# Load database -----------------------------------------------------------
+
+
+
+# Shiny session Start -----------------------------------------------------
+
+shinyServer(
+  func = function(input, output, session){
+    # Init session ----
+    source(file = file.path(config$server, "init_server.R"), local = TRUE)
+    
+    
+    
+  }
+)
+
+

@@ -1,0 +1,154 @@
+# sourced by "server.R"
+# save as "init_server.R"
+
+
+# Create session ----------------------------------------------------------
+
+start_time <- Sys.time()
+user_id <- paste0(format(x = start_time, format = "%y%m%d_%H%M%S_"), paste(sample(0:9,4), collapse = ""))
+
+# Test cdata
+cdata <- session$clientData
+cdata <- readr::read_rds(file.path(config$wd, "userdata", "cdata_test.rds.gz"))
+
+# Temp user data directory
+user_dir <- file.path(config$wd, "userdata", user_id)
+ifelse(dir.exists(user_dir), glue::glue("Directory {user_dir} exists!"), dir.create(user_dir))
+cmd <- "chmod"
+args <- c("-R", "777", user_dir)
+system2(command = cmd, args = args)
+
+log_file <- file.path(config$logs, "app.log")
+
+
+
+
+# Log user access  --------------------------------------------------------
+
+session$onSessionEnded(function(){
+  unlink(user_dir, recursive = TRUE)
+  log <- glue::glue("{user_id} : shiny session finished at {Sys.time()}")
+  write(x = log, file = log_file, append = TRUE)
+})
+
+local({
+  log <- c(
+    glue::glue("{user_id} : shiny session starting at {Sys.time()}"),
+    glue::glue("{user_id} : with user_dir {user_dir}")
+  )
+  if (!file.exists(log_file)) {
+    write(x = log, file = log_file)
+  } else{
+    write(x = log, file = log_file, append = TRUE)
+  }
+})
+
+observe({
+  log <- c(
+    glue::glue("{user_id} : protocol : {isolate(cdata$url_protocol)}"),
+    glue::glue("{user_id} : hostname : {isolate(cdata$url_hostname)}"),
+    glue::glue("{user_id} : pathname : {isolate(cdata$url_pathname)}"),
+    glue::glue("{user_id} : port : {isolate(cdata$url_port)}"),
+    glue::glue("{user_id} : pixelratio : {isolate(cdata$pixelratio)}")
+  )
+  write(x = log, file = log_file, append = TRUE)
+})
+
+
+# Log user counts ---------------------------------------------------------
+
+counter_file <- file.path(config$logs, "counter.log")
+local({
+  counter <- glue::glue("{Sys.time()} {user_id}")
+  if (!file.exists(counter_file)) {
+    write(x = counter, file = counter_file)
+  } else {
+    write(x = counter, file = counter_file, append = TRUE)
+  }
+})
+
+
+# Log analysis ------------------------------------------------------------
+
+logging_files <- list(
+  "tcga_rnaseq" = "tcga_ranseq.log"
+) %>% 
+  tibble::enframe() %>% 
+  tidyr::unnest()
+
+logging_files %>% 
+  purrr::pwalk(
+    .f = function(name, value) {
+      .log_file <- file.path(config$logs, value)
+      
+      .log <- c(
+        glue::glue("{user_id} ----- New user at {Sys.time()}"),
+        glue::glue("{user_id} ----- New user dir {user_dir}")
+      )
+      if (!file.exists(.log_file)) {
+        write(x = .log, file = .log_file)
+      } else {
+        write(x = .log, file = .log_file, append = TRUE)
+      }
+    }
+  )
+  
+
+
+# Time events -------------------------------------------------------------
+
+time <- reactiveValues(
+  "start_tcga_expr" = Sys.time(),
+  "end_tcga_expr" = Sys.time()
+)
+
+
+# Info files --------------------------------------------------------------
+
+info_files <- list(
+  "gene_set" = file.path(user_dir, "gene_set.info"),
+  "tcga_analysis" = file.path(user_dir, "tcga_analysis.info"),
+  "gtex_analysis" = file.path(user_dir, "gtex_analysis.info"),
+  "drug" = file.path(user_dir, "drug.info")
+)
+
+local({
+  info <- c("progress;0", "info;")
+  info_files %>% 
+    purrr::walk(
+      .f = function(x){
+        write(info, x)
+      })
+})
+
+
+# Status and error --------------------------------------------------------
+
+status <- reactiveValues(
+  "gene_set" = FALSE,
+  "tcga_expr" = FALSE
+)
+
+error <- reactiveValues(
+  "gene_set" = "",
+  "tcga_expr" = ""
+)
+
+
+# Poll handle -------------------------------------------------------------
+
+info_trigger_gene_set <- function() {
+  .x <- scan(info_files$gene_set, what = "", sep = "\n", n = 1, quiet = TRUE)
+  .xlist <- strsplit(.x, split = ";", fixed = TRUE)
+  return(.xlist[[1]][-1])
+}
+
+info_read_gene_set <- function() {
+  .x <- scan(info_files$gene_set, what = "", sep = "\n", n = 2, quiet = TRUE)
+  .xlist <- strsplit(.x, split = ";", fixed = TRUE)
+  return(list("progress" = as.numeric(.xlist[[1]][-1]), "info" = .xlist[[2]][-1]))
+}
+
+
+# Status ------------------------------------------------------------------
+
