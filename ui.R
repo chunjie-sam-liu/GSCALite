@@ -15,7 +15,7 @@ library(magrittr)
 
 # Load configuration ------------------------------------------------------
 
-source(file = "config.R", local = TRUE)
+source(file = "config.R", local = TRUE) 
 
 # Load ui function --------------------------------------------------------
 
@@ -107,7 +107,6 @@ sidebar <- dashboardSidebar(
   
   # About ----
   menuItem("About", tabName = "about", icon = icon("graduation-cap"))
- 
 )
 
 # Sidebar End -------------------------------------------------------------
@@ -118,14 +117,13 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(
   shiny::tags$head(
     shiny::tags$style(HTML(config$stylesheet)),
-    shiny::includeScript(file.path(config$wd, "www", "js", "tooltip-delay.js"))
-  ),
+    shiny::includeScript(file.path(config$wd, "www", "js", "tooltip-delay.js"))),
   
   # Main body ----
   tabItems(
     
     # Welcome ----
-    source(file = file.path(config$wd, "ui", "welcome_ui.R"), local = TRUE)$value
+    # source(file = file.path(config$wd, "ui", "welcome_ui.R"), local = TRUE)$value
     
     # GTEx ----
     
@@ -144,13 +142,14 @@ body <- dashboardBody(
   source(file = file.path(config$wd, "ui", "modals_ui.R"), local = TRUE)$value
 )
 
+
 # Body End ----------------------------------------------------------------
 
 
 # Shiny UI ----------------------------------------------------------------
 
 shinyUI(dashboardPage( 
-  title = "CRISPRAnalyzeR - Analyze pooled CRISPR screens",
+  title = "GSCA - Gene Set Cancer Analysis",
   header = header,
   sidebar = sidebar,
   body = body )) -> ui
