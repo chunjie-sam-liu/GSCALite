@@ -71,3 +71,25 @@ git ss
 cat README.md 
 cat config.R 
 git ss
+git add -A
+git cm "co-dev with hff"
+git push origin dev
+ls
+ll
+git ss
+ls
+git tag
+git show tag
+git show
+git tag
+git br
+git tag v0.0.1
+git tag
+git lg
+git tag
+git show v0.0.1
+git status
+git ss
+git status
+git br
+git ss

@@ -3,9 +3,10 @@
 .RData
 .Ruserdata
 
-.log
+
 .session
-.command
-.rds
-.png
-.jpg
+*.command
+*.log
+*.info
+*.png
+*.jpg

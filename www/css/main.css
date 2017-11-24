@@ -19,7 +19,7 @@
 
 /*             Sidebar                */
 .skin-blue .main-sidebar {
-    background-color: #eeeeee;
+    background-color: #eeeSeee;
 } /* main sidebar */
 .skin-blue .main-sidebar .sidebar .sidebar-menu .active a{
     background-color: #dddddd;
@@ -246,7 +246,7 @@ a.text-info:hover {
   color: #FF9800;
 }
 a.text-warning:hover {
-#F57C00;
+  color: #F57C00;
 }
 .text-danger {
   color: #F44336;
@@ -291,7 +291,7 @@ a.bg-danger:hover {
 }
 
 .container {
-width:100% !important;
+  width:100% !important;
 }
 
 
@@ -322,20 +322,20 @@ input[type='radio']:checked:before {
 */
 
 .alert-info {
-background-color:#A5D6A7 !important;
-color: rgba(0, 0, 0, 0.65) !important;
-border: 0px
+  background-color:#A5D6A7 !important;
+  color: rgba(0, 0, 0, 0.65) !important;
+  border: 0px
 }
 
 
 .alert-warning {
-background-color:#F44336 !important;
-border: 0px
+  background-color:#F44336 !important;
+  border: 0px
 }
 
 .alert-success {
-background-color:#43A047 !important;
-border: 0px
+  background-color:#43A047 !important;
+  border: 0px
 }
 
 
@@ -350,7 +350,7 @@ border: 0px
     color: #4CAF50;
 }
 .cloud li:nth-of-type(3n + 1) {
-    font-size: 1.5em;
+    font-size: 1.5em;S
     color: #2196F3;
 }
 .cloud li:nth-of-type(4n+3) {
