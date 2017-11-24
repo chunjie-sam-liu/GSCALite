@@ -125,12 +125,13 @@ body <- dashboardBody(
   tabItems(
     
     # Welcome ----
-    source(file = file.path(config$wd, "ui", "welcome_ui.R"), local = TRUE)$value
+    source(file = file.path(config$wd, "ui", "welcome_ui.R"), local = TRUE)$value,
     
     # GTEx ----
     
     # TCGA ----
-    
+    source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value
     # Drug ----
     
     # Download ----

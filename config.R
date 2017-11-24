@@ -12,7 +12,7 @@ config$version <- "0.0.1"
 # This is the absolute path to server.R, ui.R and config.R
 # It's the working directory of app
 # DEFAULT getwd()
-config$wd <- "/home/liucj/github/GSACLite"
+config$wd <- "/project/huff/huff/github/GSACLite"  #"/home/liucj/github/GSACLite"
 
 # User directory ----------------------------------------------------------
 # This controls the unique directory,
