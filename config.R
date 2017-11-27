@@ -24,7 +24,7 @@ config$wd <- "/home/liucj/github/GSACLite"
 
 # Database ----------------------------------------------------------------
 # This contains the TCGA, GTEx and Drug data
-config$database <- "/data/GEACLite"
+config$database <- "/data/GSCALite"
 
 # Path bins ---------------------------------------------------------------
 config$bins <- "bins"

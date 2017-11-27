@@ -20,4 +20,4 @@ Please try to collaborate with each other through GitHub, you can read two artic
 
 > Import the project logo.
 
-![GSCA logo](./www/imgs/01.GSCA_logo_01.png)
+![GSCA logo](www/imgs/01.GSCA_logo_01.png)
