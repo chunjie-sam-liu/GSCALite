@@ -123,18 +123,18 @@ body <- dashboardBody(
   tabItems(
     
     # Welcome ----
-    source(file = file.path(config$wd, "ui", "welcome_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "welcome_ui.R"), local = TRUE)$value
 
     
     # GTEx ----
     
     # TCGA ----
     # expr ----
-    source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
+    # source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
     # cnv ----
-    source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
+    # source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
     # snv ----
-    source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value
+    # source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value
     # Drug ----
     
     # Download ----
@@ -160,7 +160,5 @@ shinyUI(dashboardPage(
   body = body )) -> ui
 
 # Test --------------------------------------------------------------------
-shinyApp(ui = ui, server = function(input, output, session){
-  cdata <<- session$clientData
-  })
+shinyApp(ui = ui, server = function(input, output, session){})
 
