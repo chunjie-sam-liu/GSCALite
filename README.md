@@ -17,3 +17,7 @@ Please try to collaborate with each other through GitHub, you can read two artic
 2. [Collaboration: Git Development Workflow](https://github.com/structureddynamics/OSF-Web-Services/wiki/Collaboration:-Git-Development-Workflow)
 
 > Huffyphenix Joined the team
+
+> Import the project logo.
+
+![GSCA logo](./www/imgs/01.GSCA_logo_01.png)

@@ -39,7 +39,7 @@ header <- dashboardHeader(
   # Title
   title = HTML(paste(
     shiny::tags$img(
-      src = "./imgs/CRISPRAnalyzR_logo4_small.png",
+      src = "./imgs/01.GSCA_logo_01.png",
       align = "middle",
       class = "img-responsvie",
       style = "height:55px !important;"

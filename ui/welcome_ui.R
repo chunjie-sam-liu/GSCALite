@@ -10,39 +10,37 @@ tabItem(tabName = "welcome", align = "center",
         shinyjs::useShinyjs(),
         
         ## Welcome message
-        fluidRow( style="width:80%;",
-                  HTML(" <div class='section'>
-                       <div class='container text-center'>
-                       <div class='row'>
-                       <div class='col-md-12'>
-                       <img src='./imgs/CRISPRAnalyzR_logo5.png' class='center-block img-responsive'
-                       style='height: 200px;'>
-                       </div>
-                       </div>
-                       </div>
-                       </div>
-                       </br>
-                       </br>
-                       <div class='section'>
-                       <div class='container'>
-                       <div class='row'>
-                       <div class='col-md-12'>
-                       <p class='lead'>CRISPR-AnalyzeR.org offers you a web-based analysis plattform for your pooled
-                       CRISPR Screens.</p>
-                       </div>
-                       </div>
-                       </div>
-                       </div>")
+        fluidRow( 
+          style = "width:80%;",
+                HTML("<div class='section'>
+                     <div class='container text-center'>
+                     <div class='row'>
+                     <div class='col-md-12'>
+                     <img src='./imgs/01.GSCA_logo_01.png' class='center-block img-responsive'
+                     style='height: 200px;'>
+                     </div>
+                     </div>
+                     </div>
+                     </div>
+                     </br>
+                     </br>
+                     <div class='section'>
+                     <div class='container'>
+                     <div class='row'>
+                     <div class='col-md-12'>
+                     <p class='lead'>GSCALite offers you a web-based plattform for your gene set analysis of cancer.</p>
+                     </div>
+                     </div>
+                     </div>
+                     </div>")
                   ),
         
         
-        # CRISPRAnalyzeR version
-        
-        
+        # GSCA version
         fluidRow(
-          column(width=4, offset=4,
-                 shiny::tags$h4("Last Update: 2017-11-01 ", shiny::tags$span(class="label label-default", "Version 0.01"))
-                 
+          column(
+            width = 4, offset = 4,
+            shiny::tags$h4("Last Update: 2017-11-27", shiny::tags$span(class = "label label-default", "Version 0.01"))
           )),
         
         shiny::tags$br(),
