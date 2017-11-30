@@ -1,3 +1,8 @@
+# sourced by 'tcga_snv_ui.R'
+# save as 'tcga_snv_help.R'
+# help file for tcga_snv ui part
+
+
 fluidRow(style="width:85%",
          column(width = 12,
                 # collapsable panel

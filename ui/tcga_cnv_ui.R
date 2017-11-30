@@ -1,3 +1,7 @@
+# sourced by 'ui.R'
+# save as 'tcga_cnv_ui.R'
+# ui elements 'tcga_cnv' sub tab of 'tcga' tab
+
 tabItem(tabName = "tcga_cnv", align = "center",
         shinyjs::useShinyjs(),
         
@@ -52,10 +56,6 @@ tabItem(tabName = "tcga_cnv", align = "center",
                                                         label = "Colorectal",
                                                         choices = list("Colon Adenocarcinoma(COAD)"="COAD",
                                                                        "Rectum Adenocarcinoma(READ)"="READ")),
-                                     checkboxGroupInput(inputId = "cnv_Colorectal",
-                                                        label = "Colorectal",
-                                                        choices = list("Colon Adenocarcinoma(COAD)"="COAD",
-                                                                       "Rectum Adenocarcinoma(READ)"="READ")),
                                      checkboxGroupInput(inputId = "cnv_Lung",
                                                         label = "Lung",
                                                         choices = list("Lung Adenocarcinoma(LUAD)"="LUAD",
@@ -64,13 +64,6 @@ tabItem(tabName = "tcga_cnv", align = "center",
                                                         label = "Uterus",
                                                         choices = list("Uterine Corpus Endometrial Carcinoma(UCEC)"="UCEC",
                                                                        "Uterine Carcinosarcoma(UCS)"="UCS")),
-                                     checkboxGroupInput(inputId = "cnv_Uterus",
-                                                        label = "Uterus",
-                                                        choices = list("Uterine Corpus Endometrial Carcinoma(UCEC)"="UCEC",
-                                                                       "Uterine Carcinosarcoma(UCS)"="UCS")),
-                                     checkboxGroupInput(inputId = "cnv_Bile_Duct",
-                                                        label = "Bile Duct",
-                                                        choices = list("Cholangiocarcinoma(CHOL)"="CHOL")),
                                      checkboxGroupInput(inputId = "cnv_Bile_Duct",
                                                         label = "Bile Duct",
                                                         choices = list("Bladder Urothelial Carcinoma(BLCA)"="BLCA")),

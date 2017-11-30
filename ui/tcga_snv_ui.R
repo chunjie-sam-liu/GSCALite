@@ -1,3 +1,7 @@
+# sourced by 'ui.R'
+# save as 'tcga_snv_ui.R'
+# ui elements 'tcga_snv' sub tab of 'tcga' tab
+
 tabItem(tabName = "tcga_snv", align = "center",
         shinyjs::useShinyjs(),
         
@@ -57,10 +61,6 @@ for you to visualize the SNV of your gene set for your seleted cancer types.</p>
                                                         label = "Colorectal",
                                                         choices = list("Colon Adenocarcinoma(COAD)"="COAD",
                                                                        "Rectum Adenocarcinoma(READ)"="READ")),
-                                     checkboxGroupInput(inputId = "snv_Colorectal",
-                                                        label = "Colorectal",
-                                                        choices = list("Colon Adenocarcinoma(COAD)"="COAD",
-                                                                       "Rectum Adenocarcinoma(READ)"="READ")),
                                      checkboxGroupInput(inputId = "snv_Lung",
                                                         label = "Lung",
                                                         choices = list("Lung Adenocarcinoma(LUAD)"="LUAD",
@@ -69,16 +69,9 @@ for you to visualize the SNV of your gene set for your seleted cancer types.</p>
                                                         label = "Uterus",
                                                         choices = list("Uterine Corpus Endometrial Carcinoma(UCEC)"="UCEC",
                                                                        "Uterine Carcinosarcoma(UCS)"="UCS")),
-                                     checkboxGroupInput(inputId = "snv_Uterus",
-                                                        label = "Uterus",
-                                                        choices = list("Uterine Corpus Endometrial Carcinoma(UCEC)"="UCEC",
-                                                                       "Uterine Carcinosarcoma(UCS)"="UCS")),
                                      checkboxGroupInput(inputId = "snv_Bile_Duct",
                                                         label = "Bile Duct",
                                                         choices = list("Cholangiocarcinoma(CHOL)"="CHOL")),
-                                     checkboxGroupInput(inputId = "snv_Bile_Duct",
-                                                        label = "Bile Duct",
-                                                        choices = list("Bladder Urothelial Carcinoma(BLCA)"="BLCA")),
                                      checkboxGroupInput(inputId = "snv_Bone_Marrow",
                                                         label = "Bone Marrow",
                                                         choices = list("Acute Myeloid Leukemia(LAML)"="LAML")),
