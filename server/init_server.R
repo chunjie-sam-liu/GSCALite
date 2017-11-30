@@ -71,7 +71,9 @@ local({
 # Log analysis ------------------------------------------------------------
 
 logging_files <- list(
-  "tcga_rnaseq" = "tcga_ranseq.log"
+  "tcga_rnaseq" = "tcga_ranseq.log",
+  "tcga_snv" = "tcga_snv.log",
+  "tcga_cnv" = "tcga_cnv.log"
 ) %>% 
   tibble::enframe() %>% 
   tidyr::unnest()
