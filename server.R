@@ -43,6 +43,8 @@ shinyServer(
     # 
     
     
+    # Welcome ----
+    source(file = file.path(config$server, "welcome_server.R"), local = TRUE)
     
   }
 )
