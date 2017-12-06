@@ -136,7 +136,9 @@ body <- dashboardBody(
     # snv ----
     source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value,
     # meth ----
-    source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value
+    source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value,
+    # rppa ----
+    source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value
     # Drug ----
     
     # Download ----
