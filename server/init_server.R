@@ -73,18 +73,15 @@ local({
 logging_files <- list(
   "tcga_rnaseq" = "tcga_ranseq.log",
   "tcga_snv" = "tcga_snv.log",
-  "tcga_cnv" = "tcga_cnv.log"
-) %>% 
-  tibble::enframe() %>% 
-  tidyr::unnest(
+  "tcga_cnv" = "tcga_cnv.log",
   "gene_set" = "gene_set.log",
   "tcga_rnaseq" = "tcga_ranseq.log"
-) 
+) %>% 
+  tibble::enframe() %>% 
+  tidyr::unnest() 
 
 
 logging_files %>% 
-  tibble::enframe() %>% 
-  tidyr::unnest() %>% 
   purrr::pwalk(
     .f = function(name, value) {
       .log_file <- file.path(config$logs, value)
@@ -185,5 +182,5 @@ info_read_gene_set <- function() {
 
 gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
 
-
+# load data
 

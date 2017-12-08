@@ -32,131 +32,40 @@ tabItem(tabName = "tcga_cnv", align = "center",
         shiny::tags$hr(width="85%"),
         
         # cancer type selection and result output---------------------------------------------------
-        fluidRow(
-          # cancer type selection----
-          column(width = 4,
-                 shiny::tags$h3("Input"),
-                 shiny::tags$br(),
-                 shinydashboard::box(width = 12, title = "Select cancers to do CNV analysis:", solidHeader = TRUE,
-                                     collapsible = TRUE,status = "success",
-                                     checkboxGroupInput(inputId = "cnv_Kidney",
-                                                        label = "Kidney",
-                                                        choices = list("Kidney Chromophobe(KICH)"="KICH",
-                                                                       "Kidney Renal Clear Cell Carcinoma(KIRC)"="KIRC",
-                                                                       "Kidney Renal Papillary Cell Carcinoma(KIRP)"="KIRP")),
-                                     checkboxGroupInput(inputId = "cnv_Adrenal_Gland",
-                                                        label = "Adrenal Gland",
-                                                        choices = list("Adrenocortical Carcinoma(ACC)"="ACC",
-                                                                       "Pheochromocytoma and Paraganglioma(PCPG)"="PCPG")),
-                                     checkboxGroupInput(inputId = "cnv_Brain",
-                                                        label = "Brain",
-                                                        choices = list("Glioblastoma Multiforme(GBM)"="GBM",
-                                                                       "Brain Lower Grade Glioma(LGG)"="LGG")),
-                                     checkboxGroupInput(inputId = "cnv_Colorectal",
-                                                        label = "Colorectal",
-                                                        choices = list("Colon Adenocarcinoma(COAD)"="COAD",
-                                                                       "Rectum Adenocarcinoma(READ)"="READ")),
-                                     checkboxGroupInput(inputId = "cnv_Lung",
-                                                        label = "Lung",
-                                                        choices = list("Lung Adenocarcinoma(LUAD)"="LUAD",
-                                                                       "Lung Squamous Cell Carcinoma(LUSC)"="LUSC")),
-                                     checkboxGroupInput(inputId = "cnv_Uterus",
-                                                        label = "Uterus",
-                                                        choices = list("Uterine Corpus Endometrial Carcinoma(UCEC)"="UCEC",
-                                                                       "Uterine Carcinosarcoma(UCS)"="UCS")),
-                                     checkboxGroupInput(inputId = "cnv_Bile_Duct",
-                                                        label = "Bile Duct",
-                                                        choices = list("Bladder Urothelial Carcinoma(BLCA)"="BLCA")),
-                                     checkboxGroupInput(inputId = "cnv_Bone_Marrow",
-                                                        label = "Bone Marrow",
-                                                        choices = list("Acute Myeloid Leukemia(LAML)"="LAML")),
-                                     checkboxGroupInput(inputId = "cnv_Breast",
-                                                        label = "Breast",
-                                                        choices = list("Breast Invasive Carcinoma(BRCA)"="BRCA")),
-                                     checkboxGroupInput(inputId = "cnv_Cervix",
-                                                        label = "Cervix",
-                                                        choices = list("Cervical Squamous Cell Carcinoma and Endocervical Adenocarcinoma(CESC)"="CESC")),
-                                     checkboxGroupInput(inputId = "cnv_other",
-                                                        label = "Other cancers",
-                                                        choices = list("Lymphoid Neoplasm Diffuse Large B-cell Lymphoma(DLBC)"="DLBC",
-                                                                       "Esophageal Carcinoma(ESCA)"="ESCA",
-                                                                       "Stomach Adenocarcinoma(STAD)"="STAD",
-                                                                       "Head and Neck Squamous Cell Carcinoma(HNSC)"="HNSC",
-                                                                       "Liver Hepatocellular Carcinoma(LIHC)"="LIHC",
-                                                                       "Mesothelioma(MESO)"="MESO",
-                                                                       "Ovarian Serous Cystadenocarcinoma(OV)"="OV",
-                                                                       "Pancreatic Adenocarcinoma(PAAD)"="PAAD",
-                                                                       "Prostate Adenocarcinoma(PRAD)"="PRAD",
-                                                                       "Sarcoma(SARC)"="SARC",
-                                                                       "Skin Cutaneous Melanoma(SKCM)"="SKCM",
-                                                                       "Testicular Germ Cell Tumors(TGCT)"="TGCT",
-                                                                       "Thyroid Carcinoma(THCA)"="THCA",
-                                                                       "Thymoma(THYM)"="THYM",
-                                                                       "Uveal Melanoma(UVM)"="UVM"))
-                 )
-          ),
-          
-          
-          # Tabset Panel
-          # output plot -------------------------------------------------------------
-          column(width = 8, 
-                 shiny::tags$h3("Output"),
-                 shiny::tags$br(),
-                 shinydashboard::box(width = 12, title = "CNV Pie distribution",solidHeader = TRUE,
-                                     collapsible = TRUE,status = "primary",
-                                     shiny::tags$br(),
-                                     highcharter::highchartOutput(
-                                       "cnv_pie",
-                                       width = "700px",
-                                       height = "100%")
-                 ),
-                 shiny::tags$br(),
-                 shinydashboard::box(width = 12, title = "Hete CNV profile",solidHeader = TRUE,
-                                     collapsible = TRUE,status = "primary",
-                                     shiny::tags$br(),
-                                     highcharter::highchartOutput(
-                                       "cnv_hete_profile",
-                                       width = "700px",
-                                       height = "100%")
-                 ),
-                 shiny::tags$br(),
-                 shinydashboard::box(width = 12, title = "Homo CNV profile",solidHeader = TRUE,
-                                     collapsible = TRUE,status = "primary",
-                                     shiny::tags$br(),
-                                     highcharter::highchartOutput(
-                                       "cnv_homo_profile",
-                                       width = "700px",
-                                       height = "100%")
-                 ),
-                 shiny::tags$br(),
-                 shinydashboard::box(width = 12, title = "CNV Bar distribution",solidHeader = TRUE,
-                                     collapsible = TRUE,status = "primary",
-                                     shiny::tags$br(),
-                                     highcharter::highchartOutput(
-                                       "cnv_bar_dis",
-                                       width = "700px",
-                                       height = "100%")
-                 ),
-                 shiny::tags$br(),
-                 shinydashboard::box(width = 12, title = "CNV oncostrip",solidHeader = TRUE,
-                                     collapsible = TRUE,status = "primary",
-                                     shiny::tags$br(),
-                                     highcharter::highchartOutput(
-                                       "cnv_oncostrip",
-                                       width = "700px",
-                                       height = "100%")
-                 ),
-                 shiny::tags$br(),
-                 shinydashboard::box(width = 12, title = "Exclusive CNV",solidHeader = TRUE,
-                                     collapsible = TRUE,status = "primary",
-                                     shiny::tags$br(),
-                                     highcharter::highchartOutput(
-                                       "cnv_exclusive",
-                                       width = "700px",
-                                       height = "100%")
-          )
-        )
+        # cancer type selection----
+        cancerTypeInput("cnv"),
+        
+        # Selected cancer show ----
+        shiny::tags$h3("Cancer Type Check",class="text-success"),
+        shiny::tags$h4("The cancers you selected: ",
+                       textOutput("selected_cancer"),
+                       " Confirm and start analysis by click Submit!"),
+        
+        # Confirm and submit ----
+        column(width = 2,offset = 5,
+               actionButton("cnv_submit", label ="Submit!",icon = icon("check"))
         ),
-        # load footer
+        shiny::tags$hr(width="85%"),
+        
+        # output plot -------------------------------------------------------------
+        # Tabset Panel
+        fluidRow(
+          column(width = 10,
+                 offset = 1,
+                 shiny::tags$br(),
+                 shinydashboard::tabBox(id = "PLOT",title = "PLOT",width = 12,
+                                        tabPanel(title="CNV Pie distribution",PlotInput(id="cnv_pie")),
+                                        tabPanel(title= "Hete CNV profile",PlotInput(id="cnv_hete")),
+                                        tabPanel(title="Homo CNV profile",PlotInput(id="cnv_homo")),
+                                        tabPanel(title="CNV Bar distribution",PlotInput("cnv_bar")),
+                                        tabPanel(title="CNV oncostrip",PlotInput("cnv_oncostrip")),
+                                        tabPanel(title="Exclusive CNV",PlotInput("cnv_exclusive"))
+                 )
+          )
+        ),
+        
+        # load footer ------------------------------------------------------
         source(file.path(config$ui, "footer.R"))[1]
+        
+        
 ) # close tab

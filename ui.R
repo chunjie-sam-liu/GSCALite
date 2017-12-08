@@ -22,6 +22,11 @@ source(file = "config.R", local = TRUE)
 
 source(file = file.path(config$ui, "functions_ui.R"), local = TRUE)
 
+
+# Load global module ------------------------------------------------------
+
+source(file = file.path(config$wd,"global.R"), local = TRUE)
+
 # Repeated ui stuff for modals --------------------------------------------
 
 addReport_modelTrivia <- tagList(
@@ -161,8 +166,8 @@ shinyUI(dashboardPage(
   title = "GSCA - Gene Set Cancer Analysis",
   header = header,
   sidebar = sidebar,
-  body = body )) -> ui
+  body = body )) 
 
 # Test --------------------------------------------------------------------
-# shinyApp(ui = ui, server = function(input, output, session){})
+#shinyApp(ui = ui, server = function(input, output, session){})
 
