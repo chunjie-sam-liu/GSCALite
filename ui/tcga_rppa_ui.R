@@ -5,16 +5,16 @@
 tabItem(tabName = "tcga_rppa", align = "center",
         shinyjs::useShinyjs(),
         
-        ## SNV message ----
+        ## RPPA message ----
         fluidRow(style="width:80%;",
                  HTML("<div class='section'>
                       <div class='container'>
                       <div class='row'>
                       <div class='col-md-12'>
                       <h1 class='text-success text-left'>
-                      <i class='fa fa-angle-double-right  fa-fw'></i>RPPA
+                      <i class='fa fa-angle-double-right  fa-fw'></i>Protein expression
                       <font color='#777777'>
-                      <span style='font-size: 23.3999996185303px; line-height: 23.3999996185303px;'>Cancer related pathway activity</span>
+                      <span style='font-size: 23.3999996185303px; line-height: 23.3999996185303px;'>TCPA RPPA data</span>
                       </font>
                       </h1>
                       <hr>
