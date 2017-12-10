@@ -11,6 +11,7 @@ library(shinyBS)
 library(shinyWidgets)
 
 library(magrittr)
+library(highcharter)
 
 
 # Load configuration ------------------------------------------------------
@@ -20,6 +21,11 @@ source(file = "config.R", local = TRUE)
 # Load ui function --------------------------------------------------------
 
 source(file = file.path(config$ui, "functions_ui.R"), local = TRUE)
+
+
+# Load global module ------------------------------------------------------
+
+source(file = file.path(config$wd,"global.R"), local = TRUE)
 
 # Repeated ui stuff for modals --------------------------------------------
 
@@ -37,8 +43,7 @@ jscode <- "shinyjs.collapse = function(boxid) {$('#' + boxid).closest('.box').fi
 header <- dashboardHeader(
   # Title
   title = HTML(paste(
-    shiny::tags$img(
-      src = "./imgs/CRISPRAnalyzR_logo4_small.png",
+    img(src = './www/imgs/CRISPRAnalyzR_logo4_small.png',
       align = "middle",
       class = "img-responsvie",
       style = "height:55px !important;"
@@ -111,7 +116,6 @@ sidebar <- dashboardSidebar(
 
 # Sidebar End -------------------------------------------------------------
 
-
 # Body Start --------------------------------------------------------------
 
 body <- dashboardBody(
@@ -130,11 +134,16 @@ body <- dashboardBody(
     
     # TCGA ----
     # expr ----
-    source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
+
+    #source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
     # cnv ----
     source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
     # snv ----
-    source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value
+    source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value,
+    # meth ----
+    source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value,
+    # rppa ----
+    source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value
     # Drug ----
     
     # Download ----
@@ -157,10 +166,8 @@ shinyUI(dashboardPage(
   title = "GSCA - Gene Set Cancer Analysis",
   header = header,
   sidebar = sidebar,
-  body = body )) -> ui
+  body = body )) 
 
 # Test --------------------------------------------------------------------
-shinyApp(ui = ui, server = function(input, output, session){
-  cdata <<- session$clientData
-  })
+#shinyApp(ui = ui, server = function(input, output, session){})
 

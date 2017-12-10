@@ -12,8 +12,9 @@ config$version <- "0.0.1"
 # This is the absolute path to server.R, ui.R and config.R
 # It's the working directory of app
 # DEFAULT getwd()
+
+#config$wd <- "/home/liucj/github/GSACLite"
 config$wd <- "/project/huff/huff/github/GSACLite"
-config$wd <- "/home/liucj/github/GSACLite"
 
 # User directory ----------------------------------------------------------
 # This controls the unique directory,
@@ -24,7 +25,7 @@ config$wd <- "/home/liucj/github/GSACLite"
 
 # Database ----------------------------------------------------------------
 # This contains the TCGA, GTEx and Drug data
-config$database <- "/data/GEACLite"
+config$database <- "/data/GSCALite"
 
 # Path bins ---------------------------------------------------------------
 config$bins <- "bins"
