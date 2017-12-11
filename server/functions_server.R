@@ -20,7 +20,7 @@ check_gene_set <- function(.s){
     stringr::str_trim(side = "both") -> .ss
   
   if (!dplyr::between(length(.ss), 5, 200)) {
-    .err <- c(.err, "Error: The number of genes shuold be less than 200.")
+    .err <- c(.err, "Error: The number of genes should be more than 5 and less than 200.")
   }
   
   return(list(errors = .err, warnings = .war, gene_set = .ss))
@@ -54,3 +54,143 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs) {
   write(x = .log, file = .log_file, append = TRUE)
   list(gene_set = .m, errors = .err, warnings = .war)
 }
+
+
+# extract gene set from TCGA data -----------------------------------------
+
+filter_gene_list <- function(.x, gene_list) {
+  gene_list %>%
+    dplyr::select(symbol) %>%
+    dplyr::left_join(.x, by = "symbol")
+}
+
+
+# threshold cnv -----------------------------------------------------------
+
+fn_get_amplitue_threshold <- function(.x){
+  tibble::tibble(
+    a_total = sum(.x > 0) / length(.x), 
+    d_total = sum(.x < 0) / length(.x),
+    a_homo = sum(.x == 2) / length(.x),
+    d_homo = sum(.x == -2) / length(.x),
+    a_hete = sum(.x == 1) / length(.x),
+    d_hete = sum(.x == -1) / length(.x)) 
+}
+
+# get cnv percent ---------------------------------------------------------
+
+fn_get_ad <- function(.d){
+  .d %>% 
+    unlist(use.name = F) %>% 
+    fn_get_amplitue_threshold()
+}
+fn_get_percent <- function(cancer_types, filter_cnv){
+  filter_cnv %>%
+    tidyr::nest(-symbol) %>% 
+    dplyr::mutate(ad = purrr::map(data, .f = fn_get_ad)) %>% 
+    dplyr::select(-data) %>% 
+    tidyr::unnest(ad) %>% 
+    tibble::add_column(cancer_types = cancer_types, .before = 1)
+}
+fn_cnv_percecnt <- function(data){
+  data %>%   
+    dplyr::mutate(rs = purrr::map2(cancer_types, filter_cnv, fn_get_percent)) %>%
+    dplyr::collect() %>%
+    dplyr::as_tibble() %>%
+    dplyr::ungroup() %>%
+    dplyr::select(-cancer_types, -filter_cnv) %>%
+    tidyr::unnest(rs) -> gene_list_cnv_per
+}
+
+fn_gen_combined_core_atg <- function(cancer_types, filter_cnv, g_list,n){
+  # cancer_types <- "KIRC"
+  # filter_cnv <- gene_list_cancer_cnv$filter_cnv[[1]]
+  # g_list <-gene_list
+  # n=1
+  filter_cnv %>% 
+    dplyr::semi_join(g_list, by = "symbol") %>% 
+    tidyr::drop_na() %>% 
+    tidyr::gather(key = barcode, value = gistic, - symbol) %>% 
+    tidyr::spread(key = symbol, value = gistic) %>% 
+    dplyr::select(- barcode) -> .d
+  
+  n_sample <- nrow(.d)
+  
+  .d %>% 
+    dplyr::filter_all(.vars_predicate = dplyr::any_vars(. == -n)) %>% 
+    nrow() -> .del
+  .d %>% 
+    dplyr::filter_all(.vars_predicate = dplyr::any_vars(. == -n)) %>% 
+    dplyr::filter_all(.vars_predicate = dplyr::any_vars(. == n)) %>%
+    nrow() -> .sub_d
+  
+  .d %>% 
+    dplyr::filter_all(.vars_predicate = dplyr::any_vars(. == n)) %>% 
+    nrow() -> .amp
+  .d %>% 
+    dplyr::filter_all(.vars_predicate = dplyr::any_vars(. == n)) %>% 
+    dplyr::filter_all(.vars_predicate = dplyr::any_vars(. == -n)) %>% 
+    nrow() -> .sub_a
+  
+  tibble::tibble(del_a= .del / n_sample, del_s=(.del-.sub_d)/n_sample, amp_a = .amp / n_sample,amp_s=(.amp-.sub_a)/n_sample)
+}
+
+# get exclusive cnv -------------------------------------------------------
+fn_cnv_exclusive <- function(V1, V2, .data, cancer_types){
+  # .data <- filter_cnv
+  # V1 <- 'TP53'
+  # V2 <- 'EZH2'
+  .data %>% 
+    dplyr::filter(symbol %in% c(V1, V2)) %>% 
+    tidyr::gather(key = barcode, value = gistic, -symbol) %>% 
+    tidyr::spread(key = symbol, value = gistic) %>% 
+    dplyr::select(-barcode) -> .d
+  .g_name <- colnames(.d)
+  # colnames(.d) <- c("A", "B")
+  name <- paste(c(cancer_types, .g_name), collapse = "_")
+  .d %>% 
+    dplyr::filter_all(.vars_predicate = dplyr::all_vars(. == 0)) %>% 
+    nrow() -> nn
+  .d %>%
+    dplyr::filter_all(.vars_predicate = dplyr::all_vars(. != 0)) %>% 
+    nrow()-> aa
+  .d %>% 
+    dplyr::filter_all(.vars_predicate = dplyr::any_vars(. != 0)) %>% 
+    dplyr::filter_all(.vars_predicate = dplyr::any_vars(. == 0)) -> .d_an
+  
+  sum(.d_an %>% dplyr::pull(1) != 0) -> an
+  sum(.d_an %>% dplyr::pull(2) != 0) -> na
+  c(nn = nn, an = an, na = na, aa = aa) %>% 
+    cometExactTest::comet_exact_test(mutmatplot = F) -> p_val
+  
+  tibble::tibble(te = name, nn = nn, an = an ,na = na, aa = aa, p_val = p_val)
+}
+fn_cnv_mutal_exclusive <- function(cancer_types, filter_cnv,cluster){
+  # cancer_types <- te$cancer_types
+  # filter_cnv <- te$filter_cnv[[1]]
+  filter_cnv %>% 
+    dplyr::pull(symbol) %>% 
+    combn(m = 2) %>% 
+    t() %>% 
+    dplyr::as_data_frame() -> .gene_pairs
+  
+  .gene_pairs %>% 
+    multidplyr::partition(cluster = cluster) %>%
+    multidplyr::cluster_library("magrittr") %>%
+    multidplyr::cluster_assign_value("fn_cnv_exclusive", fn_cnv_exclusive) %>%
+    multidplyr::cluster_assign_value("filter_cnv", filter_cnv) %>%
+    multidplyr::cluster_assign_value("cancer_types", cancer_types) %>%
+    dplyr::mutate(rs = purrr::map2(V1, V2, .f = fn_cnv_exclusive, .data = filter_cnv, cancer_types = cancer_types)) %>% 
+    dplyr::collect() %>%
+    dplyr::as_tibble() %>%
+    dplyr::ungroup() %>%
+    dplyr::select(-PARTITION_ID) %>%
+    dplyr::select(rs) %>% 
+    tidyr::unnest() %>% 
+    tidyr::separate(col = te, into = c('cancer_types', 'g1', 'g2')) -> .gene_pairs_pval
+  
+  .gene_pairs_pval %>% 
+    dplyr::mutate(fdr = p.adjust(p_val, method = 'fdr'))
+}
+
+
