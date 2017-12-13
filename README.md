@@ -1,4 +1,6 @@
-# GSCALite [![Build Status](https://travis-ci.org/GuoBioinfoLab/GSCALite.svg?branch=dev)](https://travis-ci.org/GuoBioinfoLab/GSCALite)
+# GSCALite 
+
+[![Build Status](https://travis-ci.org/GuoBioinfoLab/GSCALite.svg?branch=dev)](https://travis-ci.org/GuoBioinfoLab/GSCALite)
 
 ## Scripts
 
