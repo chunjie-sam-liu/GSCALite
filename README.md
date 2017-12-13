@@ -8,6 +8,8 @@
 4. For server parts, you can use the [module design](http://shiny.rstudio.com/articles/modules.html) as shiny provided. Or, use `source` to load the outer scripts in `server` directory.
 5. The code style is important, you can follow tidyverse recommened [code style](http://style.tidyverse.org/).
 
+[![Build Status](https://travis-ci.org/GuoBioinfoLab/GSCALite.svg?branch=dev)](https://travis-ci.org/GuoBioinfoLab/GSCALite)
+
 ## Collaborations
 
 Please try to collaborate with each other through GitHub, you can read two articles to learn collaboration with GitHub.
