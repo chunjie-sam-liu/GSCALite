@@ -1,4 +1,6 @@
 language: r
+sudo: required
+env: _R_CHECK_CRAN_INCOMING_=FALSE
 before_install:
   - sudo mkdir -p /usr/lib/R/library
   - echo 'R_LIBS=/usr/lib/R/library:/usr/lib/R/site-library/' > ~/.Renviron
@@ -11,11 +13,6 @@ cache:
   - "$TRAVIS_BUILD_DIR/packrat/lib"
   packages: true
   
-r_packages:
-  - covr
-after_success:
-  - Rscript -e 'library(covr); codecov()'
-  
 warnings_are_errors: true
 
 notifications:
@@ -25,3 +22,8 @@ notifications:
 
 script:
 - nohup R --slave --no-restore -e 'shiny::runApp(port = 3000)' &
+
+r_github_packages:
+  - jimhester/covr
+after_success:
+  - Rscript -e 'library(covr); codecov()'
