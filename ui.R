@@ -12,7 +12,8 @@ library(shinyWidgets)
 
 library(magrittr)
 library(highcharter)
-
+library(maftools)
+library(grid)
 
 # Load configuration ------------------------------------------------------
 

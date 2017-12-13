@@ -132,4 +132,101 @@ Plot <- function(input,output,session){ #data(raw data, gene set, cancer types),
   
 }
 
+# Point plot --------------------------------------------------------------
+
+pointPlot <- function(input,output,session,data,cancer,gene,size,color,sizename,colorname,wrap){
+  # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
+  #                     gene="symbol",size="per",color="color",sizename="CNV%",
+  #                     colorname="SCNA Type",wrap="~ effect")
+  # data should include x/y, point size and point color.
+  output$plot <- renderPlot({
+    data %>%
+      ggplot(aes_string(y = gene, x = cancer)) +
+      geom_point(aes_string(size = size, color = color)) +
+      xlab("Cancer type") +
+      ylab("Symbol") +
+      scale_size_continuous(
+        name = sizename,
+        breaks = c(0.05,0.1, 0.2, 0.4, 0.6,1),
+        limits = c(0.05, 1),
+        labels = c("5","10", "20", "40", "60","100")
+      ) +
+      ggthemes::scale_color_gdocs(
+        name = colorname,
+        labels= c("Deletion","Amplification")
+      ) +
+      theme(axis.text.x = element_text(angle = 45,vjust = 1,hjust = 1))+
+      facet_wrap(as.formula(wrap)) +
+      theme(strip.text.x=element_text(size = 15)) ->p
+    return(p)
+  })
+}
+
+
+# pie plot ----------------------------------------------------------------
+
+piePlot <- function(input,output, session,data, y, fill, facet_grid){
+  # Example:
+  # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
+  #            fill="type",facet_grid="cancer_types ~ symbol")
+  # data should include ...
+  output$plot <- renderPlot({
+  data %>% 
+    ggplot(aes_string(x = factor(1), y  = y, fill = fill)) +
+    geom_bar(stat = 'identity', position = "stack", color = NA) +
+    # scale_y_continuous(limits = c(0,1))
+    coord_polar("y") +
+    facet_grid(as.formula(facet_grid)) + #cancer_types ~ symbol
+    #scale_x_discrete(limits = cnv_gene_rank$symbol) +
+    theme(axis.text=element_blank(),
+          axis.title = element_blank(),
+          axis.ticks = element_blank(),
+          
+          strip.text.y = element_text(angle =0,hjust=0,size=11),
+          strip.text.x = element_text(size=11,angle = 90,vjust = 0),
+          strip.background = element_blank(),
+          
+          legend.title= element_blank(), 
+          legend.text = element_text(size=11),
+          legend.position = "bottom",
+          
+          panel.background = element_blank(),
+          panel.spacing  = unit(0.02, "lines")) +
+    scale_fill_manual(
+      limits = c("a_hete", "a_homo", "d_hete", "d_homo", "other"),
+      label=c("Hete Amp","Homo Amp", "Hete Del", "Homo Del", "None"), 
+      # Amp RColorBrewer name = "Spectral"
+      # Del RColorBrewer name = "BrBG"
+      values=c("brown1", "brown4", "aquamarine3", "aquamarine4", "grey")) ->p
+  return(p)
+  })
+}
+
+
+# gene set CNV frenquencey in each cancer ---------------------------------
+# bar stak plot 
+cnvbarPlot <- function(input,output, session,data, x,y, fill){
+  # Example:
+  # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
+  #            fill="type",facet_grid="cancer_types ~ symbol")
+  # data should include ...
+  output$plot <- renderPlot({
+    data %>% 
+      ggplot(aes_string(x = x, y = y, fill = fill)) +
+      geom_bar(stat = 'identity', position = "stack") +
+      ggsci::scale_fill_npg(
+        name = "Type",
+        limits = c("amp_a","amp_s", "del_a", "del_s"),
+        labels = c("Amp", "Amp Only","Del", "Del Only")
+      ) +
+      ggthemes::theme_gdocs() +
+      theme(
+        axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.3)
+      ) +
+      labs(x = "Cancer Types", y = "CNV Frequency") ->p
+    return(p)
+  })
+}
+
+
 
