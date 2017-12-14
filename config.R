@@ -13,8 +13,8 @@ config$version <- "0.0.1"
 # It's the working directory of app
 # DEFAULT getwd()
 
-#config$wd <- "/home/liucj/github/GSCALite"
-config$wd <- "/project/huff/huff/github/GSCALite"
+config$wd <- "/home/liucj/github/GSCALite"
+# config$wd <- "/project/huff/huff/github/GSCALite"
 
 # User directory ----------------------------------------------------------
 # This controls the unique directory,
@@ -58,7 +58,7 @@ config$ui <- file.path(config$wd, config$ui)
 config$userdata <- file.path(config$wd, config$userdata)
 
 # Path to zip -------------------------------------------------------------
-Sys.setenv("R_ZIPCMD" = "/usr/bin/zip") 
+Sys.setenv("R_ZIPCMD" = "/usr/bin/zip")
 
 # Stylesheet --------------------------------------------------------------
 # If you want to include a .css like stylesheet
@@ -75,4 +75,3 @@ if (config$cssfile != "") {
     config$stylesheet <- paste(scan(config$cssfile, what = "", sep = "\n"), collapse = " ")
   }
 }
-

@@ -12,12 +12,12 @@ library(shinyWidgets)
 
 library(magrittr)
 library(highcharter)
-library(maftools)
+# library(maftools)
 library(grid)
 
 # Load configuration ------------------------------------------------------
 
-source(file = "config.R", local = TRUE) 
+source(file = "config.R", local = TRUE)
 
 # Load ui function --------------------------------------------------------
 
@@ -26,13 +26,13 @@ source(file = file.path(config$ui, "functions_ui.R"), local = TRUE)
 
 # Load global module ------------------------------------------------------
 
-source(file = file.path(config$wd,"global.R"), local = TRUE)
+source(file = file.path(config$wd, "global.R"), local = TRUE)
 
 # Repeated ui stuff for modals --------------------------------------------
 
 addReport_modelTrivia <- tagList(
-  shiny::tags$br(), 
-  shiny::tags$br(), 
+  shiny::tags$br(),
+  shiny::tags$br(),
   shiny::tags$p("The report can be downloaded in the Report section.")
 )
 
@@ -44,14 +44,16 @@ jscode <- "shinyjs.collapse = function(boxid) {$('#' + boxid).closest('.box').fi
 header <- dashboardHeader(
   # Title
   title = HTML(paste(
-    img(src = './www/imgs/CRISPRAnalyzR_logo4_small.png',
+    img(
+      src = "./imgs/01.GSCA_logo_01.png",
       align = "middle",
       class = "img-responsvie",
       style = "height:55px !important;"
-    ),"")),
-  
+    ), ""
+  )),
+
   dropdownMenuOutput("infoMenu"),
-  
+
   dropdownMenuOutput("logMenu")
 )
 
@@ -64,17 +66,17 @@ sidebar <- dashboardSidebar(
   sidebarMenu(
     # Welcome ----
     menuItem("Welcome", tabName = "welcome", icon = icon("home")),
-    
+
     # GTEx ----
     menuItem(
-      "GTEx Normal Tissue", 
-      tabName = "gtex", 
+      "GTEx Normal Tissue",
+      tabName = "gtex",
       icon = icon("gear"),
       collapsible = TRUE,
       menuSubItem("GTEx expression", tabName = "gtex_expr"),
       menuSubItem("GTEx eQTL", tabName = "gtex_eqtl")
     ),
-    
+
     # TCGA ----
     menuItem(
       "TCGA Cancer",
@@ -88,7 +90,7 @@ sidebar <- dashboardSidebar(
       menuSubItem("Protein Expression", tabName = "tcga_rppa"),
       menuSubItem("miRNA Network", tabName = "tcga_mirna")
     ),
-    
+
     # Drug ----
     menuItem(
       "Drug Reponse",
@@ -98,18 +100,18 @@ sidebar <- dashboardSidebar(
       menuSubItem("GDSC", tabName = "gdsc"),
       menuSubItem("CTRP", tabName = "ctrp")
     ),
-    
+
     # Downloads ----
     menuItem("Report", tabName = "downloads", icon = icon("floppy-o")),
-    
+
     # Help ----
     menuItem(
-      "Help", 
-      tabName = "help", 
-      icon = icon("question"), 
+      "Help",
+      tabName = "help",
+      icon = icon("question"),
       collapsible = TRUE
     ),
-    
+
     # About ----
     menuItem("About", tabName = "about", icon = icon("graduation-cap"))
   )
@@ -122,21 +124,22 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(
   shiny::tags$head(
     shiny::tags$style(HTML(config$stylesheet)),
-    shiny::includeScript(file.path(config$wd, "www", "js", "tooltip-delay.js"))),
-  
+    shiny::includeScript(file.path(config$wd, "www", "js", "tooltip-delay.js"))
+  ),
+
   # Main body ----
   tabItems(
-    
+
     # Welcome ----
     source(file = file.path(config$wd, "ui", "welcome_ui.R"), local = TRUE)$value,
 
-    
+
     # GTEx ----
-    
+
     # TCGA ----
     # expr ----
 
-    #source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
+    # source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
     # cnv ----
     source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
     # snv ----
@@ -146,14 +149,14 @@ body <- dashboardBody(
     # rppa ----
     source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value
     # Drug ----
-    
+
     # Download ----
-    
+
     # Help ----
-    
+
     # About ----
   )
-  
+
   # Modals ----
   # source(file = file.path(config$wd, "ui", "modals_ui.R"), local = TRUE)$value
 )
@@ -163,12 +166,12 @@ body <- dashboardBody(
 
 
 # Shiny UI ----------------------------------------------------------------
-shinyUI(dashboardPage( 
+shinyUI(dashboardPage(
   title = "GSCA - Gene Set Cancer Analysis",
   header = header,
   sidebar = sidebar,
-  body = body )) 
+  body = body
+)) 
 
 # Test --------------------------------------------------------------------
-#shinyApp(ui = ui, server = function(input, output, session){})
-
+# shinyApp(ui = ui, server = function(input, output, session){})
