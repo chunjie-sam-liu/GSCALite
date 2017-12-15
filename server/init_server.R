@@ -5,7 +5,7 @@
 # Create session ----------------------------------------------------------
 
 start_time <- Sys.time()
-user_id <- paste0(format(x = start_time, format = "%y%m%d_%H%M%S_"), paste(sample(0:9,4), collapse = ""))
+user_id <- paste0(format(x = start_time, format = "%y%m%d_%H%M%S_"), paste(sample(0:9, 4), collapse = ""))
 
 # Test cdata
 cdata <- session$clientData
@@ -22,10 +22,9 @@ log_file <- file.path(config$logs, "app.log")
 
 
 
-
 # Log user access  --------------------------------------------------------
 
-session$onSessionEnded(function(){
+session$onSessionEnded(function() {
   unlink(user_dir, recursive = TRUE)
   log <- glue::glue("{user_id} : shiny session finished at {Sys.time()}")
   write(x = log, file = log_file, append = TRUE)
@@ -38,7 +37,7 @@ local({
   )
   if (!file.exists(log_file)) {
     write(x = log, file = log_file)
-  } else{
+  } else {
     write(x = log, file = log_file, append = TRUE)
   }
 })
@@ -76,16 +75,16 @@ logging_files <- list(
   "tcga_cnv" = "tcga_cnv.log",
   "gene_set" = "gene_set.log",
   "tcga_rnaseq" = "tcga_ranseq.log"
-) %>% 
-  tibble::enframe() %>% 
-  tidyr::unnest() 
+) %>%
+  tibble::enframe() %>%
+  tidyr::unnest()
 
 
-logging_files %>% 
+logging_files %>%
   purrr::pwalk(
     .f = function(name, value) {
       .log_file <- file.path(config$logs, value)
-      
+
       .log <- c(
         glue::glue("{user_id} ----- New user at {Sys.time()}"),
         glue::glue("{user_id} ----- New user dir {user_dir}")
@@ -97,15 +96,15 @@ logging_files %>%
       }
     }
   )
-  
+
 user_logs <- list(
   "gene_set" = "gene_set.log",
   "tcga_expr" = "tcga_expr.log"
-) 
+) %>%
+  tibble::enframe() %>%
+  tidyr::unnest()
 
 user_logs %>%
-  tibble::enframe() %>% 
-  tidyr::unnest() %>% 
   purrr::pwalk(
     .f = function(name, value) {
       .log_file <- file.path(user_dir, value)
@@ -139,11 +138,12 @@ info_files <- list(
 
 local({
   info <- c("progress;0", "info;")
-  info_files %>% 
+  info_files %>%
     purrr::walk(
-      .f = function(x){
+      .f = function(x) {
         write(info, x)
-      })
+      }
+    )
 })
 
 
@@ -183,4 +183,3 @@ info_read_gene_set <- function() {
 gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
 
 # load data
-

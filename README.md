@@ -1,4 +1,8 @@
-# GSCALite
+# GSCALite 
+
+[![Build Status](https://travis-ci.org/GuoBioinfoLab/GSCALite.svg?branch=dev)](https://travis-ci.org/GuoBioinfoLab/GSCALite)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](https://github.com/GuoBioinfoLab/GSCALite)
+
 
 ## Scripts
 
@@ -8,6 +12,7 @@
 4. For server parts, you can use the [module design](http://shiny.rstudio.com/articles/modules.html) as shiny provided. Or, use `source` to load the outer scripts in `server` directory.
 5. The code style is important, you can follow tidyverse recommened [code style](http://style.tidyverse.org/).
 
+
 ## Collaborations
 
 Please try to collaborate with each other through GitHub, you can read two articles to learn collaboration with GitHub.
@@ -16,8 +21,11 @@ Please try to collaborate with each other through GitHub, you can read two artic
 
 2. [Collaboration: Git Development Workflow](https://github.com/structureddynamics/OSF-Web-Services/wiki/Collaboration:-Git-Development-Workflow)
 
+
+![GSCA logo](www/imgs/01.GSCA_logo_01.png)
+
 > Huffyphenix Joined the team
 
 > Import the project logo.
 
-![GSCA logo](www/imgs/01.GSCA_logo_01.png)
+> Move to GuoBioinfoLab Org.

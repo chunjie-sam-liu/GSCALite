@@ -9,7 +9,7 @@ library(shiny)
 library(shinyjs)
 
 library(magrittr)
-library(maftools)
+# library(maftools)
 
 # Options -----------------------------------------------------------------
 
