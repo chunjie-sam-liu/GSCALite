@@ -43,9 +43,15 @@ tabItem(
   # Input gene list ----
   fluidRow(
     column(
-      width = 10, offset = 1,
-      textInput(inputId = "gene_set", label = "Input Gene Symbol", value = "", placeholder = "TP53, ATG7"),
-      actionButton(inputId = "analysis", label = "Analysis", icon = icon(name = "bolt", lib = "font-awesome")),
+      width = 8, offset = 2,
+      # textInput(inputId = "gene_set", label = "Input Gene Symbol", value = "", placeholder = "TP53, ATG7"),
+      searchInput(inputId = "input_gene_set", 
+                  label = "", 
+                  placeholder = "Input gene list with comma seprated...", 
+                  btnSearch = icon("search"), 
+                  btnReset = icon("remove"), 
+                  width = "100%"),
+      # actionButton(inputId = "analysis", label = "Analysis", icon = icon(name = "bolt", lib = "font-awesome")),
       verbatimTextOutput("gene_set")
     )
   ),
