@@ -9,7 +9,7 @@ user_id <- paste0(format(x = start_time, format = "%y%m%d_%H%M%S_"), paste(sampl
 
 # Test cdata
 cdata <- session$clientData
-# cdata <- readr::read_rds(file.path(config$wd, "userdata", "cdata_test.rds.gz"))
+cdata <- readr::read_rds(file.path(config$wd, "userdata", "cdata_test.rds.gz"))
 
 # Temp user data directory
 user_dir <- file.path(config$wd, "userdata", user_id)
@@ -75,12 +75,12 @@ logging_files <- list(
   "tcga_cnv" = "tcga_cnv.log",
   "gene_set" = "gene_set.log",
   "tcga_rnaseq" = "tcga_ranseq.log"
-) %>%
-  tibble::enframe() %>%
-  tidyr::unnest()
+) 
 
 
 logging_files %>%
+  tibble::enframe() %>%
+  tidyr::unnest() %>% 
   purrr::pwalk(
     .f = function(name, value) {
       .log_file <- file.path(config$logs, value)
@@ -100,11 +100,11 @@ logging_files %>%
 user_logs <- list(
   "gene_set" = "gene_set.log",
   "tcga_expr" = "tcga_expr.log"
-) %>%
-  tibble::enframe() %>%
-  tidyr::unnest()
+) 
 
 user_logs %>%
+  tibble::enframe() %>%
+  tidyr::unnest() %>% 
   purrr::pwalk(
     .f = function(name, value) {
       .log_file <- file.path(user_dir, value)
@@ -180,6 +180,7 @@ info_read_gene_set <- function() {
 
 # Load gene list ----------------------------------------------------------
 
-gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
+total_gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
 
 # load data
+

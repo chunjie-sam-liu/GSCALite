@@ -6,6 +6,7 @@
 # Check input gene set ----------------------------------------------------
 
 check_gene_set <- function(.s) {
+  print(.s)
   .err <- character()
   .war <- character()
 
@@ -19,7 +20,7 @@ check_gene_set <- function(.s) {
     .[1, ] %>%
     stringr::str_trim(side = "both") -> .ss
 
-  if (!dplyr::between(length(.ss), 5, 200)) {
+  if (!dplyr::between(length(.ss), 0, 200)) {
     .err <- c(.err, "Error: The number of genes should be more than 5 and less than 200.")
   }
 
@@ -36,23 +37,24 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs) {
   .log_file <- file.path(user_dir, user_logs$gene_set)
 
   # raw input gene set length
-  .v_d <- .v[.v != ""] %>% unique()
-  .v_d %in% gene_symbol -> .inter
-  .v_d[.inter] -> .m
-  .v_d[!.inter] -> .n_m
-  if (length(.m) == 0) {
+  .v_dedup <- .v[.v != ""] %>% unique() %>% sapply(FUN = tolower, USE.NAMES = FALSE) 
+  .v_dedup %in% names(total_gene_symbol) -> .inter
+  
+  .l <- list(match = total_gene_symbol[.v_dedup[.inter]], non_match = .v_dedup[!.inter])
+  
+  if (length(.l$match) == 0) {
     .err <- "Error: Please input valid gene symbol."
   }
 
   .log <- c(
     glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Input total gene set number is {length(.v)} {paste0(rep('-', 10), collapse = '')}"),
-    glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Unique gene set number is {length(.m)} {paste0(rep('-', 10), collapse = '')}"),
+    glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Unique gene set number is {length(.v_dedup)} {paste0(rep('-', 10), collapse = '')}"),
     glue::glue("#Total input gene set: {paste0(.v, collapse = ', ')}"),
-    glue::glue("#Validated genes: {paste0(.m, collapse = ', ')}"),
-    glue::glue("#Invalidated genes: {paste0(.n_m, collapse = ', ')}")
+    glue::glue("#Validated genes: {paste0(.l$match, collapse = ', ')}"),
+    glue::glue("#Invalidated genes: {paste0(.l$non_match, collapse = ', ')}")
   )
   write(x = .log, file = .log_file, append = TRUE)
-  list(gene_set = .m, errors = .err, warnings = .war)
+  list(gene_set = .l$match, errors = .err, warnings = .war)
 }
 
 

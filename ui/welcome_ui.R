@@ -51,8 +51,7 @@ tabItem(
                   btnSearch = icon("search"), 
                   btnReset = icon("remove"), 
                   width = "100%"),
-      
-      verbatimTextOutput("gene_set")
+      verbatimTextOutput(outputId = "output_gene_set")
     )
   ),
 
