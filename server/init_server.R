@@ -182,5 +182,3 @@ info_read_gene_set <- function() {
 
 total_gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
 
-# load data
-
