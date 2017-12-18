@@ -9,6 +9,10 @@
 ## cancerTypeInput & cancerType############
 ##########################################
 # cancer type selection ---------------------------------------------------
+<<<<<<< HEAD
+=======
+
+>>>>>>> 29a90274befab948ea163b499c5a995b815f51e2
 cancerTypeInput <- function(id) {
   ns <- NS(id)
 
@@ -194,7 +198,9 @@ Plot <- function(input, output, session) { # data(raw data, gene set, cancer typ
 
 # cnv Point plot --------------------------------------------------------------
 
-pointPlot <- function(input, output, session, data, cancer, gene, size, color, sizename, colorname, wrap=NA) {
+
+pointPlot <- function(input, output, session, data, cancer, gene, size, color, sizename, colorname, wrap) {
+
   # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
   #                     gene="symbol",size="per",color="color",sizename="CNV%",
   #                     colorname="SCNA Type",wrap="~ effect")
@@ -360,3 +366,8 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
     return(p)
   })
 }
+=======
+    return(p)
+  })
+}
+>>>>>>> 29a90274befab948ea163b499c5a995b815f51e2

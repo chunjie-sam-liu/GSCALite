@@ -1,4 +1,7 @@
-# GSCALite
+# GSCALite 
+
+[![Build Status](https://travis-ci.org/GuoBioinfoLab/GSCALite.svg?branch=dev)](https://travis-ci.org/GuoBioinfoLab/GSCALite)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](https://github.com/GuoBioinfoLab/GSCALite)
 
 ## Scripts
 
@@ -7,6 +10,7 @@
 3. For ui design, please follow the ui as shiny provided [tags](http://shiny.rstudio.com/articles/tag-glossary.html). Try not to use write raw HTML.
 4. For server parts, you can use the [module design](http://shiny.rstudio.com/articles/modules.html) as shiny provided. Or, use `source` to load the outer scripts in `server` directory.
 5. The code style is important, you can follow tidyverse recommened [code style](http://style.tidyverse.org/).
+
 
 ## Collaborations
 
