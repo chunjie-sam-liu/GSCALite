@@ -9,10 +9,7 @@
 ## cancerTypeInput & cancerType############
 ##########################################
 # cancer type selection ---------------------------------------------------
-<<<<<<< HEAD
-=======
 
->>>>>>> 29a90274befab948ea163b499c5a995b815f51e2
 cancerTypeInput <- function(id) {
   ns <- NS(id)
 
@@ -366,8 +363,4 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
     return(p)
   })
 }
-=======
-    return(p)
-  })
-}
->>>>>>> 29a90274befab948ea163b499c5a995b815f51e2
+
