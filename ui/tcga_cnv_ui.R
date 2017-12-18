@@ -38,7 +38,7 @@ tabItem(tabName = "tcga_cnv", align = "center",
         # Selected cancer show ----
         shiny::tags$h3("Cancer Type Check",class="text-success"),
         shiny::tags$h4("The cancers you selected: ",
-                       textOutput("selected_cancer"),
+                       textOutput("cnv_selected_cancer"),
                        " Confirm and start analysis by click Submit!"),
         
         # Confirm and submit ----
@@ -53,13 +53,13 @@ tabItem(tabName = "tcga_cnv", align = "center",
           column(width = 10,
                  offset = 1,
                  shiny::tags$br(),
-                 shinydashboard::tabBox(id = "PLOT",title = "PLOT",width = 12,
+                 shinydashboard::tabBox(id = "cnv_PLOT",title = "PLOT",width = 12,
                                         tabPanel(title="CNV Pie distribution",PlotInput(id="cnv_pie")),
                                         tabPanel(title= "Hete CNV profile",PlotInput(id="cnv_hete")),
                                         tabPanel(title="Homo CNV profile",PlotInput(id="cnv_homo")),
-                                        tabPanel(title="CNV Bar distribution",PlotInput("cnv_bar")),
-                                        tabPanel(title="CNV oncostrip",PlotInput("cnv_oncostrip")),
-                                        tabPanel(title="Exclusive CNV",PlotInput("cnv_exclusive"))
+                                        tabPanel(title="CNV Bar distribution",PlotInput("cnv_bar"))
+                                        # tabPanel(title="CNV oncostrip",PlotInput("cnv_oncostrip")),
+                                        # tabPanel(title="Exclusive CNV",PlotInput("cnv_exclusive"))
                  )
           )
         ),
