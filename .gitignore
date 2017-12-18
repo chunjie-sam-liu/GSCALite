@@ -8,3 +8,6 @@
 *.command
 *.log
 *.info
+.gitignore
+
+data_processing
