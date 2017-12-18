@@ -65,13 +65,7 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs) {
 }
 
 
-# extract gene set from TCGA data -----------------------------------------
-
-filter_gene_list <- function(.x, gene_list) {
-  gene_list %>%
-    dplyr::select(symbol) %>%
-    dplyr::left_join(.x, by = "symbol")
-}
+# cnv bar data prepare ----------------------------------------------------
 
 
 # threshold cnv -----------------------------------------------------------
@@ -112,6 +106,7 @@ fn_cnv_percecnt <- function(data) {
     tidyr::unnest(rs) -> gene_list_cnv_per
 }
 
+
 fn_gen_combined_core_atg <- function(cancer_types, filter_cnv, g_list, n) {
   # cancer_types <- "KIRC"
   # filter_cnv <- gene_list_cancer_cnv$filter_cnv[[1]]
@@ -124,8 +119,9 @@ fn_gen_combined_core_atg <- function(cancer_types, filter_cnv, g_list, n) {
     tidyr::spread(key = symbol, value = gistic) %>%
     dplyr::select(-barcode) -> .d
 
+  
   n_sample <- nrow(.d)
-
+  
   .d %>%
     dplyr::filter_all(.vars_predicate = dplyr::any_vars(. == -n)) %>%
     nrow() -> .del
@@ -144,6 +140,15 @@ fn_gen_combined_core_atg <- function(cancer_types, filter_cnv, g_list, n) {
 
   tibble::tibble(del_a = .del / n_sample, del_s = (.del - .sub_d) / n_sample, amp_a = .amp / n_sample, amp_s = (.amp - .sub_a) / n_sample)
 }
+# extract gene set from TCGA data -----------------------------------------
+
+
+filter_gene_list <- function(.x, gene_list) {
+  gene_list %>%
+    dplyr::select(symbol) %>%
+    dplyr::left_join(.x, by = "symbol")
+}
+
 
 # get exclusive cnv -------------------------------------------------------
 fn_cnv_exclusive <- function(V1, V2, .data, cancer_types) {
@@ -202,3 +207,4 @@ fn_cnv_mutal_exclusive <- function(cancer_types, filter_cnv, cluster) {
   .gene_pairs_pval %>%
     dplyr::mutate(fdr = p.adjust(p_val, method = "fdr"))
 }
+

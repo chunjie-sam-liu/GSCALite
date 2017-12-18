@@ -1,3 +1,7 @@
+# sourced by 'server.R'
+# save as 'tcga_cnv_server.R'
+# server elements 'tcga_cnv' sub tab of 'tcga' tab
+
 # data input --------------------------------------------------------------
 # ? global data can't load here.
 # get gene set ----
@@ -15,11 +19,11 @@ gene_list <- data.frame(symbol=isolate(gene_set()))
 gene_list$symbol <- gene_list$symbol %>% as.character()
 
 # load cnv data ----
-# cnv <- readr::read_rds(file.path(config$database, "TCGA","cnv","pancan34_cnv.rds.gz"))
-cnv <- readr::read_rds(file.path(config$database, "TCGA","cnv","pancan34_cnv_threshold.rds.gz"))
+cnv <- readr::read_rds(file.path(config$database, "TCGA","cnv","pancan34_cnv_percent.rds.gz"))
+cnv_raw <- readr::read_rds(file.path(config$database, "TCGA","cnv","pancan34_cnv_threshold.rds.gz"))
 
 #  get cancer type --------------------------------------------------------
-cancer_type <- callModule(cancerType,"cnv")
+cnv_cancer_type <- callModule(cancerType,"cnv")
 #give test value for cancer type
 # input$Kidney="KIRC"
 # input$Adrenal_Gland=c()
@@ -35,8 +39,8 @@ cancer_type <- callModule(cancerType,"cnv")
 # cancer_type <- reactive(c("KIRC","LGG","COAD","LUAD","LUSC","BRCA"))
 
 
-output$selected_cancer <- renderText(
-  cancer_type()
+output$cnv_selected_cancer <- renderText(
+  cnv_cancer_type()
 )
 
 
@@ -46,22 +50,22 @@ output$selected_cancer <- renderText(
 cnv %>%
   dplyr::mutate(filter_cnv = purrr::map(cnv, filter_gene_list, gene_list = gene_list)) %>%
   dplyr::select(-cnv) -> gene_list_cnv
+cnv_raw %>%
+  dplyr::mutate(filter_cnv = purrr::map(cnv, filter_gene_list, gene_list = gene_list)) %>%
+  dplyr::select(-cnv) -> gene_list_cnv_raw
 
 observeEvent(input$cnv_submit,{
   # get cancer type cnv ----
   gene_list_cnv %>%
-    dplyr::filter(cancer_types %in% cancer_type() ) -> gene_list_cancer_cnv
+    dplyr::filter(cancer_types %in% cnv_cancer_type() ) -> gene_list_cancer_cnv
   # gene_list_cnv %>%
   #   dplyr::filter(cancer_types %in% isolate(cancer_type()) ) -> gene_list_cancer_cnv
-  
-  # get gene set cnv percent  ----
-  gene_list_cancer_cnv %>%
-    fn_cnv_percecnt() ->gene_list_cnv_per
-  
+  gene_list_cnv_raw %>%
+    dplyr::filter(cancer_types %in% cnv_cancer_type() ) -> gene_list_cancer_cnv_raw
   # get data for plot ----
-  gene_list_cnv_per %>%
-    tidyr::drop_na() %>%
-    dplyr::mutate(other=1 - a_total - d_total)-> cnv_plot_ready
+  gene_list_cancer_cnv %>%
+    tidyr::unnest() %>%
+    tidyr::drop_na() -> cnv_plot_ready
   
   # cancer rank ----
   cnv_plot_ready %>% 
@@ -111,54 +115,33 @@ observeEvent(input$cnv_submit,{
              colorname="SCNA Type",wrap="~ effect")
 
   # bar stack plot ----
-  gene_list_cancer_cnv %>% 
+  gene_list_cancer_cnv_raw %>% 
     dplyr::mutate(rs = purrr::map2(cancer_types, filter_cnv, fn_gen_combined_core_atg, g_list = gene_list,n=1)) %>% 
     dplyr::select( -filter_cnv) %>% 
     tidyr::unnest(rs) %>%
     dplyr::mutate(del_a = -del_a) %>% 
     dplyr::mutate(del_s = -del_s) %>%
-    tidyr::gather(key = type, value = per, -cancer_types) ->cnv_bar_plot_ready
+    tidyr::gather(key = type, value = per, -cancer_types) %>%
+    dplyr::mutate(cnv_type="Hete CNV") -> cnv_hete_bar_plot_ready
+  
+  gene_list_cancer_cnv_raw %>% 
+    dplyr::mutate(rs = purrr::map2(cancer_types, filter_cnv, fn_gen_combined_core_atg, g_list = gene_list,n=2)) %>% 
+    dplyr::select( -filter_cnv) %>% 
+    tidyr::unnest(rs) %>%
+    dplyr::mutate(del_a = -del_a) %>% 
+    dplyr::mutate(del_s = -del_s) %>%
+    tidyr::gather(key = type, value = per, -cancer_types) %>%
+    dplyr::mutate(cnv_type="Homo CNV")-> cnv_homo_bar_plot_ready
+  
+  rbind(cnv_hete_bar_plot_ready,cnv_homo_bar_plot_ready) -> cnv_bar_plot_ready
   
   callModule(cnvbarPlot,"cnv_bar",data=cnv_bar_plot_ready,x="cancer_types",y="per",fill="type")
   
   # cnv oncostrip plot  ----
 
-    callModule(Plot,"cnv_oncostrip")
+    # callModule(Plot,"cnv_oncostrip")
 
-# cnv exclusive -----------------------------------------------------------
-  # cl <- parallel::detectCores()
-  # system.time(cluster <- multidplyr::create_cluster(floor(cl * 5 / 6)))
-  # system.time(gene_list_cancer_cnv %>% 
-  #   purrr::pmap(.f = fn_cnv_mutal_exclusive,cluster=cluster) %>% 
-  #   dplyr::bind_rows() -> mutual_exclusive)
-  # parallel::stopCluster(cluster)
 
-  
-    callModule(Plot,"cnv_exclusive")
   
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# plot generation ---------------------------------------------------------
-# observeEvent(input$cnv_submit,{
-#   callModule(Plot,"cnv_pie")
-#   callModule(Plot,"cnv_hete")
-#   callModule(Plot,"cnv_homo")
-#   callModule(Plot,"cnv_bar")
-#   callModule(Plot,"cnv_oncostrip")
-#   callModule(Plot,"cnv_exclusive")
-# })
 
