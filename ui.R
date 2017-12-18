@@ -12,12 +12,11 @@ library(shinyWidgets)
 
 library(magrittr)
 library(highcharter)
-library(maftools)
 library(grid)
 
 # Load configuration ------------------------------------------------------
 
-source(file = "config.R", local = TRUE) 
+source(file = "config.R", local = TRUE)
 
 # Load ui function --------------------------------------------------------
 
