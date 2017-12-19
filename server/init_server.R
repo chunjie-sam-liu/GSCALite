@@ -13,14 +13,18 @@ cdata <- readr::read_rds(file.path(config$wd, "userdata", "cdata_test.rds.gz"))
 
 # Temp user data directory
 user_dir <- file.path(config$wd, "userdata", user_id)
+pngs_dir <- file.path(config$wd, "userdata", user_id, "pngs")
+jsons_dir <- file.path(config$wd, "userdata", user_id, "jsons")
 ifelse(dir.exists(user_dir), glue::glue("Directory {user_dir} exists!"), dir.create(user_dir))
 cmd <- "chmod"
 args <- c("-R", "777", user_dir)
 system2(command = cmd, args = args)
+dir.create(pngs_dir)
+dir.create(jsons_dir)
+
+
 
 log_file <- file.path(config$logs, "app.log")
-
-
 
 # Log user access  --------------------------------------------------------
 

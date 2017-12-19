@@ -6,24 +6,31 @@
 # Check input gene set ----------------------------------------------------
 
 check_gene_set <- function(.s) {
-  print(.s)
+  # test 
+  # glue::glue("{.s}
+  #           akjl,lskjd89, , adjlkj, 
+  #           {.s}") -> .s
   .err <- character()
   .war <- character()
 
-  if (!stringr::str_detect(string = .s, pattern = ",")) {
-    .err <- c(.err, "Error: Please input the gene set with comma separate!")
-  }
+  # don't need input comma seperation.
+  # if (!stringr::str_detect(string = .s, pattern = ",")) {
+  #   .err <- c(.err, "Error: Please input the gene set with comma separate!")
+  # }
 
   .s %>%
-    stringr::str_replace_all(pattern = "\\n", replacement = "") %>%
-    stringr::str_split(pattern = ",", simplify = T) %>%
+    stringr::str_split(pattern = "[^[:alnum:]]+", simplify = TRUE) %>% 
     .[1, ] %>%
     stringr::str_trim(side = "both") -> .ss
-
-  if (!dplyr::between(length(.ss), 0, 200)) {
-    .err <- c(.err, "Error: The number of genes should be more than 5 and less than 200.")
+  
+  if (length(.ss) == 1 && .ss == "") {
+    .err <- c(.err, "Error: Input at least One symbol.")
   }
-
+  
+  if (!dplyr::between(length(.ss), 1, 200)) {
+    .err <- c(.err, "Error: The number of genes should be less than 200.")
+  }
+  
   return(list(errors = .err, warnings = .war, gene_set = .ss))
 }
 
