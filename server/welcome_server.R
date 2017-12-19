@@ -1,8 +1,6 @@
 print(user_dir)
 
 
-
-
 # For reseting ------------------------------------------------------------
 
 observeEvent(input$input_gene_set_reset, {
