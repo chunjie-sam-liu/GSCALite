@@ -28,3 +28,5 @@ Please try to collaborate with each other through GitHub, you can read two artic
 > Import the project logo.
 
 > Move to GuoBioinfoLab Org.
+
+> icefoxx Joined the team.
