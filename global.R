@@ -9,6 +9,7 @@
 ## cancerTypeInput & cancerType############
 ##########################################
 # cancer type selection ---------------------------------------------------
+
 cancerTypeInput <- function(id) {
   ns <- NS(id)
 
@@ -192,9 +193,11 @@ Plot <- function(input, output, session) { # data(raw data, gene set, cancer typ
   }) # fun argument decide what function will be called.
 }
 
-# Point plot --------------------------------------------------------------
+# cnv Point plot --------------------------------------------------------------
+
 
 pointPlot <- function(input, output, session, data, cancer, gene, size, color, sizename, colorname, wrap) {
+
   # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
   #                     gene="symbol",size="per",color="color",sizename="CNV%",
   #                     colorname="SCNA Type",wrap="~ effect")
@@ -223,7 +226,7 @@ pointPlot <- function(input, output, session, data, cancer, gene, size, color, s
 }
 
 
-# pie plot ----------------------------------------------------------------
+# cnv pie plot ----------------------------------------------------------------
 
 piePlot <- function(input, output, session, data, y, fill, facet_grid) {
   # Example:
@@ -277,6 +280,8 @@ cnvbarPlot <- function(input, output, session, data, x, y, fill) {
     data %>%
       ggplot(aes_string(x = x, y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack") +
+      facet_wrap(~cnv_type, ncol = 2) +
+      theme(strip.text.x = element_text(size = 15)) +
       ggsci::scale_fill_npg(
         name = "Type",
         limits = c("amp_a", "amp_s", "del_a", "del_s"),
@@ -290,3 +295,109 @@ cnvbarPlot <- function(input, output, session, data, x, y, fill) {
     return(p)
   })
 }
+
+
+# snv percentage plot -----------------------------------------------------
+
+snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, label, cancer_rank, gene_rank) {
+  output$plot <- renderPlot({
+    data %>%
+      ggplot(aes_string(x = cancer, y = gene, fill = fill)) +
+      geom_tile() +
+      geom_text(aes_string(label = label)) +
+      scale_x_discrete(position = "top", limits = cancer_rank$x_label) +
+      scale_y_discrete(limits = gene_rank$symbol) +
+      scale_fill_gradient2(
+        name = "Mutation Frequency (%)",
+        limit = c(0, 0.8),
+        breaks = seq(0, 1, 0.1),
+        label = c("0", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100"),
+        high = "red",
+        na.value = "white"
+      ) +
+      theme_bw() +
+      theme(
+        axis.text.x = element_text(angle = 45, hjust = -0.05, size = "15"),
+        axis.title.y = element_text(size = "15")
+      ) +
+      guides(fill = guide_legend(
+        title = "Mutation Frequency (%)",
+        title.position = "left",
+        title.theme = element_text(angle = 90, vjust = 2),
+        reverse = T,
+        keywidth = 0.6,
+        keyheight = 0.8
+      )) +
+      labs(x = "", y = "") -> p
+    return(p)
+  })
+}
+
+
+# snv survival point plot -------------------------------------------------
+
+snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank,gene_rank,sizename, colorname) {
+  # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
+  #                     gene="symbol",size="per",color="color",sizename="CNV%",
+  #                     colorname="SCNA Type",wrap="~ effect")
+  # data should include x/y, point size and point color.
+  output$plot <- renderPlot({
+    data %>%
+      ggplot(aes_string(y = gene, x = cancer)) +
+      geom_point(aes_string(size = size, color = color)) +
+      xlab("Cancer type") +
+      ylab("Symbol") +
+      scale_x_discrete(limit=cancer_rank$cancer_types) +
+      scale_y_discrete(limit=gene_rank$symbol) +
+      scale_size_continuous(
+        name = sizename,
+        breaks = c(-log10(0.05), 5, 10, 15),
+        limits = c(-log10(0.05), 15),
+        labels = c("0.05", latex2exp::TeX("$10^{-5}$"), latex2exp::TeX("$10^{-10}$"), latex2exp::TeX("$< 10^{-15}$"))
+      ) +
+      ggthemes::scale_color_gdocs(
+        name = colorname,
+        labels = c("High", "Low")
+      ) +
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))  -> p
+    return(p)
+  })
+}
+
+<<<<<<< HEAD
+
+# snv maf summary ---------------------------------------------------------
+
+# 1. ui part -----------------------------------------------------------------
+
+snvPlotInput <- function(id, width, height) {
+  ns <- NS(id)
+  
+  tagList(
+    imageOutput(ns("plot")),
+    hr()
+  )
+}
+
+# 2. server part ----------------------------------------------------------
+
+snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, figname) {
+  output$plot <-renderImage({
+    outfile <- paste(user_dir,"/",figname,'.png',sep="")
+    png(outfile, width = 400, heights= 300)
+    maftools::plotmafSummary(gene_list_maf)
+    dev.off()
+    
+    list(src = outfile,
+         contentType = 'image/png',
+         width = 400,
+         height = 300,
+         alt = "This is alternate text")
+  }, deleteFile = TRUE)
+}
+
+snv_maf_oncoPlot <-
+
+
+=======
+>>>>>>> 88e2fd93e4a3724f06b7ac778bf6c5a8481d71ef

@@ -6,23 +6,31 @@
 # Check input gene set ----------------------------------------------------
 
 check_gene_set <- function(.s) {
+  # test 
+  # glue::glue("{.s}
+  #           akjl,lskjd89, , adjlkj, 
+  #           {.s}") -> .s
   .err <- character()
   .war <- character()
 
-  if (!stringr::str_detect(string = .s, pattern = ",")) {
-    .err <- c(.err, "Error: Please input the gene set with comma separate!")
-  }
+  # don't need input comma seperation.
+  # if (!stringr::str_detect(string = .s, pattern = ",")) {
+  #   .err <- c(.err, "Error: Please input the gene set with comma separate!")
+  # }
 
   .s %>%
-    stringr::str_replace_all(pattern = "\\n", replacement = "") %>%
-    stringr::str_split(pattern = ",", simplify = T) %>%
+    stringr::str_split(pattern = "[^[:alnum:]]+", simplify = TRUE) %>% 
     .[1, ] %>%
     stringr::str_trim(side = "both") -> .ss
-
-  if (!dplyr::between(length(.ss), 5, 200)) {
-    .err <- c(.err, "Error: The number of genes should be more than 5 and less than 200.")
+  
+  if (length(.ss) == 1 && .ss == "") {
+    .err <- c(.err, "Error: Input at least One symbol.")
   }
-
+  
+  if (!dplyr::between(length(.ss), 1, 200)) {
+    .err <- c(.err, "Error: The number of genes should be less than 200.")
+  }
+  
   return(list(errors = .err, warnings = .war, gene_set = .ss))
 }
 
@@ -36,33 +44,28 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs) {
   .log_file <- file.path(user_dir, user_logs$gene_set)
 
   # raw input gene set length
-  .v_d <- .v[.v != ""] %>% unique()
-  .v_d %in% gene_symbol -> .inter
-  .v_d[.inter] -> .m
-  .v_d[!.inter] -> .n_m
-  if (length(.m) == 0) {
+  .v_dedup <- .v[.v != ""] %>% unique() %>% sapply(FUN = tolower, USE.NAMES = FALSE) 
+  .v_dedup %in% names(total_gene_symbol) -> .inter
+  
+  .l <- list(match = total_gene_symbol[.v_dedup[.inter]], non_match = .v_dedup[!.inter])
+  
+  if (length(.l$match) == 0) {
     .err <- "Error: Please input valid gene symbol."
   }
 
   .log <- c(
     glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Input total gene set number is {length(.v)} {paste0(rep('-', 10), collapse = '')}"),
-    glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Unique gene set number is {length(.m)} {paste0(rep('-', 10), collapse = '')}"),
+    glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Unique gene set number is {length(.v_dedup)} {paste0(rep('-', 10), collapse = '')}"),
     glue::glue("#Total input gene set: {paste0(.v, collapse = ', ')}"),
-    glue::glue("#Validated genes: {paste0(.m, collapse = ', ')}"),
-    glue::glue("#Invalidated genes: {paste0(.n_m, collapse = ', ')}")
+    glue::glue("#Validated genes: {paste0(.l$match, collapse = ', ')}"),
+    glue::glue("#Invalidated genes: {paste0(.l$non_match, collapse = ', ')}")
   )
   write(x = .log, file = .log_file, append = TRUE)
-  list(gene_set = .m, errors = .err, warnings = .war)
+  list(gene_set = .l$match, errors = .err, warnings = .war)
 }
 
 
-# extract gene set from TCGA data -----------------------------------------
-
-filter_gene_list <- function(.x, gene_list) {
-  gene_list %>%
-    dplyr::select(symbol) %>%
-    dplyr::left_join(.x, by = "symbol")
-}
+# cnv bar data prepare ----------------------------------------------------
 
 
 # threshold cnv -----------------------------------------------------------
@@ -103,6 +106,7 @@ fn_cnv_percecnt <- function(data) {
     tidyr::unnest(rs) -> gene_list_cnv_per
 }
 
+
 fn_gen_combined_core_atg <- function(cancer_types, filter_cnv, g_list, n) {
   # cancer_types <- "KIRC"
   # filter_cnv <- gene_list_cancer_cnv$filter_cnv[[1]]
@@ -115,8 +119,9 @@ fn_gen_combined_core_atg <- function(cancer_types, filter_cnv, g_list, n) {
     tidyr::spread(key = symbol, value = gistic) %>%
     dplyr::select(-barcode) -> .d
 
+  
   n_sample <- nrow(.d)
-
+  
   .d %>%
     dplyr::filter_all(.vars_predicate = dplyr::any_vars(. == -n)) %>%
     nrow() -> .del
@@ -135,6 +140,15 @@ fn_gen_combined_core_atg <- function(cancer_types, filter_cnv, g_list, n) {
 
   tibble::tibble(del_a = .del / n_sample, del_s = (.del - .sub_d) / n_sample, amp_a = .amp / n_sample, amp_s = (.amp - .sub_a) / n_sample)
 }
+# extract gene set from TCGA data -----------------------------------------
+
+
+filter_gene_list <- function(.x, gene_list) {
+  gene_list %>%
+    dplyr::select(symbol) %>%
+    dplyr::left_join(.x, by = "symbol")
+}
+
 
 # get exclusive cnv -------------------------------------------------------
 fn_cnv_exclusive <- function(V1, V2, .data, cancer_types) {
@@ -193,3 +207,4 @@ fn_cnv_mutal_exclusive <- function(cancer_types, filter_cnv, cluster) {
   .gene_pairs_pval %>%
     dplyr::mutate(fdr = p.adjust(p_val, method = "fdr"))
 }
+

@@ -23,9 +23,9 @@ fluidRow(style="width:85%",
                                                                               
                                                                               shiny::tags$h3("What is Copy number variation", class="text-success"),
                                                                               
-                                                                              shiny::tags$p(class="text-justify","Copy number variation is a type of structural variation: specifically, it is a type of duplication or deletion event that affects a considerable number of base pairs. See details at: "),
-                                                                              shiny::tags$a(href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1226196/","reference"),
-                                                                              shiny::tags$p(class="text-justify","."),
+                                                                              shiny::tags$p(class="text-justify","Copy number variation is a type of structural variation: specifically, it is a type of duplication or deletion event that affects a considerable number of base pairs. See details at: ",
+                                                                              shiny::tags$a(href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1226196/","reference"),"."),
+                                                                              #shiny::tags$p(class="text-justify",),
                                                                               
                                                                               shiny::tags$br(),
                                                                               
@@ -57,15 +57,15 @@ fluidRow(style="width:85%",
                                                                                                   shiny::tags$tr(
                                                                                                     shiny::tags$td("Overall CNV Frequency"),
                                                                                                     shiny::tags$td("Overall CNV frenquency gives you a bar plot, which shows the frequency of all genes' CNV in each cancer type.")
-                                                                                                  ),
-                                                                                                  shiny::tags$tr(
-                                                                                                    shiny::tags$td("Oncostrip"),
-                                                                                                    shiny::tags$td("Similar to OncoPrinter tool on cBioPortal and oncoplot at SNV part, oncostrip draws CNV in each sample. Can combine with SNV data.")
-                                                                                                  ),
-                                                                                                  shiny::tags$tr(
-                                                                                                    shiny::tags$td("Exclude CNV"),
-                                                                                                    shiny::tags$td("Exclude CNV is a phenomenon that two genes' CNV happened different in a same sample all the time, this difference should meet a statistic difference at least.")
-                                                                                                  )
+                                                                                                  )#,
+                                                                                                  # shiny::tags$tr(
+                                                                                                  #   shiny::tags$td("Oncostrip"),
+                                                                                                  #   shiny::tags$td("Similar to OncoPrinter tool on cBioPortal and oncoplot at SNV part, oncostrip draws CNV in each sample. Can combine with SNV data.")
+                                                                                                  # ),
+                                                                                                  # shiny::tags$tr(
+                                                                                                  #   shiny::tags$td("Exclude CNV"),
+                                                                                                  #   shiny::tags$td("Exclude CNV is a phenomenon that two genes' CNV happened different in a same sample all the time, this difference should meet a statistic difference at least.")
+                                                                                                  # )
                                                                                                 )
                                                                               )
                                                                        )# result description end

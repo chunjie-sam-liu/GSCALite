@@ -12,7 +12,9 @@ library(shinyWidgets)
 
 library(magrittr)
 library(highcharter)
+
 # library(maftools)
+
 library(grid)
 
 # Load configuration ------------------------------------------------------
@@ -122,6 +124,8 @@ sidebar <- dashboardSidebar(
 # Body Start --------------------------------------------------------------
 
 body <- dashboardBody(
+  shinyjs::useShinyjs(),
+  shinyjs::extendShinyjs(script = file.path(config$wd, "www", "js", "gscalite.js")),
   shiny::tags$head(
     shiny::tags$style(HTML(config$stylesheet)),
     shiny::includeScript(file.path(config$wd, "www", "js", "tooltip-delay.js"))

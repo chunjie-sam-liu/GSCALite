@@ -65,7 +65,7 @@ fluidRow(style="width:85%",
                                                                                                     shiny::tags$td("Lollipop plots are simple and most effective way showing mutation spots on protein structure. Many oncogenes have a preferential sites which are mutated more often than any other locus. These spots are considered to be mutational hot-spots and lollipop plots can be used to display them along with rest of the mutations.")
                                                                                                   ),
                                                                                                   shiny::tags$tr(
-                                                                                                    shiny::tags$td("CNV survival"),
+                                                                                                    shiny::tags$td("SNV survival"),
                                                                                                     shiny::tags$td("A survival plot will give you a survival difference between mutate and non-mutate gene, only a p value significant(<=0.05) gene will be displayed here.")
                                                                                                   ),
                                                                                                   shiny::tags$tr(
