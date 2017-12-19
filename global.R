@@ -159,6 +159,7 @@ cancerType <- function(input, output, session) {
 }
 
 
+
 ###############################################################
 # Plot function to generate plot in ui#########################
 ## 1. plotoutout in ui and in server ###########################
@@ -364,7 +365,6 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
   })
 }
 
-<<<<<<< HEAD
 
 # snv maf summary ---------------------------------------------------------
 
@@ -396,8 +396,33 @@ snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, figname) 
   }, deleteFile = TRUE)
 }
 
-snv_maf_oncoPlot <-
+snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cancer_type) {
+  output$plot <-renderImage({
+    outfile <- paste(user_dir,"/",figname,'.png',sep="")
+    png(outfile, width = 400, heights= 300)
+    col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
+    names(col) <- c(
+      "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
+      "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
+    )
+    fabcolors <- RColorBrewer::brewer.pal(n = length(cancer_type), name = "Spectral")
+    names(fabcolors) <- cancer_type
+
+    fabcolors <- list(cancer_types = fabcolors)
+    maftools::oncoplot(
+      maf = gene_list_maf, removeNonMutated = T, colors = col,
+      clinicalFeatures = "cancer_types", sortByAnnotation = TRUE,
+      annotationColor = fabcolors, top = 10
+    )
+    dev.off()
+    
+    list(src = outfile,
+         contentType = 'image/png',
+         width = 400,
+         height = 300,
+         alt = "This is alternate text")
+  }, deleteFile = TRUE)
+}
 
 
-=======
->>>>>>> 88e2fd93e4a3724f06b7ac778bf6c5a8481d71ef
+
