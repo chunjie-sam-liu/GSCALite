@@ -9,10 +9,7 @@
 ## cancerTypeInput & cancerType############
 ##########################################
 # cancer type selection ---------------------------------------------------
-<<<<<<< HEAD
-=======
 
->>>>>>> 29a90274befab948ea163b499c5a995b815f51e2
 cancerTypeInput <- function(id) {
   ns <- NS(id)
 
@@ -366,8 +363,38 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
     return(p)
   })
 }
-=======
-    return(p)
-  })
+
+
+# snv maf summary ---------------------------------------------------------
+
+# 1. ui part -----------------------------------------------------------------
+
+snvPlotInput <- function(id, width, height) {
+  ns <- NS(id)
+  
+  tagList(
+    imageOutput(ns("plot")),
+    hr()
+  )
 }
->>>>>>> 29a90274befab948ea163b499c5a995b815f51e2
+
+# 2. server part ----------------------------------------------------------
+
+snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, figname) {
+  output$plot <-renderImage({
+    outfile <- paste(user_dir,"/",figname,'.png',sep="")
+    png(outfile, width = 400, heights= 300)
+    maftools::plotmafSummary(gene_list_maf)
+    dev.off()
+    
+    list(src = outfile,
+         contentType = 'image/png',
+         width = 400,
+         height = 300,
+         alt = "This is alternate text")
+  }, deleteFile = TRUE)
+}
+
+snv_maf_oncoPlot <-
+
+
