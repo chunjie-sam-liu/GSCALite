@@ -2,12 +2,14 @@
 # save as 'tcga_rppa_ui.R'
 # ui elements 'tcga_rppa' sub tab of 'tcga' tab
 
-tabItem(tabName = "tcga_rppa", align = "center",
-        shinyjs::useShinyjs(),
-        
-        ## RPPA message ----
-        fluidRow(style="width:80%;",
-                 HTML("<div class='section'>
+tabItem(
+  tabName = "tcga_rppa", align = "center",
+  shinyjs::useShinyjs(),
+
+  ## RPPA message ----
+  fluidRow(
+    style = "width:80%;",
+    HTML("<div class='section'>
                       <div class='container'>
                       <div class='row'>
                       <div class='col-md-12'>
@@ -24,113 +26,54 @@ tabItem(tabName = "tcga_rppa", align = "center",
                       </div>
                       </div>
                       </div>")
-                 ),
-        ## Hlep message including in tcga_rppa_help.ui----
-        source(file.path(config$ui,"tcga_rppa_help.R"))[1],
-        
-        shiny::tags$br(),
-        shiny::tags$hr(width="85%"),
-        
-        # cancer type selection and result output---------------------------------------------------
-        fluidRow(
-          # cancer type selection----
-          column(width = 4,
-                 shiny::tags$h3("Input"),
-                 shiny::tags$br(),
-                 shinydashboard::box(width = 12, title = "Select cancers to do analysis:", solidHeader = TRUE,
-                                     collapsible = TRUE,status = "success",
-                                     checkboxGroupInput(inputId = "rppa_Kidney",
-                                                        label = "Kidney",
-                                                        choices = list("Kidney Chromophobe(KICH)"="KICH",
-                                                                       "Kidney Renal Clear Cell Carcinoma(KIRC)"="KIRC",
-                                                                       "Kidney Renal Papillary Cell Carcinoma(KIRP)"="KIRP")),
-                                     checkboxGroupInput(inputId = "rppa_Adrenal_Gland",
-                                                        label = "Adrenal Gland",
-                                                        choices = list("Adrenocortical Carcinoma(ACC)"="ACC",
-                                                                       "Pheochromocytoma and Paraganglioma(PCPG)"="PCPG")),
-                                     checkboxGroupInput(inputId = "rppa_Brain",
-                                                        label = "Brain",
-                                                        choices = list("Glioblastoma Multiforme(GBM)"="GBM",
-                                                                       "Brain Lower Grade Glioma(LGG)"="LGG")),
-                                     checkboxGroupInput(inputId = "rppa_Colorectal",
-                                                        label = "Colorectal",
-                                                        choices = list("Colon Adenocarcinoma(COAD)"="COAD",
-                                                                       "Rectum Adenocarcinoma(READ)"="READ")),
-                                     checkboxGroupInput(inputId = "rppa_Lung",
-                                                        label = "Lung",
-                                                        choices = list("Lung Adenocarcinoma(LUAD)"="LUAD",
-                                                                       "Lung Squamous Cell Carcinoma(LUSC)"="LUSC")),
-                                     checkboxGroupInput(inputId = "rppa_Uterus",
-                                                        label = "Uterus",
-                                                        choices = list("Uterine Corpus Endometrial Carcinoma(UCEC)"="UCEC",
-                                                                       "Uterine Carcinosarcoma(UCS)"="UCS")),
-                                     checkboxGroupInput(inputId = "rppa_Bile_Duct",
-                                                        label = "Bile Duct",
-                                                        choices = list("Bladder Urothelial Carcinoma(BLCA)"="BLCA")),
-                                     checkboxGroupInput(inputId = "rppa_Bone_Marrow",
-                                                        label = "Bone Marrow",
-                                                        choices = list("Acute Myeloid Leukemia(LAML)"="LAML")),
-                                     checkboxGroupInput(inputId = "rppa_Breast",
-                                                        label = "Breast",
-                                                        choices = list("Breast Invasive Carcinoma(BRCA)"="BRCA")),
-                                     checkboxGroupInput(inputId = "rppa_Cervix",
-                                                        label = "Cervix",
-                                                        choices = list("Cervical Squamous Cell Carcinoma and Endocervical Adenocarcinoma(CESC)"="CESC")),
-                                     checkboxGroupInput(inputId = "rppa_other",
-                                                        label = "Other cancers",
-                                                        choices = list("Lymphoid Neoplasm Diffuse Large B-cell Lymphoma(DLBC)"="DLBC",
-                                                                       "Esophageal Carcinoma(ESCA)"="ESCA",
-                                                                       "Stomach Adenocarcinoma(STAD)"="STAD",
-                                                                       "Head and Neck Squamous Cell Carcinoma(HNSC)"="HNSC",
-                                                                       "Liver Hepatocellular Carcinoma(LIHC)"="LIHC",
-                                                                       "Mesothelioma(MESO)"="MESO",
-                                                                       "Ovarian Serous Cystadenocarcinoma(OV)"="OV",
-                                                                       "Pancreatic Adenocarcinoma(PAAD)"="PAAD",
-                                                                       "Prostate Adenocarcinoma(PRAD)"="PRAD",
-                                                                       "Sarcoma(SARC)"="SARC",
-                                                                       "Skin Cutaneous Melanoma(SKCM)"="SKCM",
-                                                                       "Testicular Germ Cell Tumors(TGCT)"="TGCT",
-                                                                       "Thyroid Carcinoma(THCA)"="THCA",
-                                                                       "Thymoma(THYM)"="THYM",
-                                                                       "Uveal Melanoma(UVM)"="UVM"))
-                 )
-          ),
-          
-          
-          # Tabset Panel
-          # output plot -------------------------------------------------------------
-          column(width = 8, 
-                 shiny::tags$h3("Output"),
-                 shiny::tags$br(),
-                 shinydashboard::box(width = 12, title = "Global percentage, click to show protein expression and specific gene profile",solidHeader = TRUE,
-                                     collapsible = TRUE,status = "primary",
-                                     shiny::tags$br(),
-                                     highcharter::highchartOutput(
-                                       "rppa_pie",
-                                       width = "700px",
-                                       height = "100%")
-                 ),
-                 shiny::tags$br(),
-                 shinydashboard::box(width = 12, title = "Protein expression profile",solidHeader = TRUE,
-                                     collapsible = TRUE,status = "primary",
-                                     shiny::tags$br(),
-                                     highcharter::highchartOutput(
-                                       "rppa_hete_profile",
-                                       width = "700px",
-                                       height = "100%")
-                 ),
-                 shiny::tags$br(),
-                 shinydashboard::box(width = 12, title = "Pathway activity of specific gene",solidHeader = TRUE,
-                                     collapsible = TRUE,status = "primary",
-                                     shiny::tags$br(),
-                                     highcharter::highchartOutput(
-                                       "rppa_homo_profile",
-                                       width = "700px",
-                                       height = "100%")
-                 
-                 )
-          )
-        ),
-        # load footer ----
-        source(file.path(config$ui, "footer.R"))[1]
-                 ) # close tab
+  ),
+  ## Hlep message including in tcga_rppa_help.ui----
+  source(file.path(config$ui, "tcga_rppa_help.R"))[1],
+
+  shiny::tags$br(),
+  shiny::tags$hr(width = "85%"),
+
+  # cancer type selection and result output---------------------------------------------------
+  # cancer type selection----
+  cancerTypeInput("rppa"),
+
+  # Selected cancer show ----
+  shiny::tags$h3("Cancer Type Check", class = "text-success"),
+  shiny::tags$h4(
+    "The cancers you selected: ",
+    textOutput("rppa_selected_cancer"),
+    " Confirm and start analysis by click Submit!"
+  ),
+
+  # Confirm and submit ----
+  fluidRow(
+    column(width = 4),
+    column(
+      width = 2, offset = 0,
+      actionButton("rppa_submit", label = "Submit!", icon = icon("check"))
+    ),
+    column(
+      width = 2, offset = 0,
+      actionButton("rppa_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
+    ),
+    column(width = 4)
+  ),
+  shiny::tags$hr(width = "85%"),
+
+  # output plot -------------------------------------------------------------
+  # Tabset Panel
+  fluidRow(
+    column(
+      width = 10,
+      offset = 1,
+      shiny::tags$br(),
+      shinydashboard::tabBox(
+        id = "rppa_PLOT", title = "PLOT", width = 12,
+        tabPanel(title = "Global percentage", PlotInput(id = "rppa_pie"))
+      )
+    )
+  ),
+
+  # load footer ----
+  source(file.path(config$ui, "footer.R"))[1]
+) # close tab
