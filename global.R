@@ -354,7 +354,7 @@ snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, la
 
 # snv survival point plot -------------------------------------------------
 
-snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank,gene_rank,sizename, colorname) {
+snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank,gene_rank,sizename, colorname,title) {
   # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
   #                     gene="symbol",size="per",color="color",sizename="CNV%",
   #                     colorname="SCNA Type",wrap="~ effect")
@@ -363,6 +363,7 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
       geom_point(aes_string(size = size, color = color)) +
+      labs(title = title) +
       xlab("Cancer type") +
       ylab("Symbol") +
       scale_x_discrete(limit=cancer_rank$cancer_types) +
@@ -377,7 +378,18 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
         name = colorname,
         labels = c("High", "Low")
       ) +
-      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))  -> p
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1,size = 10),
+            axis.text.y = element_text(size = 10),
+            legend.position = "bottom",
+            panel.background = element_rect(colour = "black", fill = "white"),
+            panel.grid = element_line(colour = "grey", linetype = "dashed"),
+            panel.grid.major = element_line(
+              colour = "grey",
+              linetype = "dashed",
+              size = 0.2) ,
+            plot.title = element_text(size = 20)
+            
+            )  -> p
     return(p)
   })
 }
@@ -442,4 +454,45 @@ snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cance
 }
 
 
+# methylation plot --------------------------------------------------------
 
+
+# 1. methy diff -----------------------------------------------------------
+methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank,gene_rank,sizename, colorname,title) {
+  
+  output$plot <- renderPlot({
+    CPCOLS <- c("red", "white", "blue")
+    data %>%
+      ggplot(aes_string(x=gene,y=cancer)) +
+      geom_point(aes_string(size = size,color = color)) +
+      scale_x_discrete(limit = gene_rank$symbol) +
+      scale_y_discrete(limit = cancer_rank$cancer_types) +
+      labs(title = title) +
+      xlab("Symbol") +
+      ylab("Cancer types") +
+      scale_size_continuous(
+        name = sizename #"-Log10(FDR)"
+      ) +
+      scale_color_gradient2(
+        name = colorname, #"Methylation diff (T - N)",
+        low = CPCOLS[3],
+        mid = CPCOLS[2],
+        high = CPCOLS[1]
+      ) +
+      theme(legend.position = "bottom",
+            panel.background = element_rect(colour = "black", fill = "white"),
+            panel.grid = element_line(colour = "grey", linetype = "dashed"),
+            panel.grid.major = element_line(
+              colour = "grey",
+              linetype = "dashed",
+              size = 0.2),
+            axis.text.x = element_text(angle = 40,vjust=1,hjust = 1,size = 10),
+            axis.text.y = element_text(size = 10),
+            legend.text = element_text(size = 10),
+            legend.title = element_text(size = 12),
+            legend.key = element_rect(fill = "white", colour = "black") ,
+            plot.title = element_text(size=20)
+      )-> p
+    return(p)
+    })
+}
