@@ -66,7 +66,8 @@ tabItem(tabName = "tcga_cnv", align = "center",
                                         tabPanel(title="CNV Pie distribution",PlotInput(id="cnv_pie")),
                                         tabPanel(title= "Hete CNV profile",PlotInput(id="cnv_hete")),
                                         tabPanel(title="Homo CNV profile",PlotInput(id="cnv_homo")),
-                                        tabPanel(title="CNV Bar distribution",PlotInput("cnv_bar"))
+                                        tabPanel(title="CNV Bar distribution",PlotInput("cnv_bar")),
+                                        tabPanel(title="CNV to Expression",PlotInput("cnv_exp"))
                                         # tabPanel(title="CNV oncostrip",PlotInput("cnv_oncostrip")),
                                         # tabPanel(title="Exclusive CNV",PlotInput("cnv_exclusive"))
                  )
