@@ -47,8 +47,17 @@ for you to visualize the SNV of your gene set for your seleted cancer types.</p>
                        " Confirm and start analysis by click Submit!"),
         
         # Confirm and submit ----
-        column(width = 2,offset = 5,
-               actionButton("snv_submit", label ="Submit!",icon = icon("check"))
+        fluidRow(
+          column(width = 4),
+          column(
+            width = 2, offset = 0,
+            actionButton("snv_submit", label = "Submit!", icon = icon("check"))
+          ),
+          column(
+            width = 2, offset = 0,
+            actionButton("snv_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
+          ),
+          column(width = 4)
         ),
         shiny::tags$hr(width="85%"),
         

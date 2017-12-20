@@ -25,24 +25,14 @@ cnv_raw <- readr::read_rds(file.path(config$database, "TCGA","cnv","pancan34_cnv
 #  get cancer type --------------------------------------------------------
 cnv_cancer_type <- callModule(cancerType,"cnv")
 #give test value for cancer type
-# input$Kidney="KIRC"
-# input$Adrenal_Gland=c()
-# input$Brain=c("LGG")
-# input$Colorectal="COAD"
-# input$Lung=c("LUAD","LUSC")
-# input$Uterus=""
-# input$Bile_Duct=""
-# input$Bone_Marrow=""
-# input$Breast="BRCA"
-# input$Cervix=""
-# input$other_tissue=""
 # cancer_type <- reactive(c("KIRC","LGG","COAD","LUAD","LUSC","BRCA"))
-
-
 output$cnv_selected_cancer <- renderText(
   cnv_cancer_type()
 )
-
+#######reset cancer selection when click.
+observeEvent(input$cnv_reset, {
+  cnv_cancer_type<-callModule(resetcancerType,"cnv")
+})
 
 # analysis core -----------------------------------------------------------
 

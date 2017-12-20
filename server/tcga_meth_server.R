@@ -19,12 +19,11 @@ meth_cancer_type <- callModule(cancerType, "meth")
 output$meth_selected_cancer <- renderText(
   meth_cancer_type()
 )
-####### PS: reset need to do more.
+#######reset cancer selection when click.
 observeEvent(input$meth_reset, {
-  output$meth_selected_cancer <- shiny::renderText({
-    ""
-  })
+  meth_cancer_type<-callModule(resetcancerType,"meth")
 })
+
 
 # analysis core -----------------------------------------------------------
 

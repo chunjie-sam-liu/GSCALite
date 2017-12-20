@@ -158,6 +158,23 @@ cancerType <- function(input, output, session) {
   return(cancer_type)
 }
 
+resetcancerType <- function(input, output, session) {
+  shinyjs::reset("Kidney")
+  shinyjs::reset("Adrenal_Gland")
+  shinyjs::reset("Brain")
+  shinyjs::reset("Colorectal")
+  shinyjs::reset("Lung")
+  shinyjs::reset("Uterus")
+  shinyjs::reset("Bile_Duct")
+  shinyjs::reset("Bone_Marrow")
+  shinyjs::reset("Breast")
+  shinyjs::reset("Cervix")
+  shinyjs::reset("other_tissue")
+  cancer_type <- reactive({
+    c("") -> cancer_type
+  })
+  return(cancer_type)
+}
 
 
 ###############################################################
