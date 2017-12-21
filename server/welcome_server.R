@@ -12,15 +12,19 @@ observeEvent(input$input_gene_set_reset, {
 # For seaching ------------------------------------------------------------
 
 observeEvent(input$input_gene_set_search, {
-  # input <- reactiveValues("input_gene_set" = "tp53,PTeN,,hello,foo,bar,Atg5")
   
   output$output_gene_set <- shiny::renderText({
-    msg <- check_gene_set(.s = input$input_gene_set)
-    if (length(msg$errors > 0)) {
-      return(paste0(msg$errors, collapse = "\n"))
-    }
+    msg <- check_gene_set(.s = input$input_gene_set, status = status, error = error)
     
-    msg <- validate_gene_set(.v = msg$gene_set, user_dir = user_dir, user_logs = user_logs)
+    if (status$gene_set) { return(paste0(error$gene_set, collapse = "\n")) }
+    
+    msg <- validate_gene_set(
+      .v = msg$gene_set, 
+      user_dir = user_dir, 
+      user_logs = user_logs, 
+      total_gene_symbol = total_gene_symbol
+      )
+    
     if (length(msg$errors > 0)) {
       return(paste0(msg$errors, collapse = "\n"))
     } else {
