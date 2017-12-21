@@ -364,7 +364,7 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
   })
 }
 
-<<<<<<< HEAD
+
 
 # snv maf summary ---------------------------------------------------------
 
@@ -396,8 +396,5 @@ snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, figname) 
   }, deleteFile = TRUE)
 }
 
-snv_maf_oncoPlot <-
 
 
-=======
->>>>>>> 88e2fd93e4a3724f06b7ac778bf6c5a8481d71ef
