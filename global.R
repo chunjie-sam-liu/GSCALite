@@ -158,6 +158,24 @@ cancerType <- function(input, output, session) {
   return(cancer_type)
 }
 
+resetcancerType <- function(input, output, session) {
+  shinyjs::reset("Kidney")
+  shinyjs::reset("Adrenal_Gland")
+  shinyjs::reset("Brain")
+  shinyjs::reset("Colorectal")
+  shinyjs::reset("Lung")
+  shinyjs::reset("Uterus")
+  shinyjs::reset("Bile_Duct")
+  shinyjs::reset("Bone_Marrow")
+  shinyjs::reset("Breast")
+  shinyjs::reset("Cervix")
+  shinyjs::reset("other_tissue")
+  cancer_type <- reactive({
+    c("") -> cancer_type
+  })
+  return(cancer_type)
+}
+
 
 ###############################################################
 # Plot function to generate plot in ui#########################
@@ -336,7 +354,7 @@ snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, la
 
 # snv survival point plot -------------------------------------------------
 
-snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank,gene_rank,sizename, colorname) {
+snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank,gene_rank,sizename, colorname,title) {
   # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
   #                     gene="symbol",size="per",color="color",sizename="CNV%",
   #                     colorname="SCNA Type",wrap="~ effect")
@@ -345,6 +363,7 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
       geom_point(aes_string(size = size, color = color)) +
+      labs(title = title) +
       xlab("Cancer type") +
       ylab("Symbol") +
       scale_x_discrete(limit=cancer_rank$cancer_types) +
@@ -359,7 +378,18 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
         name = colorname,
         labels = c("High", "Low")
       ) +
-      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))  -> p
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1,size = 10),
+            axis.text.y = element_text(size = 10),
+            legend.position = "bottom",
+            panel.background = element_rect(colour = "black", fill = "white"),
+            panel.grid = element_line(colour = "grey", linetype = "dashed"),
+            panel.grid.major = element_line(
+              colour = "grey",
+              linetype = "dashed",
+              size = 0.2) ,
+            plot.title = element_text(size = 20)
+            
+            )  -> p
     return(p)
   })
 }
@@ -397,4 +427,75 @@ snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, figname) 
 }
 
 
+snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cancer_type) {
+  output$plot <-renderImage({
+    outfile <- paste(user_dir,"/",figname,'.png',sep="")
+    png(outfile, width = 400, heights= 300)
+    col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
+    names(col) <- c(
+      "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
+      "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
+    )
+    fabcolors <- RColorBrewer::brewer.pal(n = length(cancer_type), name = "Spectral")
+    names(fabcolors) <- cancer_type
 
+    fabcolors <- list(cancer_types = fabcolors)
+    maftools::oncoplot(
+      maf = gene_list_maf, removeNonMutated = T, colors = col,
+      clinicalFeatures = "cancer_types", sortByAnnotation = TRUE,
+      annotationColor = fabcolors, top = 10
+    )
+    dev.off()
+    
+    list(src = outfile,
+         contentType = 'image/png',
+         width = 400,
+         height = 300,
+         alt = "This is alternate text")
+  }, deleteFile = TRUE)
+}
+
+
+# methylation plot --------------------------------------------------------
+
+
+# 1. methy diff -----------------------------------------------------------
+methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank,gene_rank,sizename, colorname,title) {
+  
+  output$plot <- renderPlot({
+    CPCOLS <- c("red", "white", "blue")
+    data %>%
+      ggplot(aes_string(x=gene,y=cancer)) +
+      geom_point(aes_string(size = size,color = color)) +
+      scale_x_discrete(limit = gene_rank$symbol) +
+      scale_y_discrete(limit = cancer_rank$cancer_types) +
+      labs(title = title) +
+      xlab("Symbol") +
+      ylab("Cancer types") +
+      scale_size_continuous(
+        name = sizename #"-Log10(FDR)"
+      ) +
+      scale_color_gradient2(
+        name = colorname, #"Methylation diff (T - N)",
+        low = CPCOLS[3],
+        mid = CPCOLS[2],
+        high = CPCOLS[1]
+      ) +
+      theme(legend.position = "bottom",
+            panel.background = element_rect(colour = "black", fill = "white"),
+            panel.grid = element_line(colour = "grey", linetype = "dashed"),
+            panel.grid.major = element_line(
+              colour = "grey",
+              linetype = "dashed",
+              size = 0.2),
+            axis.text.x = element_text(angle = 40,vjust=1,hjust = 1,size = 10),
+            axis.text.y = element_text(size = 10),
+            legend.text = element_text(size = 10),
+            legend.title = element_text(size = 12),
+            legend.key = element_rect(fill = "white", colour = "black") ,
+            plot.title = element_text(size=20)
+      )-> p
+    return(p)
+    })
+}
+>>>>>>> 9e7a99becc7dc3d1f509a7d82e5d613c2949ad6b
