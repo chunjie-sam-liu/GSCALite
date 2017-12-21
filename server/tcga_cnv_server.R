@@ -21,28 +21,19 @@ gene_list$symbol <- gene_list$symbol %>% as.character()
 # load cnv data ----
 cnv <- readr::read_rds(file.path(config$database, "TCGA","cnv","pancan34_cnv_percent.rds.gz"))
 cnv_raw <- readr::read_rds(file.path(config$database, "TCGA","cnv","pancan34_cnv_threshold.rds.gz"))
+cnv_cor <- readr::read_rds(file.path(config$database, "TCGA", "cnv", "pancan34_all_gene_exp-cor-cnv.rds.gz"))
 
 #  get cancer type --------------------------------------------------------
 cnv_cancer_type <- callModule(cancerType,"cnv")
 #give test value for cancer type
-# input$Kidney="KIRC"
-# input$Adrenal_Gland=c()
-# input$Brain=c("LGG")
-# input$Colorectal="COAD"
-# input$Lung=c("LUAD","LUSC")
-# input$Uterus=""
-# input$Bile_Duct=""
-# input$Bone_Marrow=""
-# input$Breast="BRCA"
-# input$Cervix=""
-# input$other_tissue=""
 # cancer_type <- reactive(c("KIRC","LGG","COAD","LUAD","LUSC","BRCA"))
-
-
 output$cnv_selected_cancer <- renderText(
   cnv_cancer_type()
 )
-
+# reset cancer selection when click.
+observeEvent(input$cnv_reset, {
+  cnv_cancer_type<-callModule(resetcancerType,"cnv")
+})
 
 # analysis core -----------------------------------------------------------
 
@@ -53,6 +44,10 @@ cnv %>%
 cnv_raw %>%
   dplyr::mutate(filter_cnv = purrr::map(cnv, filter_gene_list, gene_list = gene_list)) %>%
   dplyr::select(-cnv) -> gene_list_cnv_raw
+cnv_cor %>%
+  dplyr::mutate(spm = purrr::map(spm, filter_gene_list, gene_list = gene_list))-> gene_list_cnv_cor
+
+# submit cancer type -------------------------------------------------------
 
 observeEvent(input$cnv_submit,{
   # get cancer type cnv ----
@@ -62,6 +57,9 @@ observeEvent(input$cnv_submit,{
   #   dplyr::filter(cancer_types %in% isolate(cancer_type()) ) -> gene_list_cancer_cnv
   gene_list_cnv_raw %>%
     dplyr::filter(cancer_types %in% cnv_cancer_type() ) -> gene_list_cancer_cnv_raw
+  gene_list_cnv_cor %>%
+    dplyr::filter(cancer_types %in% cnv_cancer_type() ) -> gene_list_cancer_cnv_cor
+  
   # get data for plot ----
   gene_list_cancer_cnv %>%
     tidyr::unnest() %>%
@@ -137,7 +135,20 @@ observeEvent(input$cnv_submit,{
   
   callModule(cnvbarPlot,"cnv_bar",data=cnv_bar_plot_ready,x="cancer_types",y="per",fill="type")
   
-  # cnv oncostrip plot  ----
+  # cnv to expression plot  ----
+  gene_list_cancer_cnv_cor %>%
+    tidyr::unnest() %>%
+    dplyr::group_by(symbol) %>%
+    dplyr::summarise(rank=sum(spm)) %>%
+    dplyr::arrange(rank) ->gene_rank.cnvcor
+  
+  gene_list_cancer_cnv_cor %>%
+    tidyr::unnest() %>%
+    dplyr::group_by(cancer_types) %>%
+    dplyr::summarise(rank=sum(spm)) %>%
+    dplyr::arrange(rank) ->cancer_rank.cnvcor
+  
+  callModule(methy_diff_pointPlot,"cnv_exp", data=gene_list_cancer_cnv_cor, cancer="cancer_types", gene="symbol", size="logfdr", color="spm", cancer_rank=cancer_rank.methcor,gene_rank=gene_rank.methcor,sizename="-Log10(P.value)", colorname="Spearman Correlation Coefficient", title="Spearman Correlation Coefficient of CNV and gene expression.")
 
     # callModule(Plot,"cnv_oncostrip")
 

@@ -47,8 +47,17 @@ for you to visualize the SNV of your gene set for your seleted cancer types.</p>
                        " Confirm and start analysis by click Submit!"),
         
         # Confirm and submit ----
-        column(width = 2,offset = 5,
-               actionButton("snv_submit", label ="Submit!",icon = icon("check"))
+        fluidRow(
+          column(width = 4),
+          column(
+            width = 2, offset = 0,
+            actionButton("snv_submit", label = "Submit!", icon = icon("check"))
+          ),
+          column(
+            width = 2, offset = 0,
+            actionButton("snv_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
+          ),
+          column(width = 4)
         ),
         shiny::tags$hr(width="85%"),
         
@@ -60,8 +69,8 @@ for you to visualize the SNV of your gene set for your seleted cancer types.</p>
                  shiny::tags$br(),
                  shinydashboard::tabBox(id = "snv_PLOT",title = "PLOT",width = 12,
                                         tabPanel(title= "SNV percentage profile",PlotInput(id="snv_percentage")),
-                                        tabPanel(title="SNV summary plot",plotOutput("snv_summary-plot")),
-                                        tabPanel(title="SNV oncoplot",plotOutput("snv_oncoplot-plot")),
+                                        tabPanel(title="SNV summary plot",snvPlotInput("snv_summary")),
+                                        tabPanel(title="SNV oncoplot",snvPlotInput("snv_oncoplot")),
                                         # tabPanel(title="SNV oncostrip",PlotInput("snv_oncostrip")),
                                         # tabPanel(title="SNV lollipop",PlotInput("snv_lollipop")),
                                         tabPanel(title="SNV survival",PlotInput("snv_survival"))
