@@ -148,7 +148,7 @@ observeEvent(input$cnv_submit,{
     dplyr::summarise(rank=sum(spm)) %>%
     dplyr::arrange(rank) ->cancer_rank.cnvcor
   
-  callModule(methy_diff_pointPlot,"cnv_exp", data=gene_list_cancer_cnv_cor, cancer="cancer_types", gene="symbol", size="logfdr", color="spm", cancer_rank=cancer_rank.methcor,gene_rank=gene_rank.methcor,sizename="-Log10(P.value)", colorname="Spearman Correlation Coefficient", title="Spearman Correlation Coefficient of CNV and gene expression.")
+  callModule(methy_diff_pointPlot,"cnv_exp", data=gene_list_cancer_cnv_cor, cancer="cancer_types", gene="symbol", size="logfdr", color="spm", cancer_rank=cancer_rank.cnvcor,gene_rank=gene_rank.cnvcor,sizename="-Log10(P.value)", colorname="Spearman Correlation Coefficient", title="Spearman Correlation Coefficient of CNV and gene expression.")
 
     # callModule(Plot,"cnv_oncostrip")
 
