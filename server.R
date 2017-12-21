@@ -52,6 +52,9 @@ shinyServer(
     
     # tcga meth ----
     source(file = file.path(config$server, "tcga_meth_server.R"), local = TRUE)
+    
+    # tcga meth ----
+    source(file = file.path(config$server, "tcga_mirna_server.R"), local = TRUE)
 
   }
 )
