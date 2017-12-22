@@ -4,4 +4,7 @@
     Contact: chunjie-sam-liu@foxmail.com
 */
 
-shinyjs.init = function(){};
+shinyjs.init = function(){
+
+};
+

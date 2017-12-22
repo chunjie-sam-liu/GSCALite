@@ -9,7 +9,7 @@ user_id <- paste0(format(x = start_time, format = "%y%m%d_%H%M%S_"), paste(sampl
 
 # Test cdata
 cdata <- session$clientData
-cdata <- readr::read_rds(file.path(config$wd, "userdata", "cdata_test.rds.gz"))
+# cdata <- readr::read_rds(file.path(config$wd, "userdata", "cdata_test.rds.gz"))
 
 # Temp user data directory
 user_dir <- file.path(config$wd, "userdata", user_id)
@@ -22,17 +22,15 @@ system2(command = cmd, args = args)
 dir.create(pngs_dir)
 dir.create(jsons_dir)
 
-
-
-log_file <- file.path(config$logs, "app.log")
-
-# Log user access  --------------------------------------------------------
-
 session$onSessionEnded(function() {
   unlink(user_dir, recursive = TRUE)
   log <- glue::glue("{user_id} : shiny session finished at {Sys.time()}")
   write(x = log, file = log_file, append = TRUE)
 })
+
+# Log user access  --------------------------------------------------------
+
+log_file <- file.path(config$logs, "app.log")
 
 local({
   log <- c(
@@ -57,10 +55,10 @@ observe({
   write(x = log, file = log_file, append = TRUE)
 })
 
-
 # Log user counts ---------------------------------------------------------
 
 counter_file <- file.path(config$logs, "counter.log")
+
 local({
   counter <- glue::glue("{Sys.time()} {user_id}")
   if (!file.exists(counter_file)) {
@@ -73,35 +71,9 @@ local({
 
 # Log analysis ------------------------------------------------------------
 
-logging_files <- list(
-  "tcga_rnaseq" = "tcga_ranseq.log",
+user_logs <- list(
   "tcga_snv" = "tcga_snv.log",
   "tcga_cnv" = "tcga_cnv.log",
-  "gene_set" = "gene_set.log",
-  "tcga_rnaseq" = "tcga_ranseq.log"
-) 
-
-
-logging_files %>%
-  tibble::enframe() %>%
-  tidyr::unnest() %>% 
-  purrr::pwalk(
-    .f = function(name, value) {
-      .log_file <- file.path(config$logs, value)
-
-      .log <- c(
-        glue::glue("{user_id} ----- New user at {Sys.time()}"),
-        glue::glue("{user_id} ----- New user dir {user_dir}")
-      )
-      if (!file.exists(.log_file)) {
-        write(x = .log, file = .log_file)
-      } else {
-        write(x = .log, file = .log_file, append = TRUE)
-      }
-    }
-  )
-
-user_logs <- list(
   "gene_set" = "gene_set.log",
   "tcga_expr" = "tcga_expr.log"
 ) 
@@ -113,6 +85,7 @@ user_logs %>%
     .f = function(name, value) {
       .log_file <- file.path(user_dir, value)
       .log <- glue::glue("{paste0(rep('-', 10), collapse = '')} User : {user_id} @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}")
+      
       if (!file.exists(.log_file)) {
         write(x = .log, file = .log_file)
       } else {
@@ -179,10 +152,8 @@ info_read_gene_set <- function() {
 }
 
 
-# Status ------------------------------------------------------------------
-
-
 # Load gene list ----------------------------------------------------------
 
 total_gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
+
 

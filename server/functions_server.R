@@ -5,44 +5,34 @@
 
 # Check input gene set ----------------------------------------------------
 
-check_gene_set <- function(.s) {
-  # test 
-  # glue::glue("{.s}
-  #           akjl,lskjd89, , adjlkj, 
-  #           {.s}") -> .s
-  .err <- character()
-  .war <- character()
-
-  # don't need input comma seperation.
-  # if (!stringr::str_detect(string = .s, pattern = ",")) {
-  #   .err <- c(.err, "Error: Please input the gene set with comma separate!")
-  # }
-
+check_gene_set <- function(.s, status = status, error = error) {
+  
   .s %>%
     stringr::str_split(pattern = "[^[:alnum:]]+", simplify = TRUE) %>% 
     .[1, ] %>%
     stringr::str_trim(side = "both") -> .ss
   
   if (length(.ss) == 1 && .ss == "") {
-    .err <- c(.err, "Error: Input at least One symbol.")
+    error$gene_set <- c(error$gene_set, "Error: Input at least One symbol.")
+    status$gene_set <- TRUE
   }
   
   if (!dplyr::between(length(.ss), 1, 200)) {
-    .err <- c(.err, "Error: The number of genes should be less than 200.")
+    error$gene_set <- c(error$gene_set, "Error: The number of genes should be less than 200.")
+    status$gene_set <- TRUE
   }
   
-  return(list(errors = .err, warnings = .war, gene_set = .ss))
+  return(list(gene_set = .ss))
 }
 
 
 # Validate gene with TCGA gene symbol -------------------------------------
 
 
-validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs) {
+validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, total_gene_symbol = total_gene_symbol) {
   .err <- character()
   .war <- character()
   .log_file <- file.path(user_dir, user_logs$gene_set)
-
   # raw input gene set length
   .v_dedup <- .v[.v != ""] %>% unique() %>% sapply(FUN = tolower, USE.NAMES = FALSE) 
   .v_dedup %in% names(total_gene_symbol) -> .inter

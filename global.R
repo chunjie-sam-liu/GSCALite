@@ -395,6 +395,7 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
 }
 
 
+
 # snv maf summary ---------------------------------------------------------
 
 # 1. ui part -----------------------------------------------------------------
@@ -424,6 +425,7 @@ snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, figname) 
          alt = "This is alternate text")
   }, deleteFile = TRUE)
 }
+
 
 snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cancer_type) {
   output$plot <-renderImage({
@@ -496,3 +498,4 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
     return(p)
     })
 }
+
