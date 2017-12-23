@@ -66,7 +66,8 @@ tabItem(
             shinyBS::bsButton(inputId = "example", label = "Show me example", icon = icon(name = "fire"))
             )
           )
-        )
+        ),
+      shiny::uiOutput(outputId = "example_popover")
       ),
     
     # Control errors

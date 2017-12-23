@@ -18,9 +18,34 @@ observeEvent(input$stop, {
   status$gene_set <- FALSE
   
 })
+observeEvent(input$example, {
+  shinyjs::js$example_gene_set(id = "seinput_gene_set")
+  shinyjs::enable(id = "input_gene_set")
+  shinyjs::enable(id = "analysis")
+  status$analysis <- FALSE
+  status$gene_set <- FALSE
+})
 
 
-# monitor search ----------------------------------------------------------
+# Example input gene set --------------------------------------------------
+
+addPopover(
+  session = session, 
+  id = "example", 
+  title = "Example Data", 
+  placement = "bottom", 
+  trigger = "hover",
+  content = shiny::HTML(
+    "The input gene set can be any gene less than 200 in total.",
+    "This example gene set from MSigDB, the standard name is ",
+    shiny::tagList(
+      shiny::tags$a(href = "http://software.broadinstitute.org/gsea/msigdb/geneset_page.jsp?geneSetName=REACTOME_PRE_NOTCH_EXPRESSION_AND_PROCESSING&keywords=tp53", '"REACTOME PRE NOTCH EXPRESSION AND PROCESSING"')
+      ) %>% as.character()
+  )
+)
+
+
+# Monitor search ----------------------------------------------------------
 
 validate_input_gene_set <- eventReactive(
   eventExpr = input$input_gene_set_search, 
@@ -55,7 +80,7 @@ output$gene_set_stat <- renderUI({
         downloadLink(
           outputId = "download_total_gene_set", label = NULL, class = NULL,
           
-          valueBox(value = gene_set$n_total, subtitle = "Total input", icon = icon("users"), color = "yellow")
+          valueBox(value = gene_set$n_total, subtitle = "Total Input Gene Set", icon = icon("users"), color = "yellow")
         ),
         
         downloadLink(
