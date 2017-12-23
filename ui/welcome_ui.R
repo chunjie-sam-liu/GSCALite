@@ -51,10 +51,24 @@ tabItem(
                   btnSearch = icon("search"), 
                   btnReset = icon("remove"), 
                   width = "100%"),
-      verbatimTextOutput(outputId = "output_gene_set")
+      
+      shinyBS::bsModal(
+        id = "gse_error_modal", title = "Error: Input symbol errors.", 
+        trigger = "gse_error_trigger", size = "large", 
+        fluidRow(
+          style = "width:100%;",
+          column(
+            width = 8, offset = 2, class = "alert alert-danger text-justify",
+            shiny::tags$span(style = "float:left; padding:10px;", HTML('<i class="fa fa-exclamation-triangle fa-4x"></i>')),
+            shiny::tags$span(shiny::tags$p(class = "lead text-center", shiny::uiOutput("output_gene_set")))
+          )
+        )
+      )
     )
   ),
-
+  
+  fluidRow(shiny::uiOutput(outputId = "gene_set_stat")),
+  
   # Feature and descriptions ----
   fluidRow(
     column(

@@ -128,7 +128,9 @@ local({
 
 status <- reactiveValues(
   "gene_set" = FALSE,
-  "tcga_expr" = FALSE
+  "analysis" = FALSE,
+  "tcga_expr" = FALSE,
+  "trigger" = FALSE
 )
 
 error <- reactiveValues(
@@ -151,6 +153,15 @@ info_read_gene_set <- function() {
   return(list("progress" = as.numeric(.xlist[[1]][-1]), "info" = .xlist[[2]][-1]))
 }
 
+
+# Gene sets ---------------------------------------------------------------
+gene_set <- reactiveValues(
+  match = "",
+  non_match = "",
+  n_match = "",
+  n_non_match = "",
+  n_total = ""
+)
 
 # Load gene list ----------------------------------------------------------
 
