@@ -137,15 +137,15 @@ body <- dashboardBody(
   tabItems(
 
     # Welcome ----
-    source(file = file.path(config$wd, "ui", "welcome_ui.R"), local = TRUE)$value
+    source(file = file.path(config$wd, "ui", "welcome_ui.R"), local = TRUE)$value,
 
 
     # GTEx ----
 
     # TCGA ----
     # expr ----
-
-    # source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
+    
+    source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
     # cnv ----
     # source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
     # snv ----
@@ -157,6 +157,11 @@ body <- dashboardBody(
     # mirna ----
     # source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value
     # Drug ----
+    # gdsc
+    source(file = file.path(config$wd, "ui", "tcga_gdsc_ui.R"), local = TRUE)$value,
+    
+    # ctrp
+    source(file = file.path(config$wd, "ui", "tcga_ctrp_ui.R"), local = TRUE)$value
 
     # Download ----
 

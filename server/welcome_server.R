@@ -1,4 +1,4 @@
-
+# source by "server.R"
 
 # Clear input -------------------------------------------------------------
 observeEvent(input$input_gene_set_reset, {
@@ -52,7 +52,6 @@ validate_input_gene_set <- eventReactive(
   ignoreNULL = TRUE, 
   valueExpr = {
     status$gene_set <- TRUE
-    print(status$gene_set)
     
     if (is.null(input$input_gene_set) || input$input_gene_set == "") {
       error$gene_set <- "Error: Input at least One symbol."

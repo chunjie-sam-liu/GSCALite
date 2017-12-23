@@ -167,4 +167,10 @@ gene_set <- reactiveValues(
 
 total_gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
 
+# Load gene expression ----------------------------------------------------
+
+# gene_expr <- readr::read_rds(file.path(config$database, "TCGA", "expr", "pancan33_expr.rds.gz"))
+
+
+
 
