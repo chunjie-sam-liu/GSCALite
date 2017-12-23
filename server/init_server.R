@@ -128,7 +128,9 @@ local({
 
 status <- reactiveValues(
   "gene_set" = FALSE,
-  "tcga_expr" = FALSE
+  "analysis" = FALSE,
+  "tcga_expr" = FALSE,
+  "trigger" = FALSE
 )
 
 error <- reactiveValues(
@@ -152,7 +154,23 @@ info_read_gene_set <- function() {
 }
 
 
+# Gene sets ---------------------------------------------------------------
+gene_set <- reactiveValues(
+  match = "",
+  non_match = "",
+  n_match = "",
+  n_non_match = "",
+  n_total = ""
+)
+
 # Load gene list ----------------------------------------------------------
 
 total_gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
+
+# Load gene expression ----------------------------------------------------
+
+# gene_expr <- readr::read_rds(file.path(config$database, "TCGA", "expr", "pancan33_expr.rds.gz"))
+
+
+
 

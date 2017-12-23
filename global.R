@@ -498,4 +498,4 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
     return(p)
     })
 }
->>>>>>> 9e7a99becc7dc3d1f509a7d82e5d613c2949ad6b
+

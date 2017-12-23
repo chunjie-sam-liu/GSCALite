@@ -43,18 +43,50 @@ tabItem(
   # Input gene list ----
   fluidRow(
     column(
-      width = 8, offset = 2,
-      
-      searchInput(inputId = "input_gene_set", 
-                  label = "", 
-                  placeholder = "Input gene list with comma seprated...", 
-                  btnSearch = icon("search"), 
-                  btnReset = icon("remove"), 
-                  width = "100%"),
-      verbatimTextOutput(outputId = "output_gene_set")
+      width = 7, offset = 2,
+      shinyWidgets::searchInput(
+        inputId = "input_gene_set", 
+        label = "", 
+        placeholder = "Input gene list with comma seprated...", 
+        btnSearch = icon("search"), 
+        btnReset = icon("remove"), 
+        width = "100%"
+        )
+      ),
+    
+    column(
+      width = 1,
+      shiny::tags$div(
+        class = "form-group shiny-input-container", 
+        shiny::tags$label("for" = "margin"),
+        shiny::tags$div(
+          class = "input-group search-text",
+          shiny::tags$span(
+            class = "input-group-btn",
+            shinyBS::bsButton(inputId = "example", label = "Show me example", icon = icon(name = "fire"))
+            )
+          )
+        ),
+      shiny::uiOutput(outputId = "example_popover")
+      ),
+    
+    # Control errors
+    shinyBS::bsModal(
+      id = "gse_error_modal", title = "Error: Input symbol errors.", 
+      trigger = "gse_error_trigger", size = "large", 
+      fluidRow(
+        style = "width:100%;",
+        column(
+          width = 8, offset = 2, class = "alert alert-danger text-justify",
+          shiny::tags$span(style = "float:left; padding:10px;", HTML('<i class="fa fa-exclamation-triangle fa-4x"></i>')),
+          shiny::tags$span(shiny::tags$p(class = "lead text-center", shiny::uiOutput("output_gene_set")))
+        )
+      )
     )
   ),
-
+  
+  fluidRow(shiny::uiOutput(outputId = "gene_set_stat")),
+  
   # Feature and descriptions ----
   fluidRow(
     column(
