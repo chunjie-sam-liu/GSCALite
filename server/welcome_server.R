@@ -77,8 +77,8 @@ output$gene_set_stat <- renderUI({
       # proceed to analysis
       column(
         width = 8, offset = 2,
-        actionButton(inputId = "analysis", label = "Start Gene Set Analysis", icon = icon("play"),class = "btn-lg"),
-        actionButton(inputId = "stop", label = "Stop", icon = icon("pause"), class = "btn-lg")
+        shinyBS::bsButton(inputId = "analysis", label = "Start Gene Set Analysis", icon = icon("play"), class = "btn-lg"),
+        shinyBS::bsButton(inputId = "stop", label = "Stop", icon = icon("pause"), class = "btn-lg")
       )
     )
   } else {

@@ -13,8 +13,8 @@ config$version <- "0.0.1"
 # It's the working directory of app
 # DEFAULT getwd()
 
-#config$wd <- "/home/liucj/github/GSCALite"
-config$wd <- "/project/huff/huff/github/GSCALite"
+config$wd <- "/home/liucj/github/GSCALite"
+# config$wd <- "/project/huff/huff/github/GSCALite"
 
 # User directory ----------------------------------------------------------
 # This controls the unique directory,
