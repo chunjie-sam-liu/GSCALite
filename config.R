@@ -64,14 +64,14 @@ Sys.setenv("R_ZIPCMD" = "/usr/bin/zip")
 # If you want to include a .css like stylesheet
 # Place it in the 'www' directory and difine its name
 # You don't need add 'www' ot the path name
-config$cssfile <- "main.css"
+# config$cssfile <- "main.css"
 
 # Loading stylesheet ------------------------------------------------------
 
-config$stylesheet <- ""
-if (config$cssfile != "") {
-  config$cssfile <- file.path(config$wd, "www", "css", config$cssfile)
-  if (file.exists(config$cssfile)) {
-    config$stylesheet <- paste(scan(config$cssfile, what = "", sep = "\n"), collapse = " ")
-  }
-}
+# config$stylesheet <- ""
+# if (config$cssfile != "") {
+#   config$cssfile <- file.path(config$wd, "www", "css", config$cssfile)
+#   if (file.exists(config$cssfile)) {
+#     config$stylesheet <- paste(scan(config$cssfile, what = "", sep = "\n"), collapse = " ")
+#   }
+# }

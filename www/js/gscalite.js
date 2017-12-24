@@ -2,6 +2,7 @@
     GSCALite main js
     Author: C.J. Liu
     Contact: chunjie-sam-liu@foxmail.com
+    This file is for shinyjs to extend
 */
 
 shinyjs.init = function(){};

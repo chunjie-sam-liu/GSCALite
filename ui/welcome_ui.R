@@ -6,38 +6,22 @@
 tabItem(
   tabName = "welcome", align = "center",
 
-  shinyjs::useShinyjs(),
-
   # Welcome message ----
   fluidRow(
     style = "width:80%;",
-    HTML("<div class='section'>
-                  <div class='container text-center'>
-                    <div class='row'>
-                      <div class='col-md-12'>
-                        <img src='./imgs/01.GSCA_logo_01.png' class='center-block img-responsive' style='height: 200px;'>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class='section'>
-                  <div class='container'>
-                    <div class='row'>
-                      <div class='col-md-12'>
-                        <p class='lead'>GSCALite offers you a web-based plattform for your gene set analysis of cancer.</p>
-                     </div>
-                    </div>
-                  </div>
-                </div>")
+    
+    column(
+      width = 12, offset = 0,
+      shiny::tags$img(
+        src = "./imgs/01.GSCA_logo_01.png",
+        class = "center-block img-responsive",
+        style = "height: 200px;"
+      ),
+      
+      shiny::tags$p(class = "lead","GSCALite offers you a web-based plattform for your gene set analysis of cancer.")
+      )
   ),
 
-  # GSCA version ----
-  # fluidRow(
-  #   column(
-  #     width = 4, offset = 4,
-  #     shiny::tags$h4("Last Update: 2017-11-27", shiny::tags$span(class = "label label-default", "Version 0.0.1"))
-  #   )
-  # ),
   shiny::tags$hr(width = "50%"),
 
   # Input gene list ----
@@ -54,6 +38,7 @@ tabItem(
         )
       ),
     
+    # for exmaple ----
     column(
       width = 1,
       shiny::tags$div(
@@ -67,6 +52,8 @@ tabItem(
             )
           )
         ),
+      
+      # shinybs popover ----
       shiny::uiOutput(outputId = "example_popover")
       ),
     
@@ -78,7 +65,7 @@ tabItem(
         style = "width:100%;",
         column(
           width = 8, offset = 2, class = "alert alert-danger text-justify",
-          shiny::tags$span(style = "float:left; padding:10px;", HTML('<i class="fa fa-exclamation-triangle fa-4x"></i>')),
+          shiny::tags$span(style = "float:left; padding:10px;", shiny::icon(name = "exclamation-triangle", class = "fa-4x")),
           shiny::tags$span(shiny::tags$p(class = "lead text-center", shiny::uiOutput("output_gene_set")))
         )
       )
@@ -99,8 +86,8 @@ tabItem(
         shiny::tags$p(class = "lead", "Explore your Data, Explore your Analysis."),
         shiny::tags$p(
           class = "text-justify",
-          "CRISPRAnalyzeR is a web-based analysis platform for pooled CRISPR screens.",
-          "CRISPRAnalyzeR was developed with user experience in mind and provides you with a one-in-all data analysis workflow.",
+          "GSCALite is a web-based analysis platform for gene set cancer analysis.",
+          "GSCALite was developed with user experience in mind and provides you with a one-in-all data analysis workflow.",
           "And once you are finished, you can download all the data as well as your analysis as an interactive HTML report."
         ),
         shiny::tags$br()
