@@ -48,7 +48,7 @@ shinyServer(
     
     # tcga cnv ----
 
-    # source(file = file.path(config$server, "tcga_cnv_server.R"), local = TRUE)
+    source(file = file.path(config$server, "tcga_cnv_server.R"), local = TRUE)
     
     # tcga snv ----
     # source(file = file.path(config$server, "tcga_snv_server.R"), local = TRUE)
@@ -64,7 +64,9 @@ shinyServer(
     source(file = file.path(config$server, "tcga_gdsc_server.R"), local = TRUE)
     # ctrp
     source(file = file.path(config$server, "tcga_ctrp_server.R"), local = TRUE)
-
+    
+    # Load data
+    
   }
 )
 
