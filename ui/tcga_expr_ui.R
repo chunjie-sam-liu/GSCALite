@@ -35,7 +35,7 @@ tabItem(
       width = 10, offset = 1,
       shinydashboard::tabBox(
         id = "expr_plot", title = "PLOT",width = 12,
-        tabPanel(title = "Tumor vs. Normal",PlotInput(id = "cnv_pie"))
+        tabPanel(title = "Tumor vs. Normal",PlotInput(id = "expr_p"))
       )
     )
   ),
