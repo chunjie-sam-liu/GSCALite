@@ -8,8 +8,57 @@
 ## 2. cancer type selection confirm  ######
 ## cancerTypeInput & cancerType############
 ##########################################
-# cancer type selection ---------------------------------------------------
 
+# cancer type choice ------------------------------------------------------
+
+Kidney_choice <- list(
+  "Kidney Chromophobe(KICH)" = "KICH",
+  "Kidney Renal Clear Cell Carcinoma(KIRC)" = "KIRC",
+  "Kidney Renal Papillary Cell Carcinoma(KIRP)" = "KIRP"
+)
+Adrenal_Gland_choice <- list(
+  "Adrenocortical Carcinoma(ACC)" = "ACC",
+  "Pheochromocytoma and Paraganglioma(PCPG)" = "PCPG"
+)
+Brain_choice <- list(
+  "Glioblastoma Multiforme(GBM)" = "GBM",
+  "Brain Lower Grade Glioma(LGG)" = "LGG"
+)
+Colorectal_choice <- list(
+  "Colon Adenocarcinoma(COAD)" = "COAD",
+  "Rectum Adenocarcinoma(READ)" = "READ"
+)
+Lung_choice <- list(
+  "Lung Adenocarcinoma(LUAD)" = "LUAD",
+  "Lung Squamous Cell Carcinoma(LUSC)" = "LUSC"
+)
+Uterus_choice <- list(
+  "Uterine Corpus Endometrial Carcinoma(UCEC)" = "UCEC",
+  "Uterine Carcinosarcoma(UCS)" = "UCS"
+)
+Bile_Duct_choice <- list("Bladder Urothelial Carcinoma(BLCA)" = "BLCA")
+Bone_Marrow_choice <- list("Acute Myeloid Leukemia(LAML)" = "LAML")
+Breast_choice <- list("Breast Invasive Carcinoma(BRCA)" = "BRCA")
+Cervix_choice <- list("Cervical Squamous Cell Carcinoma and Endocervical Adenocarcinoma(CESC)" = "CESC")
+other_tissue_choice <- list(
+  "Lymphoid Neoplasm Diffuse Large B-cell Lymphoma(DLBC)" = "DLBC",
+  "Esophageal Carcinoma(ESCA)" = "ESCA",
+  "Stomach Adenocarcinoma(STAD)" = "STAD",
+  "Head and Neck Squamous Cell Carcinoma(HNSC)" = "HNSC",
+  "Liver Hepatocellular Carcinoma(LIHC)" = "LIHC",
+  "Mesothelioma(MESO)" = "MESO",
+  "Ovarian Serous Cystadenocarcinoma(OV)" = "OV",
+  "Pancreatic Adenocarcinoma(PAAD)" = "PAAD",
+  "Prostate Adenocarcinoma(PRAD)" = "PRAD",
+  "Sarcoma(SARC)" = "SARC",
+  "Skin Cutaneous Melanoma(SKCM)" = "SKCM",
+  "Testicular Germ Cell Tumors(TGCT)" = "TGCT",
+  "Thyroid Carcinoma(THCA)" = "THCA",
+  "Thymoma(THYM)" = "THYM",
+  "Uveal Melanoma(UVM)" = "UVM"
+)
+
+# cancer type selection ---------------------------------------------------
 cancerTypeInput <- function(id) {
   ns <- NS(id)
 
@@ -30,112 +79,77 @@ cancerTypeInput <- function(id) {
             shiny::tags$h4("Kidney", class = "text-success"),
             checkboxGroupInput(
               inputId = ns("Kidney"), label = NULL, inline = TRUE,
-              choices = list(
-                "Kidney Chromophobe(KICH)" = "KICH",
-                "Kidney Renal Clear Cell Carcinoma(KIRC)" = "KIRC",
-                "Kidney Renal Papillary Cell Carcinoma(KIRP)" = "KIRP"
-              )
+              choices = Kidney_choice
             )
           ),
           tabPanel(
             "Adrenal Gland",
             checkboxGroupInput(
               inputId = ns("Adrenal_Gland"), label = NULL, inline = TRUE,
-              choices = list(
-                "Adrenocortical Carcinoma(ACC)" = "ACC",
-                "Pheochromocytoma and Paraganglioma(PCPG)" = "PCPG"
-              )
+              choices = Adrenal_Gland_choice
             )
           ),
           tabPanel(
             "Brain",
             checkboxGroupInput(
               inputId = ns("Brain"), label = NULL, inline = TRUE,
-              choices = list(
-                "Glioblastoma Multiforme(GBM)" = "GBM",
-                "Brain Lower Grade Glioma(LGG)" = "LGG"
-              )
+              choices = Brain_choice
             )
           ),
           tabPanel(
             "Colorectal",
             checkboxGroupInput(
               inputId = ns("Colorectal"), label = NULL, inline = TRUE,
-              choices = list(
-                "Colon Adenocarcinoma(COAD)" = "COAD",
-                "Rectum Adenocarcinoma(READ)" = "READ"
-              )
+              choices = Colorectal_choice
             )
           ),
           tabPanel(
             "Lung",
             checkboxGroupInput(
               inputId = ns("Lung"), label = NULL, inline = TRUE,
-              choices = list(
-                "Lung Adenocarcinoma(LUAD)" = "LUAD",
-                "Lung Squamous Cell Carcinoma(LUSC)" = "LUSC"
-              )
+              choices = Lung_choice
             )
           ),
           tabPanel(
             "Uterus",
             checkboxGroupInput(
               inputId = ns("Uterus"), label = NULL, inline = TRUE,
-              choices = list(
-                "Uterine Corpus Endometrial Carcinoma(UCEC)" = "UCEC",
-                "Uterine Carcinosarcoma(UCS)" = "UCS"
-              )
+              choices = Uterus_choice
             )
           ),
           tabPanel(
             "Bile Duct",
             checkboxGroupInput(
               inputId = ns("Bile_Duct"), label = NULL, inline = TRUE,
-              choices = list("Bladder Urothelial Carcinoma(BLCA)" = "BLCA")
+              choices = Bile_Duct_choice
             )
           ),
           tabPanel(
             "Bone Marrow",
             checkboxGroupInput(
               inputId = ns("Bone_Marrow"), label = NULL, inline = TRUE,
-              choices = list("Acute Myeloid Leukemia(LAML)" = "LAML")
+              choices = Bone_Marrow_choice
             )
           ),
           tabPanel(
             "Breast",
             checkboxGroupInput(
               inputId = ns("Breast"), label = NULL, inline = TRUE,
-              choices = list("Breast Invasive Carcinoma(BRCA)" = "BRCA")
+              choices = Breast_choice
             )
           ),
           tabPanel(
             "Cervix",
             checkboxGroupInput(
               inputId = ns("Cervix"), label = NULL, inline = TRUE,
-              choices = list("Cervical Squamous Cell Carcinoma and Endocervical Adenocarcinoma(CESC)" = "CESC")
+              choices = Cervix_choice
             )
           ),
           tabPanel(
             "Other tissues",
             checkboxGroupInput(
               inputId = ns("other_tissue"), label = NULL, inline = TRUE,
-              choices = list(
-                "Lymphoid Neoplasm Diffuse Large B-cell Lymphoma(DLBC)" = "DLBC",
-                "Esophageal Carcinoma(ESCA)" = "ESCA",
-                "Stomach Adenocarcinoma(STAD)" = "STAD",
-                "Head and Neck Squamous Cell Carcinoma(HNSC)" = "HNSC",
-                "Liver Hepatocellular Carcinoma(LIHC)" = "LIHC",
-                "Mesothelioma(MESO)" = "MESO",
-                "Ovarian Serous Cystadenocarcinoma(OV)" = "OV",
-                "Pancreatic Adenocarcinoma(PAAD)" = "PAAD",
-                "Prostate Adenocarcinoma(PRAD)" = "PRAD",
-                "Sarcoma(SARC)" = "SARC",
-                "Skin Cutaneous Melanoma(SKCM)" = "SKCM",
-                "Testicular Germ Cell Tumors(TGCT)" = "TGCT",
-                "Thyroid Carcinoma(THCA)" = "THCA",
-                "Thymoma(THYM)" = "THYM",
-                "Uveal Melanoma(UVM)" = "UVM"
-              )
+              choices = other_tissue_choice
             )
           )
         )
@@ -158,7 +172,7 @@ cancerType <- function(input, output, session) {
   return(cancer_type)
 }
 
-resetcancerType <- function(input, output, session) {
+resetcancerType <- function(input, output, session){
   shinyjs::reset("Kidney")
   shinyjs::reset("Adrenal_Gland")
   shinyjs::reset("Brain")
@@ -176,6 +190,14 @@ resetcancerType <- function(input, output, session) {
   return(cancer_type)
 }
 
+# selectallCancer <- funtion(input, output, session){
+#   # updateCheckboxGroupInput(session,"Kidney",choices=Kidney_choice,selected=Kidney_choice)
+#   
+#   # cancer_type <- reactive({
+#   #   c("KICH","KIRC","KIRP") -> cancer_type
+#   # })
+#   # return(cancer_type)
+# }
 
 ###############################################################
 # Plot function to generate plot in ui#########################
@@ -251,7 +273,8 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid) {
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
-  output$plot <- renderPlot({
+  output$plot <- renderImage({
+    
     data %>%
       ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack", color = NA) +
@@ -281,9 +304,17 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid) {
         # Amp RColorBrewer name = "Spectral"
         # Del RColorBrewer name = "BrBG"
         values = c("brown1", "brown4", "aquamarine3", "aquamarine4", "grey")
-      ) -> p
-    return(p)
-  })
+      ) ->p
+    
+    outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_cnv_pie_rellation_network",'.png',sep="")
+    print(p)
+    ggsave(outfile,p,device ="png",dpi = 500)
+    list(src = outfile,
+         contentType = 'image/png',
+         # width = 1200,
+         # height = 900,
+         alt = "This is alternate text")
+  }, deleteFile = FALSE)
 }
 
 
@@ -400,11 +431,11 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
 
 # 1. ui part -----------------------------------------------------------------
 
-snvPlotInput <- function(id, width, height) {
+imagePlotInput <- function(id, width, height) {
   ns <- NS(id)
   
   tagList(
-    imageOutput(ns("plot")),
+    imageOutput(ns("plot"),width = width, height = height),
     hr()
   )
 }
@@ -499,3 +530,50 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
     })
 }
 
+
+
+
+# rppa --------------------------------------------------------------------
+
+rppa_line_contact <- function(input, output, session, seg, cancer, gene, pathway,title){
+  output$plot <- renderImage({
+    
+    ggplot() +
+      geom_segment(data = plot_seg, mapping = aes_string(
+        x = x1, 
+        y = y1,
+        xend = x2,
+        yend = y2,
+        colour = Cancer,
+        linetype = Regulation
+      )) +
+      guides(color=FALSE) +
+      geom_text(
+        data = cancer, 
+        mapping = aes_string(x = x, y = y, label = text,color=text),
+        hjust = 1
+      ) +
+      geom_text(
+        data = gene, 
+        mapping = aes_string(x = x, y = y-0.15, label = text)) +
+      geom_text(
+        data = path, 
+        mapping = aes_string(x = x, y = y, label = text),
+        hjust=0) +
+      expand_limits(x=c(0,7)) +
+      theme(
+        panel.background = element_blank(),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()
+      ) + 
+      labs(title = title) ->p 
+    outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_RPPA_rellation_network",'.png',sep="")
+    ggsave(outfile,p,device ="png",dpi = 300)
+    list(src = outfile,
+         contentType = 'image/png',
+         width=1200,
+         height= "100%" ,
+         alt = "This is alternate text")
+  }, deleteFile = FALSE)
+}
