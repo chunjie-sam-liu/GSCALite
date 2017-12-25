@@ -99,7 +99,7 @@ fn_gen_combined_core_atg <- function(cancer_types, filter_cnv, g_list, n) {
   # g_list <-gene_list
   # n=1
   filter_cnv %>%
-    dplyr::semi_join(g_list, by = "symbol") %>%
+    dplyr::filter(symbol %in% g_list) %>%
     tidyr::drop_na() %>%
     tidyr::gather(key = barcode, value = gistic, -symbol) %>%
     tidyr::spread(key = symbol, value = gistic) %>%
@@ -130,9 +130,11 @@ fn_gen_combined_core_atg <- function(cancer_types, filter_cnv, g_list, n) {
 
 
 filter_gene_list <- function(.x, gene_list) {
-  gene_list %>%
-    dplyr::select(symbol) %>%
-    dplyr::left_join(.x, by = "symbol")
+  .x %>%
+    dplyr::filter(symbol %in% gene_list)
+  # gene_list %>%
+  #   dplyr::select(symbol) %>%
+  #   dplyr::left_join(.x, by = "symbol")
 }
 
 
@@ -194,3 +196,61 @@ fn_cnv_mutal_exclusive <- function(cancer_types, filter_cnv, cluster) {
     dplyr::mutate(fdr = p.adjust(p_val, method = "fdr"))
 }
 
+
+# rppa line contact faction -----------------------------------------------
+
+get_rppa_text <- function(data) {
+  c.text <- data.frame(x = 1, y = 1, text = "test", type = "test")
+  
+  data %>%
+    dplyr::pull(cancer_types) %>%
+    unique() -> cancer.text
+  for (i in 1:length(cancer.text)) {
+    data.frame(x = 1, y = i, text = cancer.text[i], type = "cancer") -> tmp.text
+    rbind(c.text, tmp.text) -> c.text
+  }
+  
+  data %>%
+    dplyr::pull(symbol) %>%
+    unique() -> gene.text
+  for (i in 1:length(gene.text)) {
+    data.frame(x = 3, y = i, text = gene.text[i], type = "gene") -> tmp.text
+    rbind(c.text, tmp.text) -> c.text
+  }
+  
+  data %>%
+    dplyr::pull(pathway) %>%
+    unique() -> pathway.text
+  for (i in 1:length(pathway.text)) {
+    data.frame(x = 5, y = i, text = pathway.text[i], type = "pathway") -> tmp.text
+    rbind(c.text, tmp.text) -> c.text
+  }
+  return(c.text[-1,])
+}
+
+get_rppa_seg <- function(cancer_text,data){
+  .d_seg <- data.frame(x1=0,y1=0,x2=0,y2=0,Cancer="test",Regulation="test")
+  nrow(data) ->n
+  for(i in 1:n){
+    data[i,1] ->cancer
+    data[i,2] ->gene
+    data[i,3] ->pathway
+    data[i,4] ->diff
+    if(diff>0){line_type="Activate"}else{line_type="Inhibit"}
+    cancer_text %>%
+      dplyr::filter(text %in% cancer) %>%
+      dplyr::select(x,y) ->c.pos
+    cancer_text %>%
+      dplyr::filter(text %in% gene) %>%
+      dplyr::select(x,y) ->g.pos
+    cancer_text %>%
+      dplyr::filter(text %in% pathway) %>%
+      dplyr::select(x,y) ->p.pos
+    .d_seq_tmp1<- data.frame(x1=c.pos$x,y1=c.pos$y,x2=g.pos$x,y2=g.pos$y,Cancer=cancer$cancer_types,Regulation="Activate")
+    .d_seq_tmp2<- data.frame(x1=g.pos$x,y1=g.pos$y,x2=p.pos$x,y2=p.pos$y,Cancer=cancer$cancer_types,Regulation=line_type)
+    rbind(.d_seg,.d_seq_tmp1) %>% rbind(.d_seq_tmp2) -> .d_seg
+  }
+  .d_seg[-1,] %>%
+    unique() ->.d_seg
+  return(.d_seg)
+}
