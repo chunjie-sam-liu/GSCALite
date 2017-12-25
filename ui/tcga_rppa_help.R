@@ -34,7 +34,17 @@ fluidRow(style="width:85%",
                                                                        ),
                                                                        column(width=10, offset=1,
                                                                               
-                                                                              shiny::tags$h3("Get pathway score.", class="text-success"),
+                                                                              shiny::tags$h3("What can you get.", class="text-success"),
+                                                                              
+                                                                              shiny::tags$p(class="text-justify","In this part we got the relationship between gene expression and 10 pathways which important for cancer development, you can see a potential influence that your genes may have to some famous pathways.",
+                                                                              shiny::tags$br(),
+                                                                              
+                                                                              shiny::tags$hr(width="100%")
+                                                                              
+                                                                       ),
+                                                                       column(width=10, offset=1,
+                                                                              
+                                                                              shiny::tags$h3("Get pathway activity.", class="text-success"),
                                                                               
                                                                               shiny::tags$p(class="text-justify","RBN RPPA data were median-centered and normalized by standard deviation across all samples for each component to obtain the relative protein level. The pathway score is then the sum of the relative protein level of all positive regulatory components minus that of negative regulatory components in a particular pathway(",
                                                                                             shiny::tags$a(href="https://doi.org/10.1038/ncomms4887","R. Akbani et al."),")."),
@@ -55,6 +65,17 @@ fluidRow(style="width:85%",
                                                                               shiny::tags$hr(width="100%")
                                                                               
                                                                        ),
+                                                                       column(width=10, offset=1,
+                                                                              
+                                                                              shiny::tags$h3("Calculation method", class="text-success"),
+                                                                              
+                                                                              shiny::tags$p(class="text-justify","Gene expression was divided into 2 groups by median expression, the difference of pathway activity between groups is defined by a student T test, p value <=0.05 is considered as significant."),
+                                                                              
+                                                                              shiny::tags$br(),
+                                                                              
+                                                                              shiny::tags$hr(width="100%")
+                                                                              
+                                                                       ),
                                                                        # result description----
                                                                        column(width=10, offset = 1,
                                                                               shiny::tags$h3("Results commentary", class="text-success"),
@@ -67,21 +88,16 @@ fluidRow(style="width:85%",
                                                                                                 shiny::tags$tbody(
                                                                                                   shiny::tags$tr(
                                                                                                     shiny::tags$td("Global percentage"),
-                                                                                                    shiny::tags$td("Global percentage of genes in each cancer, shows percentage of gene's function (activation or inhibition) for each pathway in each cancer.")
+                                                                                                    shiny::tags$td("Global percentage of genes in all cancers(32), shows percentage(number of activate or inhibit cancer types/32) of gene's function (activation or inhibition) for each pathway in all cancers.")
                                                                                                   ),
                                                                                                   shiny::tags$tr(
-                                                                                                    shiny::tags$td("Protein expression profile"),
-                                                                                                    shiny::tags$td(shiny::tags$p("Boxplot of Gene's protein expression in each cancer types will be shown when you click on gene symbol on ",
-                                                                                                                          shiny::tags$b("Global percentage")," plot. Only genes who have been measured by TCPA will be shown."))
-                                                                                                  ),
-                                                                                                  shiny::tags$tr(
-                                                                                                    shiny::tags$td("Pathway activity of specific gene"),
-                                                                                                    shiny::tags$td(shiny::tags$p("A detailed function profile of candidate gene for cancer related pathway in each cancer types will be shown by click on gene symbol on ",
-                                                                                                                          shiny::tags$b("Global percentage"),"."))
+                                                                                                    shiny::tags$td("Relation network"),
+                                                                                                    shiny::tags$td(shiny::tags$p("This network show you the relationship between genes and pathways by a line connection, solid line means activation, dashed lines means inhibition."))
                                                                                                   )
                                                                                                 )
                                                                               )
                                                                        )# result description end
+                                                                       )
                                                                        
                                                                        
                                                                 )# all description end
