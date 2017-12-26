@@ -41,7 +41,7 @@ fluidRow(style="width:85%",
                                                                               
                                                                               shiny::tags$hr(width="100%")
                                                                               
-                                                                       ),
+                                                                       )),
                                                                        column(width=10, offset=1,
                                                                               
                                                                               shiny::tags$h3("Get pathway activity.", class="text-success"),
@@ -106,4 +106,4 @@ fluidRow(style="width:85%",
                                                 )
                 
          )
-         )
+         

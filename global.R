@@ -268,7 +268,7 @@ pointPlot <- function(input, output, session, data, cancer, gene, size, color, s
 
 # cnv pie plot ----------------------------------------------------------------
 
-piePlot <- function(input, output, session, data, y, fill, facet_grid) {
+piePlot <- function(input, output, session, data, y, fill, facet_grid,outfile,height) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
@@ -282,21 +282,28 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid) {
       coord_polar("y") +
       facet_grid(as.formula(facet_grid)) + # cancer_types ~ symbol
       # scale_x_discrete(limits = cnv_gene_rank$symbol) +
+      # scale_x_discrete(expand=c(0,0)) +
+      # scale_y_discrete(expand=c(0,0)) +
       theme(
         axis.text = element_blank(),
         axis.title = element_blank(),
         axis.ticks = element_blank(),
 
-        strip.text.y = element_text(angle = 0, hjust = 0, size = 11),
-        strip.text.x = element_text(size = 11, angle = 90, vjust = 0),
+        strip.text.y = element_text(angle = 0, hjust = 0, size = 4),
+        strip.text.x = element_text(size = 4, angle = 90, vjust = 0),
         strip.background = element_blank(),
 
         legend.title = element_blank(),
-        legend.text = element_text(size = 11),
+        legend.text = element_text(size = 4),
         legend.position = "bottom",
+        legend.key.size = unit(0.25,"cm"),
 
         panel.background = element_blank(),
-        panel.spacing = unit(0.02, "lines")
+        panel.spacing = unit(0, "null"),#unit(0.01, "lines"),
+        panel.spacing.x  = unit(0,"null"),
+        
+        plot.margin = rep(unit(0,"null"),4),
+        axis.ticks.length = unit(0,"cm")
       ) +
       scale_fill_manual(
         limits = c("a_hete", "a_homo", "d_hete", "d_homo", "other"),
@@ -306,13 +313,12 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid) {
         values = c("brown1", "brown4", "aquamarine3", "aquamarine4", "grey")
       ) ->p
     
-    outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_cnv_pie_rellation_network",'.png',sep="")
-    print(p)
-    ggsave(outfile,p,device ="png",dpi = 500)
+    # outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_cnv_pie_rellation_network",'.png',sep="")
+    ggsave(outfile,p,device ="png",width =4,height = height)
     list(src = outfile,
          contentType = 'image/png',
-         # width = 1200,
-         # height = 900,
+         # width = 400,
+         # height = "900px",
          alt = "This is alternate text")
   }, deleteFile = FALSE)
 }
@@ -418,8 +424,8 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
               colour = "grey",
               linetype = "dashed",
               size = 0.2) ,
-            plot.title = element_text(size = 20)
-            
+            plot.title = element_text(size = 20),
+            plot.margin=grid::unit(c(0,0,0,0), "mm")
             )  -> p
     return(p)
   })
@@ -431,7 +437,7 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
 
 # 1. ui part -----------------------------------------------------------------
 
-imagePlotInput <- function(id, width, height) {
+imagePlotInput <- function(id, width=400, height=300) {
   ns <- NS(id)
   
   tagList(
@@ -534,12 +540,12 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
 
 
 # rppa --------------------------------------------------------------------
-
+# line contact ----
 rppa_line_contact <- function(input, output, session, seg, cancer, gene, pathway,title){
   output$plot <- renderImage({
     
     ggplot() +
-      geom_segment(data = plot_seg, mapping = aes_string(
+      geom_segment(data = seg, mapping = aes_string(
         x = x1, 
         y = y1,
         xend = x2,
@@ -568,12 +574,103 @@ rppa_line_contact <- function(input, output, session, seg, cancer, gene, pathway
         axis.ticks = element_blank()
       ) + 
       labs(title = title) ->p 
-    outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_RPPA_rellation_network",'.png',sep="")
-    ggsave(outfile,p,device ="png",dpi = 300)
+    return(p)
+    # outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_RPPA_rellation_network",'.png',sep="")
+    # ggsave(outfile,p,device ="png",dpi = 300)
+    # list(src = outfile,
+    #      contentType = 'image/png',
+    #      width=1200,
+    #      height= "100%" ,
+    #      alt = "This is alternate text")
+  })
+}
+
+# rppa pie ----
+rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid,height,outfile) {
+  # Example:
+  # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
+  #            fill="type",facet_grid="cancer_types ~ symbol")
+  # data should include ...
+  output$plot <- renderImage({
+    
+    data %>%
+      ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
+      geom_bar(stat = "identity", position = "stack", color = NA) +
+      # scale_y_continuous(limits = c(0,1))
+      coord_polar("y") +
+      facet_grid(as.formula(facet_grid)) + #  symbol~ cancer_types
+      # scale_x_discrete(limits = cnv_gene_rank$symbol) +
+      theme(
+        axis.text = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        
+        strip.text.y = element_text(angle = 0, hjust = 0, size = 5),
+        strip.text.x = element_text(size = 5, angle = 90, vjust = 0),
+        strip.background = element_blank(),
+        
+        legend.title = element_blank(),
+        legend.text = element_text(size = 5),
+        legend.key.size = unit(0.25, "cm"),
+        legend.position = "bottom",
+        
+        panel.background = element_blank(),
+        panel.spacing = unit(0.02, "lines"),
+        plot.margin = rep(unit(0,"null"),4),
+        axis.ticks.length = unit(0,"cm")
+      ) +
+      scale_fill_manual(
+        limits = c("Activation", "Inhibition", "None"),
+        label = c("Activation", "Inhibition", "None"),
+        # Amp RColorBrewer name = "Spectral"
+        # Del RColorBrewer name = "BrBG"
+        values = c("brown1", "aquamarine3", "grey")
+      ) ->p
+    
+    
+    ggsave(outfile,p,device ="png",width =4, height = height)
     list(src = outfile,
          contentType = 'image/png',
-         width=1200,
-         height= "100%" ,
+         # width = "100%" ,
+         # height = 900,
          alt = "This is alternate text")
   }, deleteFile = FALSE)
 }
+
+# rppa heatmap percent ----
+rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway,symbol, per, height,outfile){
+  output$plot <- renderImage({
+    rppa_per_ready %>%
+      ggplot(aes(x = pathway, y = symbol))+
+      xlab("Pathway")+ylab("Symbol") +
+      guides(fill=guide_colorbar("Percent")) +
+      geom_tile(aes(fill = per), col = "white") +
+      geom_text(label=ceiling(rppa_per_ready$per),
+                size = 1) +
+      scale_fill_gradient2(
+        high = "red",
+        mid = "white",
+        low = "blue"
+      ) +
+      theme(
+        axis.text.x = element_text(angle = 45, hjust = 1,vjust = 1,size=5),
+        axis.text.y = element_text(size=5),
+        legend.key.size = unit(0.25, "cm"),
+        legend.position = "bottom",
+        plot.margin = rep(unit(0,"null"),4),
+        axis.ticks.length = unit(0,"cm"),
+        legend.text = element_text(size = 5),
+        axis.title.x = element_text(size=6),
+        axis.title.y = element_text(size=6),
+        legend.title = element_text(size=6)
+      ) + 
+      xlab("Pathway (a:activate; i:inhibit)") ->p
+    ggsave(outfile,p,device ="png",width =4, height = height)
+    list(src = outfile,
+         contentType = 'image/png',
+         # width = "100%" ,
+         # height = 900,
+         alt = "This is alternate text")
+  }, deleteFile = FALSE)
+}
+
