@@ -27,16 +27,16 @@ source(file = "config.R", local = TRUE)
 source(file = file.path(config$server, "functions_server.R"))
 
 
-# Load database -----------------------------------------------------------
-
-
-
 # Shiny session Start -----------------------------------------------------
 
 shinyServer(
   func = function(input, output, session){
     # Init session ----
     source(file = file.path(config$server, "init_server.R"), local = TRUE)
+    
+    # Load database -----------------------------------------------------------
+    
+    source(file = file.path(config$server, "load_data.R"), local = TRUE)
     
     ### Input Modules
     
@@ -48,7 +48,7 @@ shinyServer(
     
     # tcga cnv ----
 
-    source(file = file.path(config$server, "tcga_cnv_server.R"), local = TRUE)
+    # source(file = file.path(config$server, "tcga_cnv_server.R"), local = TRUE)
     
     # tcga snv ----
     # source(file = file.path(config$server, "tcga_snv_server.R"), local = TRUE)
