@@ -165,11 +165,28 @@ gene_set <- reactiveValues(
 
 # Load gene list ----------------------------------------------------------
 
+print(glue::glue("{paste0(rep('-', 10), collapse = '')} loading symbol {paste0(rep('-', 10), collapse = '')}"))
 total_gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
+paired_cancer_types <- readr::read_rds(file.path(config$database, "TCGA", "expr", "paired_cancer_types.rds.gz"))
 
-# Load gene expression ----------------------------------------------------
 
-# gene_expr <- readr::read_rds(file.path(config$database, "TCGA", "expr", "pancan33_expr.rds.gz"))
+# Load data as reactive ---------------------------------------------------
+
+# load expr data
+ra_expr <- reactive({
+  print(status$analysis)
+  print(exists("expr"))
+  
+  # Load gene expression ----------------------------------------------------
+  
+  print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading expr data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+  expr <- readr::read_rds(file.path(config$database, "TCGA", "expr", "pancan33_expr_filtered.rds.gz"))
+  print(glue::glue("{paste0(rep('-', 10), collapse = '')} loading expr data complete @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+  
+  expr
+})
+
+
 
 
 
