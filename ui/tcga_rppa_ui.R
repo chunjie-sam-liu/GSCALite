@@ -69,8 +69,13 @@ tabItem(
       shiny::tags$br(),
       shinydashboard::tabBox(
         id = "rppa_PLOT", title = "PLOT", width = 12,
-        tabPanel(title = "Global percentage", PlotInput(id = "rppa_pie")),
-        tabPanel(title = "Relation network", PlotInput(id = "rppa_rela"))
+        tabPanel(title = "Global percentage", imagePlotInput(id = "rppa_pie",width="100%",height="100%")),
+        tabPanel(title = "Global percentage", 
+                 plotOutput("rppa_per_plot"),
+                 hr()),
+        tabPanel(title = "Relation network", 
+                 imageOutput("rppa_rela_plot",width="100%",height="100%"),
+                 hr())
       )
     )
   ),
