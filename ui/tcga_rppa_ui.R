@@ -14,14 +14,13 @@ tabItem(
                       <div class='row'>
                       <div class='col-md-12'>
                       <h1 class='text-success text-left'>
-                      <i class='fa fa-angle-double-right  fa-fw'></i>Protein expression
+                      <i class='fa fa-angle-double-right  fa-fw'></i>Protein Expression
                       <font color='#777777'>
                       <span style='font-size: 23.3999996185303px; line-height: 23.3999996185303px;'>TCPA RPPA data</span>
                       </font>
                       </h1>
                       <hr>
-                      <p class='lead'>RPPA data from TCPA are used to calculate score (see details <code>help page</code> below) for <b>10 cancer related pathways</b> and <b>32 cancer types</b>, and a correlation is generated between candidate gene expression and a specific pathway score (see details <code>help page</code> below). Here we show you the relationship between gene expression and pathway activity.
-                      <br>Protein expression will be showed in each cancer if it has been measured in TCPA data set.</p>
+                      <p class='lead'>RPPA data from TCPA are used to calculate score (see details <code>help page</code> below) for <b>10 cancer related pathways</b> and <b>32 cancer types</b>, and a correlation is generated between candidate gene expression and a specific pathway score (see details <code>help page</code> below). Here we show you the relationship between gene expression and pathway activity.</p>
                       </div>
                       </div>
                       </div>
@@ -69,7 +68,15 @@ tabItem(
       shiny::tags$br(),
       shinydashboard::tabBox(
         id = "rppa_PLOT", title = "PLOT", width = 12,
-        tabPanel(title = "Global percentage", PlotInput(id = "rppa_pie"))
+        tabPanel(title = "Global percentage", imagePlotInput(id = "rppa_pie",width="100%",height="100%")),
+        tabPanel(title = "Heatmap percentage", imagePlotInput(id = "rppa_per",width="100%",height="100%")),
+        # tabPanel(title = "Heatmap percentage",
+        #          imageOutput("rppa_per_plot",width = "100%", height = "100%"),
+        #          hr()),
+        
+        tabPanel(title = "Relation network", 
+                 imageOutput("rppa_rela_plot",width="100%",height="100%"),
+                 hr())
       )
     )
   ),

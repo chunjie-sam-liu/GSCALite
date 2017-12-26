@@ -8,8 +8,57 @@
 ## 2. cancer type selection confirm  ######
 ## cancerTypeInput & cancerType############
 ##########################################
-# cancer type selection ---------------------------------------------------
 
+# cancer type choice ------------------------------------------------------
+
+Kidney_choice <- list(
+  "Kidney Chromophobe(KICH)" = "KICH",
+  "Kidney Renal Clear Cell Carcinoma(KIRC)" = "KIRC",
+  "Kidney Renal Papillary Cell Carcinoma(KIRP)" = "KIRP"
+)
+Adrenal_Gland_choice <- list(
+  "Adrenocortical Carcinoma(ACC)" = "ACC",
+  "Pheochromocytoma and Paraganglioma(PCPG)" = "PCPG"
+)
+Brain_choice <- list(
+  "Glioblastoma Multiforme(GBM)" = "GBM",
+  "Brain Lower Grade Glioma(LGG)" = "LGG"
+)
+Colorectal_choice <- list(
+  "Colon Adenocarcinoma(COAD)" = "COAD",
+  "Rectum Adenocarcinoma(READ)" = "READ"
+)
+Lung_choice <- list(
+  "Lung Adenocarcinoma(LUAD)" = "LUAD",
+  "Lung Squamous Cell Carcinoma(LUSC)" = "LUSC"
+)
+Uterus_choice <- list(
+  "Uterine Corpus Endometrial Carcinoma(UCEC)" = "UCEC",
+  "Uterine Carcinosarcoma(UCS)" = "UCS"
+)
+Bile_Duct_choice <- list("Bladder Urothelial Carcinoma(BLCA)" = "BLCA")
+Bone_Marrow_choice <- list("Acute Myeloid Leukemia(LAML)" = "LAML")
+Breast_choice <- list("Breast Invasive Carcinoma(BRCA)" = "BRCA")
+Cervix_choice <- list("Cervical Squamous Cell Carcinoma and Endocervical Adenocarcinoma(CESC)" = "CESC")
+other_tissue_choice <- list(
+  "Lymphoid Neoplasm Diffuse Large B-cell Lymphoma(DLBC)" = "DLBC",
+  "Esophageal Carcinoma(ESCA)" = "ESCA",
+  "Stomach Adenocarcinoma(STAD)" = "STAD",
+  "Head and Neck Squamous Cell Carcinoma(HNSC)" = "HNSC",
+  "Liver Hepatocellular Carcinoma(LIHC)" = "LIHC",
+  "Mesothelioma(MESO)" = "MESO",
+  "Ovarian Serous Cystadenocarcinoma(OV)" = "OV",
+  "Pancreatic Adenocarcinoma(PAAD)" = "PAAD",
+  "Prostate Adenocarcinoma(PRAD)" = "PRAD",
+  "Sarcoma(SARC)" = "SARC",
+  "Skin Cutaneous Melanoma(SKCM)" = "SKCM",
+  "Testicular Germ Cell Tumors(TGCT)" = "TGCT",
+  "Thyroid Carcinoma(THCA)" = "THCA",
+  "Thymoma(THYM)" = "THYM",
+  "Uveal Melanoma(UVM)" = "UVM"
+)
+
+# cancer type selection ---------------------------------------------------
 cancerTypeInput <- function(id) {
   ns <- NS(id)
 
@@ -30,112 +79,77 @@ cancerTypeInput <- function(id) {
             shiny::tags$h4("Kidney", class = "text-success"),
             checkboxGroupInput(
               inputId = ns("Kidney"), label = NULL, inline = TRUE,
-              choices = list(
-                "Kidney Chromophobe(KICH)" = "KICH",
-                "Kidney Renal Clear Cell Carcinoma(KIRC)" = "KIRC",
-                "Kidney Renal Papillary Cell Carcinoma(KIRP)" = "KIRP"
-              )
+              choices = Kidney_choice
             )
           ),
           tabPanel(
             "Adrenal Gland",
             checkboxGroupInput(
               inputId = ns("Adrenal_Gland"), label = NULL, inline = TRUE,
-              choices = list(
-                "Adrenocortical Carcinoma(ACC)" = "ACC",
-                "Pheochromocytoma and Paraganglioma(PCPG)" = "PCPG"
-              )
+              choices = Adrenal_Gland_choice
             )
           ),
           tabPanel(
             "Brain",
             checkboxGroupInput(
               inputId = ns("Brain"), label = NULL, inline = TRUE,
-              choices = list(
-                "Glioblastoma Multiforme(GBM)" = "GBM",
-                "Brain Lower Grade Glioma(LGG)" = "LGG"
-              )
+              choices = Brain_choice
             )
           ),
           tabPanel(
             "Colorectal",
             checkboxGroupInput(
               inputId = ns("Colorectal"), label = NULL, inline = TRUE,
-              choices = list(
-                "Colon Adenocarcinoma(COAD)" = "COAD",
-                "Rectum Adenocarcinoma(READ)" = "READ"
-              )
+              choices = Colorectal_choice
             )
           ),
           tabPanel(
             "Lung",
             checkboxGroupInput(
               inputId = ns("Lung"), label = NULL, inline = TRUE,
-              choices = list(
-                "Lung Adenocarcinoma(LUAD)" = "LUAD",
-                "Lung Squamous Cell Carcinoma(LUSC)" = "LUSC"
-              )
+              choices = Lung_choice
             )
           ),
           tabPanel(
             "Uterus",
             checkboxGroupInput(
               inputId = ns("Uterus"), label = NULL, inline = TRUE,
-              choices = list(
-                "Uterine Corpus Endometrial Carcinoma(UCEC)" = "UCEC",
-                "Uterine Carcinosarcoma(UCS)" = "UCS"
-              )
+              choices = Uterus_choice
             )
           ),
           tabPanel(
             "Bile Duct",
             checkboxGroupInput(
               inputId = ns("Bile_Duct"), label = NULL, inline = TRUE,
-              choices = list("Bladder Urothelial Carcinoma(BLCA)" = "BLCA")
+              choices = Bile_Duct_choice
             )
           ),
           tabPanel(
             "Bone Marrow",
             checkboxGroupInput(
               inputId = ns("Bone_Marrow"), label = NULL, inline = TRUE,
-              choices = list("Acute Myeloid Leukemia(LAML)" = "LAML")
+              choices = Bone_Marrow_choice
             )
           ),
           tabPanel(
             "Breast",
             checkboxGroupInput(
               inputId = ns("Breast"), label = NULL, inline = TRUE,
-              choices = list("Breast Invasive Carcinoma(BRCA)" = "BRCA")
+              choices = Breast_choice
             )
           ),
           tabPanel(
             "Cervix",
             checkboxGroupInput(
               inputId = ns("Cervix"), label = NULL, inline = TRUE,
-              choices = list("Cervical Squamous Cell Carcinoma and Endocervical Adenocarcinoma(CESC)" = "CESC")
+              choices = Cervix_choice
             )
           ),
           tabPanel(
             "Other tissues",
             checkboxGroupInput(
               inputId = ns("other_tissue"), label = NULL, inline = TRUE,
-              choices = list(
-                "Lymphoid Neoplasm Diffuse Large B-cell Lymphoma(DLBC)" = "DLBC",
-                "Esophageal Carcinoma(ESCA)" = "ESCA",
-                "Stomach Adenocarcinoma(STAD)" = "STAD",
-                "Head and Neck Squamous Cell Carcinoma(HNSC)" = "HNSC",
-                "Liver Hepatocellular Carcinoma(LIHC)" = "LIHC",
-                "Mesothelioma(MESO)" = "MESO",
-                "Ovarian Serous Cystadenocarcinoma(OV)" = "OV",
-                "Pancreatic Adenocarcinoma(PAAD)" = "PAAD",
-                "Prostate Adenocarcinoma(PRAD)" = "PRAD",
-                "Sarcoma(SARC)" = "SARC",
-                "Skin Cutaneous Melanoma(SKCM)" = "SKCM",
-                "Testicular Germ Cell Tumors(TGCT)" = "TGCT",
-                "Thyroid Carcinoma(THCA)" = "THCA",
-                "Thymoma(THYM)" = "THYM",
-                "Uveal Melanoma(UVM)" = "UVM"
-              )
+              choices = other_tissue_choice
             )
           )
         )
@@ -158,7 +172,7 @@ cancerType <- function(input, output, session) {
   return(cancer_type)
 }
 
-resetcancerType <- function(input, output, session) {
+resetcancerType <- function(input, output, session){
   shinyjs::reset("Kidney")
   shinyjs::reset("Adrenal_Gland")
   shinyjs::reset("Brain")
@@ -176,6 +190,14 @@ resetcancerType <- function(input, output, session) {
   return(cancer_type)
 }
 
+# selectallCancer <- funtion(input, output, session){
+#   # updateCheckboxGroupInput(session,"Kidney",choices=Kidney_choice,selected=Kidney_choice)
+#   
+#   # cancer_type <- reactive({
+#   #   c("KICH","KIRC","KIRP") -> cancer_type
+#   # })
+#   # return(cancer_type)
+# }
 
 ###############################################################
 # Plot function to generate plot in ui#########################
@@ -246,12 +268,13 @@ pointPlot <- function(input, output, session, data, cancer, gene, size, color, s
 
 # cnv pie plot ----------------------------------------------------------------
 
-piePlot <- function(input, output, session, data, y, fill, facet_grid) {
+piePlot <- function(input, output, session, data, y, fill, facet_grid,outfile,height) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
-  output$plot <- renderPlot({
+  output$plot <- renderImage({
+    
     data %>%
       ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack", color = NA) +
@@ -259,21 +282,28 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid) {
       coord_polar("y") +
       facet_grid(as.formula(facet_grid)) + # cancer_types ~ symbol
       # scale_x_discrete(limits = cnv_gene_rank$symbol) +
+      # scale_x_discrete(expand=c(0,0)) +
+      # scale_y_discrete(expand=c(0,0)) +
       theme(
         axis.text = element_blank(),
         axis.title = element_blank(),
         axis.ticks = element_blank(),
 
-        strip.text.y = element_text(angle = 0, hjust = 0, size = 11),
-        strip.text.x = element_text(size = 11, angle = 90, vjust = 0),
+        strip.text.y = element_text(angle = 0, hjust = 0, size = 4),
+        strip.text.x = element_text(size = 4, angle = 90, vjust = 0),
         strip.background = element_blank(),
 
         legend.title = element_blank(),
-        legend.text = element_text(size = 11),
+        legend.text = element_text(size = 4),
         legend.position = "bottom",
+        legend.key.size = unit(0.25,"cm"),
 
         panel.background = element_blank(),
-        panel.spacing = unit(0.02, "lines")
+        panel.spacing = unit(0, "null"),#unit(0.01, "lines"),
+        panel.spacing.x  = unit(0,"null"),
+        
+        plot.margin = rep(unit(0,"null"),4),
+        axis.ticks.length = unit(0,"cm")
       ) +
       scale_fill_manual(
         limits = c("a_hete", "a_homo", "d_hete", "d_homo", "other"),
@@ -281,9 +311,16 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid) {
         # Amp RColorBrewer name = "Spectral"
         # Del RColorBrewer name = "BrBG"
         values = c("brown1", "brown4", "aquamarine3", "aquamarine4", "grey")
-      ) -> p
-    return(p)
-  })
+      ) ->p
+    
+    # outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_cnv_pie_rellation_network",'.png',sep="")
+    ggsave(outfile,p,device ="png",width =4,height = height)
+    list(src = outfile,
+         contentType = 'image/png',
+         # width = 400,
+         # height = "900px",
+         alt = "This is alternate text")
+  }, deleteFile = FALSE)
 }
 
 
@@ -387,8 +424,8 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
               colour = "grey",
               linetype = "dashed",
               size = 0.2) ,
-            plot.title = element_text(size = 20)
-            
+            plot.title = element_text(size = 20),
+            plot.margin=grid::unit(c(0,0,0,0), "mm")
             )  -> p
     return(p)
   })
@@ -400,11 +437,11 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
 
 # 1. ui part -----------------------------------------------------------------
 
-snvPlotInput <- function(id, width, height) {
+imagePlotInput <- function(id, width=400, height=300) {
   ns <- NS(id)
   
   tagList(
-    imageOutput(ns("plot")),
+    imageOutput(ns("plot"),width = width, height = height),
     hr()
   )
 }
@@ -497,5 +534,143 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
       )-> p
     return(p)
     })
+}
+
+
+
+
+# rppa --------------------------------------------------------------------
+# line contact ----
+rppa_line_contact <- function(input, output, session, seg, cancer, gene, pathway,title){
+  output$plot <- renderImage({
+    
+    ggplot() +
+      geom_segment(data = seg, mapping = aes_string(
+        x = x1, 
+        y = y1,
+        xend = x2,
+        yend = y2,
+        colour = Cancer,
+        linetype = Regulation
+      )) +
+      guides(color=FALSE) +
+      geom_text(
+        data = cancer, 
+        mapping = aes_string(x = x, y = y, label = text,color=text),
+        hjust = 1
+      ) +
+      geom_text(
+        data = gene, 
+        mapping = aes_string(x = x, y = y-0.15, label = text)) +
+      geom_text(
+        data = path, 
+        mapping = aes_string(x = x, y = y, label = text),
+        hjust=0) +
+      expand_limits(x=c(0,7)) +
+      theme(
+        panel.background = element_blank(),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()
+      ) + 
+      labs(title = title) ->p 
+    return(p)
+    # outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_RPPA_rellation_network",'.png',sep="")
+    # ggsave(outfile,p,device ="png",dpi = 300)
+    # list(src = outfile,
+    #      contentType = 'image/png',
+    #      width=1200,
+    #      height= "100%" ,
+    #      alt = "This is alternate text")
+  })
+}
+
+# rppa pie ----
+rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid,height,outfile) {
+  # Example:
+  # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
+  #            fill="type",facet_grid="cancer_types ~ symbol")
+  # data should include ...
+  output$plot <- renderImage({
+    
+    data %>%
+      ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
+      geom_bar(stat = "identity", position = "stack", color = NA) +
+      # scale_y_continuous(limits = c(0,1))
+      coord_polar("y") +
+      facet_grid(as.formula(facet_grid)) + #  symbol~ cancer_types
+      # scale_x_discrete(limits = cnv_gene_rank$symbol) +
+      theme(
+        axis.text = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        
+        strip.text.y = element_text(angle = 0, hjust = 0, size = 5),
+        strip.text.x = element_text(size = 5, angle = 90, vjust = 0),
+        strip.background = element_blank(),
+        
+        legend.title = element_blank(),
+        legend.text = element_text(size = 5),
+        legend.key.size = unit(0.25, "cm"),
+        legend.position = "bottom",
+        
+        panel.background = element_blank(),
+        panel.spacing = unit(0.02, "lines"),
+        plot.margin = rep(unit(0,"null"),4),
+        axis.ticks.length = unit(0,"cm")
+      ) +
+      scale_fill_manual(
+        limits = c("Activation", "Inhibition", "None"),
+        label = c("Activation", "Inhibition", "None"),
+        # Amp RColorBrewer name = "Spectral"
+        # Del RColorBrewer name = "BrBG"
+        values = c("brown1", "aquamarine3", "grey")
+      ) ->p
+    
+    
+    ggsave(outfile,p,device ="png",width =4, height = height)
+    list(src = outfile,
+         contentType = 'image/png',
+         # width = "100%" ,
+         # height = 900,
+         alt = "This is alternate text")
+  }, deleteFile = FALSE)
+}
+
+# rppa heatmap percent ----
+rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway,symbol, per, height,outfile){
+  output$plot <- renderImage({
+    rppa_per_ready %>%
+      ggplot(aes(x = pathway, y = symbol))+
+      xlab("Pathway")+ylab("Symbol") +
+      guides(fill=guide_colorbar("Percent")) +
+      geom_tile(aes(fill = per), col = "white") +
+      geom_text(label=ceiling(rppa_per_ready$per),
+                size = 1) +
+      scale_fill_gradient2(
+        high = "red",
+        mid = "white",
+        low = "blue"
+      ) +
+      theme(
+        axis.text.x = element_text(angle = 45, hjust = 1,vjust = 1,size=5),
+        axis.text.y = element_text(size=5),
+        legend.key.size = unit(0.25, "cm"),
+        legend.position = "bottom",
+        plot.margin = rep(unit(0,"null"),4),
+        axis.ticks.length = unit(0,"cm"),
+        legend.text = element_text(size = 5),
+        axis.title.x = element_text(size=6),
+        axis.title.y = element_text(size=6),
+        legend.title = element_text(size=6)
+      ) + 
+      xlab("Pathway (a:activate; i:inhibit)") ->p
+    ggsave(outfile,p,device ="png",width =4, height = height)
+    list(src = outfile,
+         contentType = 'image/png',
+         # width = "100%" ,
+         # height = 900,
+         alt = "This is alternate text")
+  }, deleteFile = FALSE)
 }
 

@@ -11,19 +11,19 @@ observeEvent(input$analysis, {
   shinyjs::disable(id = "analysis")
 })
 observeEvent(input$stop, {
+  status$analysis <- FALSE
+  status$gene_set <- FALSE
   shinyjs::reset("input_gene_set")
   shinyjs::enable(id = "input_gene_set")
   shinyjs::enable(id = "analysis")
-  status$analysis <- FALSE
-  status$gene_set <- FALSE
-  
 })
 observeEvent(input$example, {
+  status$analysis <- FALSE
+  status$gene_set <- FALSE
   shinyjs::js$example_gene_set(id = "seinput_gene_set")
   shinyjs::enable(id = "input_gene_set")
   shinyjs::enable(id = "analysis")
-  status$analysis <- FALSE
-  status$gene_set <- FALSE
+
 })
 
 

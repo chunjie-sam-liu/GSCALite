@@ -57,11 +57,11 @@ fluidRow(style="width:85%",
                                                                                                   shiny::tags$tr(
                                                                                                     shiny::tags$td("Overall CNV Frequency"),
                                                                                                     shiny::tags$td("Overall CNV frenquency gives you a bar plot, which shows the frequency of all genes' CNV in each cancer type.")
+                                                                                                  ),
+                                                                                                  shiny::tags$tr(
+                                                                                                    shiny::tags$td("CNV regulate gene expression"),
+                                                                                                    shiny::tags$td("	CNV can influence the expression of gene in theory, Use person correlation to get the relationship between gene expression and cnv, gene with FDR<=0.05 will be  remained. From this, we can have genes whose expression is significant regulate by CNV.")
                                                                                                   )#,
-                                                                                                  # shiny::tags$tr(
-                                                                                                  #   shiny::tags$td("Oncostrip"),
-                                                                                                  #   shiny::tags$td("Similar to OncoPrinter tool on cBioPortal and oncoplot at SNV part, oncostrip draws CNV in each sample. Can combine with SNV data.")
-                                                                                                  # ),
                                                                                                   # shiny::tags$tr(
                                                                                                   #   shiny::tags$td("Exclude CNV"),
                                                                                                   #   shiny::tags$td("Exclude CNV is a phenomenon that two genes' CNV happened different in a same sample all the time, this difference should meet a statistic difference at least.")

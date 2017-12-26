@@ -3,20 +3,19 @@
 # server elements 'tcga_cnv' sub tab of 'tcga' tab
 
 # data input --------------------------------------------------------------
-# ? global data can't load here.
 # get gene set ----
 # input<-list(gene_set=c("TP53","EZH2","CD274","CD276","CD80",
 #                        "CD86","VTCN1","CD40LG","TNFRSF14",
 #                        "TNFSF9","TNFSF4","CD70",ICOS",
 #                        "BTLA","LAG3","TNFRSF9","TNFRSF4"))
-gene_set <- reactive({
-  c("TP53","EZH2","CD274","CD276","CD80",
-    "CD86","VTCN1","CD40LG","TNFRSF14",
-    "TNFSF9","TNFSF4","CD70","ICOS",
-    "BTLA","LAG3","TNFRSF9","TNFRSF4")
-})
-gene_list <- data.frame(symbol=isolate(gene_set()))
-gene_list$symbol <- gene_list$symbol %>% as.character()
+# cnv_gene_list <- reactive({
+# c("TP53","EZH2","CD274","CD276","CD80",
+#   "CD86","VTCN1","CD40LG","TNFRSF14",
+#   "TNFSF9","TNFSF4","CD70","ICOS",
+#   "BTLA","LAG3","TNFRSF9","TNFRSF4")
+# })
+
+
 
 # load cnv data ----
 cnv <- readr::read_rds(file.path(config$database, "TCGA","cnv","pancan34_cnv_percent.rds.gz"))
@@ -26,7 +25,7 @@ cnv_cor <- readr::read_rds(file.path(config$database, "TCGA", "cnv", "pancan34_a
 #  get cancer type --------------------------------------------------------
 cnv_cancer_type <- callModule(cancerType,"cnv")
 #give test value for cancer type
-# cancer_type <- reactive(c("KIRC","LGG","COAD","LUAD","LUSC","BRCA"))
+# cnv_cancer_type <- reactive(c("KIRC","LGG","COAD","LUAD","LUSC","BRCA"))
 output$cnv_selected_cancer <- renderText(
   cnv_cancer_type()
 )
@@ -37,28 +36,45 @@ observeEvent(input$cnv_reset, {
 
 # analysis core -----------------------------------------------------------
 
-# get gene set cnv ----
-cnv %>%
-  dplyr::mutate(filter_cnv = purrr::map(cnv, filter_gene_list, gene_list = gene_list)) %>%
-  dplyr::select(-cnv) -> gene_list_cnv
-cnv_raw %>%
-  dplyr::mutate(filter_cnv = purrr::map(cnv, filter_gene_list, gene_list = gene_list)) %>%
-  dplyr::select(-cnv) -> gene_list_cnv_raw
-cnv_cor %>%
-  dplyr::mutate(spm = purrr::map(spm, filter_gene_list, gene_list = gene_list))-> gene_list_cnv_cor
+# get gene set cnv ----cnv_
+cnv_gene_list <- eventReactive(input$analysis,{
+  if(status$analysis){
+    cnv_gene_list <- as.character(gene_set$match)
+    # shiny::updateActionButton(session,"cnv_submit")
+    # print(input$cnv_submit)
+    # cnv_cancer_type <- callModule(selectallCancer,"cnv")
+    }
+})
 
 # submit cancer type -------------------------------------------------------
 
 observeEvent(input$cnv_submit,{
   # get cancer type cnv ----
-  gene_list_cnv %>%
-    dplyr::filter(cancer_types %in% cnv_cancer_type() ) -> gene_list_cancer_cnv
+
+  print(cnv_gene_list())
+  print(user_dir)
+  print(user_id)
+  cnv %>%
+    dplyr::mutate(filter_cnv = purrr::map(cnv, filter_gene_list, gene_list = cnv_gene_list())) %>%
+    dplyr::select(-cnv) %>%
+    dplyr::filter(cancer_types %in% cnv_cancer_type()) -> gene_list_cancer_cnv
+  
+  cnv_raw %>%
+    dplyr::mutate(filter_cnv = purrr::map(cnv, filter_gene_list, gene_list = cnv_gene_list())) %>%
+    dplyr::select(-cnv) %>%
+    dplyr::filter(cancer_types %in% cnv_cancer_type() ) -> gene_list_cancer_cnv_raw
+  
+  cnv_cor %>%
+    dplyr::mutate(spm = purrr::map(spm, filter_gene_list, gene_list = cnv_gene_list())) %>%
+    dplyr::filter(cancer_types %in% cnv_cancer_type()) %>%
+    tidyr::unnest()-> gene_list_cancer_cnv_cor
+  
   # gene_list_cnv %>%
   #   dplyr::filter(cancer_types %in% isolate(cancer_type()) ) -> gene_list_cancer_cnv
-  gene_list_cnv_raw %>%
-    dplyr::filter(cancer_types %in% cnv_cancer_type() ) -> gene_list_cancer_cnv_raw
-  gene_list_cnv_cor %>%
-    dplyr::filter(cancer_types %in% cnv_cancer_type() ) -> gene_list_cancer_cnv_cor
+  # gene_list_cnv_raw %>%
+  #   dplyr::filter(cancer_types %in% cnv_cancer_type() ) -> gene_list_cancer_cnv_raw
+  # gene_list_cnv_cor %>%
+  #   dplyr::filter(cancer_types %in% cnv_cancer_type() ) -> gene_list_cancer_cnv_cor
   
   # get data for plot ----
   gene_list_cancer_cnv %>%
@@ -86,9 +102,13 @@ observeEvent(input$cnv_submit,{
     dplyr::mutate(
       symbol = factor(x = symbol, levels = cnv_gene_rank$symbol), 
       cancer_types = factor(x = cancer_types, levels = cnv_cancer_rank$cancer_types)) ->pie_plot_ready
+  cnv_pie_height <- cnv_gene_list() %>% length() *0.25
+  if(cnv_pie_height>15){cnv_pie_height <- 15}
+  if(cnv_pie_height<3){cnv_pie_height <- 3}
   
   callModule(piePlot, "cnv_pie", data=pie_plot_ready, y="per",
-             fill="type", facet_grid="cancer_types ~ symbol")
+             fill="type", facet_grid="symbol ~ cancer_types",
+             outfile=file.path(user_dir,"pngs",paste(user_id,"-CNV_pie_profile.png",sep="")),height=cnv_pie_height)
 
   # homo cnv plot ----
   cnv_homo_plot_ready <- cnv_plot_ready %>% 
@@ -113,37 +133,35 @@ observeEvent(input$cnv_submit,{
              colorname="SCNA Type",wrap="~ effect")
 
   # bar stack plot ----
-  gene_list_cancer_cnv_raw %>% 
-    dplyr::mutate(rs = purrr::map2(cancer_types, filter_cnv, fn_gen_combined_core_atg, g_list = gene_list,n=1)) %>% 
-    dplyr::select( -filter_cnv) %>% 
+  gene_list_cancer_cnv_raw %>%
+    dplyr::mutate(rs = purrr::map2(cancer_types, filter_cnv, fn_gen_combined_core_atg, g_list = cnv_gene_list(),n=1)) %>%
+    dplyr::select( -filter_cnv) %>%
     tidyr::unnest(rs) %>%
-    dplyr::mutate(del_a = -del_a) %>% 
+    dplyr::mutate(del_a = -del_a) %>%
     dplyr::mutate(del_s = -del_s) %>%
     tidyr::gather(key = type, value = per, -cancer_types) %>%
     dplyr::mutate(cnv_type="Hete CNV") -> cnv_hete_bar_plot_ready
-  
-  gene_list_cancer_cnv_raw %>% 
-    dplyr::mutate(rs = purrr::map2(cancer_types, filter_cnv, fn_gen_combined_core_atg, g_list = gene_list,n=2)) %>% 
-    dplyr::select( -filter_cnv) %>% 
+
+  gene_list_cancer_cnv_raw %>%
+    dplyr::mutate(rs = purrr::map2(cancer_types, filter_cnv, fn_gen_combined_core_atg, g_list = cnv_gene_list(),n=2)) %>%
+    dplyr::select( -filter_cnv) %>%
     tidyr::unnest(rs) %>%
-    dplyr::mutate(del_a = -del_a) %>% 
+    dplyr::mutate(del_a = -del_a) %>%
     dplyr::mutate(del_s = -del_s) %>%
     tidyr::gather(key = type, value = per, -cancer_types) %>%
     dplyr::mutate(cnv_type="Homo CNV")-> cnv_homo_bar_plot_ready
-  
+
   rbind(cnv_hete_bar_plot_ready,cnv_homo_bar_plot_ready) -> cnv_bar_plot_ready
-  
+
   callModule(cnvbarPlot,"cnv_bar",data=cnv_bar_plot_ready,x="cancer_types",y="per",fill="type")
   
   # cnv to expression plot  ----
   gene_list_cancer_cnv_cor %>%
-    tidyr::unnest() %>%
     dplyr::group_by(symbol) %>%
     dplyr::summarise(rank=sum(spm)) %>%
     dplyr::arrange(rank) ->gene_rank.cnvcor
   
   gene_list_cancer_cnv_cor %>%
-    tidyr::unnest() %>%
     dplyr::group_by(cancer_types) %>%
     dplyr::summarise(rank=sum(spm)) %>%
     dplyr::arrange(rank) ->cancer_rank.cnvcor
@@ -156,3 +174,14 @@ observeEvent(input$cnv_submit,{
   
 })
 
+
+# monitor the analysis buttons change -------------------------------------
+
+# cnv_analysis_status <- eventReactive(
+#   eventExpr = input$analysis,
+#   valueExpr = {
+#   status$analysis == TRUE
+#   })
+# observe(cnv_analysis_status() == TRUE,{
+#   
+# })
