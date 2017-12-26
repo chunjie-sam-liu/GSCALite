@@ -8,18 +8,23 @@ expr_analysis <- eventReactive(
   valueExpr = {
     if (status$analysis == TRUE) {
       
-      print(ra_expr())
-      # ra_expr() %>% 
-      #   dplyr::filter(cancer_types %in% paired_cancer_types) %>% 
-      #   purrr::map(
-      #     .x = expr,
-      #     .f = function(.x) {
-      #       colnames(.x)[-1] %>% 
-      #         barcode_process() %>% 
-      #         filter_tumor_normal() %>% 
-      #         paired_sample() 
-      #     }
-      #   )
+      if (is.null(expr)) {
+        print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading expr data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+        expr <<- readr::read_rds(file.path(config$database, "TCGA", "expr", "pancan33_expr_filtered.rds.gz"))
+        print(glue::glue("{paste0(rep('-', 10), collapse = '')} loading expr data complete @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+      }
+      
+      expr %>%
+        dplyr::filter(cancer_types %in% paired_cancer_types) %>%
+        purrr::map(
+          .x = expr,
+          .f = function(.x) {
+            colnames(.x)[-1] %>%
+              barcode_process() %>%
+              filter_tumor_normal() %>%
+              paired_sample()
+          }
+        )
         
     }
   }
