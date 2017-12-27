@@ -502,13 +502,13 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
   output$plot <- renderPlot({
     CPCOLS <- c("red", "white", "blue")
     data %>%
-      ggplot(aes_string(x=cancer,y=gene)) +
+      ggplot(aes_string(x=gene,y=cancer)) +
       geom_point(aes_string(size = size,color = color)) +
-      scale_y_discrete(limit = gene_rank$symbol) +
-      scale_x_discrete(limit = cancer_rank$cancer_types) +
+      scale_x_discrete(limit = gene_rank$symbol) +
+      scale_y_discrete(limit = cancer_rank$cancer_types) +
       labs(title = title) +
-      ylab("Symbol") +
-      xlab("Cancer types") +
+      xlab("Symbol") +
+      ylab("Cancer types") +
       scale_size_continuous(
         name = sizename #"-Log10(FDR)"
       ) +
