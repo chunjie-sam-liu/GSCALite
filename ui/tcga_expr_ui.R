@@ -24,6 +24,13 @@ tabItem(
   # For help page
   # source(file.path(config$ui,"tcga_cnv_help.R"))$value,
   
+  fluidRow(
+    column(
+      width = 10, offset = 1,
+      cancerTypeInput("cnv")
+    )
+  ),
+  
   shiny::tags$hr(width = "50%"),
   
   # Cancer type selection
@@ -35,7 +42,7 @@ tabItem(
       width = 10, offset = 1,
       shinydashboard::tabBox(
         id = "expr_plot", title = "PLOT",width = 12,
-        tabPanel(title = "Tumor vs. Normal",PlotInput(id = "expr_p"))
+        tabPanel(title = "Tumor vs. Normal", plotOutput(outputId = "expr_bubble_plot"))
       )
     )
   ),
