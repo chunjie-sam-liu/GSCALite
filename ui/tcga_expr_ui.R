@@ -22,7 +22,7 @@ tabItem(
   ),
   
   # For help page
-  source(file.path(config$ui,"tcga_cnv_help.R"))$value,
+  # source(file.path(config$ui,"tcga_cnv_help.R"))$value,
   
   shiny::tags$hr(width = "50%"),
   
