@@ -44,7 +44,7 @@ shinyServer(
     source(file = file.path(config$server, "welcome_server.R"), local = TRUE)
     
     # tcga expr
-    source(file = file.path(config$server, "tcga_expr_server.R"), local = TRUE)
+    # source(file = file.path(config$server, "tcga_expr_server.R"), local = TRUE)
     
     # tcga cnv ----
 
