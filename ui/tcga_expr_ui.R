@@ -31,10 +31,19 @@ tabItem(
     )
   ),
   
-  shiny::tags$hr(width = "50%"),
-  
   # Cancer type selection
-  
+  fluidRow(
+    column(width = 4),
+    column(
+      width = 2, offset = 0,
+      actionButton("expr_submit", label = "Submit!", icon = icon("check"))
+    ),
+    column(
+      width = 2, offset = 0,
+      actionButton("expr_reset", label = "Resect!", icon = icon("refresh"))
+    ),
+    column(width = 4)
+  ),
   
   # Plot result ----
   fluidRow(
