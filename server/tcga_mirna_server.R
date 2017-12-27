@@ -1,72 +1,127 @@
 
 # load mirna target data --------------------------------------------------
 
-mirna2target <- readr::read_rds(file.path(config$database,"TCGA","mirna","miRNA2gene.all.nest.rds.gz"))
+mirna2target <- readr::read_rds(file.path(config$database, "TCGA", "mirna", "pan_overall_gene_cor_with_mirna.rds.gz"))
 
-# get gene set mirna data -------------------------------------------------
+# start analysis ----------------------------------------------------------
 
-mirna2target %>%
-  dplyr::inner_join(gene_list,by="symbol") %>%
-  tidyr::unnest() %>%
-  dplyr::select(mirna,symbol)->gene_list_mirmna2target
+observeEvent(input$analysis, {
+  output$mirna_net1 <- renderForceNetwork({
+    # get gene set mirna data -------------------------------------------------
 
-# prepare data for network  -----------------------------------------------
-# 1. networkD3 style ----
-gene_list_mirmna2target %>% as.data.frame() %>% t() %>% as.vector() ->igraph_ready
+    mirna2target %>%
+      dplyr::filter(symbol %in% cnv_gene_list()) %>%
+      tidyr::unnest() %>%
+      dplyr::select(mirna, symbol) -> gene_list_mirmna2target_d3
+    
+    # prepare data for network  -----------------------------------------------
+    # 1. networkD3 style ----
+    gene_list_mirmna2target_d3 %>% 
+      as.data.frame() %>% 
+      t() %>% 
+      as.vector() -> igraph_ready
 
-# get node size
-igraph_ready %>% 
-  table() %>% 
-  as.data.frame() %>%
-  dplyr::mutate(Freq=ifelse(Freq>20,20,Freq)) ->node_size
-names(node_size) <-c("name","size")
+    # get node size
+    igraph_ready %>%
+      table() %>%
+      as.data.frame() %>%
+      dplyr::mutate(Freq = ifelse(Freq > 20, 20, Freq)) -> mirna_node_size
+    names(mirna_node_size) <- c("name", "size")
 
-# igraph generate networkD3 graph object
-a <- make_graph(igraph_ready)
-b <- cluster_walktrap(a)
-c <- membership(b)
-d <- networkD3::igraph_to_networkD3(a, group = c)
+    # igraph generate networkD3 graph object
+    mirna_a <- make_graph(igraph_ready)
+    mirna_b <- cluster_walktrap(mirna_a)
+    mirna_c <- membership(mirna_b)
+    mirna_d <- networkD3::igraph_to_networkD3(mirna_a, group = mirna_c)
 
-# add size we got befor
-d$nodes <-d$nodes %>%
-  dplyr::left_join(node_size,by="name")
+    # add size we got befor
+    mirna_d$nodes <- mirna_d$nodes %>%
+      dplyr::left_join(node_size, by = "name")
 
-print("prepare data for networkD3 done!")
-# output ------------------------------------------------------------------
+    # print("prepare data for networkD3 done!")
+    # output ------------------------------------------------------------------
+    networkD3::forceNetwork(
+      Links = mirna_d$links, Nodes = mirna_d$nodes,
+      Source = "source", Target = "target",
+      NodeID = "name", Nodesize = "size", Group = "group", fontSize = 15, radiusCalculation = "Math.sqrt(d.nodesize)+6", zoom = TRUE,
+      fontFamily = "cursive", opacityNoHover = 0.5
+    )
+    # print("draw networkD3 done!")
+  })
 
-output$mirna_net1 <- renderForceNetwork({
-  networkD3::forceNetwork(Links = d$links, Nodes = d$nodes, 
-                          Source = 'source', Target = 'target', 
-                          NodeID = 'name', Nodesize = 'size',Group = 'group',fontSize = 15,radiusCalculation = "Math.sqrt(d.nodesize)+6",zoom=TRUE,
-                          fontFamily = "cursive", opacityNoHover = 0.1)
-})
 
 
-print("draw networkD3 done!")
 
-# 2. visNetwork style ----
-gene_list_mirmna2target %>%
-  tidyr::gather() %>%
-  unique() %>%
-  dplyr::rename(name=value) %>%
-  dplyr::inner_join(node_size,by="name") ->mirna_vis_ready
+  # 2. visNetwork style ----
+  # get data for visnetwork, cor control edge width
+  output$mirna_net2 <- visNetwork::renderVisNetwork({
+    mirna2target %>%
+      dplyr::filter(symbol %in% cnv_gene_list()) %>%
+      tidyr::unnest() %>%
+      dplyr::mutate(cor = abs(cor - 1)) %>%
+      dplyr::arrange(mirna) %>%
+      dplyr::select(mirna, symbol, cor) -> gene_list_mirmna2target_vis
 
-mirna_vis_ready %>%
-  dplyr::filter(key=="mirna") %>%
-  nrow() ->mirna_mirna_num
-mirna_vis_ready %>%
-  dplyr::filter(key=="symbol") %>%
-  nrow() ->mirna_gene_num
+    # node size get, gene frequency control node size
+    gene_list_mirmna2target_vis %>% 
+      dplyr::select(-cor) %>% 
+      as.data.frame() %>% 
+      t() %>% 
+      as.vector() -> get_node_freq_vis
 
-nodes <- data.frame(id = c(mirna_vis_ready %>% dplyr::filter(key=="mirna") %>% dplyr::pull(name),mirna_vis_ready %>% dplyr::filter(key=="symbol") %>% dplyr::pull(name)),
-                    label = c(mirna_vis_ready %>% dplyr::filter(key=="mirna") %>% dplyr::pull(name),mirna_vis_ready %>% dplyr::filter(key=="symbol") %>% dplyr::pull(name)), # add labels on nodes
-                    group = c(rep("miRNA",mirna_mirna_num), rep("Gene",mirna_gene_num)), # add groups on nodes 
-                    value = mirna_vis_ready$size,# size adding value
-                    shape = c(rep("circle",mirna_mirna_num),rep("database",mirna_gene_num))#, control shape of nodes
-                    # color = c(rep("orange",mirna_mirna_num),rep("purple",mirna_gene_num))# color
-                    )   
+    get_node_freq_vis %>%
+      table() %>%
+      as.data.frame() %>%
+      dplyr::mutate(Freq = ifelse(Freq > 20, 20, Freq)) -> mirna_node_size_vis
+    names(mirna_node_size_vis) <- c("name", "size")
+    mirna_node_size_vis$name <- as.character(mirna_node_size_vis$name)
+    
+    # node size conbine into...
+    gene_list_mirmna2target %>%
+      dplyr::select(-cor) %>%
+      tidyr::gather() %>%
+      unique() %>%
+      dplyr::rename(name = value) %>%
+      dplyr::inner_join(mirna_node_size_vis, by = "name") -> mirna_vis_ready
+    
+    # get nodes object for network.
 
-edges<- data.frame(from = gene_list_mirmna2target$mirna, to = gene_list_mirmna2target$symbol)
-output$mirna_net2 <- visNetwork::renderVisNetwork({
-  visNetwork::visNetwork(nodes, edges, width = "100%") %>% visNetwork::visEdges(color = "grey") %>% visNetwork::visEdges(smooth = TRUE) %>% visNetwork::visGroups(groupname = "miRNA", color = "lightblue",shape="circle") %>%  visNetwork::visGroups(groupname = "Gene", color = "red",shape="database") %>%  visNetwork::visLegend() %>%visNetwork::visOptions(highlightNearest = TRUE,nodesIdSelection = TRUE) %>% visNetwork:: visInteraction(navigationButtons = TRUE) 
+    mirna_vis_ready %>%
+      dplyr::filter(key == "mirna") %>%
+      nrow() -> mirna_mirna_num
+    mirna_vis_ready %>%
+      dplyr::filter(key == "symbol") %>%
+      nrow() -> mirna_gene_num
+    c(mirna_vis_ready %>%
+      dplyr::filter(key == "mirna") %>%
+      dplyr::pull(name), mirna_vis_ready %>%
+      dplyr::filter(key == "symbol") %>%
+      dplyr::pull(name)) -> mirna_node_name
+
+    mirna_nodes <- data.frame(
+      id = mirna_node_name,
+      label = mirna_node_name, # add labels on nodes
+      group = c(rep("miRNA", mirna_mirna_num), rep("Gene", mirna_gene_num)), # add groups on nodes
+      value = mirna_vis_ready$size, # size adding value
+      shape = c(rep("circle", mirna_mirna_num), rep("database", mirna_gene_num)), # control shape of nodes
+      # color = c(rep("orange",mirna_mirna_num),rep("purple",mirna_gene_num))# color
+      title = paste0("<p>", mirna_node_name, "</p>"),
+      stringsAsFactors = FALSE
+    )
+    
+    # get edges object for network
+
+    mirna_edges <- data.frame(from = gene_list_mirmna2target$mirna, to = gene_list_mirmna2target$symbol, value = gene_list_mirmna2target$cor)
+    
+    # network generate
+    visNetwork::visNetwork(mirna_nodes, mirna_edges, width = "100%") %>%
+      visNetwork::visEdges(color = "darkorange") %>%
+      visNetwork::visEdges(smooth = TRUE) %>%
+      visNetwork::visGroups(groupname = "miRNA", color = "lightpink", shape = "circle") %>%
+      visNetwork::visGroups(groupname = "Gene", color = "gold", shape = "database") %>%
+      visNetwork::visLegend() %>%
+      visNetwork::visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE, manipulation = TRUE) %>% # Highlight nearest & Select by node id
+      visNetwork::visInteraction(navigationButtons = TRUE) %>%
+      visNetwork::visEdges(arrows = "to")
+  })
 })
