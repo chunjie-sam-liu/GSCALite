@@ -33,9 +33,17 @@ tabItem(
   
   # Cancer type selection
   fluidRow(
-    column(width = 4),
+    column(width = 2),
     column(
-      width = 2, offset = 0,
+      width = 2, 
+      switchInput(
+        inputId = "id", value = TRUE,
+        onLabel = "Select All",
+        offLabel = "Deselect All"
+        )
+      ),
+    column(
+      width = 2, offset = 1,
       actionButton("expr_submit", label = "Submit!", icon = icon("check"))
     ),
     column(
