@@ -27,7 +27,7 @@ tabItem(
   fluidRow(
     column(
       width = 10, offset = 1,
-      cancerTypeInput("cnv")
+      cancerTypeInput("expr")
     )
   ),
   
