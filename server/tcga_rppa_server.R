@@ -48,6 +48,7 @@ observeEvent(input$analysis, {
   gene_list_rppa_per %>%
     tidyr::unnest() %>%
     dplyr::filter(a+i > 5/32) %>%
+    dplyr::select(-n) %>%
     tidyr::gather(-symbol,-pathway,key="class",value="per") %>%
     dplyr::mutate(per=ifelse(class=="i",-per*100,per*100)) %>%
     tidyr::unite(pathway,c(pathway,class)) -> rppa_per_ready
@@ -102,6 +103,14 @@ observeEvent(input$rppa_submit, {
   cancer_text <- get_rppa_text(gene_list_cancer_rppa_rela)
   plot_seg <- get_rppa_seg(cancer_text,gene_list_cancer_rppa_rela) 
   
+  plot_seg %>%
+    # dplyr::filter(type=="g_p") %>%
+    dplyr::group_by(x1,y1,x2,y2) %>%
+    dplyr::do(
+      curvature=ifelse(nrow(.)>1,seq(0.05,0.05*nrow(.),0.05),0)
+    ) %>%
+    tidyr::unnest()
+  
   cancer_text %>%
     dplyr::filter(type=="cancer") ->cancer.text
   cancer_text %>%
@@ -113,15 +122,26 @@ observeEvent(input$rppa_submit, {
   if(rppa_line_height<3){rppa_line_height <- 4}
   # plot draw
   output$rppa_rela_plot <- renderImage({
-    ggplot() +
-      geom_segment(data = plot_seg, mapping = aes(
-        x = x1, 
-        y = y1,
-        xend = x2,
-        yend = y2,
-        colour = Cancer,
-        linetype = Regulation
-      )) +
+    ggplot() ->p
+    for (cancers in plot_seg$Cancer %>% unique()) {
+      # cancers="LUSC"
+      plot_seg %>%
+        dplyr::filter(Cancer==cancers) ->data
+      curvature <- runif(1,0.1,0.3)
+      p + 
+        geom_curve(data = data, mapping = aes(
+          x = x1, 
+          y = y1,
+          xend = x2,
+          yend = y2,
+          colour = Cancer,
+          linetype = Regulation
+        ),
+        # colour = "red",
+        curvature = curvature) -> p
+    }
+    
+    p +
       guides(color=FALSE) +
       geom_text(
         data = cancer.text, 
@@ -154,7 +174,7 @@ observeEvent(input$rppa_submit, {
       ) + 
       xlab("") +
       ylab("") +
-      labs(title = "Relation network between gene and cancer related pathways.") ->p
+      labs(title = "Relation network between genes' expression and cancer related pathways' activity.") ->p
     rppa_line_outfile <- file.path(user_dir,"pngs",paste(user_id,"-","TCGA_rppa_network_profile.png",sep=""))
     
     ggsave(rppa_line_outfile,p,device ="png",width =4, height = rppa_line_height)
