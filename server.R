@@ -48,7 +48,7 @@ shinyServer(
     
     # tcga cnv ----
 
-    # source(file = file.path(config$server, "tcga_cnv_server.R"), local = TRUE)
+    source(file = file.path(config$server, "tcga_cnv_server.R"), local = TRUE)
     
     # tcga snv ----
     # source(file = file.path(config$server, "tcga_snv_server.R"), local = TRUE)
@@ -57,7 +57,7 @@ shinyServer(
     # source(file = file.path(config$server, "tcga_meth_server.R"), local = TRUE)
     
     # tcga mirna ----
-    # source(file = file.path(config$server, "tcga_mirna_server.R"), local = TRUE)
+    source(file = file.path(config$server, "tcga_mirna_server.R"), local = TRUE)
     
     # tcga rppa ----
     # source(file = file.path(config$server, "tcga_rppa_server.R"), local = TRUE)
