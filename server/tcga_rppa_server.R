@@ -54,7 +54,7 @@ observeEvent(input$analysis, {
     tidyr::unite(pathway,c(pathway,class)) -> rppa_per_ready
   
   # pic draw
-  rppa_heat_height <- cnv_gene_list() %>% length() *0.08
+  rppa_heat_height <- cnv_gene_list() %>% length() *0.1
   if(rppa_heat_height>15){rppa_heat_height <- 15}
   if(rppa_heat_height<3){rppa_heat_height <- 3}
   rppa_heat_outfile<-file.path(user_dir,"pngs",paste(user_id,"-","TCGA_rppa_heatmap_percentage.png",sep=""))
