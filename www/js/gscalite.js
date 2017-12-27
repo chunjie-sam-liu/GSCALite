@@ -7,6 +7,7 @@
 
 shinyjs.init = function(){
   // all checked after initiation
+  $("button.btn.checkbtn.btn-default").removeClass("active").addClass("active");
   $('input[type="checkbox"]').prop("checked", true);
 };
 
@@ -18,9 +19,11 @@ shinyjs.example_gene_set = function(params){
 };
 
 shinyjs.checkall = function() {
+  $("button.btn.checkbtn.btn-default").removeClass("active").addClass("active");
   $('input[type="checkbox"]').prop("checked", true);
 };
 
 shinyjs.uncheckall = function() {
+  $("button.btn.checkbtn.btn-default").removeClass("active")
   $('input[type="checkbox"]').prop("checked", false);
 };
