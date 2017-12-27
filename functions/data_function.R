@@ -86,13 +86,13 @@ get_cancer_types_rank <- function(pattern){
 
 # Clean expr ---------------------------------------------------------------
 
-clean_expr <- function(.expr) {
+clean_expr <- function(.expr, .gs) {
   .expr %>% 
     dplyr::mutate(
       expr = purrr::map(
         .x = expr,
         .f = filter_symbol,
-        .gs = gene_set$match
+        .gs = .gs
       )
     ) %>% 
       dplyr::mutate(
@@ -140,8 +140,13 @@ clean_expr <- function(.expr) {
 # Expr bubble plot --------------------------------------------------------
 
 expr_buble_plot <- function(.expr){
+  .expr %>% filter_fc_pval() -> expr_clean_filter
+  .expr %>% get_pattern() -> expr_clean_pattern
+  expr_clean_pattern %>% get_cancer_types_rank() -> cancer_rank
+  expr_clean_pattern %>% get_gene_rank() -> gene_rank
+  
   CPCOLS <- c("#000080", "#F8F8FF", "#CD0000")
-  .expr %>% 
+  expr_clean_filter %>% 
     ggplot(aes(x = cancer_types, y = symbol)) +
       geom_point(aes(size = fdr, col = log2(fc))) +
       scale_color_gradient2(

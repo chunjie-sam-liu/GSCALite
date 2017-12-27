@@ -6,7 +6,7 @@
 config <- list()
 
 # Version
-config$version <- "0.0.1"
+config$version <- "1.0.0"
 
 # Working directory -------------------------------------------------------
 # This is the absolute path to server.R, ui.R and config.R

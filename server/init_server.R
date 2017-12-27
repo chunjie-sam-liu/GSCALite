@@ -165,9 +165,10 @@ gene_set <- reactiveValues(
 
 # Load gene list ----------------------------------------------------------
 
-print(glue::glue("{paste0(rep('-', 10), collapse = '')} loading symbol {paste0(rep('-', 10), collapse = '')}"))
+print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading symbol @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 total_gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
 paired_cancer_types <- readr::read_rds(file.path(config$database, "TCGA", "expr", "paired_cancer_types.rds.gz"))
+print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading symbol @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
 
 # Global load data --------------------------------------------------------

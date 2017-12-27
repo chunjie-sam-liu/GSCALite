@@ -16,33 +16,42 @@ meth_cor <- readr::read_rds(file.path(config$database, "TCGA", "meth", "pancan34
 #  get cancer type --------------------------------------------------------
 
 meth_cancer_type <- callModule(cancerType, "meth")
+
 output$meth_selected_cancer <- renderText(
   meth_cancer_type()
 )
+
 #######reset cancer selection when click.
 observeEvent(input$meth_reset, {
   meth_cancer_type<-callModule(resetcancerType,"meth")
 })
 
 
+# observe analysis event --------------------------------------------------
+
+# observeEvent(input$analysis,{
+  
 # analysis core -----------------------------------------------------------
 
-# get gene set meth ----
-meth_diff %>%
-  dplyr::mutate(filter_methyDiff = purrr::map(methy_comparison, filter_gene_list, gene_list = gene_list)) %>%
-  dplyr::select(-methy_comparison) -> gene_list_meth_diff
 
-meth_survival %>%
-  dplyr::mutate(filter_SurDiff = purrr::map(diff_pval, filter_gene_list, gene_list = gene_list)) %>%
-  dplyr::select(-diff_pval) -> gene_list_meth_sur
-
-meth_cor %>%
-  dplyr::mutate(filter_cor = purrr::map(spm, filter_gene_list, gene_list = gene_list)) %>%
-  dplyr::select(-spm) -> gene_list_meth_cor
 
 # submit cancer type -------------------------------------------------------
 
 observeEvent(input$meth_submit, {
+  # get gene set meth ----
+  print(cnv_gene_list())
+meth_diff %>%
+  dplyr::mutate(filter_methyDiff = purrr::map(methy_comparison, filter_gene_list, gene_list = cnv_gene_list())) %>%
+  dplyr::select(-methy_comparison) -> gene_list_meth_diff
+
+meth_survival %>%
+  dplyr::mutate(filter_SurDiff = purrr::map(diff_pval, filter_gene_list, gene_list = cnv_gene_list())) %>%
+  dplyr::select(-diff_pval) -> gene_list_meth_sur
+
+meth_cor %>%
+  dplyr::mutate(filter_cor = purrr::map(spm, filter_gene_list, gene_list = cnv_gene_list())) %>%
+  dplyr::select(-spm) -> gene_list_meth_cor
+
   # get cancer type meth ----
   gene_list_meth_diff %>%
     dplyr::filter(cancer_types %in% meth_cancer_type()) %>%
@@ -99,3 +108,4 @@ observeEvent(input$meth_submit, {
   
   callModule(methy_diff_pointPlot,"meth_exp", data=gene_list_cancer_methcor, cancer="cancer_types", gene="symbol", size="logfdr", color="spm", cancer_rank=cancer_rank.methcor,gene_rank=gene_rank.methcor,sizename="-Log10(P.value)", colorname="Spearman Correlation Coefficient", title="Spearman Correlation Coefficient of methylation and gene expression.")#
 })
+# })
