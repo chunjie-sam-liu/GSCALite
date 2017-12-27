@@ -5,7 +5,10 @@
     This file is for shinyjs to extend
 */
 
-shinyjs.init = function(){};
+shinyjs.init = function(){
+  // all checked after initiation
+  $('input[type="checkbox"]').prop("checked", true);
+};
 
 shinyjs.example_gene_set = function(params){
   var defaultParams = {id: null};
