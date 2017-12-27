@@ -11,14 +11,18 @@ library(shinyBS)
 library(shinyWidgets)
 
 library(magrittr)
-library(highcharter)
 
+library(highcharter)
+library(DT)
 # library(maftools)
 
 library(grid)
+
 # For network
 library(igraph)
 library(networkD3)
+
+
 # Load configuration ------------------------------------------------------
 
 source(file = "config.R", local = TRUE)
