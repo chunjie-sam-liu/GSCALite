@@ -24,6 +24,13 @@ tabItem(
   # For help page
   source(file.path(config$ui,"tcga_cnv_help.R"))$value,
   
+  fluidRow(
+    column(
+      width = 10, offset = 1,
+      cancerTypeInput("cnv")
+    )
+  ),
+  
   shiny::tags$hr(width = "50%"),
   
   # Cancer type selection
