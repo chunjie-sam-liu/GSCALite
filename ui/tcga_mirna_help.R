@@ -33,6 +33,37 @@ fluidRow(style="width:85%",
                                                                               shiny::tags$hr(width="100%")
                                                                               
                                                                        ),
+                                                                       column(width=10, offset=1,
+                                                                              
+                                                                              shiny::tags$h3("miRNA-gene data source", class="text-success"),
+                                                                              
+                                                                              shiny::tags$p(class="text-justify","miRNA regulation data was collected form databases: include experimental verified( papers, ",
+                                                                                            
+                                                                              shiny::tags$a(href="http://diana.imis.athena-innovation.gr/DianaTools/index.php?r=site/index","TarBase, "),
+                                                                              shiny::tags$a(href="http://mirtarbase.mbc.nctu.edu.tw/php/index.php","miRTarBase, "),
+                                                                       shiny::tags$a(href="http://www.mir2disease.org/","mir2disease, "),
+                                                                shiny::tags$a(href="http://www.targetscan.org/vert_70/","targetscan, "),
+                                                                                            shiny::tags$a(href="http://34.236.212.39/microrna/home.do","miRanda")," predicted. And only miRNA-gene pairs who have been recorded will be calculate a expression correlation here."),
+                                                                              #shiny::tags$p(class="text-justify",),
+                                                                              
+                                                                              shiny::tags$br(),
+                                                                              
+                                                                              shiny::tags$hr(width="100%")
+                                                                              
+                                                                       ),
+                                                                column(width=10, offset=1,
+                                                                       
+                                                                       shiny::tags$h3("Method", class="text-success"),
+                                                                       
+                                                                       shiny::tags$p(class="text-justify","1. Correlation was calculated between gene and miRNA expression in all samples , in consideration of the presence of positive regulators like transcription factors, a miRNA-gene pair with correlation coefficient <0.5 and p.value<0.05 will be considered as a potential negatively regulation pair."),
+                                                                       shiny::tags$p(class="text-justify","	2. Only the miRNA-gene pair who have been recorded in databases we refer below."),
+                                                                       #shiny::tags$p(class="text-justify",),
+                                                                       
+                                                                       shiny::tags$br(),
+                                                                       
+                                                                       shiny::tags$hr(width="100%")
+                                                                       
+                                                                ),
                                                                        # result description----
                                                                        column(width=10, offset = 1,
                                                                               shiny::tags$h3("Results commentary", class="text-success"),
