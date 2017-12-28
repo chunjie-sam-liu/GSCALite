@@ -77,6 +77,15 @@ resetGTExTissueType <- function(input, output, session){
   return(GTEx_normal_tissue)
 }
 
+TableInput <- function(id, width, height) {
+  ns <- NS(id)
+  
+  tagList(
+    plotOutput(ns("plot")),
+    hr()
+    # only for test table
+  )
+}
 
 # cancer type choice ------------------------------------------------------
 
