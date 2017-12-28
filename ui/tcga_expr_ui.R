@@ -32,24 +32,7 @@ tabItem(
   fluidRow(selectAndAnalysisInput("expr")),
   
   # Plot result ----
-  fluidRow(
-    column(
-      width = 10, offset = 1,
-      shinydashboard::tabBox(
-        id = "expr_plot", title = "PLOT",width = 12,
-        # bubble plot for tumor vs. normal
-        tabPanel(
-          title = "Tumor vs. Normal", 
-          plotOutput(outputId = "expr_bubble_plot")
-          ),
-        # datatable
-        tabPanel(
-          title = "Table of comparison",
-          DT::dataTableOutput(outputId = "expr_dt_comparison")
-          )
-      )
-    )
-  ),
+  fluidRow(exprOutput("expr")),
   
   
   # Load footer ----

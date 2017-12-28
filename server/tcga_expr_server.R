@@ -2,9 +2,14 @@
 
 source(file.path(config$wd, "functions", "data_function.R"))
 
+expr_clean <- NULL
 
 # Check box ---------------------------------------------------------------
 callModule(module = selectAndAnalysis, id = "expr", .id = "expr")
+
+# Selected cancer types ---------------------------------------------------
+
+expr_cancer_type <- callModule(cancerType,"expr")
 
 # Expression submit analysis ----------------------------------------------
 
@@ -13,19 +18,24 @@ expr_submit_analysis <- function(input, output, session, status, .expr_clean) {
     eventExpr = input$submit,
     handlerExpr = {
       if (status$analysis == TRUE) {
-        .expr_clean %>% dplyr::filter(cancer_types %in% c("KICH", "KIRC", "KIRP")) -> .d
-        print(.d)
-        # output$expr_dt_comparison = DT::renderDataTable({expr_clean_datatable(clean_data)})
-        # output$expr_bubble_plot <- renderPlot({expr_clean %>% expr_buble_plot()})
+        print(glue::glue("select {expr_cancer_type()}"))
+        .expr_clean %>% dplyr::filter(cancer_types %in% expr_cancer_type()) -> .d
+        output$expr_dt_comparison = DT::renderDataTable({expr_clean_datatable(.d)})
+        output$expr_bubble_plot <- renderPlot({.d %>% expr_buble_plot()})
       }
     }
   )
 }
 
-# Expr submit analysis ----------------------------------------------------
-expr_clean <- NULL
-
 callModule(module = expr_submit_analysis, id = "expr", status = status, .expr_clean = expr_clean)
+
+
+# Start analysis ----------------------------------------------------------
+
+expr_start_analysis <- function(input, output, session, .expr_clean) {
+    output$expr_dt_comparison = DT::renderDataTable({expr_clean_datatable(.expr_clean)})
+    output$expr_bubble_plot <- renderPlot({.expr_clean %>% expr_buble_plot()})
+}
 
 
 # From start analysis -----------------------------------------------------
@@ -49,15 +59,13 @@ expr_analysis <- eventReactive(
       
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} clean data complete @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
       
-      # The table output
-      output$expr_dt_comparison = DT::renderDataTable({expr_clean_datatable(clean_data)})
+      callModule(module = expr_start_analysis, id = "expr", .expr_clean = expr_clean)
       
-      # plot
-      output$expr_bubble_plot <- renderPlot({expr_clean %>% expr_buble_plot()})
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} expr bubble plot complete @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
     }
   }
 )
+
 observe(expr_analysis())
 
 

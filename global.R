@@ -285,14 +285,13 @@ selectAndAnalysis <- function(input, output, session, .id) {
 # pair with cancerTypeInput in functions_ui.R##
 # Call by *_*_server.R by callModule(cancerType,"id pair with UI part")
 cancerType <- function(input, output, session) {
-  cancer_type <- reactive({
+  reactive({
     c(
       input$Kidney, input$Adrenal_Gland, input$Brain, input$Colorectal,
       input$Lung, input$Uterus, input$Bile_Duct, input$Bone_Marrow, input$Breast,
       input$Cervix, input$other_tissue
-    ) -> cancer_type
+    )
   })
-  return(cancer_type)
 }
 
 resetcancerType <- function(input, output, session){
@@ -800,3 +799,24 @@ rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway,symbol
 
 
 
+# Expr output -------------------------------------------------------------
+
+exprOutput <- function(id){
+  ns <- NS(id)
+  column(
+    width = 10, offset = 1,
+    shinydashboard::tabBox(
+      id = "expr_plot", title = "PLOT",width = 12,
+    # bubble plot for tumor vs. normal
+      tabPanel(
+        title = "Tumor vs. Normal", 
+        plotOutput(outputId = ns("expr_bubble_plot"))
+      ),
+      # datatable
+      tabPanel(
+        title = "Table of comparison",
+        DT::dataTableOutput(outputId = ns("expr_dt_comparison"))
+      )
+    )
+  )
+}
