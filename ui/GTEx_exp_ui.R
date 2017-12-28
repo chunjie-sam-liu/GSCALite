@@ -6,7 +6,7 @@ tabItem(
   tabName = "gtex_expr", align = "center",
   shinyjs::useShinyjs(),
 
-  ## meth message ----
+  ## GTEx expr message ----
   fluidRow(
     style = "width:80%;",
     HTML("<div class='section'>
@@ -25,17 +25,16 @@ tabItem(
                       </div>
                       </div>")
   ),
-  ## Hlep message including in tcga_meth_help.ui----
-  source(file.path(config$ui, "gtex_expr_help.R"))[1],
+  
+  # source(file.path(config$ui, "GTEx_exp_help.R"))[1],
 
   shiny::tags$br(),
   shiny::tags$hr(width = "85%"),
 
-  # cancer type selection and result output---------------------------------------------------
-  # cancer type selection----
-  GTExTissueTypeInput("meth"),
 
-  # Selected cancer show ----
+  # GTExTissueTypeInput("GTEx_exp"),
+
+  # Selected Tissue show ----
   shiny::tags$h3("Tissue Check", class = "text-success"),
   shiny::tags$h4(
     "The tissues you selected: ",
@@ -52,14 +51,14 @@ tabItem(
     ),
     column(
       width = 2, offset = 0,
-      actionButton("GTEx_tissue_reset", label = "Reset!", icon = icon("refresh")) # ,status = "danger"?
+      actionButton("GTEx_tissue_reset", label = "Reset!", icon = icon("refresh")) 
     ),
     column(width = 4)
   ),
   shiny::tags$hr(width = "85%"),
 
   # output plot -------------------------------------------------------------
-  # Tabset Panel
+  # Tabset Panel ----
   fluidRow(
     column(
       width = 10,
@@ -72,6 +71,6 @@ tabItem(
       )
     )
   ),
-  # load footer
+  # load footer ----
   source(file.path(config$ui, "footer.R"))[1]
 ) # close tab

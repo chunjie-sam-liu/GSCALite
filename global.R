@@ -10,6 +10,15 @@
 ##########################################
 
 # GTEx normal tissue choice ##############
+
+source(file = "config.R", local = TRUE)
+gtex_expr.tissues <- read.table(file.path(config$database, "GTEx", "expression","GTEx_tissue_name.lst"),sep="\t",stringsAsFactors=F)$V1 
+gtex_expr.tissue_n <- length(gtex_expr.tissues)
+gtex_expr.tissue_lst <- list() 
+length(gtex_expr.tissue_lst)<- gtex_expr.tissue_n 
+for(i in 1:gtex_expr.tissue_n){gtex_expr.tissue_lst[i]<-gtex_expr.tissues[i]}
+names(gtex_expr.tissue_lst) <- gtex_expr.tissues
+
 tabPannel_element_ten <- c()
 for(i in gtex_expr.tissues[1:10]){
   tmp_XXXX <- list(i=i);names(tmp_XXXX <-i);
@@ -18,7 +27,7 @@ for(i in gtex_expr.tissues[1:10]){
                             paste("tabPanel(\"",i,"\",checkboxGroupInput(inputId = ns(\"",i,"\"), label = NULL, inline = TRUE,choices = ",paste("GTEx_",i,"_choice)),",sep=""),sep="")
   )  
 }
-GTEx_other_tissue_choice <- gtex_expr.tissues[11:tissue_n]
+GTEx_other_tissue_choice <- gtex_expr.tissues[11:gtex_expr.tissue_n]
 GTEx_input_choice <- c(paste("input$",gtex_expr.tissues[1:10],sep=""),"input$other_tissue")
 
 
