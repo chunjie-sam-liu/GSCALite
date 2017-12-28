@@ -167,6 +167,13 @@ gene_set <- reactiveValues(
 
 total_gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
 
+gtex.expr <- readr::read_rds(file.path(config$database, "GTEx", "expression", "gtex_gene_tmp_annotation_phenotype_v7.rds.gz"))
+
+gtex_expr.tissues <- gtex.expr$SMTS; gtex_expr.tissue_n <- length(gtex_expr.tissues);gtex_expr.tissue_lst <- list(); 
+length(gtex_expr.tissue_lst)<- gtex_expr.tissue_n; for(i in 1:gtex_expr.tissue_n){gtex_expr.tissue_lst[i]<-gtex_expr.tissues[i]};
+names(gtex_expr.tissue_lst) <- gtex_expr.tissues;
+
+
 # Load gene expression ----------------------------------------------------
 
 # gene_expr <- readr::read_rds(file.path(config$database, "TCGA", "expr", "pancan33_expr.rds.gz"))
