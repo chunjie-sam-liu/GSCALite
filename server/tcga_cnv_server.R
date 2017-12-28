@@ -75,15 +75,15 @@ cnv_gene_list <- eventReactive(
 )
 
 # monitor fot cancer type change
-cnv_cancer_type <- eventReactive(
-  eventExpr = input$stop,
-  ignoreNULL = TRUE,
-  valueExpr = {
-    # be sure the following code run after start analysis
-    cnv_cancer_type<-callModule(resetcancerType,"cnv")
-  }
-)
-observe(cnv_cancer_type())
+# cnv_cancer_type <- eventReactive(
+#   eventExpr = input$stop,
+#   ignoreNULL = TRUE,
+#   valueExpr = {
+#     # be sure the following code run after start analysis
+#     cnv_cancer_type<-callModule(resetcancerType,"cnv")
+#   }
+# )
+
 
 # analysis start ----------------------------------------------------------
 # observe(cnv_cancer_type())
@@ -255,6 +255,6 @@ cnv_analysis <- eventReactive(
   }
 )
 
-
+# observe(cnv_cancer_type())
 observe(cnv_gene_list())
 observe(cnv_analysis())
