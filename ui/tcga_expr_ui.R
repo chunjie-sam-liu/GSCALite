@@ -22,12 +22,36 @@ tabItem(
   ),
   
   # For help page
-  source(file.path(config$ui,"tcga_cnv_help.R"))$value,
+  # source(file.path(config$ui,"tcga_cnv_help.R"))$value,
   
-  shiny::tags$hr(width = "50%"),
+  fluidRow(
+    column(
+      width = 10, offset = 1,
+      cancerTypeInput("expr")
+    )
+  ),
   
   # Cancer type selection
-  
+  fluidRow(
+    column(width = 2),
+    column(
+      width = 2, 
+      switchInput(
+        inputId = "id", value = TRUE,
+        onLabel = "Select All",
+        offLabel = "Deselect All"
+        )
+      ),
+    column(
+      width = 2, offset = 1,
+      actionButton("expr_submit", label = "Submit!", icon = icon("check"))
+    ),
+    column(
+      width = 2, offset = 0,
+      actionButton("expr_reset", label = "Resect!", icon = icon("refresh"))
+    ),
+    column(width = 4)
+  ),
   
   # Plot result ----
   fluidRow(
@@ -35,7 +59,16 @@ tabItem(
       width = 10, offset = 1,
       shinydashboard::tabBox(
         id = "expr_plot", title = "PLOT",width = 12,
-        tabPanel(title = "Tumor vs. Normal",PlotInput(id = "expr_p"))
+        # bubble plot for tumor vs. normal
+        tabPanel(
+          title = "Tumor vs. Normal", 
+          plotOutput(outputId = "expr_bubble_plot")
+          ),
+        # datatable
+        tabPanel(
+          title = "Table of comparison",
+          DT::dataTableOutput(outputId = "expr_dt_comparison")
+          )
       )
     )
   ),

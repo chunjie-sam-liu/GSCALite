@@ -14,9 +14,8 @@ tabItem(
                       <div class='row'>
                       <div class='col-md-12'>
                       <h1 class='text-success text-left'>
-                      <i class='fa fa-angle-double-right  fa-fw'></i>Methy
+                      <i class='fa fa-angle-double-right  fa-fw'></i>Methylation
                       <font color='#777777'>
-                      <span style='font-size: 23.3999996185303px; line-height: 23.3999996185303px;'>Methylation</span>
                       </font>
                       </h1>
                       <hr>

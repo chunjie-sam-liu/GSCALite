@@ -137,79 +137,123 @@ cancerTypeInput <- function(id) {
           tabPanel(
             "Kidney",
             shiny::tags$h4("Kidney", class = "text-success"),
-            checkboxGroupInput(
-              inputId = ns("Kidney"), label = NULL, inline = TRUE,
-              choices = Kidney_choice
+            checkboxGroupButtons(
+              inputId = ns("Kidney"), label = NULL,
+              choices = Kidney_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
             )
           ),
           tabPanel(
             "Adrenal Gland",
-            checkboxGroupInput(
-              inputId = ns("Adrenal_Gland"), label = NULL, inline = TRUE,
-              choices = Adrenal_Gland_choice
+            checkboxGroupButtons(
+              inputId = ns("Adrenal_Gland"), label = NULL,
+              choices = Adrenal_Gland_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
             )
           ),
           tabPanel(
             "Brain",
-            checkboxGroupInput(
-              inputId = ns("Brain"), label = NULL, inline = TRUE,
-              choices = Brain_choice
+            checkboxGroupButtons(
+              inputId = ns("Brain"), label = NULL,
+              choices = Brain_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
             )
           ),
           tabPanel(
             "Colorectal",
-            checkboxGroupInput(
-              inputId = ns("Colorectal"), label = NULL, inline = TRUE,
-              choices = Colorectal_choice
+            checkboxGroupButtons(
+              inputId = ns("Colorectal"), label = NULL,
+              choices = Colorectal_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
             )
           ),
           tabPanel(
             "Lung",
-            checkboxGroupInput(
-              inputId = ns("Lung"), label = NULL, inline = TRUE,
-              choices = Lung_choice
+            checkboxGroupButtons(
+              inputId = ns("Lung"), label = NULL,
+              choices = Lung_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
             )
           ),
           tabPanel(
             "Uterus",
-            checkboxGroupInput(
-              inputId = ns("Uterus"), label = NULL, inline = TRUE,
-              choices = Uterus_choice
+            checkboxGroupButtons(
+              inputId = ns("Uterus"), label = NULL,
+              choices = Uterus_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
             )
           ),
           tabPanel(
             "Bile Duct",
-            checkboxGroupInput(
-              inputId = ns("Bile_Duct"), label = NULL, inline = TRUE,
-              choices = Bile_Duct_choice
+            checkboxGroupButtons(
+              inputId = ns("Bile_Duct"), label = NULL,
+              choices = Bile_Duct_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
             )
           ),
           tabPanel(
             "Bone Marrow",
-            checkboxGroupInput(
-              inputId = ns("Bone_Marrow"), label = NULL, inline = TRUE,
-              choices = Bone_Marrow_choice
+            checkboxGroupButtons(
+              inputId = ns("Bone_Marrow"), label = NULL,
+              choices = Bone_Marrow_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
             )
           ),
           tabPanel(
             "Breast",
-            checkboxGroupInput(
-              inputId = ns("Breast"), label = NULL, inline = TRUE,
-              choices = Breast_choice
+            checkboxGroupButtons(
+              inputId = ns("Breast"), label = NULL,
+              choices = Breast_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
             )
           ),
           tabPanel(
             "Cervix",
-            checkboxGroupInput(
-              inputId = ns("Cervix"), label = NULL, inline = TRUE,
-              choices = Cervix_choice
+            checkboxGroupButtons(
+              inputId = ns("Cervix"), label = NULL,
+              choices = Cervix_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
             )
           ),
           tabPanel(
             "Other tissues",
-            checkboxGroupInput(
-              inputId = ns("other_tissue"), label = NULL, inline = TRUE,
-              choices = other_tissue_choice
+            checkboxGroupButtons(
+              inputId = ns("other_tissue"), label = NULL,
+              choices = other_tissue_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
             )
           )
         )
@@ -366,7 +410,7 @@ pointPlot <- function(input, output, session, data, cancer, gene, size, color, s
 
 # cnv pie plot ----------------------------------------------------------------
 
-piePlot <- function(input, output, session, data, y, fill, facet_grid) {
+piePlot <- function(input, output, session, data, y, fill, facet_grid,outfile,height) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
@@ -380,21 +424,28 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid) {
       coord_polar("y") +
       facet_grid(as.formula(facet_grid)) + # cancer_types ~ symbol
       # scale_x_discrete(limits = cnv_gene_rank$symbol) +
+      # scale_x_discrete(expand=c(0,0)) +
+      # scale_y_discrete(expand=c(0,0)) +
       theme(
         axis.text = element_blank(),
         axis.title = element_blank(),
         axis.ticks = element_blank(),
 
-        strip.text.y = element_text(angle = 0, hjust = 0, size = 11),
-        strip.text.x = element_text(size = 11, angle = 90, vjust = 0),
+        strip.text.y = element_text(angle = 0, hjust = 0, size = 4),
+        strip.text.x = element_text(size = 4, angle = 90, vjust = 0),
         strip.background = element_blank(),
 
         legend.title = element_blank(),
-        legend.text = element_text(size = 11),
+        legend.text = element_text(size = 4),
         legend.position = "bottom",
+        legend.key.size = unit(0.25,"cm"),
 
         panel.background = element_blank(),
-        panel.spacing = unit(0.02, "lines")
+        panel.spacing = unit(0, "null"),#unit(0.01, "lines"),
+        panel.spacing.x  = unit(0,"null"),
+        
+        plot.margin = rep(unit(0,"null"),4),
+        axis.ticks.length = unit(0,"cm")
       ) +
       scale_fill_manual(
         limits = c("a_hete", "a_homo", "d_hete", "d_homo", "other"),
@@ -404,13 +455,12 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid) {
         values = c("brown1", "brown4", "aquamarine3", "aquamarine4", "grey")
       ) ->p
     
-    outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_cnv_pie_rellation_network",'.png',sep="")
-    print(p)
-    ggsave(outfile,p,device ="png",dpi = 500)
+    # outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_cnv_pie_rellation_network",'.png',sep="")
+    ggsave(outfile,p,device ="png",width =4,height = height)
     list(src = outfile,
          contentType = 'image/png',
-         # width = 1200,
-         # height = 900,
+         # width = 400,
+         # height = "900px",
          alt = "This is alternate text")
   }, deleteFile = FALSE)
 }
@@ -516,8 +566,8 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
               colour = "grey",
               linetype = "dashed",
               size = 0.2) ,
-            plot.title = element_text(size = 20)
-            
+            plot.title = element_text(size = 20),
+            plot.margin=grid::unit(c(0,0,0,0), "mm")
             )  -> p
     return(p)
   })
@@ -529,7 +579,7 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
 
 # 1. ui part -----------------------------------------------------------------
 
-imagePlotInput <- function(id, width, height) {
+imagePlotInput <- function(id, width=400, height=300) {
   ns <- NS(id)
   
   tagList(
@@ -594,13 +644,13 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
   output$plot <- renderPlot({
     CPCOLS <- c("red", "white", "blue")
     data %>%
-      ggplot(aes_string(x=gene,y=cancer)) +
+      ggplot(aes_string(x=cancer,y=gene)) +
       geom_point(aes_string(size = size,color = color)) +
-      scale_x_discrete(limit = gene_rank$symbol) +
-      scale_y_discrete(limit = cancer_rank$cancer_types) +
+      scale_y_discrete(limit = gene_rank$symbol) +
+      scale_x_discrete(limit = cancer_rank$cancer_types) +
       labs(title = title) +
-      xlab("Symbol") +
-      ylab("Cancer types") +
+      ylab("Symbol") +
+      xlab("Cancer types") +
       scale_size_continuous(
         name = sizename #"-Log10(FDR)"
       ) +
@@ -632,12 +682,12 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
 
 
 # rppa --------------------------------------------------------------------
-
+# line contact ----
 rppa_line_contact <- function(input, output, session, seg, cancer, gene, pathway,title){
   output$plot <- renderImage({
     
     ggplot() +
-      geom_segment(data = plot_seg, mapping = aes_string(
+      geom_segment(data = seg, mapping = aes_string(
         x = x1, 
         y = y1,
         xend = x2,
@@ -666,12 +716,103 @@ rppa_line_contact <- function(input, output, session, seg, cancer, gene, pathway
         axis.ticks = element_blank()
       ) + 
       labs(title = title) ->p 
-    outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_RPPA_rellation_network",'.png',sep="")
-    ggsave(outfile,p,device ="png",dpi = 300)
+    return(p)
+    # outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_RPPA_rellation_network",'.png',sep="")
+    # ggsave(outfile,p,device ="png",dpi = 300)
+    # list(src = outfile,
+    #      contentType = 'image/png',
+    #      width=1200,
+    #      height= "100%" ,
+    #      alt = "This is alternate text")
+  })
+}
+
+# rppa pie ----
+rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid,height,outfile) {
+  # Example:
+  # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
+  #            fill="type",facet_grid="cancer_types ~ symbol")
+  # data should include ...
+  output$plot <- renderImage({
+    
+    data %>%
+      ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
+      geom_bar(stat = "identity", position = "stack", color = NA) +
+      # scale_y_continuous(limits = c(0,1))
+      coord_polar("y") +
+      facet_grid(as.formula(facet_grid)) + #  symbol~ cancer_types
+      # scale_x_discrete(limits = cnv_gene_rank$symbol) +
+      theme(
+        axis.text = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        
+        strip.text.y = element_text(angle = 0, hjust = 0, size = 5),
+        strip.text.x = element_text(size = 5, angle = 90, vjust = 0),
+        strip.background = element_blank(),
+        
+        legend.title = element_blank(),
+        legend.text = element_text(size = 5),
+        legend.key.size = unit(0.25, "cm"),
+        legend.position = "bottom",
+        
+        panel.background = element_blank(),
+        panel.spacing = unit(0.02, "lines"),
+        plot.margin = rep(unit(0,"null"),4),
+        axis.ticks.length = unit(0,"cm")
+      ) +
+      scale_fill_manual(
+        limits = c("Activation", "Inhibition", "None"),
+        label = c("Activation", "Inhibition", "None"),
+        # Amp RColorBrewer name = "Spectral"
+        # Del RColorBrewer name = "BrBG"
+        values = c("brown1", "aquamarine3", "grey")
+      ) ->p
+    
+    
+    ggsave(outfile,p,device ="png",width =4, height = height)
     list(src = outfile,
          contentType = 'image/png',
-         width=1200,
-         height= "100%" ,
+         # width = "100%" ,
+         # height = 900,
          alt = "This is alternate text")
   }, deleteFile = FALSE)
 }
+
+# rppa heatmap percent ----
+rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway,symbol, per, height,outfile){
+  output$plot <- renderImage({
+    rppa_per_ready %>%
+      ggplot(aes(x = pathway, y = symbol))+
+      xlab("Pathway")+ylab("Symbol") +
+      guides(fill=guide_colorbar("Percent")) +
+      geom_tile(aes(fill = per), col = "white") +
+      geom_text(label=ceiling(rppa_per_ready$per),
+                size = 1) +
+      scale_fill_gradient2(
+        high = "red",
+        mid = "white",
+        low = "blue"
+      ) +
+      theme(
+        axis.text.x = element_text(angle = 45, hjust = 1,vjust = 1,size=5),
+        axis.text.y = element_text(size=5),
+        legend.key.size = unit(0.25, "cm"),
+        legend.position = "bottom",
+        plot.margin = rep(unit(0,"null"),4),
+        axis.ticks.length = unit(0,"cm"),
+        legend.text = element_text(size = 5),
+        axis.title.x = element_text(size=6),
+        axis.title.y = element_text(size=6),
+        legend.title = element_text(size=6)
+      ) + 
+      xlab("Pathway (a:activate; i:inhibit)") ->p
+    ggsave(outfile,p,device ="png",width =4, height = height)
+    list(src = outfile,
+         contentType = 'image/png',
+         # width = "100%" ,
+         # height = 900,
+         alt = "This is alternate text")
+  }, deleteFile = FALSE)
+}
+

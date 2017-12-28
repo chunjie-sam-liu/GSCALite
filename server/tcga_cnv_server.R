@@ -3,20 +3,18 @@
 # server elements 'tcga_cnv' sub tab of 'tcga' tab
 
 # data input --------------------------------------------------------------
-# ? global data can't load here.
 # get gene set ----
 # input<-list(gene_set=c("TP53","EZH2","CD274","CD276","CD80",
 #                        "CD86","VTCN1","CD40LG","TNFRSF14",
 #                        "TNFSF9","TNFSF4","CD70",ICOS",
 #                        "BTLA","LAG3","TNFRSF9","TNFRSF4"))
 # cnv_gene_list <- reactive({
-  # c("TP53","EZH2","CD274","CD276","CD80",
-  #   "CD86","VTCN1","CD40LG","TNFRSF14",
-  #   "TNFSF9","TNFSF4","CD70","ICOS",
-  #   "BTLA","LAG3","TNFRSF9","TNFRSF4")
+# c("TP53","EZH2","CD274","CD276","CD80",
+#   "CD86","VTCN1","CD40LG","TNFRSF14",
+#   "TNFSF9","TNFSF4","CD70","ICOS",
+#   "BTLA","LAG3","TNFRSF9","TNFRSF4")
 # })
-# cnv_gene_list <- data.frame(symbol=isolate(gene_set()))
-# cnv_gene_list$symbol <- gene_list$symbol %>% as.character()
+
 
 
 # load cnv data ----
@@ -27,7 +25,7 @@ cnv_cor <- readr::read_rds(file.path(config$database, "TCGA", "cnv", "pancan34_a
 #  get cancer type --------------------------------------------------------
 cnv_cancer_type <- callModule(cancerType,"cnv")
 #give test value for cancer type
-# cancer_type <- reactive(c("KIRC","LGG","COAD","LUAD","LUSC","BRCA"))
+# cnv_cancer_type <- reactive(c("KIRC","LGG","COAD","LUAD","LUSC","BRCA"))
 output$cnv_selected_cancer <- renderText(
   cnv_cancer_type()
 )
@@ -54,6 +52,8 @@ observeEvent(input$cnv_submit,{
   # get cancer type cnv ----
 
   print(cnv_gene_list())
+  print(user_dir)
+  print(user_id)
   cnv %>%
     dplyr::mutate(filter_cnv = purrr::map(cnv, filter_gene_list, gene_list = cnv_gene_list())) %>%
     dplyr::select(-cnv) %>%
@@ -102,9 +102,13 @@ observeEvent(input$cnv_submit,{
     dplyr::mutate(
       symbol = factor(x = symbol, levels = cnv_gene_rank$symbol), 
       cancer_types = factor(x = cancer_types, levels = cnv_cancer_rank$cancer_types)) ->pie_plot_ready
+  cnv_pie_height <- cnv_gene_list() %>% length() *0.25
+  if(cnv_pie_height>15){cnv_pie_height <- 15}
+  if(cnv_pie_height<3){cnv_pie_height <- 3}
   
   callModule(piePlot, "cnv_pie", data=pie_plot_ready, y="per",
-             fill="type", facet_grid="cancer_types ~ symbol")
+             fill="type", facet_grid="symbol ~ cancer_types",
+             outfile=file.path(user_dir,"pngs",paste(user_id,"-CNV_pie_profile.png",sep="")),height=cnv_pie_height)
 
   # homo cnv plot ----
   cnv_homo_plot_ready <- cnv_plot_ready %>% 

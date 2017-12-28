@@ -7,6 +7,7 @@ observeEvent(input$input_gene_set_reset, {
 })
 observeEvent(input$analysis, {
   status$analysis <- TRUE
+  shinyjs::js$checkall()
   shinyjs::disable(id = "input_gene_set")
   shinyjs::disable(id = "analysis")
 })
@@ -21,8 +22,8 @@ observeEvent(input$example, {
   status$analysis <- FALSE
   status$gene_set <- FALSE
   shinyjs::js$example_gene_set(id = "seinput_gene_set")
-  # shinyjs::enable(id = "input_gene_set")
-  # shinyjs::enable(id = "analysis")
+  shinyjs::enable(id = "input_gene_set")
+  shinyjs::enable(id = "analysis")
 
 })
 
