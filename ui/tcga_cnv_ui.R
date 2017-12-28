@@ -44,14 +44,22 @@ tabItem(tabName = "tcga_cnv", align = "center",
         # Confirm and submit ----
         fluidRow(
           column(width = 4),
+          # column(
+          #   width = 2, offset = 0,
+          #   actionButton("cnv_select", label = "Select my cancers", icon = icon("refresh")) # ,status = "danger"?
+          # ),
           column(
             width = 2, offset = 0,
             actionButton("cnv_submit", label = "Submit!", icon = icon("check"))
           ),
           column(
             width = 2, offset = 0,
-            actionButton("cnv_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
+            actionButton("cnv_stop", label = "Stop!", icon = icon("pause"))
           ),
+          # column(
+          #   width = 2, offset = 0,
+          #   actionButton("cnv_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
+          # ),
           column(width = 4)
         ),
         shiny::tags$hr(width="85%"),
