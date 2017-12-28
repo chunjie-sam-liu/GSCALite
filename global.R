@@ -234,14 +234,16 @@ resetcancerType <- function(input, output, session){
   return(cancer_type)
 }
 
-# selectallCancer <- funtion(input, output, session){
-#   # updateCheckboxGroupInput(session,"Kidney",choices=Kidney_choice,selected=Kidney_choice)
-#   
-#   # cancer_type <- reactive({
-#   #   c("KICH","KIRC","KIRP") -> cancer_type
-#   # })
-#   # return(cancer_type)
-# }
+
+
+# hide pic when stop clicked ----------------------------------------------
+
+hidePic <- function(hideoutputlist){
+  for (i in hideoutputlist) {
+    NS(i)->ns
+    shinyjs::hide(ns("plot"))
+  }
+}
 
 ###############################################################
 # Plot function to generate plot in ui#########################
