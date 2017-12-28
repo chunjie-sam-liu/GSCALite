@@ -228,9 +228,10 @@ resetcancerType <- function(input, output, session){
   shinyjs::reset("Breast")
   shinyjs::reset("Cervix")
   shinyjs::reset("other_tissue")
-  cancer_type <- reactive({
-    c("") -> cancer_type
-  })
+  cancer_type <- c("")
+  # cancer_type <- reactive({
+  #   c("") -> cancer_type
+  # })
   return(cancer_type)
 }
 
@@ -242,6 +243,15 @@ hidePic <- function(hideoutputlist){
   for (i in hideoutputlist) {
     NS(i)->ns
     shinyjs::hide(ns("plot"))
+  }
+}
+
+# show pic when all work done ------------------------------------------
+
+showPic <- function(showoutputlist){
+  for (i in showoutputlist) {
+    NS(i)->ns
+    shinyjs::show(ns("plot"))
   }
 }
 
