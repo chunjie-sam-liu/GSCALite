@@ -203,7 +203,7 @@ cancerTypeInput <- function(id) {
   )
 }
 
-# select and submit ----
+# select and submit for UI----
 
 selectAndAnalysisInput <- function(id) {
   ns <- NS(id)
@@ -227,6 +227,9 @@ selectAndAnalysisInput <- function(id) {
   )
 }
 
+
+# Simplified cancer types -------------------------------------------------
+
 sub_cancer_types <- list(
   Kidney = c( "KICH",  "KIRC",  "KIRP"),
   Adrenal_Gland = c( "ACC", "PCPG"),
@@ -241,6 +244,9 @@ sub_cancer_types <- list(
   other_tissue = c("DLBC",  "ESCA", "STAD",  "HNSC",  "LIHC", "MESO",  "OV", "PAAD", "PRAD", "SARC", "SKCM", "TGCT", "THCA", "THYM", "UVM")
 )
 
+
+# Check and uncheck submit ------------------------------------------------
+
 check_sub_cancer_types <- function(input, output, session, .cts, .check){
   names(.cts) %>% 
     purrr::walk(
@@ -254,6 +260,9 @@ check_sub_cancer_types <- function(input, output, session, .cts, .check){
       }
     )
 }
+
+
+# Call by server to update check ------------------------------------------
 
 selectAndAnalysis <- function(input, output, session, .id) {
   observeEvent(
@@ -787,4 +796,7 @@ rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway,symbol
          alt = "This is alternate text")
   }, deleteFile = FALSE)
 }
+
+
+
 

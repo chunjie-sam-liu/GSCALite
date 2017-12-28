@@ -3,6 +3,32 @@
 source(file.path(config$wd, "functions", "data_function.R"))
 
 
+# Check box ---------------------------------------------------------------
+callModule(module = selectAndAnalysis, id = "expr", .id = "expr")
+
+# Expression submit analysis ----------------------------------------------
+
+expr_submit_analysis <- function(input, output, session, status, .expr_clean) {
+  observeEvent(
+    eventExpr = input$submit,
+    handlerExpr = {
+      if (status$analysis == TRUE) {
+        .expr_clean %>% dplyr::filter(cancer_types %in% c("KICH", "KIRC", "KIRP")) -> .d
+        print(.d)
+        # output$expr_dt_comparison = DT::renderDataTable({expr_clean_datatable(clean_data)})
+        # output$expr_bubble_plot <- renderPlot({expr_clean %>% expr_buble_plot()})
+      }
+    }
+  )
+}
+
+# Expr submit analysis ----------------------------------------------------
+expr_clean <- NULL
+
+callModule(module = expr_submit_analysis, id = "expr", status = status, .expr_clean = expr_clean)
+
+
+# From start analysis -----------------------------------------------------
 expr_analysis <- eventReactive(
   eventExpr = input$analysis,
   ignoreNULL = TRUE,
@@ -11,54 +37,32 @@ expr_analysis <- eventReactive(
     if (status$analysis == TRUE) {
       print(gene_set$match)
       
-      # load data ---- 
-      if (is.null(expr)) {
-        print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading expr data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-        expr <<- readr::read_rds(file.path(config$database, "TCGA", "expr", "pancan33_expr_filtered.rds.gz"))
-        print(glue::glue("{paste0(rep('-', 10), collapse = '')} loading expr data complete @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-      }
+      # load data expr ---- 
+      load_data_expr()
       
-      gene_set <- readr::read_rds(path = file.path(config$wd, "userdata", "test_gene_set.rds.gz"))
-      isolate({reactiveValuesToList(gene_set)}) -> gene_set
+      # gene_set <- readr::read_rds(path = file.path(config$wd, "userdata", "test_gene_set.rds.gz"))
+      # isolate({reactiveValuesToList(gene_set)}) -> gene_set
       
       expr %>%
         dplyr::filter(cancer_types %in% paired_cancer_types) %>%
-        clean_expr(.gs = gene_set$match) -> expr_clean
+        clean_expr(.gs = gene_set$match) ->> expr_clean
       
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} clean data complete @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
       
       # The table output
-      output$expr_dt_comparison = DT::renderDataTable({
-        DT::datatable(
-          data = expr_clean,
-          options = list(
-            pageLength = 10, 
-            autoWidth = TRUE, 
-            order = list(list(5, "asc"), list(7, "desc"), list(6, "desc")),
-            dom = 'Bfrtip',
-            buttons = c('copy', 'csv', 'print')
-          ),
-          rownames = FALSE,
-          colnames = c("Cancer Types", "Symbol", "Normal expr.", "Tumor expr.", "Fold Change", "P-value", "FDR", "#Nomal", "#Tumor"),
-          filter = "top",
-          extensions = "Buttons",
-          style = 'bootstrap',
-          class = 'table-bordered table-condensed'
-          ) %>% 
-          DT::formatSignif(columns = c("Normal", "Tumor", "fc", "p.value", "fdr"), digits = 2) %>% 
-          DT::formatRound(columns = c("Normal", "Tumor", "fc", "p.value", "fdr"), 2)
-        })
+      output$expr_dt_comparison = DT::renderDataTable({expr_clean_datatable(clean_data)})
       
       # plot
-      expr_clean %>% expr_buble_plot() -> p
-      
+      output$expr_bubble_plot <- renderPlot({expr_clean %>% expr_buble_plot()})
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} expr bubble plot complete @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-      output$expr_bubble_plot <- renderPlot({p})
     }
   }
 )
-
-
-callModule(module = selectAndAnalysis, id = "expr", .id = "expr")
-
 observe(expr_analysis())
+
+
+
+
+
+
+

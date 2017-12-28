@@ -1,6 +1,8 @@
 # sourced by "ui.R"
 
 
+# Basic description -------------------------------------------------------
+
 tabItem(
   tabName = "tcga_expr", align = "center",
   
@@ -26,7 +28,7 @@ tabItem(
   
   fluidRow(column(width = 10, offset = 1, cancerTypeInput("expr"))),
   
-  # Cancer type selection
+  # Cancer type selection ----
   fluidRow(selectAndAnalysisInput("expr")),
   
   # Plot result ----
