@@ -280,18 +280,96 @@ cancerTypeInput <- function(id) {
     )
   )
 }
+
+# select and submit for UI----
+
+selectAndAnalysisInput <- function(id) {
+  ns <- NS(id)
+  shiny::tagList(
+    column(
+      width = 2, offset = 4,
+      switchInput(
+        inputId = ns("switch"), value = TRUE,
+        onLabel = "Select All",
+        offLabel = "Deselect All"
+      )
+    ),
+    column(
+      width = 2, offset = 1,
+      shiny::tags$div(
+        style = "margin:3px;", class = "form-group shiny-input-container",
+        shinyBS::bsButton(inputId = ns("submit"), label = "Analysis", icon = icon(name = "fire"))
+      )
+    ),
+    column(width = 4)
+  )
+}
+
+
+# Simplified cancer types -------------------------------------------------
+
+sub_cancer_types <- list(
+  Kidney = c( "KICH",  "KIRC",  "KIRP"),
+  Adrenal_Gland = c( "ACC", "PCPG"),
+  Brain = c("GBM", "LGG"),
+  Colorectal = c( "COAD", "READ"),
+  Lung  = c("LUAD", "LUSC"),
+  Uterus = c("UCEC",  "UCS"),
+  Bile_Duct = c("BLCA"),
+  Bone_Marrow = c("LAML"),
+  Breast = c("BRCA"),
+  Cervix = c("CESC"),
+  other_tissue = c("DLBC",  "ESCA", "STAD",  "HNSC",  "LIHC", "MESO",  "OV", "PAAD", "PRAD", "SARC", "SKCM", "TGCT", "THCA", "THYM", "UVM")
+)
+
+
+# Check and uncheck submit ------------------------------------------------
+
+check_sub_cancer_types <- function(input, output, session, .cts, .check){
+  names(.cts) %>% 
+    purrr::walk(
+      .f = function(.x) {
+        .selected <- if (.check) .cts[[.x]] else character(0)
+        updateCheckboxGroupButtons(
+          session = session, 
+          inputId = .x, selected = .selected, 
+          checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon"))
+        )
+      }
+    )
+}
+
+
+# Call by server to update check ------------------------------------------
+
+selectAndAnalysis <- function(input, output, session, .id) {
+  observeEvent(
+    eventExpr = input$switch,
+    handlerExpr = {
+      if (input$switch) {
+        check_sub_cancer_types(input, output, session, sub_cancer_types, TRUE)
+        print(glue::glue("{paste0(rep('-', 10), collapse = '')} Select all {.id} @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+        
+      } else{
+        check_sub_cancer_types(input, output, session, sub_cancer_types, FALSE)
+        print(glue::glue("{paste0(rep('-', 10), collapse = '')} Deselect all {.id} @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+      }
+    }
+  )
+}
+
+
 # cancerType server function ----------------------------------------------
 # pair with cancerTypeInput in functions_ui.R##
 # Call by *_*_server.R by callModule(cancerType,"id pair with UI part")
 cancerType <- function(input, output, session) {
-  cancer_type <- reactive({
+  reactive({
     c(
       input$Kidney, input$Adrenal_Gland, input$Brain, input$Colorectal,
       input$Lung, input$Uterus, input$Bile_Duct, input$Bone_Marrow, input$Breast,
       input$Cervix, input$other_tissue
-    ) -> cancer_type
+    )
   })
-  return(cancer_type)
 }
 
 resetcancerType <- function(input, output, session){
@@ -306,20 +384,32 @@ resetcancerType <- function(input, output, session){
   shinyjs::reset("Breast")
   shinyjs::reset("Cervix")
   shinyjs::reset("other_tissue")
-  cancer_type <- reactive({
-    c("") -> cancer_type
-  })
+  cancer_type <- c("")
+  # cancer_type <- reactive({
+  #   c("") -> cancer_type
+  # })
   return(cancer_type)
 }
 
-# selectallCancer <- funtion(input, output, session){
-#   # updateCheckboxGroupInput(session,"Kidney",choices=Kidney_choice,selected=Kidney_choice)
-#   
-#   # cancer_type <- reactive({
-#   #   c("KICH","KIRC","KIRP") -> cancer_type
-#   # })
-#   # return(cancer_type)
-# }
+
+
+# hide pic when stop clicked ----------------------------------------------
+
+hidePic <- function(hideoutputlist){
+  for (i in hideoutputlist) {
+    NS(i)->ns
+    shinyjs::hide(ns("plot"))
+  }
+}
+
+# show pic when all work done ------------------------------------------
+
+showPic <- function(showoutputlist){
+  for (i in showoutputlist) {
+    NS(i)->ns
+    shinyjs::show(ns("plot"))
+  }
+}
 
 ###############################################################
 # Plot function to generate plot in ui#########################
@@ -662,13 +752,13 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
   output$plot <- renderPlot({
     CPCOLS <- c("red", "white", "blue")
     data %>%
-      ggplot(aes_string(x=cancer,y=gene)) +
+      ggplot(aes_string(x=gene,y=cancer)) +
       geom_point(aes_string(size = size,color = color)) +
-      scale_y_discrete(limit = gene_rank$symbol) +
-      scale_x_discrete(limit = cancer_rank$cancer_types) +
+      scale_x_discrete(limit = gene_rank$symbol) +
+      scale_y_discrete(limit = cancer_rank$cancer_types) +
       labs(title = title) +
-      ylab("Symbol") +
-      xlab("Cancer types") +
+      xlab("Symbol") +
+      ylab("Cancer types") +
       scale_size_continuous(
         name = sizename #"-Log10(FDR)"
       ) +
@@ -834,3 +924,27 @@ rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway,symbol
   }, deleteFile = FALSE)
 }
 
+
+
+
+# Expr output -------------------------------------------------------------
+
+exprOutput <- function(id){
+  ns <- NS(id)
+  column(
+    width = 10, offset = 1,
+    shinydashboard::tabBox(
+      id = "expr_plot", title = "PLOT",width = 12,
+    # bubble plot for tumor vs. normal
+      tabPanel(
+        title = "Tumor vs. Normal", 
+        plotOutput(outputId = ns("expr_bubble_plot"))
+      ),
+      # datatable
+      tabPanel(
+        title = "Table of comparison",
+        DT::dataTableOutput(outputId = ns("expr_dt_comparison"))
+      )
+    )
+  )
+}

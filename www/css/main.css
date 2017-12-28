@@ -3,13 +3,13 @@
 
 /*        Header           */
 .skin-blue .main-header .logo {
-    background-color: #4CAF50;
+    background-color: #008c81;
 } /* logo */
 .skin-blue .main-header .logo:hover {
-    background-color: #4CAF50;
+    background-color: #008c81;
 } /* logo when hovered */
 .skin-blue .main-header .navbar {
-    background-color: #4CAF50;
+    background-color: #008c81;
 } /* navbar (rest of the header) */
 
 .main-header .logo {
@@ -32,10 +32,10 @@
     background-color: #BDBDBD;
 } /* other links in the sidebarmenu when hovered */                    
 .skin-blue .main-header .navbar .sidebar-toggle:hover{
-    background-color: #4CAF50;
+    background-color: #008c81;
 } /* toggle button when hovered  */
 .skin-blue .sidebar-menu > li.active > a, .skin-blue .sidebar-menu > li:hover > a {
-  border-left-color: #4CAF50;
+  border-left-color: #008c81;
 } /* little stripe on left of selected tab */
 
 .left-side, .main-sidebar {
@@ -62,11 +62,11 @@ line-height: 1.5 !important;
 
 /*                   Boxes                 */
 .box.box-solid.box-primary > .box-header {
-    background: #4CAF50 none repeat scroll 0 0; /* solid header col */
+    background: #008c81 none repeat scroll 0 0; /* solid header col */
     color: #fff; /* text col */
 } /* box, solid header, status primary */
 .box.box-solid.box-primary {
-  border: 1px solid #4CAF50; 
+  border: 1px solid #008c81; 
 } /* thin box border */
 .box { /* background colour */
   background: #ffffff none repeat scroll 0 0;
@@ -76,7 +76,7 @@ line-height: 1.5 !important;
   background-color: #2196F3 !important;
 } /* background colour */
 .box.box-primary {
-  border-top-color: #4CAF50;
+  border-top-color: #008c81;
 } /* usual (not solid) box headder colour */
 .box {
   box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
@@ -115,29 +115,29 @@ height: 60px;
 /*                Tabset Box                */
 /* box tabset, light header, status primary */
 .nav-tabs-custom > .nav-tabs { 
-  border-bottom-color: #4CAF50;
+  border-bottom-color: #008c81;
 } 
 
 .nav-tabs-custom > .nav-tabs > li.active { 
-  border-bottom-color: #4CAF50;
-  /* border-top-color: #4CAF50; */
+  border-bottom-color: #008c81;
+  /* border-top-color: #008c81; */
   border-top: 1px solid transparent;
 } /* thin line seperating nav tabs from box content */
 .nav-tabs-custom > .nav-tabs > li.active > a {
-    /* background-color: #4CAF50; */
-    color: #4CAF50;
+    /* background-color: #008c81; */
+    color: #008c81;
     font-weight: bold;
-    /* border-top-color: #4CAF50; */
-    border-bottom: 3px solid #4CAF50;
+    /* border-top-color: #008c81; */
+    border-bottom: 3px solid #008c81;
     border-left: 0px;
     border-right: 0px;
 /*border-left-color: #ffffff;
   border-right-color: #ffffff; */
 }
 .nav-tabs-custom > .nav-tabs > li.active > a:hover {
-  background-color: #4CAF50;
+  background-color: #008c81;
   color: #FFFFFF;
-	border-top-color: #4CAF50;
+	border-top-color: #008c81;
   border-bottom-color: #ffffff;
   border-left: 0px;
   border-right: 0px;
@@ -177,17 +177,17 @@ a {
   color: #111111;
 } /*   color of text in dropdown */
 .alert-success, .bg-green, .callout.callout-success, .label-success, .modal-success .modal-body {
-  background-color: #4CAF50 !important;
+  background-color: #008c81 !important;
 } /* bkg color of little number of notification menu */
 .bg-light-blue, .label-primary, .modal-primary .modal-body {
-  background-color: #4CAF50 !important;
+  background-color: #008c81 !important;
 } /* that other little number notitfication thingy */
 
 
 /*                Action Button              */
 .btn-default {
-  background-color: #4CAF50;
-  border-color: #4CAF50;
+  background-color: #008c81;
+  border-color: #008c81;
   color: #ffffff; /* font col */
 } /* enabled button */
 .btn-default.disabled, .btn-default.disabled.active, .btn-default.disabled.focus, .btn-default.disabled:active, .btn-default.disabled:focus, .btn-default.disabled:hover, .btn-default[disabled], .btn-default.active[disabled], .btn-default.focus[disabled], .btn-default[disabled]:active, .btn-default[disabled]:focus, .btn-default[disabled]:hover, fieldset[disabled] .btn-default, fieldset[disabled] .btn-default.active, fieldset[disabled] .btn-default.focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .btn-default:focus, fieldset[disabled] .btn-default:hover {
@@ -225,13 +225,13 @@ hr {
   color: #616161;
 }
 .text-primary {
-  color: #4CAF50;
+  color: #008c81;
 }
 a.text-primary:hover {
   color: #388E3C;
 }
 .text-success {
-  color: #4CAF50;
+  color: #008c81;
 }
 a.text-success:hover {
   color: #388E3C;
@@ -256,14 +256,14 @@ a.text-danger:hover {
 }
 .bg-primary {
   color: #fff;
-  background-color: #4CAF50;
+  background-color: #008c81;
 }
 a.bg-primary:hover {
   background-color: #388E3C;
 }
 .bg-success {
 	color: #fff;
-  background-color: #4CAF50;
+  background-color: #008c81;
 }
 a.bg-success:hover {
   background-color: #388E3C;
@@ -347,7 +347,7 @@ input[type='radio']:checked:before {
 .cloud li {
     list-style: none;
     display: inline;
-    color: #4CAF50;
+    color: #008c81;
 }
 .cloud li:nth-of-type(3n + 1) {
     font-size: 1.5em;S

@@ -130,7 +130,11 @@ status <- reactiveValues(
   "gene_set" = FALSE,
   "analysis" = FALSE,
   "tcga_expr" = FALSE,
-  "trigger" = FALSE
+  "trigger" = FALSE,
+  "cnv_submit" = FALSE,
+  "snv_submit" = FALSE,
+  "meth_submit" = FALSE,
+  "rppa_submit" = FALSE
 )
 
 error <- reactiveValues(
@@ -175,9 +179,6 @@ print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading symbol @ {Sy
 
 expr <- NULL
 
-#print(file.path(config$database, "GTEx", "expression", "gtex_gene_tmp_annotation_phenotype_v7.rds.gz"))
-
-#gtex.expr <- readr::read_rds(file.path(config$database, "GTEx", "expression", "gtex_gene_tmp_annotation_phenotype_v7.rds.gz"))
 
 
 

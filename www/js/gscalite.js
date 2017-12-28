@@ -24,6 +24,6 @@ shinyjs.checkall = function() {
 };
 
 shinyjs.uncheckall = function() {
-  $("button.btn.checkbtn.btn-default").removeClass("active")
+  $("button.btn.checkbtn.btn-default").removeClass("active");
   $('input[type="checkbox"]').prop("checked", false);
 };

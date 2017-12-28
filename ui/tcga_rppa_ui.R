@@ -53,8 +53,12 @@ tabItem(
     ),
     column(
       width = 2, offset = 0,
-      actionButton("rppa_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
+      actionButton("rppa_stop", label = "Stop!", icon = icon("pause"))
     ),
+    # column(
+    #   width = 2, offset = 0,
+    #   actionButton("rppa_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
+    # ),
     column(width = 4)
   ),
   shiny::tags$hr(width = "85%"),
