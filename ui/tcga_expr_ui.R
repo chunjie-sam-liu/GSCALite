@@ -24,34 +24,10 @@ tabItem(
   # For help page
   # source(file.path(config$ui,"tcga_cnv_help.R"))$value,
   
-  fluidRow(
-    column(
-      width = 10, offset = 1,
-      cancerTypeInput("expr")
-    )
-  ),
+  fluidRow(column(width = 10, offset = 1, cancerTypeInput("expr"))),
   
   # Cancer type selection
-  fluidRow(
-    column(width = 2),
-    column(
-      width = 2, 
-      switchInput(
-        inputId = "id", value = TRUE,
-        onLabel = "Select All",
-        offLabel = "Deselect All"
-        )
-      ),
-    column(
-      width = 2, offset = 1,
-      actionButton("expr_submit", label = "Submit!", icon = icon("check"))
-    ),
-    column(
-      width = 2, offset = 0,
-      actionButton("expr_reset", label = "Resect!", icon = icon("refresh"))
-    ),
-    column(width = 4)
-  ),
+  fluidRow(selectAndAnalysisInput("expr")),
   
   # Plot result ----
   fluidRow(

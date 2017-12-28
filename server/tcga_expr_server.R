@@ -58,4 +58,7 @@ expr_analysis <- eventReactive(
   }
 )
 
+
+callModule(module = selectAndAnalysis, id = "expr", .id = "expr")
+
 observe(expr_analysis())

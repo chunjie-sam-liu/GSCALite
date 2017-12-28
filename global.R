@@ -202,6 +202,76 @@ cancerTypeInput <- function(id) {
     )
   )
 }
+
+# select and submit ----
+
+selectAndAnalysisInput <- function(id) {
+  ns <- NS(id)
+  shiny::tagList(
+    column(
+      width = 2, offset = 4,
+      switchInput(
+        inputId = ns("switch"), value = TRUE,
+        onLabel = "Select All",
+        offLabel = "Deselect All"
+      )
+    ),
+    column(
+      width = 2, offset = 1,
+      shiny::tags$div(
+        style = "margin:3px;", class = "form-group shiny-input-container",
+        shinyBS::bsButton(inputId = ns("submit"), label = "Analysis", icon = icon(name = "fire"))
+      )
+    ),
+    column(width = 4)
+  )
+}
+
+sub_cancer_types <- list(
+  Kidney = c( "KICH",  "KIRC",  "KIRP"),
+  Adrenal_Gland = c( "ACC", "PCPG"),
+  Brain = c("GBM", "LGG"),
+  Colorectal = c( "COAD", "READ"),
+  Lung  = c("LUAD", "LUSC"),
+  Uterus = c("UCEC",  "UCS"),
+  Bile_Duct = c("BLCA"),
+  Bone_Marrow = c("LAML"),
+  Breast = c("BRCA"),
+  Cervix = c("CESC"),
+  other_tissue = c("DLBC",  "ESCA", "STAD",  "HNSC",  "LIHC", "MESO",  "OV", "PAAD", "PRAD", "SARC", "SKCM", "TGCT", "THCA", "THYM", "UVM")
+)
+
+check_sub_cancer_types <- function(input, output, session, .cts, .check){
+  names(.cts) %>% 
+    purrr::walk(
+      .f = function(.x) {
+        .selected <- if (.check) .cts[[.x]] else character(0)
+        updateCheckboxGroupButtons(
+          session = session, 
+          inputId = .x, selected = .selected, 
+          checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon"))
+        )
+      }
+    )
+}
+
+selectAndAnalysis <- function(input, output, session, .id) {
+  observeEvent(
+    eventExpr = input$switch,
+    handlerExpr = {
+      if (input$switch) {
+        check_sub_cancer_types(input, output, session, sub_cancer_types, TRUE)
+        print(glue::glue("{paste0(rep('-', 10), collapse = '')} Select all {.id} @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+        
+      } else{
+        check_sub_cancer_types(input, output, session, sub_cancer_types, FALSE)
+        print(glue::glue("{paste0(rep('-', 10), collapse = '')} Deselect all {.id} @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+      }
+    }
+  )
+}
+
+
 # cancerType server function ----------------------------------------------
 # pair with cancerTypeInput in functions_ui.R##
 # Call by *_*_server.R by callModule(cancerType,"id pair with UI part")
