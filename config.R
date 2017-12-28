@@ -16,6 +16,11 @@ config$version <- "1.0.0"
 # config$wd <- "/home/liucj/github/GSCALite"
 config$wd <- "/project/huff/huff/github/GSCALite"
 
+config$wd <- "/home/liucj/github/GSCALite"
+# config$wd <- "/home/zhangq/github/GSCALite"
+# config$wd <- "/project/huff/huff/github/GSCALite"
+
+
 # User directory ----------------------------------------------------------
 # This controls the unique directory,
 # which is set for every user at the beginning of a session is created.

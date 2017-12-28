@@ -9,6 +9,75 @@
 ## cancerTypeInput & cancerType############
 ##########################################
 
+# GTEx normal tissue choice ##############
+
+source(file = "config.R", local = TRUE)
+gtex_expr.tissues <- read.table(file.path(config$database, "GTEx", "expression","GTEx_tissue_name.lst"),sep="\t",stringsAsFactors=F)$V1 
+gtex_expr.tissue_n <- length(gtex_expr.tissues)
+gtex_expr.tissue_lst <- list() 
+length(gtex_expr.tissue_lst)<- gtex_expr.tissue_n 
+for(i in 1:gtex_expr.tissue_n){gtex_expr.tissue_lst[i]<-gtex_expr.tissues[i]}
+names(gtex_expr.tissue_lst) <- gtex_expr.tissues
+
+tabPannel_element_ten <- c()
+for(i in gtex_expr.tissues[1:10]){
+  tmp_XXXX <- list(i=i);names(tmp_XXXX <-i);
+  assign(paste("GTEx_",i,"_choice",sep = ""),tmp_XXXX)
+  tabPannel_element_ten <-c(tabPannel_element_ten,
+                            paste("tabPanel(\"",i,"\",checkboxGroupInput(inputId = ns(\"",i,"\"), label = NULL, inline = TRUE,choices = ",paste("GTEx_",i,"_choice)),",sep=""),sep="")
+  )  
+}
+GTEx_other_tissue_choice <- gtex_expr.tissues[11:gtex_expr.tissue_n]
+GTEx_input_choice <- c(paste("input$",gtex_expr.tissues[1:10],sep=""),"input$other_tissue")
+
+
+GTExTissueTypeInput <- function(id) {
+  ns <- NS(id)
+  
+  tagList(
+    fluidRow(
+      # tissue type selection----
+      column(
+        width = 10,
+        offset = 1,
+        shiny::tags$br(),
+        shiny::tags$h3("GTEx normal tissue Selection", class = "text-success"),
+        shiny::tags$br(),
+        
+        shinydashboard::tabBox(
+          width = 12, title = "Tissue",
+          eval(tabPannel_element_ten),
+          tabPanel(
+            "Other tissues",
+            checkboxGroupInput(
+              inputId = ns("other_tissue"), label = NULL, inline = TRUE,
+              choices = GTEx_other_tissue_choice
+            )
+          )
+        )
+      ),
+      shiny::tags$hr(width = "85%")
+    )
+  )
+}
+
+GTEx_normal_Tissue <- function(input, output, session) {
+  GTEx_normal_tissue <- reactive({eval(parse(text = GTEx_input_choice)) -> GTEx_normal_tissue })
+
+  return(GTEx_normal_tissue)
+}
+
+resetGTExTissueType <- function(input, output, session){
+  for(i in c(tabPannel_element_ten,"other_tissue")){
+    shinyjs::reset(i)
+  }
+  GTEx_normal_tissue <- reactive({
+    c("") -> GTEx_normal_tissue
+  })
+  return(GTEx_normal_tissue)
+}
+
+
 # cancer type choice ------------------------------------------------------
 
 Kidney_choice <- list(
@@ -202,18 +271,96 @@ cancerTypeInput <- function(id) {
     )
   )
 }
+
+# select and submit for UI----
+
+selectAndAnalysisInput <- function(id) {
+  ns <- NS(id)
+  shiny::tagList(
+    column(
+      width = 2, offset = 4,
+      switchInput(
+        inputId = ns("switch"), value = TRUE,
+        onLabel = "Select All",
+        offLabel = "Deselect All"
+      )
+    ),
+    column(
+      width = 2, offset = 1,
+      shiny::tags$div(
+        style = "margin:3px;", class = "form-group shiny-input-container",
+        shinyBS::bsButton(inputId = ns("submit"), label = "Analysis", icon = icon(name = "fire"))
+      )
+    ),
+    column(width = 4)
+  )
+}
+
+
+# Simplified cancer types -------------------------------------------------
+
+sub_cancer_types <- list(
+  Kidney = c( "KICH",  "KIRC",  "KIRP"),
+  Adrenal_Gland = c( "ACC", "PCPG"),
+  Brain = c("GBM", "LGG"),
+  Colorectal = c( "COAD", "READ"),
+  Lung  = c("LUAD", "LUSC"),
+  Uterus = c("UCEC",  "UCS"),
+  Bile_Duct = c("BLCA"),
+  Bone_Marrow = c("LAML"),
+  Breast = c("BRCA"),
+  Cervix = c("CESC"),
+  other_tissue = c("DLBC",  "ESCA", "STAD",  "HNSC",  "LIHC", "MESO",  "OV", "PAAD", "PRAD", "SARC", "SKCM", "TGCT", "THCA", "THYM", "UVM")
+)
+
+
+# Check and uncheck submit ------------------------------------------------
+
+check_sub_cancer_types <- function(input, output, session, .cts, .check){
+  names(.cts) %>% 
+    purrr::walk(
+      .f = function(.x) {
+        .selected <- if (.check) .cts[[.x]] else character(0)
+        updateCheckboxGroupButtons(
+          session = session, 
+          inputId = .x, selected = .selected, 
+          checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon"))
+        )
+      }
+    )
+}
+
+
+# Call by server to update check ------------------------------------------
+
+selectAndAnalysis <- function(input, output, session, .id) {
+  observeEvent(
+    eventExpr = input$switch,
+    handlerExpr = {
+      if (input$switch) {
+        check_sub_cancer_types(input, output, session, sub_cancer_types, TRUE)
+        print(glue::glue("{paste0(rep('-', 10), collapse = '')} Select all {.id} @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+        
+      } else{
+        check_sub_cancer_types(input, output, session, sub_cancer_types, FALSE)
+        print(glue::glue("{paste0(rep('-', 10), collapse = '')} Deselect all {.id} @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+      }
+    }
+  )
+}
+
+
 # cancerType server function ----------------------------------------------
 # pair with cancerTypeInput in functions_ui.R##
 # Call by *_*_server.R by callModule(cancerType,"id pair with UI part")
 cancerType <- function(input, output, session) {
-  cancer_type <- reactive({
+  reactive({
     c(
       input$Kidney, input$Adrenal_Gland, input$Brain, input$Colorectal,
       input$Lung, input$Uterus, input$Bile_Duct, input$Bone_Marrow, input$Breast,
       input$Cervix, input$other_tissue
-    ) -> cancer_type
+    )
   })
-  return(cancer_type)
 }
 
 resetcancerType <- function(input, output, session){
@@ -272,6 +419,44 @@ PlotInput <- function(id, width, height) {
     # sliderInput(ns("num"),label = "Select size of number",min=10,max = 100,value = 50)
   )
 }
+
+#####################GTEx expression heatmap plot by zhangq#########################
+
+heatmap_GTEX_Plot <- function(input, output, session, data){
+  output$plot <- renderPlot({
+  ggplot(data, aes(Tissue, GeneName)) +
+    geom_tile(aes(fill = RPKM)) + 
+    geom_text(aes(label = RPKM)) +
+    scale_fill_gradient(low = "white", high = "red")+
+    labs(title = "Expression value of query genes in GTEx dataset")+
+    theme(plot.title=element_text(hjust=0.5), axis.text.x = element_text(angle = 45, hjust = 1)) -> p
+    return(p)
+  })
+}
+
+box_GTEx_GSVA_Plot <- function(input, output, session, data){
+  output$plot <- renderPlot({
+  data %>% 
+    dplyr::group_by(SMTS) %>% 
+    dplyr::summarise(m = median(gsva)) %>% 
+    dplyr::arrange(m) %>% dplyr::pull(SMTS) -> lev
+  tcc <- tibble(SMTS=lev,color=rainbow(length(lev)))
+  data %>% 
+    dplyr::mutate(SMTS = factor(SMTS, levels = lev)) %>% 
+      ggplot(aes(x = SMTS, y = gsva)) +
+      stat_boxplot(geom = 'errorbar', width = 0.3) +
+      geom_boxplot(outlier.colour = NA) +
+      geom_point(aes(color = SMTS), position = position_jitter(width = 0.05), alpha = 0.4,size = 0.8) +
+      scale_color_manual(name = "Tissues",values = dplyr::slice(tcc, match(lev, SMTS)) %>% dplyr::pull(color)) +
+      theme(axis.line = element_line(color = "black"),axis.text.x = element_text(hjust = 1, vjust = 0.5, angle = 90),
+	panel.grid = element_blank(),panel.background = element_rect(fill = "white", color = NA),panel.spacing.x = unit(0, "lines")) +
+      guides(color = F) +labs(x = "Tissue", y = "GSVA Score", title = "") -> p
+  return(p)
+  })
+}
+
+
+
 
 Plot <- function(input, output, session) { # data(raw data, gene set, cancer types),plot type(decide function type)
   # size <- reactive(as.numeric(input$num))
@@ -730,3 +915,27 @@ rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway,symbol
   }, deleteFile = FALSE)
 }
 
+
+
+
+# Expr output -------------------------------------------------------------
+
+exprOutput <- function(id){
+  ns <- NS(id)
+  column(
+    width = 10, offset = 1,
+    shinydashboard::tabBox(
+      id = "expr_plot", title = "PLOT",width = 12,
+    # bubble plot for tumor vs. normal
+      tabPanel(
+        title = "Tumor vs. Normal", 
+        plotOutput(outputId = ns("expr_bubble_plot"))
+      ),
+      # datatable
+      tabPanel(
+        title = "Table of comparison",
+        DT::dataTableOutput(outputId = ns("expr_dt_comparison"))
+      )
+    )
+  )
+}
