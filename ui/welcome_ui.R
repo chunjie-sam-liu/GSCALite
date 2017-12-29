@@ -18,7 +18,7 @@ tabItem(
         style = "height: 200px;"
       ),
       
-      shiny::tags$p(class = "lead","GSCALite offers you a web-based plattform for your gene set analysis of cancer.")
+      shiny::tags$h1("GSCALite offers you a web-based platform for Gene Set Cancer Analysis.")
       )
   ),
 
@@ -78,42 +78,99 @@ tabItem(
   fluidRow(
     column(
       width = 10, offset = 1,
-      shiny::tags$h1("GSCALite is a user-friendly analysis suite for gene set in cancer."),
 
       # Descriptions ----
-      column(
-        width = 6,
-        shiny::tags$p(class = "lead", "Explore your Data, Explore your Analysis."),
-        shiny::tags$p(
-          class = "text-justify",
-          "GSCALite is a web-based analysis platform for gene set cancer analysis.",
-          "GSCALite was developed with user experience in mind and provides you with a one-in-all data analysis workflow.",
-          "And once you are finished, you can download all the data as well as your analysis as an interactive HTML report."
-        ),
-        shiny::tags$br()
-      ),
+      # column(width = 6,
+        shinydashboard::box(title = "Explore your Data, Explore your Analysis.",
+                            solidHeader = TRUE,
+                            width = 6,
+                            status = "success",
+                            shiny::tags$p(
+                              class = "text-justify",
+                              "GSCALite is a web-based analysis platform for gene set cancer analysis. The alterations on DNA or RNA of cancer related genes may be contribute to the cancer initiation, progress, diagnosis, prognosis, therapy. As the cancer genomics big data available, it is very useful and urgent to provide a platform for gene set analysis in cancer. In this GSCALite, we integrated cancer genomics data of 33 cancer types from",
+                              shiny::tags$a("TCGA",href="https://cancergenome.nih.gov/", target="_blank", style="color:blue"),
+                              ", Drug response data from ",
+                              shiny::tags$a("GDSC",href="http://www.cancerrxgene.org/", target="_blank", style="color:blue"),
+                              " and ",
+                              shiny::tags$a("CTRP",href="http://www.cancerrxgene.org/", target="_blank", style="color:blue"), 
+                              " as well as normal tissue data from",
+                              shiny::tags$a("GTEx",href="https://www.gtexportal.org/home/datasets", target="_blank", style="color:blue"), 
+                              "for gene set analysis in a one-in-all data analysis workflow. When the analysis finished, users can download all the results and figures as an interactive HTML report.")
+                            ),
+      # ),
 
       # Features ----
-      column(
-        width = 6,
-        shiny::tags$ul(
-          class = "cloud", style = "width:80%;",
-          shiny::tags$li("Interactive"),
-          shiny::tags$li("Easy-to-use"),
-          shiny::tags$li("Gene set analysis"),
-          shiny::tags$li("Cancer"),
-          shiny::tags$li("GTEx"),
-          shiny::tags$li("TCGA"),
-          shiny::tags$li("GDSC"),
-          shiny::tags$li("CTRP"),
-          shiny::tags$li("Methylation"),
-          shiny::tags$li("Network"),
-          shiny::tags$li("Copy Number Variation"),
-          shiny::tags$li("Single Nucleotide Mutation"),
-          shiny::tags$li("Gene Set Analysis"),
-          shiny::tags$li("Drug correlation")
+      # column(
+      #   width = 6,
+        shinydashboard::box(title = "In GSCALite, you can get:",
+                            width = 6,
+                            status = "success",
+                            solidHeader = TRUE,
+                            shiny::tags$p(
+                              class= "text-left",
+                              icon("hand-o-right"),
+                              " mRNA expression differences between tumor and normal samples, ",
+                              "and influence of mRNA expression on clinical features such as survival, stage and subtypes in each cancer types."
+                            ),
+                            shiny::tags$p(
+                              class= "text-left",
+                              icon("hand-o-right"),
+                              "  Single nucleotide mutate frequency of genes in each cancers, ",
+                              "and influence of SNV on overall survival."
+                            ),
+                            shiny::tags$p(
+                              class= "text-left",
+                              icon("hand-o-right"),
+                              "  Overall frequency Copy number variation of genes in each cancers, include Heterozygous CNV and Homozygous CNV,",
+                              " and influence of CNV on gene expression."
+                            ),
+                            shiny::tags$p(
+                              class= "text-left",
+                              icon("hand-o-right"),
+                              "  Methylation differences between tumor and normal samples,",
+                              " and influence of methylation level on gene expression and overall survival."
+                            ),
+                            shiny::tags$p(
+                              class= "text-left",
+                              icon("hand-o-right"),
+                              "  Genes potentially regulate the activity of 10 famous cancer related pathways."
+                            ),
+                            shiny::tags$p(
+                              class= "text-left",
+                              icon("hand-o-right"),
+                              "  A network in which genes potentially regulated by the miRNAs."
+                            ),
+                            shiny::tags$p(
+                              class= "text-left",
+                              icon("hand-o-right"),
+                              " Genes Whose expression may influence the drugs resistance."
+                            ),
+                            shiny::tags$p(
+                              class= "text-left",
+                              icon("hand-o-right"),
+                              " Genes' expression profile and variation in normal tissue."
+                            )
+                            # 
+                            # shiny::tags$ul(
+                            #   class = "cloud", style = "width:80%;",
+                            #   shiny::tags$li("Interactive"),
+                            #   shiny::tags$li("Easy-to-use"),
+                            #   shiny::tags$li("Gene set analysis"),
+                            #   shiny::tags$li("Cancer"),
+                            #   shiny::tags$li("GTEx"),
+                            #   shiny::tags$li("TCGA"),
+                            #   shiny::tags$li("GDSC"),
+                            #   shiny::tags$li("CTRP"),
+                            #   shiny::tags$li("Methylation"),
+                            #   shiny::tags$li("Network"),
+                            #   shiny::tags$li("Copy Number Variation"),
+                            #   shiny::tags$li("Single Nucleotide Mutation"),
+                            #   shiny::tags$li("Gene Set Analysis"),
+                            #   shiny::tags$li("Drug correlation")
+                            # )
+
         )
-      )
+      # )
     )
   ),
 
