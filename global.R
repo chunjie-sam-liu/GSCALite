@@ -301,7 +301,11 @@ selectAndAnalysisInput <- function(id) {
         shinyBS::bsButton(inputId = ns("submit"), label = "Analysis", icon = icon(name = "fire"))
       )
     ),
-    column(width = 4)
+    column(width = 4),
+    column(
+      width = 8, offset = 2,
+      uiOutput(outputId = "submit_error")
+      )
   )
 }
 

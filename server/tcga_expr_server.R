@@ -22,7 +22,7 @@ expr_submit_analysis <- function(input, output, session, status, .expr_clean) {
         .expr_clean %>% dplyr::filter(cancer_types %in% expr_cancer_type()) -> .d
         output$expr_dt_comparison = DT::renderDataTable({expr_clean_datatable(.d)})
         output$expr_bubble_plot <- renderPlot({.d %>% expr_buble_plot()})
-      }
+      } 
     }
   )
 }
