@@ -20,7 +20,7 @@ tabItem(
                       </font>
                       </h1>
                       <hr>
-                      <p class='lead'>RPPA data from TCPA are used to calculate score (see details <code>help page</code> below) for <b>10 cancer related pathways</b> and <b>32 cancer types</b>, and a correlation is generated between candidate gene expression and a specific pathway score (see details <code>help page</code> below). Here we show you the relationship between gene expression and pathway activity.</p>
+                      <p class='lead'>RPPA data from TCPA are used to calculate score for <b>10 cancer related pathways</b> and <b>32 cancer types</b>, and a relationship is generated between candidate gene expression and a specific pathway score (see details <code>help page</code> below). Here we show you the relationship between gene expression and pathway activity.</p>
                       </div>
                       </div>
                       </div>

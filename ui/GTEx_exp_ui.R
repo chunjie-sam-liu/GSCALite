@@ -32,7 +32,7 @@ tabItem(
   shiny::tags$hr(width = "85%"),
 
 
-  # GTExTissueTypeInput("GTEx_exp"),
+  GTExTissueType("GTEx_exp"),
 
   # Selected Tissue show ----
   shiny::tags$h3("Tissue Check", class = "text-success"),
