@@ -155,7 +155,6 @@ tabItem(
       # )
     )
   ),
-
   # Load footer ----
   source(file.path(config$wd, "ui", "footer.R"), echo = FALSE, verbose = FALSE)$value
 ) # End of tabItem
