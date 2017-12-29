@@ -141,8 +141,9 @@ cancerTypeInput <- function(id) {
   ns <- NS(id)
 
   tagList(
+    # cancer type selection----
     fluidRow(
-      # cancer type selection----
+      
       column(
         width = 10,
         offset = 1,
@@ -275,9 +276,11 @@ cancerTypeInput <- function(id) {
             )
           )
         )
-      ),
-      shiny::tags$hr(width = "85%")
-    )
+      )
+    ),
+    shiny::tags$hr(width = "85%"),
+    # value box for selected cancer types ----
+    fluidRow(shiny::uiOutput(outputId = ns("cancer_types_select")))
   )
 }
 
