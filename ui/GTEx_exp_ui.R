@@ -58,19 +58,28 @@ tabItem(
   shiny::tags$hr(width = "85%"),
 
   # output plot -------------------------------------------------------------
-  # Tabset Panel ----
-  fluidRow(
-    column(
-      width = 10,
-      offset = 1,
-      shiny::tags$br(),
-      shinydashboard::tabBox(
-        id = "GTEx_PLOT", title = "PLOT", width = 12,
-        tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")),
-        tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
-      )
+ # # Tabset Panel ----
+
+
+fluidRow(column(width = 10, offset = 1, GTExTissueType("GTEx_exp"))),
+
+# Cancer type selection ----
+fluidRow(selectAndAnalysisInput("GTEx_exp")),
+
+# Plot result ----
+fluidRow(
+  column(
+    width = 10,
+    offset = 1,
+    shiny::tags$br(),
+    shinydashboard::tabBox(
+      id = "GTEx_PLOT", title = "PLOT", width = 12,
+      tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")),
+      tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
     )
-  ),
+  )
+),
+
   # load footer ----
   source(file.path(config$ui, "footer.R"))[1]
 ) # close tab

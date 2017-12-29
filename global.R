@@ -21,27 +21,28 @@ GTEx_Skin_choice <- list("Skin"="Skin")
 GTEx_Blood_choice <- list("Blood"="Blood")
 GTEx_Testis_choice <- list("Testis"="Testis")
 GTEx_Colon_choice <- list("Colon"="Colon")
-GTEx_other_choice <- list("Adipose_Tissue"="Adipose_Tissue", "Muscle"="Muscle", 
-  "Blood_Vessel"="Blood_Vessel", "Salivary_Gland"="Salivary_Gland", "Adrenal_Gland"="Adrenal_Gland", 
-  "Thyroid"="Thyroid", "Spleen"="Spleen", "Small_Intestine"="Small_Intestine", 
-  "Cervix_Uteri"="Cervix_Uteri", "Bladder"="Bladder", "Fallopian_Tube"="Fallopian_Tube",
+GTEx_other_choice <- list("Adipose Tissue"="Adipose Tissue", "Muscle"="Muscle", 
+  "Blood Vessel"="Blood Vessel", "Salivary Gland"="Salivary Gland", "Adrenal Gland"="Adrenal Gland", 
+  "Thyroid"="Thyroid", "Spleen"="Spleen", "Small_Intestine"="Small Intestine", 
+  "Cervix Uteri"="Cervix Uteri", "Bladder"="Bladder", "Fallopian Tube"="Fallopian Tube",
   "Uterus"="Uterus", "Pituitary"="Pituitary", "Esophagus"="Esophagus", 
   "Nerve"="Nerve", "Vagina"="Vagina", "Pancreas"="Pancreas", "Prostate"="Prostate", 
   "Stomach"="Stomach", "Kidney"="Kidney")
 GTEx_input_selection <- paste("input$",grep("GTEx_.*_choice",ls(),value = T),sep="")
 
 
+#####GTEx tissue 4 UI#####
 GTExTissueType <- function(id) {
   ns <- NS(id)
   
   tagList(
     fluidRow(
-      # cancer type selection----
+      # GTEx tissues selection----
       column(
         width = 10,
         offset = 1,
         shiny::tags$br(),
-        shiny::tags$h3("Cancer Type Selection", class = "text-success"),
+        shiny::tags$h3("GTEx tissues selection", class = "text-success"),
         shiny::tags$br(),
         
         shinydashboard::tabBox(
@@ -175,11 +176,33 @@ GTExTissueType <- function(id) {
   )
 }
 
+
+
 GTEx_normal_Tissue <- function(input, output, session) {
   GTEx_normal_tissue <- reactive({eval(parse(text = GTEx_input_selection)) -> GTEx_normal_tissue })
 
   return(GTEx_normal_tissue)
 }
+
+#sub normal tissue----------
+
+sub_GTEx_tissue <- list("Brain" = "Brain",
+                          "Liver"="Liver",
+                          "Heart"="Heart",
+                          "Ovary"="Ovary",
+                          "Lung"="Lung",
+                          "Breast"="Breast",
+                          "Skin"="Skin",
+                          "Blood"="Blood",
+                          "Testis"="Testis",
+                          "Colon"="Colon",
+                          "other_tissue" = c("Adipose Tissue", "Muscle", "Blood Vessel",
+                                             "Salivary Gland", "Adrenal Gland", "Thyroid", 
+                                             "Spleen", "Small Intestine", "Cervix Uteri",
+                                             "Bladder", "Fallopian Tube","Uterus", 
+                                             "Pituitary", "Esophagus", "Nerve", 
+                                             "Vagina", "Pancreas", "Prostate", "Stomach", "Kidney")
+                      )
 
 resetGTExTissueType <- function(input, output, session){
   for(i in c(tabPannel_element_ten,"other_tissue")){
@@ -474,10 +497,12 @@ selectAndAnalysis <- function(input, output, session, .id) {
     handlerExpr = {
       if (input$switch) {
         check_sub_cancer_types(input, output, session, sub_cancer_types, TRUE)
+        check_sub_cancer_types(input, output, session, sub_GTEx_tissue, TRUE)
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} Select all {.id} @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
         
       } else{
         check_sub_cancer_types(input, output, session, sub_cancer_types, FALSE)
+        check_sub_cancer_types(input, output, session, sub_GTEx_tissue, FALSE)
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} Deselect all {.id} @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
       }
     }

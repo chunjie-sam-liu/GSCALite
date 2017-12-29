@@ -32,7 +32,7 @@ tabItem(
   shiny::tags$hr(width = "85%"),
 
 
-  # GTExTissueTypeInput("GTEx_exp"),
+  GTExTissueType("GTEx_eqtl"),
 
   # Selected Tissue show ----
   shiny::tags$h3("Tissue Check", class = "text-success"),
@@ -51,11 +51,12 @@ tabItem(
     ),
     column(
       width = 2, offset = 0,
-      actionButton("GTEx_tissue_reset", label = "Reset!", icon = icon("refresh")) 
+      actionButton("analysis_stop", label = "Stop!", icon = icon("pause")) 
     ),
     column(width = 4)
   ),
   shiny::tags$hr(width = "85%"),
+  
 
   # output plot -------------------------------------------------------------
   # Tabset Panel ----
