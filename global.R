@@ -415,10 +415,42 @@ cancerTypeInput <- function(id) {
         )
       )
     ),
-    shiny::tags$hr(width = "85%"),
     # value box for selected cancer types ----
-    fluidRow(shiny::uiOutput(outputId = ns("cancer_types_select")))
+    fluidRow(shiny::uiOutput(outputId = ns("cancer_types_select"))),
+    shiny::tags$hr(width = "85%")
   )
+}
+
+# Value box for selection cancer types ------------------------------------
+
+
+cancerTypesSelect <- function(input, output, session, .sctps) {
+  
+    output$cancer_types_select <- renderUI({
+      div(length(.sctps()))
+      shiny::tagList(
+        column(
+          width = 3, offset = 1,
+          infoBox(
+            title = "Number of selected cancer", value = length(.sctps()), 
+            width = 12, icon = icon("users"), color = "aqua", fill = TRUE)
+        ),
+        column(
+          width = 3, 
+          infoBox(
+            title = "Number of unselected cancer", value = 32 - length(.sctps()),
+            width = 12, icon = icon("credit-card"), color = "red", fill = TRUE)
+        ),
+        column(
+          width = 3,
+          box(
+            solidHeader = TRUE, status = "primary",
+            title = "Selected Cancer types", width = 12, 
+            paste0(.sctps(), collapse = ", ")
+          )
+        )
+      )
+    })
 }
 
 # select and submit for UI----

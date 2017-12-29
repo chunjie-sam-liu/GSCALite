@@ -4,13 +4,21 @@ source(file.path(config$wd, "functions", "data_function.R"))
 
 expr_clean <- NULL
 
+# Selected cancer types ---------------------------------------------------
+
+expr_cancer_type <- callModule(module = cancerType, id = "expr")
+
+# Cancer types value box selection ----------------------------------------
+
+<<<<<<< HEAD
+expr_cancer_type <- callModule(cancerType, id = "expr")
+=======
+callModule(module = cancerTypesSelect, id = "expr", .sctps = expr_cancer_type)
+
 # Check box ---------------------------------------------------------------
 
 callModule(module = selectAndAnalysis, id = "expr", .id = "expr")
-
-# Selected cancer types ---------------------------------------------------
-
-expr_cancer_type <- callModule(cancerType, id = "expr")
+>>>>>>> d4eb576c3ca7b04cfcb14b22b4290f4097edb024
 
 # Expression submit analysis ----------------------------------------------
 
