@@ -287,7 +287,7 @@ selectAndAnalysisInput <- function(id) {
   ns <- NS(id)
   shiny::tagList(
     column(
-      width = 2, offset = 4,
+      width = 3, offset = 4,
       switchInput(
         inputId = ns("switch"), value = TRUE,
         onLabel = "Select All",
@@ -295,7 +295,7 @@ selectAndAnalysisInput <- function(id) {
       )
     ),
     column(
-      width = 2, offset = 1,
+      width = 2, 
       shiny::tags$div(
         style = "margin:3px;", class = "form-group shiny-input-container",
         shinyBS::bsButton(inputId = ns("submit"), label = "Analysis", icon = icon(name = "fire"))
