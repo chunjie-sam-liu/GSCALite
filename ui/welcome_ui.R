@@ -94,13 +94,13 @@ tabItem(
         shiny::tags$p(
           class = "text-justify",
           "In this GSCALite, we integrated cancer genomics data of 33 cancer types from",
-          shiny::tags$a("TCGA", href = "https://cancergenome.nih.gov/", target = "_blank", style = "color:blue"),
+          shiny::tags$a("TCGA", href = "https://cancergenome.nih.gov/", target = "_blank", style = "color:#008176"),
           ", Drug response data from ",
-          shiny::tags$a("GDSC", href = "http://www.cancerrxgene.org/", target = "_blank", style = "color:blue"),
+          shiny::tags$a("GDSC", href = "http://www.cancerrxgene.org/", target = "_blank", style = "color:#008176"),
           " and ",
-          shiny::tags$a("CTRP", href = "http://www.cancerrxgene.org/", target = "_blank", style = "color:blue"),
+          shiny::tags$a("CTRP", href = "http://www.cancerrxgene.org/", target = "_blank", style = "color:#008176"),
           " as well as normal tissue data from",
-          shiny::tags$a("GTEx", href = "https://www.gtexportal.org/home/datasets", target = "_blank", style = "color:blue"),
+          shiny::tags$a("GTEx", href = "https://www.gtexportal.org/home/datasets", target = "_blank", style = "color:#008176"),
           "for gene set analysis in a one-in-all data analysis workflow. When the analysis finished, users can download all the results and figures as an interactive HTML report."
         )
       ),
