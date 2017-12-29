@@ -286,22 +286,31 @@ cancerTypeInput <- function(id) {
 selectAndAnalysisInput <- function(id) {
   ns <- NS(id)
   shiny::tagList(
-    column(
-      width = 3, offset = 4,
-      switchInput(
-        inputId = ns("switch"), value = TRUE,
-        onLabel = "Select All",
-        offLabel = "Deselect All"
-      )
+    fluidRow(
+      column(
+        width = 3, offset = 4,
+        switchInput(
+          inputId = ns("switch"), value = TRUE,
+          onLabel = "Select All",
+          offLabel = "Deselect All"
+        )
+      ),
+      column(
+        width = 2, 
+        shiny::tags$div(
+          style = "margin:3px;", class = "form-group shiny-input-container",
+          shinyBS::bsButton(inputId = ns("submit"), label = "Analysis", icon = icon(name = "fire"))
+        )
+      ),
+      column(width = 4)
     ),
-    column(
-      width = 2, 
-      shiny::tags$div(
-        style = "margin:3px;", class = "form-group shiny-input-container",
-        shinyBS::bsButton(inputId = ns("submit"), label = "Analysis", icon = icon(name = "fire"))
+    fluidRow(
+      column(
+        width = 8, offset = 2,
+        shinyBS::bsAlert(anchorId = ns("no_gene_set")),
+        shinyBS::bsAlert(anchorId = ns("no_paired_sample"))
       )
-    ),
-    column(width = 4)
+    )
   )
 }
 

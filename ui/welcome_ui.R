@@ -150,24 +150,6 @@ tabItem(
                               icon("hand-o-right"),
                               " Genes' expression profile and variation in normal tissue."
                             )
-                            # 
-                            # shiny::tags$ul(
-                            #   class = "cloud", style = "width:80%;",
-                            #   shiny::tags$li("Interactive"),
-                            #   shiny::tags$li("Easy-to-use"),
-                            #   shiny::tags$li("Gene set analysis"),
-                            #   shiny::tags$li("Cancer"),
-                            #   shiny::tags$li("GTEx"),
-                            #   shiny::tags$li("TCGA"),
-                            #   shiny::tags$li("GDSC"),
-                            #   shiny::tags$li("CTRP"),
-                            #   shiny::tags$li("Methylation"),
-                            #   shiny::tags$li("Network"),
-                            #   shiny::tags$li("Copy Number Variation"),
-                            #   shiny::tags$li("Single Nucleotide Mutation"),
-                            #   shiny::tags$li("Gene Set Analysis"),
-                            #   shiny::tags$li("Drug correlation")
-                            # )
 
         )
       # )

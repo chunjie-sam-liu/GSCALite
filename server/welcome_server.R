@@ -38,11 +38,6 @@ addPopover(
   trigger = "hover",
   content = shiny::HTML(
     "Please input a gene list with official gene symbol less than 200 genes separated by space or comma or semicolon"
-    # "The input gene set can be any gene less than 200 in total.",
-    # "This example gene set from MSigDB, the standard name is ",
-    # shiny::tagList(
-    #   shiny::tags$a(href = "http://software.broadinstitute.org/gsea/msigdb/geneset_page.jsp?geneSetName=REACTOME_PRE_NOTCH_EXPRESSION_AND_PROCESSING&keywords=tp53", '"REACTOME PRE NOTCH EXPRESSION AND PROCESSING"')
-    #   ) %>% as.character()
   )
 )
 
