@@ -133,25 +133,5 @@ expr_clinical %>%
   tidyr::unnest(diff_pval) -> expr_clinical_sig_pval
 on.exit(parallel::stopCluster(cluster))
 
-fun_rank_cancer <- function(pattern){
-  pattern %>% 
-    dplyr::summarise_if(.predicate = is.numeric, dplyr::funs(sum(., na.rm = T))) %>%
-    tidyr::gather(key = cancer_types, value = rank) %>%
-    dplyr::arrange(dplyr::desc(rank))
-} #get cancer rank
-fun_rank_gene <- function(pattern){
-  pattern %>% 
-    dplyr::rowwise() %>%
-    dplyr::do(
-      symbol = .$symbol,
-      rank =  unlist(.[-1], use.names = F) %>% sum(na.rm = T)
-    ) %>%
-    dplyr::ungroup() %>%
-    tidyr::unnest() %>%
-    dplyr::arrange(rank)
-} # get gene rank
+expr_clinical_sig_pval %>% readr::write_rds(path = "/data/GSCALite/TCGA/expr/expr_survival.rds.gz", compress = "gz")
 
-expr_clinical_sig_pval %>% 
-  dplyr::select(cancer_types, symbol) %>% 
-  dplyr::mutate(n = 1) %>% 
-  tidyr::spread(key = cancer_types, value = n) -> pattern
