@@ -51,7 +51,7 @@ tabItem(
     ),
     column(
       width = 2, offset = 0,
-      actionButton("GTEx_tissue_reset", label = "Reset!", icon = icon("refresh")) 
+      actionButton("analysis_stop", label = "Stop!", icon = icon("pause")) 
     ),
     column(width = 4)
   ),

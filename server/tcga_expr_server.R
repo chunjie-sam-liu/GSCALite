@@ -9,7 +9,7 @@ callModule(module = selectAndAnalysis, id = "expr", .id = "expr")
 
 # Selected cancer types ---------------------------------------------------
 
-expr_cancer_type <- callModule(cancerType,"expr")
+expr_cancer_type <- callModule(cancerType, id = "expr")
 
 # Expression submit analysis ----------------------------------------------
 
