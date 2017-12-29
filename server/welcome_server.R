@@ -33,16 +33,11 @@ observeEvent(input$example, {
 addPopover(
   session = session, 
   id = "example", 
-  title = "Example Data", 
+  title = "Example gene list", 
   placement = "bottom", 
   trigger = "hover",
   content = shiny::HTML(
-    "The input gene set can be any gene less than 200 in total.",
-    "This example gene set from MSigDB, the standard name is ",
-    shiny::tagList(
-      shiny::tags$a(href = "http://software.broadinstitute.org/gsea/msigdb/geneset_page.jsp?geneSetName=ABE_VEGFA_TARGETS&keywords=ABE_VEGFA_TARGETS", '"ABE_VEGFA_TARGETS"')
-      ) %>% as.character(),
-    ". It contains 20 VEGFA related genes."
+    "Please input a gene list with official gene symbol less than 200 genes separated by space or comma or semicolon"
   )
 )
 
