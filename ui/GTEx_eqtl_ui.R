@@ -3,10 +3,10 @@
 # ui elements 'gtex_expr' sub tab of 'gtex' tab
 
 tabItem(
-  tabName = "gtex_expr", align = "center",
+  tabName = "gtex_eqtl", align = "center",
   shinyjs::useShinyjs(),
 
-  ## GTEx expr message ----
+  ## GTEx eqtl message ----
   fluidRow(
     style = "width:80%;",
     HTML("<div class='section'>
@@ -14,19 +14,19 @@ tabItem(
                       <div class='row'>
                       <div class='col-md-12'>
                       <h1 class='text-success text-left'>
-                      <i class='fa fa-angle-double-right  fa-fw'></i>Gene Set Expression in GTEx Dataset
+                      <i class='fa fa-angle-double-right  fa-fw'></i>Expression quantitative trait locis (eQTLs) in GTEx Dataset
                       <font color='#777777'>
                       </font>
                       </h1>
                       <hr>
-                      <p class='lead'>expression profiles and gene set variation analysis score (GSVAS) of query gene set in selected GTEx normal tissues will be visualized here in forms of heatmap and boxplot. See details in <code>help page</code> below.) </p>
+                      <p class='lead'>The eQTLs of gene set in the selected GTEx normal tissues will be visualized here in the form of table. See detailed explaination for each column in the talble <code>help page</code> below.) </p>
                       </div>
                       </div>
                       </div>
                       </div>")
   ),
   
-  source(file.path(config$ui, "GTEx_exp_help.R"))[1],
+  source(file.path(config$ui, "GTEx_eqtl_help.R"))[1],
 
   shiny::tags$br(),
   shiny::tags$hr(width = "85%"),
@@ -65,9 +65,8 @@ tabItem(
       offset = 1,
       shiny::tags$br(),
       shinydashboard::tabBox(
-        id = "GTEx_PLOT", title = "PLOT", width = 12,
-        tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")),
-        tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
+        id = "GTEx_TABLE", title = "TABLE", width = 12,
+        tabPanel(title = "GTEx eQTLs", TableInput(id = "GTEx_eqtl"))
       )
     )
   ),

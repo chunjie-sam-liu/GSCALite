@@ -18,9 +18,9 @@ tabItem(tabName = "tcga_mirna", align = "center",
                       </font>
                       </h1>
                       <hr>
-                      <p class='lead'>A miRNA regulation network will be given, you will find which miRNA regulate your genes and have a global understanding by network presentation.
+                      <p class='lead'>A miRNA regulation network will be given here, you will find which miRNA regulate your genes and have a global understanding by network presentation.
 
-                      <br> miRNA regulation data is collected form databases <code>help page</code> below.), a network will be draw for you to visualize the miRNA regulation to your gene set.</p>
+                      <br> miRNA regulation data is collected from databases ( see details on <code>help page</code> below), a network will be drawed for you to visualize the potential regulation of miRNAs to your genes.</p>
                       </div>
                       </div>
                       </div>

@@ -130,7 +130,11 @@ status <- reactiveValues(
   "gene_set" = FALSE,
   "analysis" = FALSE,
   "tcga_expr" = FALSE,
-  "trigger" = FALSE
+  "trigger" = FALSE,
+  "cnv_submit" = FALSE,
+  "snv_submit" = FALSE,
+  "meth_submit" = FALSE,
+  "rppa_submit" = FALSE
 )
 
 error <- reactiveValues(

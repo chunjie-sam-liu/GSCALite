@@ -5,8 +5,44 @@
 
 # load rppa data ---------------------------------------------------------
 # diff methylation between tumor and normal
+print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading rppa percent data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 rppa_per<- readr::read_rds(file.path(config$database, "TCGA", "rppa", "pan32_gene_activate.inhibit_pathway_percent.rds.gz"))
+print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading rppa percent data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+# -------------------------------------------------------- #
+print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading rppa regulate data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 rppa_relation <- readr::read_rds(file.path(config$database, "TCGA", "rppa", "pan32_gene_A-I-N_sig_pval_class.siplification.rds.gz"))
+print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading rppa regulate data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+
+# submit cancer type -------------------------------------------------------
+observeEvent(input$rppa_submit, {
+  status$rppa_submit <- TRUE
+  shinyjs::disable(id = "rppa_submit")
+  shinyjs::enable(id = "rppa_stop")
+})
+# stop analysis -----------------------------------------------------------
+observeEvent(input$rppa_stop, {
+  status$rppa_submit <- FALSE
+  shinyjs::enable(id = "rppa_submit")
+  # rppa_hide <- c()
+  hidePic("rppa_rela_plot") # hide pic when stop clicked!
+})
+
+# monitor for gene list change
+rppa_gene_list <- eventReactive(
+  eventExpr = input$analysis,
+  ignoreNULL = TRUE,
+  valueExpr = {
+    # be sure the following code run after start analysis
+    if (status$analysis == TRUE) {
+      status$rppa_submit <- TRUE
+      shinyjs::disable(id = "rppa_submit")
+      shinyjs::enable(id = "rppa_stop")
+      as.character(gene_set$match)
+    }
+  }
+)
+
+# analysis core -----------------------------------------------------------
 
 #  get cancer type --------------------------------------------------------
 
@@ -14,19 +50,135 @@ rppa_cancer_type <- callModule(cancerType, "rppa")
 output$rppa_selected_cancer <- renderText(
   rppa_cancer_type()
 )
-# reset cancer selection when click reset button.
-observeEvent(input$rppa_reset, {
-  rppa_cancer_type<-callModule(resetcancerType,"rppa")
-})
 
+rppa_analysis <- eventReactive(
+  {
+    status$rppa_submit == TRUE
+  },
+  ignoreNULL = TRUE,
+  valueExpr = {
+    if (status$rppa_submit == TRUE) {
+      print("-------------------------------RPPA part------------------------------------")
+      print(rppa_gene_list())
+      print(rppa_cancer_type())
+      print(glue::glue("{paste0(rep('-', 10), collapse = '')} start rppa relation analysis part@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+
+# data processing ---------------------------------------------------------
+
+      rppa_relation %>%
+        dplyr::filter(cancer_types %in% rppa_cancer_type()) %>% 
+        dplyr::mutate(data = purrr::map(data, filter_gene_list, gene_list = rppa_gene_list())) %>%
+        tidyr::unnest() -> gene_list_cancer_rppa_rela
+      
+      # ploting -----------------------------------------------------------------
+      
+      # rppa line contact ----
+      # get data
+      cancer_text <- get_rppa_text(gene_list_cancer_rppa_rela)
+      plot_seg <- get_rppa_seg(cancer_text,gene_list_cancer_rppa_rela) 
+      
+      plot_seg %>%
+        # dplyr::filter(type=="g_p") %>%
+        dplyr::group_by(x1,y1,x2,y2) %>%
+        dplyr::do(
+          curvature=ifelse(nrow(.)>1,seq(0.05,0.05*nrow(.),0.05),0)
+        ) %>%
+        tidyr::unnest()
+      
+      cancer_text %>%
+        dplyr::filter(type=="cancer") ->cancer.text
+      cancer_text %>%
+        dplyr::filter(type=="gene") ->gene.text
+      cancer_text %>%
+        dplyr::filter(type=="pathway") ->path.text
+      rppa_line_height <- rppa_gene_list() %>% length() *0.1
+      if(rppa_line_height>15){rppa_line_height <- 15}
+      if(rppa_line_height<3){rppa_line_height <- 4}
+      # plot draw
+      output$rppa_rela_plot <- renderImage({
+        ggplot() ->p
+        for (cancers in plot_seg$Cancer %>% unique()) {
+          # cancers="LUSC"
+          plot_seg %>%
+            dplyr::filter(Cancer==cancers) ->data
+          curvature <- runif(1,0.1,0.3)
+          p + 
+            geom_curve(data = data, mapping = aes(
+              x = x1, 
+              y = y1,
+              xend = x2,
+              yend = y2,
+              colour = Cancer,
+              linetype = Regulation
+            ),
+            # colour = "red",
+            curvature = curvature) -> p
+        }
+        
+        p +
+          guides(color=FALSE) +
+          geom_text(
+            data = cancer.text, 
+            mapping = aes(x = x, y = y, label = text,color=text),
+            hjust = 1,
+            size = 2
+          ) +
+          geom_text(
+            data = gene.text, 
+            mapping = aes(x = x-0.4, y = y, label = text),
+            hjust=0,
+            size=2) +
+          geom_text(
+            data = path.text, 
+            mapping = aes(x = x, y = y, label = text),
+            hjust=0,
+            size=2) +
+          expand_limits(x=c(-1,10)) +
+          theme(
+            panel.background = element_blank(),
+            axis.text = element_blank(),
+            axis.ticks = element_blank(),
+            # text = element_text(size=5),
+            plot.title = element_text(hjust = 0.5,size=7),
+            plot.margin = rep(unit(0,"null"),4),
+            legend.position = "bottom",
+            legend.text = element_text(size=3),
+            legend.key.size = unit(0.25,"cm"),
+            legend.title = element_text(size=4)
+          ) + 
+          xlab("") +
+          ylab("") +
+          labs(title = "Relation network between genes' expression and cancer related pathways' activity.") ->p
+        rppa_line_outfile <- file.path(user_dir,"pngs",paste(user_id,"-","TCGA_rppa_network_profile.png",sep=""))
+        
+        ggsave(rppa_line_outfile,p,device ="png",width =4, height = rppa_line_height)
+        list(src = rppa_line_outfile,
+             contentType = 'image/png',
+             # width = "100%" ,
+             # height = 900,
+             alt = "This is alternate text")
+      }, deleteFile = FALSE)
+      print(glue::glue("{paste0(rep('-', 10), collapse = '')} End rppa relation analysis part@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+      shinyjs::show("rppa_rela_plot")
+    }
+  }
+)
 
 
 # analysis core -----------------------------------------------------------
 # submit cancer type -------------------------------------------------------
-observeEvent(input$analysis, {
+rppa_global_analysis <- eventReactive(
+  {
+    status$analysis == TRUE
+  },
+  ignoreNULL = TRUE,
+  valueExpr={
+    if (status$analysis == TRUE) {
+      print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start rppa global analysis part@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+      
   # get gene set /cancer type data ----
   rppa_per %>%
-    dplyr::filter(symbol %in% cnv_gene_list()) ->gene_list_rppa_per
+    dplyr::filter(symbol %in% rppa_gene_list()) ->gene_list_rppa_per
   
   # rppa global pie plot----
   gene_list_rppa_per %>%
@@ -35,7 +187,7 @@ observeEvent(input$analysis, {
     dplyr::mutate(class=plyr::revalue(class,replace = c("a"="Activation","i"="Inhibition","n"="None")))->rppa_pie_plot_ready
   
   # arugument for plot
-  rppa_pie_height <- cnv_gene_list() %>% length() *0.25
+  rppa_pie_height <- rppa_gene_list() %>% length() *0.25
   if(rppa_pie_height>15){rppa_pie_height <- 15}
   if(rppa_pie_height<3){rppa_pie_height <- 3}
   rppa_pie_outfile <- file.path(user_dir,"pngs",paste(user_id,"-","TCGA_rppa_pie_profile.png",sep=""))
@@ -54,12 +206,16 @@ observeEvent(input$analysis, {
     tidyr::unite(pathway,c(pathway,class)) -> rppa_per_ready
   
   # pic draw
-  rppa_heat_height <- cnv_gene_list() %>% length() *0.1
+  rppa_heat_height <- rppa_gene_list() %>% length() *0.1
   if(rppa_heat_height>15){rppa_heat_height <- 15}
   if(rppa_heat_height<3){rppa_heat_height <- 3}
   rppa_heat_outfile<-file.path(user_dir,"pngs",paste(user_id,"-","TCGA_rppa_heatmap_percentage.png",sep=""))
   callModule(rppa_heat_per,"rppa_per",rppa_per_ready=rppa_per_ready, pathway="pathway",symbol="symbol", per="per", height=rppa_heat_height, outfile=rppa_heat_outfile)
+  print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start rppa global analysis part@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
   
+    }
+  }
+  )
   # output$rppa_per_plot <- renderImage({
   #   rppa_per_ready %>%
   #     ggplot(aes(x = pathway, y = symbol))+
@@ -86,104 +242,10 @@ observeEvent(input$analysis, {
   #        # height = 900,
   #        alt = "This is alternate text")
   # }, deleteFile = FALSE)
-})
 
-observeEvent(input$rppa_submit, {
-# get gene set /cancer type data ----
 
-  rppa_relation %>%
-    dplyr::filter(cancer_types %in% rppa_cancer_type()) %>% 
-    dplyr::mutate(data = purrr::map(data, filter_gene_list, gene_list = cnv_gene_list())) %>%
-    tidyr::unnest() -> gene_list_cancer_rppa_rela
+# monitor -----------------------------------------------------------------
 
-  # ploting -----------------------------------------------------------------
-  
-  # rppa line contact ----
-  # get data
-  cancer_text <- get_rppa_text(gene_list_cancer_rppa_rela)
-  plot_seg <- get_rppa_seg(cancer_text,gene_list_cancer_rppa_rela) 
-  
-  plot_seg %>%
-    # dplyr::filter(type=="g_p") %>%
-    dplyr::group_by(x1,y1,x2,y2) %>%
-    dplyr::do(
-      curvature=ifelse(nrow(.)>1,seq(0.05,0.05*nrow(.),0.05),0)
-    ) %>%
-    tidyr::unnest()
-  
-  cancer_text %>%
-    dplyr::filter(type=="cancer") ->cancer.text
-  cancer_text %>%
-    dplyr::filter(type=="gene") ->gene.text
-  cancer_text %>%
-    dplyr::filter(type=="pathway") ->path.text
-  rppa_line_height <- cnv_gene_list() %>% length() *0.1
-  if(rppa_line_height>15){rppa_line_height <- 15}
-  if(rppa_line_height<3){rppa_line_height <- 4}
-  # plot draw
-  output$rppa_rela_plot <- renderImage({
-    ggplot() ->p
-    for (cancers in plot_seg$Cancer %>% unique()) {
-      # cancers="LUSC"
-      plot_seg %>%
-        dplyr::filter(Cancer==cancers) ->data
-      curvature <- runif(1,0.1,0.3)
-      p + 
-        geom_curve(data = data, mapping = aes(
-          x = x1, 
-          y = y1,
-          xend = x2,
-          yend = y2,
-          colour = Cancer,
-          linetype = Regulation
-        ),
-        # colour = "red",
-        curvature = curvature) -> p
-    }
-    
-    p +
-      guides(color=FALSE) +
-      geom_text(
-        data = cancer.text, 
-        mapping = aes(x = x, y = y, label = text,color=text),
-        hjust = 1,
-        size = 2
-      ) +
-      geom_text(
-        data = gene.text, 
-        mapping = aes(x = x-0.4, y = y, label = text),
-        hjust=0,
-        size=2) +
-      geom_text(
-        data = path.text, 
-        mapping = aes(x = x, y = y, label = text),
-        hjust=0,
-        size=2) +
-      expand_limits(x=c(-1,10)) +
-      theme(
-        panel.background = element_blank(),
-        axis.text = element_blank(),
-        axis.ticks = element_blank(),
-        # text = element_text(size=5),
-        plot.title = element_text(hjust = 0.5,size=7),
-        plot.margin = rep(unit(0,"null"),4),
-        legend.position = "bottom",
-        legend.text = element_text(size=3),
-        legend.key.size = unit(0.25,"cm"),
-        legend.title = element_text(size=4)
-      ) + 
-      xlab("") +
-      ylab("") +
-      labs(title = "Relation network between genes' expression and cancer related pathways' activity.") ->p
-    rppa_line_outfile <- file.path(user_dir,"pngs",paste(user_id,"-","TCGA_rppa_network_profile.png",sep=""))
-    
-    ggsave(rppa_line_outfile,p,device ="png",width =4, height = rppa_line_height)
-    list(src = rppa_line_outfile,
-         contentType = 'image/png',
-         # width = "100%" ,
-         # height = 900,
-         alt = "This is alternate text")
-  }, deleteFile = FALSE)
-  
-  # callModule(rppa_line_contact,"rppa_rela",seg=plot_seg,cancer=cancer.text,gene=gene.text,pathway=path.text,title="Relation network between gene and cancer related pathways.")
-})
+observe(rppa_gene_list())
+observe(rppa_analysis())
+observe(rppa_global_analysis())

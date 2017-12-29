@@ -19,7 +19,7 @@ tabItem(tabName = "tcga_cnv", align = "center",
                 </h1>
                 <hr>
                 <p class='lead'>TCGA CNV data will be used to give you a visualization of you gene set for seleted cancer types.
-                <br>GSAC offers different types of graphic layout (CNV Pie distribution, Hete CNV, Homo CNV, CNV Bar distribution, Oncostrip, see details in <code>help page</code> below.) for you to visualize the CNV of your gene set for your seleted cancer types.</p>
+                <br>GSCALite offers different types of graphic layout (CNV Pie distribution, Hete CNV, Homo CNV, CNV Bar distribution, Oncostrip, see details in <code>help page</code> below.) for you to visualize the CNV of your gene set for your seleted cancer types.</p>
                 </div>
                 </div>
                 </div>
@@ -44,14 +44,22 @@ tabItem(tabName = "tcga_cnv", align = "center",
         # Confirm and submit ----
         fluidRow(
           column(width = 4),
+          # column(
+          #   width = 2, offset = 0,
+          #   actionButton("cnv_select", label = "Select my cancers", icon = icon("refresh")) # ,status = "danger"?
+          # ),
           column(
             width = 2, offset = 0,
             actionButton("cnv_submit", label = "Submit!", icon = icon("check"))
           ),
           column(
             width = 2, offset = 0,
-            actionButton("cnv_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
+            actionButton("cnv_stop", label = "Stop!", icon = icon("pause"))
           ),
+          # column(
+          #   width = 2, offset = 0,
+          #   actionButton("cnv_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
+          # ),
           column(width = 4)
         ),
         shiny::tags$hr(width="85%"),

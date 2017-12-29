@@ -20,7 +20,7 @@ tabItem(
                       </h1>
                       <hr>
                       <p class='lead'>TCGA methylation data will be used to give you a visualization of you gene set for seleted cancer types.
-                      <br>GSAC offers different types of results (Differential Methylation, Heatmap, Boxplot, Survival, see details in <code>help page</code> below.) for you to visualize the meth of your gene set for your seleted cancer types.</p>
+                      <br>GSCALite offers different types of results (Differential Methylation, Methylation to Survival, Methylation correlate to gene expression, see details in <code>help page</code> below.), you can have a visualization of methylation changes and the effect of it to survival and expression.</p>
                       </div>
                       </div>
                       </div>
@@ -53,8 +53,12 @@ tabItem(
     ),
     column(
       width = 2, offset = 0,
-      actionButton("meth_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
+      actionButton("meth_stop", label = "Stop!", icon = icon("pause"))
     ),
+    # column(
+    #   width = 2, offset = 0,
+    #   actionButton("meth_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
+    # ),
     column(width = 4)
   ),
   shiny::tags$hr(width = "85%"),

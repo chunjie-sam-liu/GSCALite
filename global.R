@@ -77,6 +77,15 @@ resetGTExTissueType <- function(input, output, session){
   return(GTEx_normal_tissue)
 }
 
+TableInput <- function(id, width, height) {
+  ns <- NS(id)
+  
+  tagList(
+    plotOutput(ns("plot")),
+    hr()
+    # only for test table
+  )
+}
 
 # cancer type choice ------------------------------------------------------
 
@@ -132,8 +141,9 @@ cancerTypeInput <- function(id) {
   ns <- NS(id)
 
   tagList(
+    # cancer type selection----
     fluidRow(
-      # cancer type selection----
+      
       column(
         width = 10,
         offset = 1,
@@ -266,10 +276,44 @@ cancerTypeInput <- function(id) {
             )
           )
         )
-      ),
-      shiny::tags$hr(width = "85%")
-    )
+      )
+    ),
+    # value box for selected cancer types ----
+    fluidRow(shiny::uiOutput(outputId = ns("cancer_types_select"))),
+    shiny::tags$hr(width = "85%")
   )
+}
+
+# Value box for selection cancer types ------------------------------------
+
+
+cancerTypesSelect <- function(input, output, session, .sctps) {
+  
+    output$cancer_types_select <- renderUI({
+      div(length(.sctps()))
+      shiny::tagList(
+        column(
+          width = 3, offset = 1,
+          infoBox(
+            title = "Number of selected cancer", value = length(.sctps()), 
+            width = 12, icon = icon("users"), color = "aqua", fill = TRUE)
+        ),
+        column(
+          width = 3, 
+          infoBox(
+            title = "Number of unselected cancer", value = 32 - length(.sctps()),
+            width = 12, icon = icon("credit-card"), color = "red", fill = TRUE)
+        ),
+        column(
+          width = 3,
+          box(
+            solidHeader = TRUE, status = "primary",
+            title = "Selected Cancer types", width = 12, 
+            paste0(.sctps(), collapse = ", ")
+          )
+        )
+      )
+    })
 }
 
 # select and submit for UI----
@@ -277,22 +321,31 @@ cancerTypeInput <- function(id) {
 selectAndAnalysisInput <- function(id) {
   ns <- NS(id)
   shiny::tagList(
-    column(
-      width = 2, offset = 4,
-      switchInput(
-        inputId = ns("switch"), value = TRUE,
-        onLabel = "Select All",
-        offLabel = "Deselect All"
-      )
+    fluidRow(
+      column(
+        width = 3, offset = 4,
+        switchInput(
+          inputId = ns("switch"), value = TRUE,
+          onLabel = "Select All",
+          offLabel = "Deselect All"
+        )
+      ),
+      column(
+        width = 2, 
+        shiny::tags$div(
+          style = "margin:3px;", class = "form-group shiny-input-container",
+          shinyBS::bsButton(inputId = ns("submit"), label = "Analysis", icon = icon(name = "fire"))
+        )
+      ),
+      column(width = 4)
     ),
-    column(
-      width = 2, offset = 1,
-      shiny::tags$div(
-        style = "margin:3px;", class = "form-group shiny-input-container",
-        shinyBS::bsButton(inputId = ns("submit"), label = "Analysis", icon = icon(name = "fire"))
+    fluidRow(
+      column(
+        width = 8, offset = 2,
+        shinyBS::bsAlert(anchorId = ns("no_gene_set")),
+        shinyBS::bsAlert(anchorId = ns("no_paired_sample"))
       )
-    ),
-    column(width = 4)
+    )
   )
 }
 
@@ -375,20 +428,32 @@ resetcancerType <- function(input, output, session){
   shinyjs::reset("Breast")
   shinyjs::reset("Cervix")
   shinyjs::reset("other_tissue")
-  cancer_type <- reactive({
-    c("") -> cancer_type
-  })
+  cancer_type <- c("")
+  # cancer_type <- reactive({
+  #   c("") -> cancer_type
+  # })
   return(cancer_type)
 }
 
-# selectallCancer <- funtion(input, output, session){
-#   # updateCheckboxGroupInput(session,"Kidney",choices=Kidney_choice,selected=Kidney_choice)
-#   
-#   # cancer_type <- reactive({
-#   #   c("KICH","KIRC","KIRP") -> cancer_type
-#   # })
-#   # return(cancer_type)
-# }
+
+
+# hide pic when stop clicked ----------------------------------------------
+
+hidePic <- function(hideoutputlist){
+  for (i in hideoutputlist) {
+    NS(i)->ns
+    shinyjs::hide(ns("plot"))
+  }
+}
+
+# show pic when all work done ------------------------------------------
+
+showPic <- function(showoutputlist){
+  for (i in showoutputlist) {
+    NS(i)->ns
+    shinyjs::show(ns("plot"))
+  }
+}
 
 ###############################################################
 # Plot function to generate plot in ui#########################
@@ -731,13 +796,13 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
   output$plot <- renderPlot({
     CPCOLS <- c("red", "white", "blue")
     data %>%
-      ggplot(aes_string(x=cancer,y=gene)) +
+      ggplot(aes_string(x=gene,y=cancer)) +
       geom_point(aes_string(size = size,color = color)) +
-      scale_y_discrete(limit = gene_rank$symbol) +
-      scale_x_discrete(limit = cancer_rank$cancer_types) +
+      scale_x_discrete(limit = gene_rank$symbol) +
+      scale_y_discrete(limit = cancer_rank$cancer_types) +
       labs(title = title) +
-      ylab("Symbol") +
-      xlab("Cancer types") +
+      xlab("Symbol") +
+      ylab("Cancer types") +
       scale_size_continuous(
         name = sizename #"-Log10(FDR)"
       ) +
