@@ -75,6 +75,32 @@ sidebar <- dashboardSidebar(
     # Welcome ----
     menuItem("Welcome", tabName = "welcome", icon = icon("home")),
 
+    
+
+    # TCGA ----
+    menuItem(
+      "TCGA Cancer",
+      tabName = "tcga",
+      icon = icon("thumbs-up"),
+      collapsible = TRUE,
+      menuSubItem("mRNA Expression", tabName = "tcga_expr"),
+      menuSubItem("Single Nucleotide Mutation", tabName = "tcga_snv"),
+      menuSubItem("Copy Number Variation", tabName = "tcga_cnv"),
+      menuSubItem("Methylation", tabName = "tcga_meth"),
+      menuSubItem("Protein Expression", tabName = "tcga_rppa"),
+      menuSubItem("miRNA Network", tabName = "tcga_mirna")
+    ),
+
+    # Drug ----
+    menuItem(
+      "Drug Response",
+      tabName = "drug",
+      icon = icon("list"),
+      collapsible = TRUE,
+      menuSubItem("GDSC", tabName = "gdsc"),
+      menuSubItem("CTRP", tabName = "ctrp")
+    ),
+    
     # GTEx ----
     menuItem(
       "GTEx Normal Tissue",
@@ -83,30 +109,6 @@ sidebar <- dashboardSidebar(
       collapsible = TRUE,
       menuSubItem("GTEx expression", tabName = "gtex_expr"),
       menuSubItem("GTEx eQTL", tabName = "gtex_eqtl")
-    ),
-
-    # TCGA ----
-    menuItem(
-      "TCGA Cancer",
-      tabName = "tcga",
-      icon = icon("thumbs-up"),
-      collapsible = TRUE,
-      menuSubItem("Expression", tabName = "tcga_expr"),
-      menuSubItem("Single Nucleotide Mutation", tabName = "tcga_snv"),
-      menuSubItem("Copy Number Mutation", tabName = "tcga_cnv"),
-      menuSubItem("Methylation", tabName = "tcga_meth"),
-      menuSubItem("Protein Expression", tabName = "tcga_rppa"),
-      menuSubItem("miRNA Network", tabName = "tcga_mirna")
-    ),
-
-    # Drug ----
-    menuItem(
-      "Drug Reponse",
-      tabName = "drug",
-      icon = icon("list"),
-      collapsible = TRUE,
-      menuSubItem("GDSC", tabName = "gdsc"),
-      menuSubItem("CTRP", tabName = "ctrp")
     ),
 
     # Downloads ----
