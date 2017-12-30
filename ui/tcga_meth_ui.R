@@ -36,30 +36,9 @@ tabItem(
   # cancer type selection----
   cancerTypeInput("meth"),
 
-  # Selected cancer show ----
-  shiny::tags$h3("Cancer Type Check", class = "text-success"),
-  shiny::tags$h4(
-    "The cancers you selected: ",
-    textOutput("meth_selected_cancer"),
-    " Confirm and start analysis by click Submit!"
-  ),
-
   # Confirm and submit ----
   fluidRow(
-    column(width = 4),
-    column(
-      width = 2, offset = 0,
-      actionButton("meth_submit", label = "Submit!", icon = icon("check"))
-    ),
-    column(
-      width = 2, offset = 0,
-      actionButton("meth_stop", label = "Stop!", icon = icon("pause"))
-    ),
-    # column(
-    #   width = 2, offset = 0,
-    #   actionButton("meth_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
-    # ),
-    column(width = 4)
+    selectAndAnalysisInput("meth")
   ),
   shiny::tags$hr(width = "85%"),
 
@@ -75,11 +54,6 @@ tabItem(
         tabPanel(title = "Differential Methylation", PlotInput(id = "meth_diff")),
         tabPanel(title = "Methylation Survival", PlotInput(id="meth_survival")),
         tabPanel(title = "Methylation to Expression", PlotInput(id="meth_exp"))
-        # tabPanel(title="SNV oncoplot",plotOutput("snv_oncoplot-plot")),
-        # # tabPanel(title="SNV oncostrip",PlotInput("snv_oncostrip")),
-        # # tabPanel(title="SNV lollipop",PlotInput("snv_lollipop")),
-        # tabPanel(title="SNV survival",PlotInput("snv_survival"))
-        # #tabPanel(title="SNV mutation load",PlotInput("snv_mut_load"))
       )
     )
   ),
