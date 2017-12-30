@@ -67,26 +67,17 @@ cnv_analysis <- eventReactive(
   ignoreNULL = TRUE,
   valueExpr = {
     if (status$cnv_submit == TRUE) {
+      .msg<-c("NOTICE: ")
       # load data----
       load_data_cnv()
       
-      # remove pic result generate befor----
-      print(glue::glue("{paste0(rep('-', 10), collapse = '')} start remove cnv result@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+      # remove pic result generate before ----
       
       callModule(removePic,"cnv_pie",outtype="image")
       callModule(removePic,"cnv_hete",outtype="plot")
       callModule(removePic,"cnv_homo",outtype="plot")
       callModule(removePic,"cnv_bar",outtype="plot")
       callModule(removePic,"cnv_exp",outtype="plot")
-      print(glue::glue("{paste0(rep('-', 10), collapse = '')} end remove cnv result@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-      # print error when gene list have 0 length ----
-      if(length(cnv_gene_list())==0) {
-        shinyBS::createAlert(
-          session = session, anchorId = "cnv-no_gene_set", title = "Oops",
-          content = "No input gene set! Please go to Welcome page to input gene set.", style = "danger", append = FALSE
-        )
-      } else{
-      .msg<-NA
       
       # cnv percent plot ------------------------------------------------------------
 
@@ -146,7 +137,7 @@ cnv_analysis <- eventReactive(
         outfile = file.path(user_dir, "pngs", paste(user_id, "-CNV_pie_profile.png", sep = "")), height = cnv_pie_height
       )
       } else {
-        .msg <- glue::glue("No significant [CNV Pie distribution] result of gene: {paste0(cnv_gene_list(), collapse = ',')} in your selected cancer types.")
+        .msg <- paste(.msg,glue::glue("No significant [CNV Pie distribution] result of gene: {paste0(cnv_gene_list(), collapse = ',')} in your selected cancer types."),sep=" ")
       }
 
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} End gernerate cnv pie profile plot@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
@@ -240,11 +231,11 @@ cnv_analysis <- eventReactive(
 
       callModule(methy_diff_pointPlot, "cnv_exp", data = gene_list_cancer_cnv_cor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.cnvcor, gene_rank = gene_rank.cnvcor, sizename = "-Log10(P.value)", colorname = "Spearman Correlation Coefficient", title = "Spearman Correlation Coefficient of CNV and gene expression.")
       } else{
-        .msg <- c(.msg,glue::glue("No significant [CNV to Expression] result of gene: {paste0(cnv_gene_list(), collapse = ',')} in your selected cancer types: {paste0(cnv_cancer_type(), collapse = ',')}."))
+        .msg <- paste(.msg,glue::glue("No significant [CNV to Expression] result of gene: {paste0(cnv_gene_list(), collapse = ',')} in your selected cancer types: {paste0(cnv_cancer_type(), collapse = ',')}."),sep=" ")
       }
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} End cnv cor to expression ploting@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
       
-        .msg <- c(.msg,glue::glue("Since we just show significant results, so a small size of gene and cancer set may cause no significant result in some plots, if it happens, try more genes and cancer types."))
+        .msg <- paste(.msg,glue::glue("Since we just show significant results, so a small size of gene and cancer set may cause no significant result in some plots, if it happens, try more genes and cancer types."),sep = " ")
       
       # alert for information
       shinyBS::createAlert(
@@ -253,7 +244,6 @@ cnv_analysis <- eventReactive(
       )
       status$cnv_submit <- FALSE
       shinyjs::enable("cnv-submit")
-      }
     } 
   }
 )
