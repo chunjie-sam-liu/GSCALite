@@ -69,6 +69,10 @@ rppa_analysis <- eventReactive(
   ignoreNULL = TRUE,
   valueExpr = {
     if (status$rppa_submit == TRUE) {
+      shinyBS::createAlert(
+        session = session, anchorId = "rppa-no_gene_set", title = "Information", style = "info",
+        content = "Need a few minutes to draw picture, please wait.", append = FALSE
+      )
       .msg <- c("NOTICE: Too much cancers and genes will make [Relation network] complicated, it will hard to see, try less genes or less cancers. [Global percentage] and [Heatmap percentage] will not change when cancer selection changes, cause it's a global percentage included all cancer types (see help page).")
       
       # remove pic result generate before ----
@@ -93,14 +97,6 @@ rppa_analysis <- eventReactive(
       cancer_text <- get_rppa_text(gene_list_cancer_rppa_rela)
       plot_seg <- get_rppa_seg(cancer_text,gene_list_cancer_rppa_rela) 
       
-      plot_seg %>%
-        # dplyr::filter(type=="g_p") %>%
-        dplyr::group_by(x1,y1,x2,y2) %>%
-        dplyr::do(
-          curvature=ifelse(nrow(.)>1,seq(0.05,0.05*nrow(.),0.05),0)
-        ) %>%
-        tidyr::unnest()
-      
       cancer_text %>%
         dplyr::filter(type=="cancer") ->cancer.text
       cancer_text %>%
@@ -109,7 +105,7 @@ rppa_analysis <- eventReactive(
         dplyr::filter(type=="pathway") ->path.text
       rppa_line_height <- rppa_gene_list() %>% length() *0.1
       if(rppa_line_height>15){rppa_line_height <- 15}
-      if(rppa_line_height<3){rppa_line_height <- 4}
+      if(rppa_line_height<3){rppa_line_height <- 3}
       # plot draw
       output$rppa_rela_plot <- renderImage({
         ggplot() ->p

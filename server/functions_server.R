@@ -200,43 +200,95 @@ fn_cnv_mutal_exclusive <- function(cancer_types, filter_cnv, cluster) {
 # rppa line contact faction -----------------------------------------------
 
 get_rppa_text <- function(data) {
-  c.text <- data.frame(x = 1, y = 1, text = "test", type = "test")
-  
   data %>%
     dplyr::pull(symbol) %>%
     unique() -> gene.text
-  for (i in 1:length(gene.text)) {
-    data.frame(x = 4, y = i, text = gene.text[i], type = "gene") -> tmp.text
-    rbind(c.text, tmp.text) -> c.text
-  }
-  c.text %>%
-    dplyr::filter(type=="gene") %>%
-    dplyr::select(y) %>%
-    max() -> g.m
-  data %>%
-    dplyr::select(cancer_types) %>%
-    unique() %>%
-    nrow() -> c.n
-  g.m/c.n -> c.i
-  if(c.i>2){c.i=c.i}else{c.i=2}
-  
   data %>%
     dplyr::pull(cancer_types) %>%
     unique() -> cancer.text
-  
-  for (i in 1:length(cancer.text)) {
-    data.frame(x = 1, y = i*c.i-1, text = cancer.text[i], type = "cancer") -> tmp.text
-    rbind(c.text, tmp.text) -> c.text
-  }
-  g.m/10 -> g.i
-  if(g.i>2){g.i=g.i}else{g.i=2}
-  
   data %>%
     dplyr::pull(pathway) %>%
     unique() -> pathway.text
-  for (i in 1:length(pathway.text)) {
-    data.frame(x = 7, y = i*g.i-1, text = pathway.text[i], type = "pathway") -> tmp.text
-    rbind(c.text, tmp.text) -> c.text
+  
+  c.text <- data.frame(x = 1, y = 1, text = "test", type = "test")
+  g.l <- data$symbol %>% unique() %>% length()
+  c.l <- data$cancer_types %>% unique() %>% length()
+  p.l <- data$pathway %>% unique() %>% length()
+
+# condition 1: gene is more -----------------------------------------------
+
+  if(g.l>=c.l & g.l>=p.l){
+    for (i in 1:length(gene.text)) {
+      data.frame(x = 4, y = 2*i-1, text = gene.text[i], type = "gene") -> tmp.text
+      rbind(c.text, tmp.text) -> c.text
+    }
+    c.text %>%
+      dplyr::filter(type=="gene") %>%
+      dplyr::select(y) %>%
+      max() -> g.m
+    
+    g.m/c.l -> c.i
+    for (i in 1:length(cancer.text)) {
+      data.frame(x = 1, y = i*c.i-1, text = cancer.text[i], type = "cancer") -> tmp.text
+      rbind(c.text, tmp.text) -> c.text
+    }
+    
+    g.m/10 -> p.i
+    for (i in 1:length(pathway.text)) {
+      data.frame(x = 7, y = i*p.i-1, text = pathway.text[i], type = "pathway") -> tmp.text
+      rbind(c.text, tmp.text) -> c.text
+    }
+  }
+
+# condition 2: cancer is more ---------------------------------------------
+
+  if(c.l>=g.l & c.l>=p.l){
+    for (i in 1:length(cancer.text)) {
+      data.frame(x = 1, y = 2*i-1, text = cancer.text[i], type = "cancer") -> tmp.text
+      rbind(c.text, tmp.text) -> c.text
+    }
+    c.text %>%
+      dplyr::filter(type=="cancer") %>%
+      dplyr::select(y) %>%
+      max() -> c.m
+    
+    c.m/g.l -> g.i
+    for (i in 1:length(gene.text)) {
+      data.frame(x = 4, y = i*g.i-1, text = gene.text[i], type = "gene") -> tmp.text
+      rbind(c.text, tmp.text) -> c.text
+    }
+    
+    c.m/10 -> p.i
+    for (i in 1:length(pathway.text)) {
+      data.frame(x = 7, y = i*p.i-1, text = pathway.text[i], type = "pathway") -> tmp.text
+      rbind(c.text, tmp.text) -> c.text
+    }
+  }
+
+# condition 3: pathway is more --------------------------------------------
+
+  if(p.l>=c.l & p.l>=g.l){
+    for (i in 1:length(pathway.text)) {
+      data.frame(x = 7, y = i*2-1, text = pathway.text[i], type = "pathway") -> tmp.text
+      rbind(c.text, tmp.text) -> c.text
+    }
+      
+    c.text %>%
+      dplyr::filter(type=="pathway") %>%
+      dplyr::select(y) %>%
+      max() -> p.m
+    
+    p.m/c.l -> c.i
+    for (i in 1:length(cancer.text)) {
+      data.frame(x = 1, y = i*c.i-1, text = cancer.text[i], type = "cancer") -> tmp.text
+      rbind(c.text, tmp.text) -> c.text
+    }
+    
+    p.m/g.l -> g.i
+    for (i in 1:length(gene.text)) {
+      data.frame(x = 4, y = i*g.i-1, text = gene.text[i], type = "gene") -> tmp.text
+      rbind(c.text, tmp.text) -> c.text
+    }
   }
   return(c.text[-1,])
 }
