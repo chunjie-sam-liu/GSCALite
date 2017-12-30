@@ -133,7 +133,8 @@ other_tissue_choice <- list(
   "Testicular Germ Cell Tumors(TGCT)" = "TGCT",
   "Thyroid Carcinoma(THCA)" = "THCA",
   "Thymoma(THYM)" = "THYM",
-  "Uveal Melanoma(UVM)" = "UVM"
+  "Uveal Melanoma(UVM)" = "UVM",
+  "Cholangiocarcinoma(CHOL)" = "CHOL"
 )
 
 # cancer type selection ---------------------------------------------------
@@ -363,7 +364,7 @@ sub_cancer_types <- list(
   Bone_Marrow = c("LAML"),
   Breast = c("BRCA"),
   Cervix = c("CESC"),
-  other_tissue = c("DLBC",  "ESCA", "STAD",  "HNSC",  "LIHC", "MESO",  "OV", "PAAD", "PRAD", "SARC", "SKCM", "TGCT", "THCA", "THYM", "UVM")
+  other_tissue = c("DLBC",  "ESCA", "STAD",  "HNSC",  "LIHC", "MESO",  "OV", "PAAD", "PRAD", "SARC", "SKCM", "TGCT", "THCA", "THYM", "UVM", "CHOL")
 )
 
 
@@ -437,23 +438,17 @@ resetcancerType <- function(input, output, session){
 
 
 
-# hide pic when stop clicked ----------------------------------------------
+# remove pic when stop clicked ----------------------------------------------
 
-hidePic <- function(hideoutputlist){
-  for (i in hideoutputlist) {
-    NS(i)->ns
-    shinyjs::hide(ns("plot"))
+removePic <- function(input,output,session,outtype){
+  if(outtype=="image"){
+    output$plot<-renderImage({})
+  }
+  if(outtype=="plot"){
+    output$plot<-renderPlot({})
   }
 }
 
-# show pic when all work done ------------------------------------------
-
-showPic <- function(showoutputlist){
-  for (i in showoutputlist) {
-    NS(i)->ns
-    shinyjs::show(ns("plot"))
-  }
-}
 
 ###############################################################
 # Plot function to generate plot in ui#########################
