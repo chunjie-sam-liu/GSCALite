@@ -29,7 +29,7 @@ callModule(gtex_eqtl_submit_analysis,"gtex_eqtl")
 
 # get gene set-----------------------
 GTEx_eqtl_gene_list <- eventReactive(
-  eventExpr = input$analysis,
+  eventExpr = status$analysis,
   ignoreNULL = TRUE,
   valueExpr = {
     # be sure the following code run after start analysis

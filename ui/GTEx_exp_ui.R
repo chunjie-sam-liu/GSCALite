@@ -74,8 +74,7 @@ fluidRow(
     shiny::tags$br(),
     shinydashboard::tabBox(
       id = "GTEx_PLOT", title = "PLOT", width = 12,
-      tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")),
-      tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
+      tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")) #,tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
     )
   )
 ),
