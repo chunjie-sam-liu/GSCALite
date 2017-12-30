@@ -46,32 +46,32 @@ shinyServer(
     source(file = file.path(config$server, "welcome_server.R"), local = TRUE)
     
     # tcga expr
-#    source(file = file.path(config$server, "tcga_expr_server.R"), local = TRUE)
+    source(file = file.path(config$server, "tcga_expr_server.R"), local = TRUE)
     
     # tcga cnv ----
 
-    # source(file = file.path(config$server, "tcga_cnv_server.R"), local = TRUE)
+    source(file = file.path(config$server, "tcga_cnv_server.R"), local = TRUE)
     
-    # tcga snv ----
-    # source(file = file.path(config$server, "tcga_snv_server.R"), local = TRUE)
+    #tcga snv ----
+    source(file = file.path(config$server, "tcga_snv_server.R"), local = TRUE)
     
     # tcga meth ----
-    # source(file = file.path(config$server, "tcga_meth_server.R"), local = TRUE)
+#    source(file = file.path(config$server, "tcga_meth_server.R"), local = TRUE)
     
     # tcga mirna ----
-    # source(file = file.path(config$server, "tcga_mirna_server.R"), local = TRUE)
+#    source(file = file.path(config$server, "tcga_mirna_server.R"), local = TRUE)
     
     # tcga rppa ----
-    # source(file = file.path(config$server, "tcga_rppa_server.R"), local = TRUE)
+#    source(file = file.path(config$server, "tcga_rppa_server.R"), local = TRUE)
     
     # drug ----
     # gdsc
-    # source(file = file.path(config$server, "tcga_gdsc_server.R"), local = TRUE)
+#    source(file = file.path(config$server, "tcga_gdsc_server.R"), local = TRUE)
     # ctrp
-    # source(file = file.path(config$server, "tcga_ctrp_server.R"), local = TRUE)
+#    source(file = file.path(config$server, "tcga_ctrp_server.R"), local = TRUE)
     # GTEx
     source(file = file.path(config$server, "GTEx_exp_server.R"), local = TRUE)
-    
+    source(file = file.path(config$server, "GTEx_eqtl_server.R"), local = TRUE)
     # Load data
     
   }
