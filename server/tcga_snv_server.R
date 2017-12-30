@@ -8,7 +8,7 @@ snv <- readr::read_rds(file.path(config$database, "TCGA", "snv", ".rds_snv_all_g
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} end Load snv @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
 
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} start Load snv @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
-mc3_pass <- readr::read_rds(file.path(config$database, "TCGA", "snv", "snv_mutation_mc3_public.pass.filtered_maf.rds.gz"))
+mc3_pass <- readr::read_rds(file.path(config$database, "TCGA", "snv", "snv_mutation_mc3_public.pass.filtered_maf-4cancers.rds.gz"))
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} end Load mc3_pass @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
 
 # mc3_maf <- readr::read_rds(file.path(config$database,"TCGA","snv","snv_mutation_mc3_public.pass.filtered_maf.rds.gz"))
@@ -43,7 +43,7 @@ callModule(snv_submit_analysis,"snv")
 # analysis core -----------------------------------------------------------
 # monitor for gene list change-----------------------------------
 snv_gene_list <- eventReactive(
-  eventExpr = input$analysis,
+  eventExpr = status$analysis,
   ignoreNULL = TRUE,
   valueExpr = {
     # be sure the following code run after start analysis
@@ -52,12 +52,7 @@ snv_gene_list <- eventReactive(
       shinyjs::disable(id = "snv-submit")
       shinyjs::disable(id = "snv-switch")
       as.character(gene_set$match)
-    } else{
-      shinyBS::createAlert(
-        session = session, anchorId = "snv-no_gene_set", title = "Oops",
-        content = "No input gene set! Please go to Welcome page to input gene set.", style = "danger", append = FALSE
-      )
-    }
+    } 
   }
 )
 # get gene set snv --------------------------------------------------------
@@ -78,7 +73,7 @@ snv_analysis <- eventReactive(
       # callModule(removePic,"snv_summary",outtype="image")
       # callModule(removePic,"snv_oncoplot",outtype="image")
       callModule(removePic,"snv_survival",outtype="plot")
-      
+      if(length(snv_gene_list())!=0){
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start snvy part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
 # snv percent -------------------------------------------------------------
@@ -157,7 +152,12 @@ snv_analysis <- eventReactive(
       )
       status$snv_submit <- FALSE
       shinyjs::enable("snv-submit")
-      
+      } else{
+        shinyBS::createAlert(
+          session = session, anchorId = "snv-no_gene_set", title = "Oops",
+          content = "No input gene set! Please go to Welcome page to input gene set.", style = "danger", append = FALSE
+        )
+      }
    }
   }
 )
@@ -169,6 +169,7 @@ snv_global_analysis <- eventReactive(
   ignoreNULL = TRUE,
   valueExpr={
     if (status$analysis == TRUE) {
+      if(length(snv_gene_list())!=0){
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start maf part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
       
       # filter data
@@ -182,6 +183,12 @@ snv_global_analysis <- eventReactive(
       snv_onco_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_oncoplot_profile.png", sep = ""))
       callModule(snv_maf_oncoPlot,"snv_oncoplot",gene_list_maf=gene_list_maf,outfile=snv_onco_out,cancer_type=snv_cancer_type())
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} End maf part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+      }else{
+        shinyBS::createAlert(
+          session = session, anchorId = "snv-no_gene_set", title = "Oops",
+          content = "No input gene set! Please go to Welcome page to input gene set.", style = "danger", append = FALSE
+        )
+      }
     }
   }
 )
