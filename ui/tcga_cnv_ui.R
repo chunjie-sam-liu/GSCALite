@@ -35,32 +35,28 @@ tabItem(tabName = "tcga_cnv", align = "center",
         # cancer type selection----
         cancerTypeInput("cnv"),
         
-        # Selected cancer show ----
-        shiny::tags$h3("Cancer Type Check",class="text-success"),
-        shiny::tags$h4("The cancers you selected: ",
-                       textOutput("cnv_selected_cancer"),
-                       " Confirm and start analysis by click Submit!"),
         
         # Confirm and submit ----
         fluidRow(
-          column(width = 4),
+          selectAndAnalysisInput("cnv")
+          # column(width = 4),
+          # # column(
+          # #   width = 2, offset = 0,
+          # #   actionButton("cnv_select", label = "Select my cancers", icon = icon("refresh")) # ,status = "danger"?
+          # # ),
           # column(
           #   width = 2, offset = 0,
-          #   actionButton("cnv_select", label = "Select my cancers", icon = icon("refresh")) # ,status = "danger"?
+          #   actionButton("cnv_submit", label = "Submit!", icon = icon("check"))
           # ),
-          column(
-            width = 2, offset = 0,
-            actionButton("cnv_submit", label = "Submit!", icon = icon("check"))
-          ),
-          column(
-            width = 2, offset = 0,
-            actionButton("cnv_stop", label = "Stop!", icon = icon("pause"))
-          ),
           # column(
           #   width = 2, offset = 0,
-          #   actionButton("cnv_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
+          #   actionButton("cnv_stop", label = "Stop!", icon = icon("pause"))
           # ),
-          column(width = 4)
+          # # column(
+          # #   width = 2, offset = 0,
+          # #   actionButton("cnv_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
+          # # ),
+          # column(width = 4)
         ),
         shiny::tags$hr(width="85%"),
         

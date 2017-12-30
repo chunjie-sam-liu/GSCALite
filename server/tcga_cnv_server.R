@@ -30,32 +30,40 @@ print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv cor da
 cnv_cor <- readr::read_rds(file.path(config$database, "TCGA", "cnv", "pancan34_all_gene_exp-cor-cnv.rds.gz"))
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv cor data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
-#  get cancer type --------------------------------------------------------
-# cnv_cancer_type <- callModule(cancerType, "cnv")
+# Selected cancer types ---------------------------------------------------
+cnv_cancer_type <- callModule(cancerType, "cnv")
+output$cnv_selected_cancer <- renderText(
+  cnv_cancer_type()
+)
+# Cancer types value box selection ----------------------------------------
 
+callModule(module = cancerTypesSelect, id = "cnv", .sctps = cnv_cancer_type)
+# Check box ---------------------------------------------------------------
+
+callModule(module = selectAndAnalysis, id = "cnv", .id = "cnv")
 
 # cnv_cancer_type <- reactive(c("KIRC","LGG","COAD","LUAD","LUSC","BRCA"))
 
 
 # button control --------------------------------------------------------
 
-# observeEvent(input$cnv_reset, {
-#   cnv_cancer_type<-callModule(resetcancerType,"cnv")
-# })
-
 # submit cancer type -------------------------------------------------------
-observeEvent(input$cnv_submit, {
+cnv_submit_analysis <- function(input, output, session){
+observeEvent(input$submit, {
   status$cnv_submit <- TRUE
-  shinyjs::disable(id = "cnv_submit")
-  shinyjs::enable(id = "cnv_stop")
+  print(status$cnv_submit)
+  # shinyjs::disable(id = "cnv_submit")
+  # shinyjs::enable(id = "cnv_stop")
 })
+}
+callModule(cnv_submit_analysis,"cnv")
 # stop analysis -----------------------------------------------------------
-observeEvent(input$cnv_stop, {
-  status$cnv_submit <- FALSE
-  shinyjs::enable(id = "cnv_submit")
-  cnv_hide <- c("cnv_pie", "cnv_hete", "cnv_homo", "cnv_bar", "cnv_exp")
-  hidePic(cnv_hide) # hide pic when stop clicked!
-})
+# observeEvent(input$cnv_stop, {
+#   status$cnv_submit <- FALSE
+#   shinyjs::enable(id = "cnv_submit")
+#   cnv_hide <- c("cnv_pie", "cnv_hete", "cnv_homo", "cnv_bar", "cnv_exp")
+#   hidePic(cnv_hide) # hide pic when stop clicked!
+# })
 
 
 # analysis core -----------------------------------------------------------
@@ -68,7 +76,6 @@ cnv_gene_list <- eventReactive(
     if (status$analysis == TRUE) {
       status$cnv_submit <- TRUE
       shinyjs::disable(id = "cnv_submit")
-      shinyjs::enable(id = "cnv_stop")
       as.character(gene_set$match)
     }
   }
@@ -86,11 +93,7 @@ cnv_gene_list <- eventReactive(
 
 
 # analysis start ----------------------------------------------------------
-# observe(cnv_cancer_type())
-cnv_cancer_type <- callModule(cancerType, "cnv")
-output$cnv_selected_cancer <- renderText(
-  cnv_cancer_type()
-)
+
 
 cnv_analysis <- eventReactive(
   {
@@ -102,6 +105,7 @@ cnv_analysis <- eventReactive(
       print(cnv_gene_list(), "2")
       print("2")
       print(cnv_cancer_type())
+      print(status$cnv_submit)
       # cnv percent plot ------------------------------------------------------------
 
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} start cnv pie percent data processing@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
@@ -249,12 +253,13 @@ cnv_analysis <- eventReactive(
 
       callModule(methy_diff_pointPlot, "cnv_exp", data = gene_list_cancer_cnv_cor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.cnvcor, gene_rank = gene_rank.cnvcor, sizename = "-Log10(P.value)", colorname = "Spearman Correlation Coefficient", title = "Spearman Correlation Coefficient of CNV and gene expression.")
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} End cnv cor to expression ploting@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-      cnv_show <- c("cnv_pie", "cnv_hete", "cnv_homo", "cnv_bar", "cnv_exp")
-      showPic(cnv_show) # hide pic when stop clicked!
+      # cnv_show <- c("cnv_pie", "cnv_hete", "cnv_homo", "cnv_bar", "cnv_exp")
+      # showPic(cnv_show) # hide pic when stop clicked!
+      status$cnv_submit <- FALSE
     }
   }
 )
 
-# observe(cnv_cancer_type())
+# monitor ---------------------------------------------------------------------
 observe(cnv_gene_list())
 observe(cnv_analysis())

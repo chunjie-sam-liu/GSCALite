@@ -134,12 +134,14 @@ status <- reactiveValues(
   "cnv_submit" = FALSE,
   "snv_submit" = FALSE,
   "meth_submit" = FALSE,
-  "rppa_submit" = FALSE
+  "rppa_submit" = FALSE,
+  "gtex_expr_submit" = FALSE
 )
 
 error <- reactiveValues(
   "gene_set" = "",
-  "tcga_expr" = ""
+  "tcga_expr" = "",
+  "gtex_expr" = ""
 )
 
 

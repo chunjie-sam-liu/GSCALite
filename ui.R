@@ -150,9 +150,10 @@ body <- dashboardBody(
 
     # GTEx ----
 
-    source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local = TRUE)$value,
-    # source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local =TRUE)$value,
-    # source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local = TRUE)$value,
+
+    source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local =TRUE)$value,
+#    source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local =TRUE)$value,
+
 
     # TCGA ----
     # expr ----

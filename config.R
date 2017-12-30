@@ -14,10 +14,10 @@ config$version <- "1.0.0"
 # DEFAULT getwd()
 
 # config$wd <- "/home/liucj/github/GSCALite"
-config$wd <- "/project/huff/huff/github/GSCALite"
+#config$wd <- "/project/huff/huff/github/GSCALite"
 
-config$wd <- "/home/liucj/github/GSCALite"
-# config$wd <- "/home/zhangq/github/GSCALite"
+#config$wd <- "/home/liucj/github/GSCALite"
+ config$wd <- "/home/zhangq/github/GSCALite"
 # config$wd <- "/project/huff/huff/github/GSCALite"
 
 

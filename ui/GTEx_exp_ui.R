@@ -32,7 +32,7 @@ tabItem(
   shiny::tags$hr(width = "85%"),
 
 
-  # GTExTissueTypeInput("GTEx_exp"),
+  GTExTissueType("GTEx_exp"),
 
   # Selected Tissue show ----
   shiny::tags$h3("Tissue Check", class = "text-success"),
@@ -51,26 +51,35 @@ tabItem(
     ),
     column(
       width = 2, offset = 0,
-      actionButton("GTEx_tissue_reset", label = "Reset!", icon = icon("refresh")) 
+      actionButton("analysis_stop", label = "Stop!", icon = icon("pause")) 
     ),
     column(width = 4)
   ),
   shiny::tags$hr(width = "85%"),
 
   # output plot -------------------------------------------------------------
-  # Tabset Panel ----
-  fluidRow(
-    column(
-      width = 10,
-      offset = 1,
-      shiny::tags$br(),
-      shinydashboard::tabBox(
-        id = "GTEx_PLOT", title = "PLOT", width = 12,
-        tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")),
-        tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
-      )
+ # # Tabset Panel ----
+
+
+fluidRow(column(width = 10, offset = 1, GTExTissueType("GTEx_exp"))),
+
+# Cancer type selection ----
+fluidRow(selectAndAnalysisInput("GTEx_exp")),
+
+# Plot result ----
+fluidRow(
+  column(
+    width = 10,
+    offset = 1,
+    shiny::tags$br(),
+    shinydashboard::tabBox(
+      id = "GTEx_PLOT", title = "PLOT", width = 12,
+      tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")),
+      tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
     )
-  ),
+  )
+),
+
   # load footer ----
   source(file.path(config$ui, "footer.R"))[1]
 ) # close tab
