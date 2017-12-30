@@ -71,8 +71,11 @@ tabItem(
       )
     )
   ),
-
+  # gene set input stat output ----
   fluidRow(shiny::uiOutput(outputId = "gene_set_stat")),
+  
+  # progress bar for running -----
+  fluidRow(shiny::uiOutput(outputId = "ui_progressbar")),
 
   # Feature and descriptions ----
   fluidRow(
@@ -88,10 +91,13 @@ tabItem(
         width = 6,
         status = "primary",
         shiny::tags$p(
+          style = "margin-top:20px;",
           class = "text-justify",
           "GSCALite is a web-based analysis platform for gene set cancer analysis. The alterations on DNA or RNA of cancer related genes may be contribute to the cancer initiation, progress, diagnosis, prognosis, therapy. As the cancer genomics big data available, it is very useful and urgent to provide a platform for gene set analysis in cancer."
           ),
+       
         shiny::tags$p(
+          style = "margin-top:30px; margin-bottom:20px;",
           class = "text-justify",
           "In this GSCALite, we integrated cancer genomics data of 33 cancer types from",
           shiny::tags$a("TCGA", href = "https://cancergenome.nih.gov/", target = "_blank", style = "color:#008176"),
@@ -110,52 +116,49 @@ tabItem(
       # column(
       #   width = 6,
       shinydashboard::box(
-        title = "In GSCALite, you can get:",
+        title = HTML("In GSCALite, users can do following analysis for a <strong><font color='red'>gene set</font></strong>:"),
         width = 6,
         status = "primary",
         solidHeader = TRUE,
         shiny::tags$p(
           class = "text-left",
           icon("hand-o-right"),
-          " Gene set of mRNA expression differences between tumor and normal samples, ",
-          "and clinical features in all cancers."
+          " mRNA: Differential expression and cancer survival correlation."
         ),
         shiny::tags$p(
           class = "text-left",
           icon("hand-o-right"),
-          " Single nucleotide mutation analysis of gene set in all cancers, ",
-          "and analysis of SNV on overall survival."
+          " SNV: Statistics, distribution, types and its survival significance."
         ),
         shiny::tags$p(
           class = "text-left",
           icon("hand-o-right"),
-          " Overall Copy number variation of gene set in all cancers and influence of CNV on gene expression."
+          " CNV: The statistics of deletion/amplification of hetero/homozygous CNV."
         ),
         shiny::tags$p(
           class = "text-left",
           icon("hand-o-right"),
-          " Gene set analysis of methylation differences between tumor and normal samples,",
-          " and methylation level on gene expression and overall survival."
+          " Methylation: Differential methylation, correlation to survival and expression."
         ),
         shiny::tags$p(
           class = "text-left",
           icon("hand-o-right"),
-          "  Genes potentially regulate the activity of 10 famous cancer related pathways."
+          " Cancer pathway activity: The activity of 10 cancer related pathways."
         ),
         shiny::tags$p(
           class = "text-left",
           icon("hand-o-right"),
-          "  A network in which genes potentially regulated by the miRNAs."
+          " miRNA network: Gene regulatory network by miRNAs."
         ),
         shiny::tags$p(
           class = "text-left",
           icon("hand-o-right"),
-          " Gene set analysis of expression which have drugs resistance."
+          " Drug response: Correlation of gene expression and drug sensitivity (IC50)."
         ),
         shiny::tags$p(
           class = "text-left",
           icon("hand-o-right"),
-          " Gene set analysis of expression profile and variation in normal tissue."
+          " GTEx: Gene expression in normal tissue and eQTL."
         )
       )
       # )
