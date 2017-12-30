@@ -302,7 +302,7 @@ cancerTypesSelect <- function(input, output, session, .sctps) {
         column(
           width = 3, 
           infoBox(
-            title = "Number of unselected cancer", value = 32 - length(.sctps()),
+            title = "Number of unselected cancer", value = 33 - length(.sctps()),
             width = 12, icon = icon("credit-card"), color = "red", fill = TRUE)
         ),
         column(
@@ -645,6 +645,8 @@ cnvbarPlot <- function(input, output, session, data, x, y, fill) {
 
 snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, label, cancer_rank, gene_rank) {
   output$plot <- renderPlot({
+    # data$per %>% max() ->max.limit
+    # max.limit/10 -> inter.limit
     data %>%
       ggplot(aes_string(x = cancer, y = gene, fill = fill)) +
       geom_tile() +
@@ -654,15 +656,16 @@ snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, la
       scale_fill_gradient2(
         name = "Mutation Frequency (%)",
         limit = c(0, 0.8),
-        breaks = seq(0, 1, 0.1),
-        label = c("0", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100"),
+        breaks = c(seq(0,0.2,0.05),seq(0.25, 0.65, 0.1)),
+        label = c("0", "5", "10", "15", "20", "25", "35", "45", "55", "65"),
         high = "red",
         na.value = "white"
       ) +
       theme_bw() +
       theme(
         axis.text.x = element_text(angle = 45, hjust = -0.05, size = "15"),
-        axis.title.y = element_text(size = "15")
+        axis.title.y = element_text(size = "15"),
+        panel.grid = element_line(colour = "grey", linetype = "dashed")
       ) +
       guides(fill = guide_legend(
         title = "Mutation Frequency (%)",
@@ -737,46 +740,45 @@ imagePlotInput <- function(id, width=400, height=300) {
 
 # 2. server part ----------------------------------------------------------
 
-snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, figname) {
+snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile) {
   output$plot <-renderImage({
-    outfile <- paste(user_dir,"/",figname,'.png',sep="")
-    png(outfile, width = 400, heights= 300)
+    png(outfile, width = 1000, height= 700)
     maftools::plotmafSummary(gene_list_maf)
     dev.off()
     
     list(src = outfile,
          contentType = 'image/png',
-         width = 400,
-         height = 300,
+         width = 1000,
+         height = 700,
          alt = "This is alternate text")
   }, deleteFile = TRUE)
 }
 
 
-snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cancer_type) {
+snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cancer_type,outfile) {
   output$plot <-renderImage({
-    outfile <- paste(user_dir,"/",figname,'.png',sep="")
-    png(outfile, width = 400, heights= 300)
-    col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
-    names(col) <- c(
-      "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
-      "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
-    )
-    fabcolors <- RColorBrewer::brewer.pal(n = length(cancer_type), name = "Spectral")
-    names(fabcolors) <- cancer_type
+    png(outfile, width = 1000, height= 700)
+    # col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
+    # names(col) <- c(
+    #   "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
+    #   "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
+    # )
+    # fabcolors <- RColorBrewer::brewer.pal(n = length(cancer_type), name = "Spectral")
+    # names(fabcolors) <- cancer_type
 
-    fabcolors <- list(cancer_types = fabcolors)
-    maftools::oncoplot(
-      maf = gene_list_maf, removeNonMutated = T, colors = col,
-      clinicalFeatures = "cancer_types", sortByAnnotation = TRUE,
-      annotationColor = fabcolors, top = 10
-    )
+    # fabcolors <- list(cancer_types = fabcolors)
+    # maftools::oncoplot(
+    #   maf = gene_list_maf, removeNonMutated = T, colors = col,
+    #   clinicalFeatures = "cancer_types", sortByAnnotation = TRUE,
+    #   annotationColor = fabcolors, top = 10
+    # )
+    oncoplot(maf = gene_list_maf, top = 10, fontSize = 12)
     dev.off()
     
     list(src = outfile,
          contentType = 'image/png',
-         width = 400,
-         height = 300,
+         width = 1000,
+         height = 700,
          alt = "This is alternate text")
   }, deleteFile = TRUE)
 }
