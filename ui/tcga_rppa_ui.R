@@ -36,30 +36,9 @@ tabItem(
   # cancer type selection----
   cancerTypeInput("rppa"),
 
-  # Selected cancer show ----
-  shiny::tags$h3("Cancer Type Check", class = "text-success"),
-  shiny::tags$h4(
-    "The cancers you selected: ",
-    textOutput("rppa_selected_cancer"),
-    " Confirm and start analysis by click Submit!"
-  ),
-
   # Confirm and submit ----
   fluidRow(
-    column(width = 4),
-    column(
-      width = 2, offset = 0,
-      actionButton("rppa_submit", label = "Submit!", icon = icon("check"))
-    ),
-    column(
-      width = 2, offset = 0,
-      actionButton("rppa_stop", label = "Stop!", icon = icon("pause"))
-    ),
-    # column(
-    #   width = 2, offset = 0,
-    #   actionButton("rppa_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
-    # ),
-    column(width = 4)
+    selectAndAnalysisInput("rppa")
   ),
   shiny::tags$hr(width = "85%"),
 
@@ -74,10 +53,6 @@ tabItem(
         id = "rppa_PLOT", title = "PLOT", width = 12,
         tabPanel(title = "Global percentage", imagePlotInput(id = "rppa_pie",width="100%",height="100%")),
         tabPanel(title = "Heatmap percentage", imagePlotInput(id = "rppa_per",width="100%",height="100%")),
-        # tabPanel(title = "Heatmap percentage",
-        #          imageOutput("rppa_per_plot",width = "100%", height = "100%"),
-        #          hr()),
-        
         tabPanel(title = "Relation network", 
                  imageOutput("rppa_rela_plot",width="100%",height="100%"),
                  hr())

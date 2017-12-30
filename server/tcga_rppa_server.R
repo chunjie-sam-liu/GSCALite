@@ -13,19 +13,30 @@ print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading rppa regul
 rppa_relation <- readr::read_rds(file.path(config$database, "TCGA", "rppa", "pan32_gene_A-I-N_sig_pval_class.siplification.rds.gz"))
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading rppa regulate data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
+#  get cancer type --------------------------------------------------------
+
+rppa_cancer_type <- callModule(cancerType, "rppa")
+
+# Cancer types value box selection ----------------------------------------
+
+callModule(module = cancerTypesSelect, id = "rppa", .sctps = rppa_cancer_type)
+# Check box ---------------------------------------------------------------
+
+callModule(module = selectAndAnalysis, id = "rppa", .id = "rppa")
+
+# button control --------------------------------------------------------
+
 # submit cancer type -------------------------------------------------------
-observeEvent(input$rppa_submit, {
-  status$rppa_submit <- TRUE
-  shinyjs::disable(id = "rppa_submit")
-  shinyjs::enable(id = "rppa_stop")
-})
-# stop analysis -----------------------------------------------------------
-observeEvent(input$rppa_stop, {
-  status$rppa_submit <- FALSE
-  shinyjs::enable(id = "rppa_submit")
-  # rppa_hide <- c()
-  hidePic("rppa_rela_plot") # hide pic when stop clicked!
-})
+
+rppa_submit_analysis <- function(input, output, session){
+  observeEvent(input$submit, {
+    status$rppa_submit <- TRUE
+    print(status$rppa_submit)
+  })
+}
+
+callModule(rppa_submit_analysis,"rppa")
+
 
 # monitor for gene list change
 rppa_gene_list <- eventReactive(
@@ -35,21 +46,21 @@ rppa_gene_list <- eventReactive(
     # be sure the following code run after start analysis
     if (status$analysis == TRUE) {
       status$rppa_submit <- TRUE
-      shinyjs::disable(id = "rppa_submit")
-      shinyjs::enable(id = "rppa_stop")
+      shinyjs::disable(id = "rppa-submit")
       as.character(gene_set$match)
+    }else{
+      shinyBS::createAlert(
+        session = session, anchorId = "rppa-no_gene_set", title = "Oops",
+        content = "No input gene set! Please go to Welcome page to input gene set.", style = "danger", append = FALSE
+      )
     }
   }
 )
 
 # analysis core -----------------------------------------------------------
 
-#  get cancer type --------------------------------------------------------
 
-rppa_cancer_type <- callModule(cancerType, "rppa")
-output$rppa_selected_cancer <- renderText(
-  rppa_cancer_type()
-)
+
 
 rppa_analysis <- eventReactive(
   {
@@ -58,6 +69,11 @@ rppa_analysis <- eventReactive(
   ignoreNULL = TRUE,
   valueExpr = {
     if (status$rppa_submit == TRUE) {
+      .msg <- c("NOTICE: Too much cancers and genes will make [Relation network] complicated, it will hard to see, try less genes or less cancers. [Global percentage] and [Heatmap percentage] will not change when cancer selection changes, cause it's a global percentage included all cancer types (see help page).")
+      
+      # remove pic result generate before ----
+      # output$rppa_rela_plot <- renderImage({})
+      
       print("-------------------------------RPPA part------------------------------------")
       print(rppa_gene_list())
       print(rppa_cancer_type())
@@ -159,7 +175,13 @@ rppa_analysis <- eventReactive(
              alt = "This is alternate text")
       }, deleteFile = FALSE)
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} End rppa relation analysis part@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-      shinyjs::show("rppa_rela_plot")
+      # alert for information
+      shinyBS::createAlert(
+        session = session, anchorId = "rppa-no_gene_set", title = "Information", style = "info",
+        content = .msg, append = FALSE
+      )
+      status$rppa_submit <- FALSE
+      shinyjs::enable("rppa-submit")
     }
   }
 )
@@ -216,32 +238,7 @@ rppa_global_analysis <- eventReactive(
     }
   }
   )
-  # output$rppa_per_plot <- renderImage({
-  #   rppa_per_ready %>%
-  #     ggplot(aes(x = pathway, y = symbol))+
-  #     xlab("Pathway")+ylab("Symbol") +
-  #     guides(fill=guide_colorbar("Percent")) +
-  #     geom_tile(aes(fill = per), col = "white") +
-  #     geom_text(label=ceiling(rppa_per_ready$per),size=1) +
-  #     scale_fill_gradient2(
-  #       high = "red",
-  #       mid = "white",
-  #       low = "blue"
-  #     ) +
-  #     theme(
-  #       axis.text.x = element_text(angle = 45, hjust = 1,vjust = 1),
-  #       axis.text.y = element_text()
-  #     ) +
-  #     xlab("Pathway (a:activate; i:inhibit)")->p
-  #   rppa_per_outfile <- file.path(user_dir,"pngs",paste(user_id,"-","TCGA_rppa_network_profile.png",sep=""))
-  #   
-  #   ggsave(rppa_per_outfile,p,device ="png",width =4, height = 4)
-  #   list(src = rppa_per_outfile,
-  #        contentType = 'image/png',
-  #        # width = "100%" ,
-  #        # height = 900,
-  #        alt = "This is alternate text")
-  # }, deleteFile = FALSE)
+
 
 
 # monitor -----------------------------------------------------------------
