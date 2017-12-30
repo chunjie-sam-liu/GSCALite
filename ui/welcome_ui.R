@@ -71,8 +71,11 @@ tabItem(
       )
     )
   ),
-
+  # gene set input stat output ----
   fluidRow(shiny::uiOutput(outputId = "gene_set_stat")),
+  
+  # progress bar for running -----
+  fluidRow(shiny::uiOutput(outputId = "ui_progressbar")),
 
   # Feature and descriptions ----
   fluidRow(

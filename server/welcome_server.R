@@ -6,10 +6,10 @@ observeEvent(input$input_gene_set_reset, {
   status$gene_set <- FALSE
 })
 observeEvent(input$analysis, {
-  status$analysis <- TRUE
   # shinyjs::js$checkall()
   shinyjs::disable(id = "input_gene_set")
   shinyjs::disable(id = "analysis")
+  # status$analysis <- TRUE
 })
 observeEvent(input$stop, {
   status$analysis <- FALSE
@@ -17,6 +17,7 @@ observeEvent(input$stop, {
   shinyjs::reset("input_gene_set")
   shinyjs::enable(id = "input_gene_set")
   shinyjs::enable(id = "analysis")
+  output$ui_progressbar <- renderUI({NULL})
 })
 observeEvent(input$example, {
   status$analysis <- FALSE
@@ -26,6 +27,9 @@ observeEvent(input$example, {
   shinyjs::enable(id = "analysis")
 
 })
+
+# after progress done
+
 
 
 # Example input gene set --------------------------------------------------
@@ -99,7 +103,7 @@ output$gene_set_stat <- renderUI({
       column(
         width = 8, offset = 2,
         shinyBS::bsButton(inputId = "analysis", label = "Start Gene Set Analysis", icon = icon("play"), class = "btn-lg"),
-        shinyBS::bsButton(inputId = "stop", label = "Stop", icon = icon("pause"), class = "btn-lg")
+        shinyBS::bsButton(inputId = "stop", label = "Stop", icon = icon("pause"), class = "btn-lg danger")
       )
     )
   } else {
@@ -135,6 +139,40 @@ output$download_input_logs <- downloadHandler(
   }
 )
 
+# progress bar ui -----------------------------------------------------
+
+
+progressbar_start_analysis <- eventReactive(
+  eventExpr = input$analysis,
+  ignoreNULL = TRUE,
+  valueExpr = {
+        output$ui_progressbar <- renderUI({
+          shiny::tagList(
+            column(
+              style = "margin-top:30px;",
+              width = 9, offset = 2,
+              shinyWidgets::progressBar(id = "progressbar", value = 0, striped = TRUE,  status = "warning")
+            )
+          )
+        })
+        session$onFlushed(function() {status$analysis <- TRUE})
+        
+  }
+)
+observeEvent(
+  progress$progress_end,
+  {
+    if (progress$progress_end == TRUE) {
+      print("---helo----")
+      output$ui_progressbar <- renderUI({NULL})
+      shinyjs::enable(id = "input_gene_set")
+      shinyjs::enable(id = "analysis")
+    }
+  }
+)
+
+
+
 #  Oberseve status$trigger -----------------------------------------------
 observeEvent(status$trigger, {
   if (error$gene_set != "" && !is.null(error$gene_set)) {
@@ -145,4 +183,4 @@ observeEvent(status$trigger, {
 output$output_gene_set <- renderUI(return(shiny::HTML(error$gene_set)))
 
 observe(validate_input_gene_set())
-
+observe(progressbar_start_analysis())
