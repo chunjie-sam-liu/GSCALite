@@ -46,11 +46,6 @@ cnv_gene_list <- eventReactive(
       shinyjs::disable(id = "cnv-submit")
       shinyjs::disable(id = "cnv-switch")
       as.character(gene_set$match)
-    } else{
-      shinyBS::createAlert(
-        session = session, anchorId = "cnv-no_gene_set", title = "Oops",
-        content = "No input gene set! Please go to Welcome page to input gene set.", style = "danger", append = FALSE
-      )
     }
   }
 )
@@ -62,7 +57,7 @@ cnv_gene_list <- eventReactive(
 
 cnv_analysis <- eventReactive(
   {
-    status$cnv_submit == TRUE
+    status$cnv_submit
   },
   ignoreNULL = TRUE,
   valueExpr = {
@@ -78,6 +73,8 @@ cnv_analysis <- eventReactive(
       callModule(removePic,"cnv_homo",outtype="plot")
       callModule(removePic,"cnv_bar",outtype="plot")
       callModule(removePic,"cnv_exp",outtype="plot")
+      
+      if(length(cnv_gene_list())!=0){
       
       # cnv percent plot ------------------------------------------------------------
 
@@ -244,6 +241,12 @@ cnv_analysis <- eventReactive(
       )
       status$cnv_submit <- FALSE
       shinyjs::enable("cnv-submit")
+      } else{
+        shinyBS::createAlert(
+          session = session, anchorId = "snv-no_gene_set", title = "Oops",
+          content = "No input gene set! Please go to Welcome page to input gene set.", style = "danger", append = FALSE
+        )
+      }
     } 
   }
 )

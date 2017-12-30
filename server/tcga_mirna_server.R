@@ -7,7 +7,7 @@ print(glue::glue("{paste0(rep('-', 10), collapse = '')} end Load mirna data @ {S
 # start analysis ----------------------------------------------------------
 
 mirna_analysis <- eventReactive(
-  input$analysis,
+  status$analysis,
   ignoreNULL = TRUE,
   valueExpr = {
     # get gene set mirna data -------------------------------------------------

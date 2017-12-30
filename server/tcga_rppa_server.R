@@ -40,7 +40,7 @@ callModule(rppa_submit_analysis,"rppa")
 
 # monitor for gene list change
 rppa_gene_list <- eventReactive(
-  eventExpr = input$analysis,
+  eventExpr = status$analysis,
   ignoreNULL = TRUE,
   valueExpr = {
     # be sure the following code run after start analysis
@@ -48,11 +48,6 @@ rppa_gene_list <- eventReactive(
       status$rppa_submit <- TRUE
       shinyjs::disable(id = "rppa-submit")
       as.character(gene_set$match)
-    }else{
-      shinyBS::createAlert(
-        session = session, anchorId = "rppa-no_gene_set", title = "Oops",
-        content = "No input gene set! Please go to Welcome page to input gene set.", style = "danger", append = FALSE
-      )
     }
   }
 )
@@ -69,6 +64,7 @@ rppa_analysis <- eventReactive(
   ignoreNULL = TRUE,
   valueExpr = {
     if (status$rppa_submit == TRUE) {
+      if(length(rppa_gene_list())!=0){
       shinyBS::createAlert(
         session = session, anchorId = "rppa-no_gene_set", title = "Information", style = "info",
         content = "Need a few minutes to draw picture, please wait.", append = FALSE
@@ -178,6 +174,12 @@ rppa_analysis <- eventReactive(
       )
       status$rppa_submit <- FALSE
       shinyjs::enable("rppa-submit")
+    }else{
+      shinyBS::createAlert(
+        session = session, anchorId = "rppa-no_gene_set", title = "Oops",
+        content = "No input gene set! Please go to Welcome page to input gene set.", style = "danger", append = FALSE
+      )
+    }
     }
   }
 )

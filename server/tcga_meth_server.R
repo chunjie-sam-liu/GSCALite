@@ -36,7 +36,7 @@ callModule(meth_submit_analysis,"meth")
 # analysis core -----------------------------------------------------------
 # monitor for gene list change-----------------------------------
 meth_gene_list <- eventReactive(
-  eventExpr = input$analysis,
+  eventExpr = status$analysis,
   ignoreNULL = TRUE,
   valueExpr = {
     # be sure the following code run after start analysis
@@ -45,12 +45,7 @@ meth_gene_list <- eventReactive(
       shinyjs::disable(id = "meth-submit")
       shinyjs::disable(id = "meth-switch")
       as.character(gene_set$match)
-    } else{
-      shinyBS::createAlert(
-        session = session, anchorId = "meth-no_gene_set", title = "Oops",
-        content = "No input gene set! Please go to Welcome page to input gene set.", style = "danger", append = FALSE
-      )
-    }
+    } 
   }
 )
   
@@ -62,6 +57,7 @@ meth_analysis <- eventReactive(
   ignoreNULL = TRUE,
   valueExpr = {
     if (status$meth_submit == TRUE) {
+      if(length(meth_gene_list())!=0){
       .msg <- c("NOTICE: ")
       # load data----
       load_data_meth()
@@ -156,6 +152,12 @@ In this analysis, only {nrow(meth_diff)} cancer types have paired samples. They 
       )
       status$meth_submit <- FALSE
       shinyjs::enable("meth-submit")
+      }else{
+        shinyBS::createAlert(
+          session = session, anchorId = "meth-no_gene_set", title = "Oops",
+          content = "No input gene set! Please go to Welcome page to input gene set.", style = "danger", append = FALSE
+        )
+      }
     }
   }
 )
