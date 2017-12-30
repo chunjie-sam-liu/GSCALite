@@ -4,7 +4,6 @@
 
 
 # load methy data ---------------------------------------------------------
-# diff methylation between tumor and normal
 meth_diff <- NULL
 meth_survival <- NULL
 meth_cor <- NULL
@@ -63,14 +62,15 @@ meth_analysis <- eventReactive(
   ignoreNULL = TRUE,
   valueExpr = {
     if (status$meth_submit == TRUE) {
-      .msg <- NULL
+      .msg <- c("NOTICE: ")
       # load data----
       load_data_meth()
       
-      # remove pic result generate befor----
+      # remove pic result generate before ----
       callModule(removePic,"meth_diff",outtype="plot")
       callModule(removePic,"meth_survival",outtype="plot")
       callModule(removePic,"meth_exp",outtype="plot")
+      
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start methy part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
       
       # get gene set meth ----------------------------------------
