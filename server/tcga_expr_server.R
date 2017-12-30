@@ -10,11 +10,17 @@ expr_cancer_type <- callModule(module = cancerType, id = "expr")
 
 # Cancer types value box selection ----------------------------------------
 
+
+
+expr_cancer_type <- callModule(cancerType, id = "expr")
+
+
 callModule(module = cancerTypesSelect, id = "expr", .sctps = expr_cancer_type)
 
 # Check box ---------------------------------------------------------------
 
 callModule(module = selectAndAnalysis, id = "expr", .id = "expr")
+
 
 # Expression submit analysis ----------------------------------------------
 
@@ -79,28 +85,65 @@ expr_start_analysis <- function(input, output, session, .expr_clean) {
 
 # From start analysis -----------------------------------------------------
 expr_analysis <- eventReactive(
-  eventExpr = input$analysis,
+  eventExpr = status$analysis,
   ignoreNULL = TRUE,
   valueExpr = {
     # be sure the following code run after start analysis
     if (status$analysis == TRUE) {
+
       print(gene_set$match)
       
       # load data expr ---- 
-      load_data_expr()
+      processing$start_loading_start <- TRUE
+      print(glue::glue("processing$start_loading_start {processing$start_loading_start}"))
       
-      # gene_set <- readr::read_rds(path = file.path(config$wd, "userdata", "test_gene_set.rds.gz"))
-      # isolate({reactiveValuesToList(gene_set)}) -> gene_set
+      updateProgressBar(session = session, id = "progressbar", value = 10, status = "danger")
+      session$onFlushed(function() {progress$expr_loading <- TRUE})
       
-      expr %>%
-        dplyr::filter(cancer_types %in% paired_cancer_types) %>%
-        clean_expr(.gs = gene_set$match) ->> expr_clean
+      observeEvent(
+        eventExpr = progress$expr_loading,
+        handlerExpr = {
+          
+          if (progress$expr_loading == TRUE) {
+            
+            load_data_expr()
+            
+            processing$start_loading_end <- TRUE
+            }
+        })
       
-      print(glue::glue("{paste0(rep('-', 10), collapse = '')} clean data complete @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+      observeEvent(processing$start_loading_end, {
+        if (processing$start_loading_end == TRUE) {
+          updateProgressBar(session = session, id = "progressbar", value = 50, status = "danger")
+          session$onFlushed(function() {progress$expr_calc <- TRUE})
+        }
+      })
       
-      callModule(module = expr_start_analysis, id = "expr", .expr_clean = expr_clean)
+      observeEvent(
+        eventExpr = progress$expr_calc,
+        handlerExpr = {
+          if (progress$expr_calc == TRUE) {
+            
+            expr %>%
+              dplyr::filter(cancer_types %in% paired_cancer_types) %>%
+              clean_expr(.gs = gene_set$match) ->> expr_clean
+            
+            print(glue::glue("{paste0(rep('-', 10), collapse = '')} clean data complete @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+            
+            callModule(module = expr_start_analysis, id = "expr", .expr_clean = expr_clean)
+            
+            print(glue::glue("{paste0(rep('-', 10), collapse = '')} expr bubble plot complete @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+            
+            processing$expr_calc_end <- TRUE
+          }
+        })
       
-      print(glue::glue("{paste0(rep('-', 10), collapse = '')} expr bubble plot complete @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+      observeEvent(processing$expr_calc_end, {
+        if (processing$expr_calc_end == TRUE) {
+          updateProgressBar(session = session, id = "progressbar", value = 100, status = "danger")
+          progress$progress_end <- TRUE
+        }
+      })
     }
   }
 )

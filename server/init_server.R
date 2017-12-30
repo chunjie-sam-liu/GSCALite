@@ -126,6 +126,22 @@ local({
 
 # Status and error --------------------------------------------------------
 
+progress <- reactiveValues(
+  "expr_loading" = FALSE,
+  "expr_calc" = FALSE,
+  "progress_end" = FALSE 
+)
+
+
+processing <- reactiveValues(
+  "expr_loading_start" = FALSE,
+  "expr_loading_end" = FALSE,
+  
+  "expr_calc_start" = FALSE,
+  "expr_calc_end" = FALSE
+)
+
+
 status <- reactiveValues(
   "gene_set" = FALSE,
   "analysis" = FALSE,
@@ -134,12 +150,16 @@ status <- reactiveValues(
   "cnv_submit" = FALSE,
   "snv_submit" = FALSE,
   "meth_submit" = FALSE,
-  "rppa_submit" = FALSE
+  "rppa_submit" = FALSE,
+  "gtex_expr_submit" = FALSE,
+  "gtex_eqtl_submit" = FALSE
 )
 
 error <- reactiveValues(
   "gene_set" = "",
-  "tcga_expr" = ""
+  "tcga_expr" = "",
+  "gtex_expr" = "",
+  "gtex_eqtl" = ""
 )
 
 

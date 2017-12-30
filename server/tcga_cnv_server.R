@@ -37,7 +37,7 @@ callModule(cnv_submit_analysis,"cnv")
 # analysis core -----------------------------------------------------------
 # monitor for gene list change--------------------------------------------
 cnv_gene_list <- eventReactive(
-  eventExpr = input$analysis,
+  eventExpr = status$analysis,
   ignoreNULL = TRUE,
   valueExpr = {
     # be sure the following code run after start analysis

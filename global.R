@@ -11,47 +11,162 @@
 
 # GTEx normal tissue choice ##############
 
-source(file = "config.R", local = TRUE)
-gtex_expr.tissues <- read.table(file.path(config$database, "GTEx", "expression","GTEx_tissue_name.lst"),sep="\t",stringsAsFactors=F)$V1 
-gtex_expr.tissue_n <- length(gtex_expr.tissues)
-gtex_expr.tissue_lst <- list() 
-length(gtex_expr.tissue_lst)<- gtex_expr.tissue_n 
-for(i in 1:gtex_expr.tissue_n){gtex_expr.tissue_lst[i]<-gtex_expr.tissues[i]}
-names(gtex_expr.tissue_lst) <- gtex_expr.tissues
+GTEx_expr_Brain_choice <- list("Brain"="Brain")
+GTEx_expr_Liver_choice <- list("Liver"="Liver")
+GTEx_expr_Heart_choice <- list("Heart"="Heart")
+GTEx_expr_Ovary_choice <- list("Ovary"="Ovary")
+GTEx_expr_Lung_choice <- list("Lung"="Lung")
+GTEx_expr_Breast_choice <- list("Breast"="Breast")
+GTEx_expr_Skin_choice <- list("Skin"="Skin")
+GTEx_expr_Blood_choice <- list("Blood"="Blood")
+GTEx_expr_Testis_choice <- list("Testis"="Testis")
+GTEx_expr_Colon_choice <- list("Colon"="Colon")
+GTEx_expr_other_choice <- list("Adipose Tissue"="Adipose Tissue", "Muscle"="Muscle", 
+  "Blood Vessel"="Blood Vessel", "Salivary Gland"="Salivary Gland", "Adrenal Gland"="Adrenal Gland", 
+  "Thyroid"="Thyroid", "Spleen"="Spleen", "Small Intestine"="Small Intestine", 
+  "Cervix Uteri"="Cervix Uteri", "Bladder"="Bladder", "Fallopian Tube"="Fallopian Tube",
+  "Uterus"="Uterus", "Pituitary"="Pituitary", "Esophagus"="Esophagus", 
+  "Nerve"="Nerve", "Vagina"="Vagina", "Pancreas"="Pancreas", "Prostate"="Prostate", 
+  "Stomach"="Stomach", "Kidney"="Kidney")
+GTEx_expr_input_selection <- paste("input$",grep("GTEx_expr_.*_choice",ls(),value = T),sep="")
 
-tabPannel_element_ten <- c()
-for(i in gtex_expr.tissues[1:10]){
-  tmp_XXXX <- list(i=i);names(tmp_XXXX <-i);
-  assign(paste("GTEx_",i,"_choice",sep = ""),tmp_XXXX)
-  tabPannel_element_ten <-c(tabPannel_element_ten,
-                            paste("tabPanel(\"",i,"\",checkboxGroupInput(inputId = ns(\"",i,"\"), label = NULL, inline = TRUE,choices = ",paste("GTEx_",i,"_choice)),",sep=""),sep="")
-  )  
-}
-GTEx_other_tissue_choice <- gtex_expr.tissues[11:gtex_expr.tissue_n]
-GTEx_input_choice <- c(paste("input$",gtex_expr.tissues[1:10],sep=""),"input$other_tissue")
 
-
-GTExTissueTypeInput <- function(id) {
+#####GTEx tissue 4 UI#####
+GTExTissueType <- function(id) {
   ns <- NS(id)
   
   tagList(
     fluidRow(
-      # tissue type selection----
+      # GTEx tissues selection----
       column(
         width = 10,
         offset = 1,
         shiny::tags$br(),
-        shiny::tags$h3("GTEx normal tissue Selection", class = "text-success"),
+        shiny::tags$h3("GTEx tissues selection", class = "text-success"),
         shiny::tags$br(),
         
         shinydashboard::tabBox(
           width = 12, title = "Tissue",
-          eval(tabPannel_element_ten),
+          tabPanel(
+            "Brain",
+            shiny::tags$h4("Brain", class = "text-success"),
+            checkboxGroupButtons(
+              inputId = ns("Brain"), label = NULL,
+              choices = GTEx_expr_Brain_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Liver",
+            checkboxGroupButtons(
+              inputId = ns("Liver"), label = NULL,
+              choices = GTEx_expr_Liver_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Heart",
+            checkboxGroupButtons(
+              inputId = ns("Heart"), label = NULL,
+              choices = GTEx_expr_Heart_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Ovary",
+            checkboxGroupButtons(
+              inputId = ns("Ovary"), label = NULL,
+              choices = GTEx_expr_Ovary_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Lung",
+            checkboxGroupButtons(
+              inputId = ns("Lung"), label = NULL,
+              choices = GTEx_expr_Lung_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Breast",
+            checkboxGroupButtons(
+              inputId = ns("Breast"), label = NULL,
+              choices = GTEx_expr_Breast_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Skin",
+            checkboxGroupButtons(
+              inputId = ns("Skin"), label = NULL,
+              choices = GTEx_expr_Skin_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Blood",
+            checkboxGroupButtons(
+              inputId = ns("Blood"), label = NULL,
+              choices = GTEx_expr_Blood_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Testis",
+            checkboxGroupButtons(
+              inputId = ns("Testis"), label = NULL,
+              choices = GTEx_expr_Testis_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Colon",
+            checkboxGroupButtons(
+              inputId = ns("Colon"), label = NULL,
+              choices = GTEx_expr_Colon_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
           tabPanel(
             "Other tissues",
-            checkboxGroupInput(
-              inputId = ns("other_tissue"), label = NULL, inline = TRUE,
-              choices = GTEx_other_tissue_choice
+            checkboxGroupButtons(
+              inputId = ns("gtex_expr_other_tissue"), label = NULL,
+              choices = GTEx_expr_other_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
             )
           )
         )
@@ -61,11 +176,39 @@ GTExTissueTypeInput <- function(id) {
   )
 }
 
+
+
 GTEx_normal_Tissue <- function(input, output, session) {
-  GTEx_normal_tissue <- reactive({eval(parse(text = GTEx_input_choice)) -> GTEx_normal_tissue })
+  GTEx_normal_tissue <- reactive({eval(parse(text = GTEx_expr_input_selection)) -> GTEx_normal_tissue })
 
   return(GTEx_normal_tissue)
 }
+
+GTEx_eqtl_Tissue <- function(input, output, session) {
+  GTEx_eqtl_tissue <- reactive({eval(parse(text = GTEx_eqtl_input_selection)) -> GTEx_eqtl_tissue })
+  
+  return(GTEx_eqtl_tissue)
+}
+
+#sub normal tissue----------
+
+sub_GTEx_tissue <- list("Brain" = "Brain",
+                          "Liver"="Liver",
+                          "Heart"="Heart",
+                          "Ovary"="Ovary",
+                          "Lung"="Lung",
+                          "Breast"="Breast",
+                          "Skin"="Skin",
+                          "Blood"="Blood",
+                          "Testis"="Testis",
+                          "Colon"="Colon",
+                          "gtex_expr_other_tissue" = c("Adipose Tissue", "Muscle", "Blood Vessel",
+                                             "Salivary Gland", "Adrenal Gland", "Thyroid", 
+                                             "Spleen", "Small Intestine", "Cervix Uteri",
+                                             "Bladder", "Fallopian Tube","Uterus", 
+                                             "Pituitary", "Esophagus", "Nerve", 
+                                             "Vagina", "Pancreas", "Prostate", "Stomach", "Kidney")
+                      )
 
 resetGTExTissueType <- function(input, output, session){
   for(i in c(tabPannel_element_ten,"other_tissue")){
@@ -77,16 +220,188 @@ resetGTExTissueType <- function(input, output, session){
   return(GTEx_normal_tissue)
 }
 
-TableInput <- function(id, width, height) {
+
+
+#####GTEx eqtl tissue ####
+GTEx_eqtl_Brain_choice <- list("Brain"="Brain")
+GTEx_eqtl_Liver_choice <- list("Liver"="Liver")
+GTEx_eqtl_Heart_choice <- list("Heart"="Heart")
+GTEx_eqtl_Ovary_choice <- list("Ovary"="Ovary")
+GTEx_eqtl_Lung_choice <- list("Lung"="Lung")
+GTEx_eqtl_Breast_choice <- list("Breast"="Breast")
+GTEx_eqtl_Skin_choice <- list("Skin"="Skin")
+GTEx_eqtl_Blood_choice <- list("Blood"="Blood")
+GTEx_eqtl_Testis_choice <- list("Testis"="Testis")
+GTEx_eqtl_Colon_choice <- list("Colon"="Colon")
+GTEx_eqtl_other_choice <- list("Adipose Tissue"="Adipose Tissue", "Muscle"="Muscle", 
+                          "Artery" = "Artery", "Salivary Gland"="Salivary Gland", "Adrenal Gland"="Adrenal Gland", 
+                          "Thyroid"="Thyroid", "Spleen"="Spleen", "Small Intestine"="Small Intestine", 
+                          "Uterus"="Uterus", "Pituitary"="Pituitary", "Esophagus"="Esophagus", 
+                          "Nerve"="Nerve", "Vagina"="Vagina", "Pancreas"="Pancreas", "Prostate"="Prostate", 
+                          "Stomach"="Stomach", "Artery" = "Artery", "Cells" = "Cells")
+GTEx_eqtl_input_selection <- paste("input$",grep("GTEx_eqtl_.*_choice",ls(),value = T),sep="")
+
+GTExTissueeqtl <- function(id) {
   ns <- NS(id)
   
   tagList(
-    plotOutput(ns("plot")),
-    hr()
-    # only for test table
+    fluidRow(
+      # GTEx tissues selection----
+      column(
+        width = 10,
+        offset = 1,
+        shiny::tags$br(),
+        shiny::tags$h3("GTEx tissues selection", class = "text-success"),
+        shiny::tags$br(),
+        
+        shinydashboard::tabBox(
+          width = 12, title = "Tissue",
+          tabPanel(
+            "Brain",
+            shiny::tags$h4("Brain", class = "text-success"),
+            checkboxGroupButtons(
+              inputId = ns("Brain"), label = NULL,
+              choices = GTEx_Brain_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Liver",
+            checkboxGroupButtons(
+              inputId = ns("Liver"), label = NULL,
+              choices = GTEx_Liver_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Heart",
+            checkboxGroupButtons(
+              inputId = ns("Heart"), label = NULL,
+              choices = GTEx_Heart_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Ovary",
+            checkboxGroupButtons(
+              inputId = ns("Ovary"), label = NULL,
+              choices = GTEx_Ovary_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Lung",
+            checkboxGroupButtons(
+              inputId = ns("Lung"), label = NULL,
+              choices = GTEx_Lung_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Breast",
+            checkboxGroupButtons(
+              inputId = ns("Breast"), label = NULL,
+              choices = GTEx_Breast_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Skin",
+            checkboxGroupButtons(
+              inputId = ns("Skin"), label = NULL,
+              choices = GTEx_Skin_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Blood",
+            checkboxGroupButtons(
+              inputId = ns("Blood"), label = NULL,
+              choices = GTEx_Blood_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Testis",
+            checkboxGroupButtons(
+              inputId = ns("Testis"), label = NULL,
+              choices = GTEx_Testis_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Colon",
+            checkboxGroupButtons(
+              inputId = ns("Colon"), label = NULL,
+              choices = GTEx_Colon_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          ),
+          tabPanel(
+            "Other tissues",
+            checkboxGroupButtons(
+              inputId = ns("gtex_eqtl_other_tissue"), label = NULL,
+              choices = GTEx_eqtl_other_choice,
+              justified = TRUE,
+              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+              direction = "vertical",
+              individual = TRUE
+            )
+          )
+        )
+      ),
+      shiny::tags$hr(width = "85%")
+    )
   )
 }
 
+sub_GTEx_eqtl_tissue <- list("Brain" = "Brain",
+                        "Liver"="Liver",
+                        "Heart"="Heart",
+                        "Ovary"="Ovary",
+                        "Lung"="Lung",
+                        "Breast"="Breast",
+                        "Skin"="Skin",
+                        "Blood"="Blood",
+                        "Testis"="Testis",
+                        "Colon"="Colon",
+                        "gtex_eqtl_other_tissue" = c("Adipose Tissue", "Muscle", "Artery", 
+                                                     "Salivary Gland", "Adrenal Gland", 
+                                                     "Thyroid", "Spleen","Small Intestine", 
+                                                     "Uterus", "Pituitary", "Esophagus", 
+                                                     "Nerve", "Vagina", "Pancreas", "Prostate", 
+                                                     "Stomach", "Artery", "Cells")
+)
 # cancer type choice ------------------------------------------------------
 
 Kidney_choice <- list(
@@ -393,10 +708,14 @@ selectAndAnalysis <- function(input, output, session, .id) {
     handlerExpr = {
       if (input$switch) {
         check_sub_cancer_types(input, output, session, sub_cancer_types, TRUE)
+        check_sub_cancer_types(input, output, session, sub_GTEx_tissue, TRUE)
+        check_sub_cancer_types(input, output, session, sub_GTEx_eqtl_tissue,TRUE)
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} Select all {.id} @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
         
       } else{
         check_sub_cancer_types(input, output, session, sub_cancer_types, FALSE)
+        check_sub_cancer_types(input, output, session, sub_GTEx_tissue, FALSE)
+        check_sub_cancer_types(input, output, session, sub_GTEx_eqtl_tissue,FALSE)
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} Deselect all {.id} @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
       }
     }
@@ -985,6 +1304,23 @@ exprOutput <- function(id){
       tabPanel(
         title = "Table of comparison",
         DT::dataTableOutput(outputId = ns("expr_dt_comparison"))
+      )
+    )
+  )
+}
+
+####GTEx eqtl table output-------------
+
+GTEx_eqtl_Output <- function(id){
+  ns <- NS(id)
+  column(
+    width = 10, offset = 1,
+    shinydashboard::tabBox(
+      id = "gtex_eqtl_table", title = "TABLE",width = 12,
+      # datatable
+      tabPanel(
+        title = "Table of eQTL in GTEX dataset",
+        DT::dataTableOutput(outputId = ns("gtex_eqtl_dt"))
       )
     )
   )

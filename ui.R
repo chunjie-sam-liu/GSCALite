@@ -108,7 +108,7 @@ sidebar <- dashboardSidebar(
       icon = icon("gear"),
       collapsible = TRUE,
       menuSubItem("GTEx expression", tabName = "gtex_expr"),
-      menuSubItem("GTEx eQTL", tabName = "gtex_eqtl")
+      menuSubItem("GTEx eQTL", tabName = "GTEx_eqtl")
     ),
 
     # Downloads ----
@@ -150,9 +150,10 @@ body <- dashboardBody(
 
     # GTEx ----
 
-    source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local = TRUE)$value,
-    # source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local =TRUE)$value,
-    # source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local = TRUE)$value,
+
+    source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local =TRUE)$value,
+    source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local =TRUE)$value,
+
 
     # TCGA ----
     # expr ----
@@ -161,18 +162,19 @@ body <- dashboardBody(
     source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
     # snv ----
     source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value,
+
     # meth ----
-    source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value
     # rppa ----
-    source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
+  #  source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
     # mirna ----
-    source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value
+   # source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value,
     # Drug ----
     # gdsc
     # source(file = file.path(config$wd, "ui", "tcga_gdsc_ui.R"), local = TRUE)$value,
     
     # ctrp
-    # source(file = file.path(config$wd, "ui", "tcga_ctrp_ui.R"), local = TRUE)$value
+     #source(file = file.path(config$wd, "ui", "tcga_ctrp_ui.R"), local = TRUE)$value
 
     # Download ----
 
