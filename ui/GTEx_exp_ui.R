@@ -32,39 +32,39 @@ tabItem(
   shiny::tags$hr(width = "85%"),
 
 
-  GTExTissueType("GTEx_exp"),
+#  GTExTissueType("GTEx_exp"),
 
   # Selected Tissue show ----
-  shiny::tags$h3("Tissue Check", class = "text-success"),
-  shiny::tags$h4(
-    "The tissues you selected: ",
-    textOutput("selected_tissues"),
-    " Confirm and start analysis by click Submit!"
-  ),
+#  shiny::tags$h3("Tissue Check", class = "text-success"),
+#  shiny::tags$h4(
+#    "The tissues you selected: ",
+#    textOutput("selected_tissues"),
+#    " Confirm and start analysis by click Submit!"
+#  ),
 
-  # Confirm and submit ----
-  fluidRow(
-    column(width = 4),
-    column(
-      width = 2, offset = 0,
-      actionButton("GTEx_tissue_submit", label = "Submit!", icon = icon("check"))
-    ),
-    column(
-      width = 2, offset = 0,
-      actionButton("analysis_stop", label = "Stop!", icon = icon("pause")) 
-    ),
-    column(width = 4)
-  ),
-  shiny::tags$hr(width = "85%"),
+#  # Confirm and submit ----
+#  fluidRow(
+#    column(width = 4),
+#    column(
+#      width = 2, offset = 0,
+#      actionButton("GTEx_tissue_submit", label = "Submit!", icon = icon("check"))
+#    ),
+#    column(
+#      width = 2, offset = 0,
+#      actionButton("analysis_stop", label = "Stop!", icon = icon("pause")) 
+#    ),
+#    column(width = 4)
+#  ),
+#  shiny::tags$hr(width = "85%"),
 
   # output plot -------------------------------------------------------------
  # # Tabset Panel ----
 
 
-fluidRow(column(width = 10, offset = 1, GTExTissueType("GTEx_exp"))),
+fluidRow(column(width = 12, GTExTissueType("gtex_expr"))),
 
 # Cancer type selection ----
-fluidRow(selectAndAnalysisInput("GTEx_exp")),
+fluidRow(selectAndAnalysisInput("gtex_expr")),
 
 # Plot result ----
 fluidRow(

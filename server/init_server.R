@@ -151,13 +151,15 @@ status <- reactiveValues(
   "snv_submit" = FALSE,
   "meth_submit" = FALSE,
   "rppa_submit" = FALSE,
-  "gtex_expr_submit" = FALSE
+  "gtex_expr_submit" = FALSE,
+  "gtex_eqtl_submit" = FALSE
 )
 
 error <- reactiveValues(
   "gene_set" = "",
   "tcga_expr" = "",
-  "gtex_expr" = ""
+  "gtex_expr" = "",
+  "gtex_eqtl" = ""
 )
 
 
