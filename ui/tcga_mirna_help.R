@@ -39,8 +39,6 @@ fluidRow(
               ),
               # shiny::tags$p(class="text-justify",),
 
-              shiny::tags$br(),
-
               shiny::tags$hr(width = "100%")
             ),
             column(
@@ -65,8 +63,6 @@ fluidRow(
               ),
               # shiny::tags$p(class="text-justify",),
 
-              shiny::tags$br(),
-
               shiny::tags$hr(width = "100%")
             ),
             column(
@@ -77,8 +73,6 @@ fluidRow(
               shiny::tags$p(class = "text-justify", "1. Correlation was calculated between gene and miRNA expression in all samples , in consideration of the presence of positive regulators like transcription factors, a miRNA-gene pair with correlation coefficient <0.5 and p.value<0.05 will be considered as a potential negatively regulation pair."),
               shiny::tags$p(class = "text-justify", "	2. Only the miRNA-gene pairs who have been recorded in databases we refered below will be calculated at step 1."),
               # shiny::tags$p(class="text-justify",),
-
-              shiny::tags$br(),
 
               shiny::tags$hr(width = "100%")
             ),

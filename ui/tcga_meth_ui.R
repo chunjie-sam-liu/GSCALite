@@ -29,7 +29,6 @@ tabItem(
   ## Hlep message including in tcga_meth_help.ui----
   source(file.path(config$ui, "tcga_meth_help.R"))[1],
 
-  shiny::tags$br(),
   shiny::tags$hr(width = "85%"),
 
   # cancer type selection and result output---------------------------------------------------
@@ -48,7 +47,6 @@ tabItem(
     column(
       width = 10,
       offset = 1,
-      shiny::tags$br(),
       shinydashboard::tabBox(
         id = "snv_PLOT", title = "PLOT", width = 12,
         tabPanel(title = "Differential Methylation", PlotInput(id = "meth_diff")),

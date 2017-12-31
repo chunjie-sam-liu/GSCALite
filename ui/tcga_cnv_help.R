@@ -39,8 +39,6 @@ fluidRow(
               ),
               # shiny::tags$p(class="text-justify",),
 
-              shiny::tags$br(),
-
               shiny::tags$hr(width = "100%")
             ),
             # result description----

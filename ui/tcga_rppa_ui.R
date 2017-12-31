@@ -29,7 +29,6 @@ tabItem(
   ## Hlep message including in tcga_rppa_help.ui----
   source(file.path(config$ui, "tcga_rppa_help.R"))[1],
 
-  shiny::tags$br(),
   shiny::tags$hr(width = "85%"),
 
   # cancer type selection and result output---------------------------------------------------
@@ -48,7 +47,6 @@ tabItem(
     column(
       width = 10,
       offset = 1,
-      shiny::tags$br(),
       shinydashboard::tabBox(
         id = "rppa_PLOT", title = "PLOT", width = 12,
         tabPanel(title = "Global percentage", imagePlotInput(id = "rppa_pie",width="100%",height="100%")),

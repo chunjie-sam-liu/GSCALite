@@ -28,7 +28,6 @@ tabItem(tabName = "tcga_cnv", align = "center",
         ## Hlep message including in tcga_cnv_help.ui----
         source(file.path(config$ui,"tcga_cnv_help.R"))[1],
         
-        shiny::tags$br(),
         shiny::tags$hr(width="85%"),
         
         # cancer type selection and result output---------------------------------------------------

@@ -34,8 +34,6 @@ fluidRow(
 
               shiny::tags$p(class = "text-justify", "DNA methylation is a key epigenetic modification to cytosines, often in CpG dinucleotides. This modification has been frequently associated with gene silencing, but the precise role of DNA methylation in development and disease remains a mystery."),
 
-              shiny::tags$br(),
-
               shiny::tags$hr(width = "100%")
             ),
             column(
@@ -46,7 +44,6 @@ fluidRow(
               shiny::tags$p(class = "text-justify", "1. Genes methylated differentially between tumor and normal samples."),
               shiny::tags$p(class = "text-justify", "2. Genes whose overall survival significantly different from hypermethylation to hypomethylation."),
               shiny::tags$p(class = "text-justify", "3. Genes whose expression significant correlate with methylation level."),
-              shiny::tags$br(),
 
               shiny::tags$hr(width = "100%")
             ),
@@ -64,7 +61,6 @@ fluidRow(
               shiny::tags$h4("Methylation correlate to expression"),
               shiny::tags$p(class = "text-justify", "Methylation can influence the expression of gene in theory. Use person correlation to get the relationship between gene expression and methylation level, gene with FDR<=0.05 will be  remained. From this, we can have genes whose expression is significant influenced by genome methylation.
 "),
-              shiny::tags$br(),
 
               shiny::tags$hr(width = "100%")
             ),

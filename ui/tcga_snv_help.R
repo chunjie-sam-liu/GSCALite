@@ -29,8 +29,6 @@ fluidRow(style="width:85%",
                                                                                             
                                                                                             "Single Nucleotide Mutation (SNV) is a variation in a single nucleotide that is the most common form of intra-species variation. It can play an important role in human traits and complex diseases. Here we give you a global profile as well as details status of SNV of your gene set for the cancers you interested in."),
                                                                               
-                                                                              shiny::tags$br(),
-                                                                              
                                                                               shiny::tags$hr(width="100%")
                                                                               
                                                                               

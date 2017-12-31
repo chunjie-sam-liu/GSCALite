@@ -39,8 +39,6 @@ fluidRow(
                 class = "text-justify", "), TCPA RPPA data are all from TCGA samples."
               ),
 
-              shiny::tags$br(),
-
               shiny::tags$hr(width = "100%")
             ),
             column(
@@ -50,7 +48,6 @@ fluidRow(
 
               shiny::tags$p(
                 class = "text-justify", "In this part, we got the relationship between gene expression and 10 pathways which important for cancer development, you can see a potential influence that your genes may have to some famous pathways.",
-                shiny::tags$br(),
 
                 shiny::tags$hr(width = "100%")
               )
@@ -61,8 +58,6 @@ fluidRow(
               shiny::tags$h3("What pathway we included ?", class = "text-success"),
               
               shiny::tags$p(class = "text-justify", "The pathway we included in are: TSC/mTOR, RTK, RAS/MAPK, PI3K/AKT, Hormone ER, Hormone AR, EMT, DNA Damage Response, Cell Cycle, Apoptosis pathways. They are all famous cancer related pathway."),
-              
-              shiny::tags$br(),
               
               shiny::tags$hr(width = "100%")
             ),
@@ -77,8 +72,6 @@ fluidRow(
                               shiny::tags$span("R. Akbani et al.",style="color:blue")), 
                 ")."),
 
-              shiny::tags$br(),
-
               shiny::tags$hr(width = "100%")
             ),
             
@@ -88,8 +81,6 @@ fluidRow(
               shiny::tags$h3("Calculation method", class = "text-success"),
 
               shiny::tags$p(class = "text-justify", "Gene expression was divided into 2 groups(groupHigh and groupLow) by median expression, the difference of pathway activity score(PAS) between groups is defined by a student T test, p value <=0.05 is considered as significant, when PAS(Gene A groupHigh) > PAS(Gene A groupLow), we consider gene A may have a activate effect to a pathway."),
- 
-              shiny::tags$br(),
 
               shiny::tags$hr(width = "100%")
             ),

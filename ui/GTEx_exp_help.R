@@ -23,7 +23,6 @@ fluidRow(style="width:85%",
                             which offered important information for exploring disease-related perturbations. 
                             GTEx Expressiondataset (V7.0) composed of 11,688 samples contains the expression profiles of 56,202 genes from 30 organs (53 tissues), 
                             which donated by 714 health individuals."),
-            shiny::tags$br(),
             shiny::tags$hr(width="100%")
           ),
           # result description----

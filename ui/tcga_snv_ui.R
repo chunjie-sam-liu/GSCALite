@@ -32,7 +32,6 @@ for you to visualize the SNV of your gene set for your seleted cancer types.</p>
         # HELP as including of tcga_snv_help.R ---------------------
         source(file = file.path(config$wd, "ui", "tcga_snv_help.R"))[1],
         
-        shiny::tags$br(),
         shiny::tags$hr(width="100%"),
         
 
@@ -51,7 +50,6 @@ for you to visualize the SNV of your gene set for your seleted cancer types.</p>
         fluidRow(
           column(width = 10,
                  offset = 1,
-                 shiny::tags$br(),
                  shinydashboard::tabBox(id = "snv_PLOT",title = "PLOT",width = 12,
                                         tabPanel(title= "SNV percentage profile",PlotInput(id="snv_percentage")),
                                         tabPanel(title="SNV summary plot",imagePlotInput("snv_summary",width=1200,height="100%")),
