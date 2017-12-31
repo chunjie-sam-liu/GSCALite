@@ -19,8 +19,7 @@ tabItem(
                       </font>
                       </h1>
                       <hr>
-                      <p class='lead'>TCGA methylation data will be used to give you a visualization of you gene set for seleted cancer types.
-                      <br>GSCALite offers different types of results (Differential Methylation, Methylation to Survival, Methylation correlate to gene expression, see details in <code>help page</code> below.), you can have a visualization of methylation changes and the effect of it to survival and expression.</p>
+                      <p class='lead text-left'>TCGA methylation data will be used to give you a visualization of genes' methylation changes and the effect to survival and expressionyou gene set for seleted cancer types. GSCALite offers different types of results (Differential Methylation, Methylation to Survival, Methylation correlate to gene expression, see details on <code>help page</code> below).</p>
                       </div>
                       </div>
                       </div>
