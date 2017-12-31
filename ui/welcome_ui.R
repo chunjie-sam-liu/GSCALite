@@ -77,7 +77,13 @@ tabItem(
   # progress bar for running -----
   fluidRow(shiny::uiOutput(outputId = "ui_progressbar")),
 
-  fluidRow(shiny::uiOutput(outputId = "ui_hint")),
+  fluidRow(
+    column(
+      sytle = "margin-top:30px;",
+      width = 8, offset = 2,
+      shinyBS::bsAlert(anchorId = "ui_hint_alert")
+      )
+    ),
 
   # Feature and descriptions ----
   fluidRow(

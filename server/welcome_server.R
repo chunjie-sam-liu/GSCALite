@@ -150,8 +150,8 @@ progressbar_start_analysis <- eventReactive(
           shiny::tagList(
             column(
               style = "margin-top:30px;",
-              width = 9, offset = 2,
-              shinyWidgets::progressBar(id = "progressbar", value = 0, striped = TRUE,  status = "warning")
+              width = 8, offset = 2,
+              shinyWidgets::progressBar(id = "progressbar", value = 10, striped = TRUE,  status = "primary")
             )
           )
         })
@@ -165,11 +165,11 @@ observeEvent(
       print("---helo----")
       output$ui_progressbar <- renderUI({NULL})
       
-      output$ui_hint <- renderUI({
-        shiny::tagList(
-          "fuck me"
-        )
-      })
+      shinyBS::createAlert(
+        session = session, anchorId = "ui_hint_alert", alertId = NULL, title = NULL, style = "primary",
+        content = HTML("<h3 ><i class='fa fa-hand-o-left fa-4'></i> Please check the result on the right panel.</h3>"), append = FALSE
+      )
+      
       shinyjs::enable(id = "input_gene_set")
       shinyjs::enable(id = "analysis")
     }
