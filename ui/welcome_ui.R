@@ -73,9 +73,11 @@ tabItem(
   ),
   # gene set input stat output ----
   fluidRow(shiny::uiOutput(outputId = "gene_set_stat")),
-  
+
   # progress bar for running -----
   fluidRow(shiny::uiOutput(outputId = "ui_progressbar")),
+  
+  fluidRow(shiny::uiOutput(outputId = "ui_hint")),
 
   # Feature and descriptions ----
   fluidRow(
@@ -94,8 +96,8 @@ tabItem(
           style = "margin-top:20px;",
           class = "text-justify",
           "GSCALite is a web-based analysis platform for gene set cancer analysis. The alterations on DNA or RNA of cancer related genes may be contribute to the cancer initiation, progress, diagnosis, prognosis, therapy. As the cancer genomics big data available, it is very useful and urgent to provide a platform for gene set analysis in cancer."
-          ),
-       
+        ),
+
         shiny::tags$p(
           style = "margin-top:30px; margin-bottom:20px;",
           class = "text-justify",

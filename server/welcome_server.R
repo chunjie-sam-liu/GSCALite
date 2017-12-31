@@ -165,6 +165,10 @@ observeEvent(
     if (progress$progress_end == TRUE) {
       print("---helo----")
       output$ui_progressbar <- renderUI({NULL})
+      
+      output$ui_hint <- renderUI({
+        
+      })
       shinyjs::enable(id = "input_gene_set")
       shinyjs::enable(id = "analysis")
     }
