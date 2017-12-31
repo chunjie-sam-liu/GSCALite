@@ -81,7 +81,7 @@ sidebar <- dashboardSidebar(
     menuItem(
       "TCGA Cancer",
       tabName = "tcga",
-      icon = icon("thumbs-up"),
+      icon = icon("user-md"),
       collapsible = TRUE,
       menuSubItem("mRNA Expression", tabName = "tcga_expr"),
       menuSubItem("Single Nucleotide Variation", tabName = "tcga_snv"),
@@ -95,10 +95,7 @@ sidebar <- dashboardSidebar(
     menuItem(
       "Drug Response",
       tabName = "drug",
-      icon = icon("list"),
-      collapsible = TRUE,
-      menuSubItem("GDSC", tabName = "gdsc"),
-      menuSubItem("CTRP", tabName = "ctrp")
+      icon = icon("medkit")
     ),
 
     # GTEx ----
@@ -136,8 +133,6 @@ body <- dashboardBody(
     shinyjs::extendShinyjs(script = file.path(config$wd, "www", "js", "gscalite.js")),
     shiny::tags$link(rel = "stylesheet", type = "text/css", href = "css/main.css"),
     shiny::tags$script(type = "text/javascript", src = "js/main.js")
-    # shiny::tags$style(HTML(config$stylesheet)),
-    # shiny::includeScript(file.path(config$wd, "www", "js", "tooltip-delay.js"))
   ),
 
   # Main body ----
@@ -148,10 +143,8 @@ body <- dashboardBody(
 
 
     # GTEx ----
-
     source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local = TRUE)$value,
     source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local = TRUE)$value,
-
 
     # TCGA ----
     # expr ----
@@ -167,23 +160,17 @@ body <- dashboardBody(
     # rppa ----
     source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
     # mirna ----
-    source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value
+    source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value,
     # Drug ----
-    # gdsc
-    # source(file = file.path(config$wd, "ui", "tcga_gdsc_ui.R"), local = TRUE)$value
-
-    # ctrp
-    # source(file = file.path(config$wd, "ui", "tcga_ctrp_ui.R"), local = TRUE)$value
+    source(file = file.path(config$wd, "ui", "drug_ui.R"), local = TRUE)$value,
 
     # Download ----
 
     # Help ----
-#    source(file = file.path(config$wd, "ui", "help_ui.R"), local = TRUE)$value
+    source(file = file.path(config$wd, "ui", "help_ui.R"), local = TRUE)$value,
     # About ----
+    source(file = file.path(config$wd, "ui", "about_ui.R"), local = TRUE)$value
   )
-
-  # Modals ----
-  # source(file = file.path(config$wd, "ui", "modals_ui.R"), local = TRUE)$value
 )
 
 
@@ -197,6 +184,3 @@ shinyUI(dashboardPage(
   sidebar = sidebar,
   body = body
 ))
-
-# Test --------------------------------------------------------------------
-# shinyApp(ui = ui, server = function(input, output, session){})
