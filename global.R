@@ -261,7 +261,7 @@ GTExTissueeqtl <- function(id) {
             shiny::tags$h4("Brain", class = "text-success"),
             checkboxGroupButtons(
               inputId = ns("Brain"), label = NULL,
-              choices = GTEx_Brain_choice,
+              choices = GTEx_eqtl_Brain_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -272,7 +272,7 @@ GTExTissueeqtl <- function(id) {
             "Liver",
             checkboxGroupButtons(
               inputId = ns("Liver"), label = NULL,
-              choices = GTEx_Liver_choice,
+              choices = GTEx_eqtl_Liver_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -283,7 +283,7 @@ GTExTissueeqtl <- function(id) {
             "Heart",
             checkboxGroupButtons(
               inputId = ns("Heart"), label = NULL,
-              choices = GTEx_Heart_choice,
+              choices = GTEx_eqtl_Heart_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -294,7 +294,7 @@ GTExTissueeqtl <- function(id) {
             "Ovary",
             checkboxGroupButtons(
               inputId = ns("Ovary"), label = NULL,
-              choices = GTEx_Ovary_choice,
+              choices = GTEx_eqtl_Ovary_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -305,7 +305,7 @@ GTExTissueeqtl <- function(id) {
             "Lung",
             checkboxGroupButtons(
               inputId = ns("Lung"), label = NULL,
-              choices = GTEx_Lung_choice,
+              choices = GTEx_eqtl_Lung_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -316,7 +316,7 @@ GTExTissueeqtl <- function(id) {
             "Breast",
             checkboxGroupButtons(
               inputId = ns("Breast"), label = NULL,
-              choices = GTEx_Breast_choice,
+              choices = GTEx_eqtl_Breast_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -327,7 +327,7 @@ GTExTissueeqtl <- function(id) {
             "Skin",
             checkboxGroupButtons(
               inputId = ns("Skin"), label = NULL,
-              choices = GTEx_Skin_choice,
+              choices = GTEx_eqtl_Skin_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -338,7 +338,7 @@ GTExTissueeqtl <- function(id) {
             "Blood",
             checkboxGroupButtons(
               inputId = ns("Blood"), label = NULL,
-              choices = GTEx_Blood_choice,
+              choices = GTEx_eqtl_Blood_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -349,7 +349,7 @@ GTExTissueeqtl <- function(id) {
             "Testis",
             checkboxGroupButtons(
               inputId = ns("Testis"), label = NULL,
-              choices = GTEx_Testis_choice,
+              choices = GTEx_eqtl_Testis_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -360,7 +360,7 @@ GTExTissueeqtl <- function(id) {
             "Colon",
             checkboxGroupButtons(
               inputId = ns("Colon"), label = NULL,
-              choices = GTEx_Colon_choice,
+              choices = GTEx_eqtl_Colon_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -448,7 +448,8 @@ other_tissue_choice <- list(
   "Testicular Germ Cell Tumors(TGCT)" = "TGCT",
   "Thyroid Carcinoma(THCA)" = "THCA",
   "Thymoma(THYM)" = "THYM",
-  "Uveal Melanoma(UVM)" = "UVM"
+  "Uveal Melanoma(UVM)" = "UVM",
+  "Cholangiocarcinoma(CHOL)" = "CHOL"
 )
 
 # cancer type selection ---------------------------------------------------
@@ -616,7 +617,7 @@ cancerTypesSelect <- function(input, output, session, .sctps) {
         column(
           width = 3, 
           infoBox(
-            title = "Number of unselected cancer", value = 32 - length(.sctps()),
+            title = "Number of unselected cancer", value = 33 - length(.sctps()),
             width = 12, icon = icon("credit-card"), color = "red", fill = TRUE)
         ),
         column(
@@ -678,7 +679,7 @@ sub_cancer_types <- list(
   Bone_Marrow = c("LAML"),
   Breast = c("BRCA"),
   Cervix = c("CESC"),
-  other_tissue = c("DLBC",  "ESCA", "STAD",  "HNSC",  "LIHC", "MESO",  "OV", "PAAD", "PRAD", "SARC", "SKCM", "TGCT", "THCA", "THYM", "UVM")
+  other_tissue = c("DLBC",  "ESCA", "STAD",  "HNSC",  "LIHC", "MESO",  "OV", "PAAD", "PRAD", "SARC", "SKCM", "TGCT", "THCA", "THYM", "UVM", "CHOL")
 )
 
 
@@ -756,23 +757,17 @@ resetcancerType <- function(input, output, session){
 
 
 
-# hide pic when stop clicked ----------------------------------------------
+# remove pic when stop clicked ----------------------------------------------
 
-hidePic <- function(hideoutputlist){
-  for (i in hideoutputlist) {
-    NS(i)->ns
-    shinyjs::hide(ns("plot"))
+removePic <- function(input,output,session,outtype){
+  if(outtype=="image"){
+    output$plot<-renderImage({})
+  }
+  if(outtype=="plot"){
+    output$plot<-renderPlot({})
   }
 }
 
-# show pic when all work done ------------------------------------------
-
-showPic <- function(showoutputlist){
-  for (i in showoutputlist) {
-    NS(i)->ns
-    shinyjs::show(ns("plot"))
-  }
-}
 
 ###############################################################
 # Plot function to generate plot in ui#########################
@@ -969,6 +964,8 @@ cnvbarPlot <- function(input, output, session, data, x, y, fill) {
 
 snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, label, cancer_rank, gene_rank) {
   output$plot <- renderPlot({
+    # data$per %>% max() ->max.limit
+    # max.limit/10 -> inter.limit
     data %>%
       ggplot(aes_string(x = cancer, y = gene, fill = fill)) +
       geom_tile() +
@@ -978,15 +975,16 @@ snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, la
       scale_fill_gradient2(
         name = "Mutation Frequency (%)",
         limit = c(0, 0.8),
-        breaks = seq(0, 1, 0.1),
-        label = c("0", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100"),
+        breaks = c(seq(0,0.2,0.05),seq(0.25, 0.65, 0.1)),
+        label = c("0", "5", "10", "15", "20", "25", "35", "45", "55", "65"),
         high = "red",
         na.value = "white"
       ) +
       theme_bw() +
       theme(
         axis.text.x = element_text(angle = 45, hjust = -0.05, size = "15"),
-        axis.title.y = element_text(size = "15")
+        axis.title.y = element_text(size = "15"),
+        panel.grid = element_line(colour = "grey", linetype = "dashed")
       ) +
       guides(fill = guide_legend(
         title = "Mutation Frequency (%)",
@@ -1061,46 +1059,45 @@ imagePlotInput <- function(id, width=400, height=300) {
 
 # 2. server part ----------------------------------------------------------
 
-snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, figname) {
+snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile) {
   output$plot <-renderImage({
-    outfile <- paste(user_dir,"/",figname,'.png',sep="")
-    png(outfile, width = 400, heights= 300)
+    png(outfile, width = 1000, height= 700)
     maftools::plotmafSummary(gene_list_maf)
     dev.off()
     
     list(src = outfile,
          contentType = 'image/png',
-         width = 400,
-         height = 300,
+         width = 1000,
+         height = 700,
          alt = "This is alternate text")
   }, deleteFile = TRUE)
 }
 
 
-snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cancer_type) {
+snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cancer_type,outfile) {
   output$plot <-renderImage({
-    outfile <- paste(user_dir,"/",figname,'.png',sep="")
-    png(outfile, width = 400, heights= 300)
-    col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
-    names(col) <- c(
-      "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
-      "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
-    )
-    fabcolors <- RColorBrewer::brewer.pal(n = length(cancer_type), name = "Spectral")
-    names(fabcolors) <- cancer_type
+    png(outfile, width = 1000, height= 700)
+    # col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
+    # names(col) <- c(
+    #   "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
+    #   "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
+    # )
+    # fabcolors <- RColorBrewer::brewer.pal(n = length(cancer_type), name = "Spectral")
+    # names(fabcolors) <- cancer_type
 
-    fabcolors <- list(cancer_types = fabcolors)
-    maftools::oncoplot(
-      maf = gene_list_maf, removeNonMutated = T, colors = col,
-      clinicalFeatures = "cancer_types", sortByAnnotation = TRUE,
-      annotationColor = fabcolors, top = 10
-    )
+    # fabcolors <- list(cancer_types = fabcolors)
+    # maftools::oncoplot(
+    #   maf = gene_list_maf, removeNonMutated = T, colors = col,
+    #   clinicalFeatures = "cancer_types", sortByAnnotation = TRUE,
+    #   annotationColor = fabcolors, top = 10
+    # )
+    oncoplot(maf = gene_list_maf, top = 10, fontSize = 12)
     dev.off()
     
     list(src = outfile,
          contentType = 'image/png',
-         width = 400,
-         height = 300,
+         width = 1000,
+         height = 700,
          alt = "This is alternate text")
   }, deleteFile = TRUE)
 }
@@ -1115,13 +1112,13 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
   output$plot <- renderPlot({
     CPCOLS <- c("red", "white", "blue")
     data %>%
-      ggplot(aes_string(x=gene,y=cancer)) +
+      ggplot(aes_string(y=gene,x=cancer)) +
       geom_point(aes_string(size = size,color = color)) +
-      scale_x_discrete(limit = gene_rank$symbol) +
-      scale_y_discrete(limit = cancer_rank$cancer_types) +
+      scale_y_discrete(limit = gene_rank$symbol) +
+      scale_x_discrete(limit = cancer_rank$cancer_types) +
       labs(title = title) +
-      xlab("Symbol") +
-      ylab("Cancer types") +
+      ylab("Symbol") +
+      xlab("Cancer types") +
       scale_size_continuous(
         name = sizename #"-Log10(FDR)"
       ) +
@@ -1138,8 +1135,8 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
               colour = "grey",
               linetype = "dashed",
               size = 0.2),
-            axis.text.x = element_text(angle = 40,vjust=1,hjust = 1,size = 10),
             axis.text.y = element_text(size = 10),
+            axis.text.x = element_text(vjust=1,hjust = 1,angle = 40,size = 10),
             legend.text = element_text(size = 10),
             legend.title = element_text(size = 12),
             legend.key = element_rect(fill = "white", colour = "black") ,

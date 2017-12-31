@@ -2,52 +2,28 @@
 # save as 'tcga_cnv_server.R'
 # server elements 'tcga_cnv' sub tab of 'tcga' tab
 
-# data input --------------------------------------------------------------
-# get gene set ----
-# input<-list(gene_set=c("TP53","EZH2","CD274","CD276","CD80",
-#                        "CD86","VTCN1","CD40LG","TNFRSF14",
-#                        "TNFSF9","TNFSF4","CD70",ICOS",
-#                        "BTLA","LAG3","TNFRSF9","TNFRSF4"))
-# cnv_gene_list <- reactive({
-# c("TP53","EZH2","CD274","CD276","CD80",
-#   "CD86","VTCN1","CD40LG","TNFRSF14",
-#   "TNFSF9","TNFSF4","CD70","ICOS",
-#   "BTLA","LAG3","TNFRSF9","TNFRSF4")
-# })
-
-
 
 # load cnv data ----
-print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv percent data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-cnv <- readr::read_rds(file.path(config$database, "TCGA", "cnv", "pancan34_cnv_percent.rds.gz"))
-print(glue::glue("{paste0(rep('-', 10), collapse = '')} end loading cnv percent data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+cnv <- NULL
+cnv_raw <- NULL
+cnv_cor <- NULL
 
-print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv raw data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-cnv_raw <- readr::read_rds(file.path(config$database, "TCGA", "cnv", "pancan34_cnv_threshold.rds.gz"))
-print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv raw data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-
-print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv cor data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-cnv_cor <- readr::read_rds(file.path(config$database, "TCGA", "cnv", "pancan34_all_gene_exp-cor-cnv.rds.gz"))
-print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv cor data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
 # Selected cancer types ---------------------------------------------------
 cnv_cancer_type <- callModule(cancerType, "cnv")
-output$cnv_selected_cancer <- renderText(
-  cnv_cancer_type()
-)
+
 # Cancer types value box selection ----------------------------------------
 
 callModule(module = cancerTypesSelect, id = "cnv", .sctps = cnv_cancer_type)
+
 # Check box ---------------------------------------------------------------
 
 callModule(module = selectAndAnalysis, id = "cnv", .id = "cnv")
 
-# cnv_cancer_type <- reactive(c("KIRC","LGG","COAD","LUAD","LUSC","BRCA"))
-
-
 # button control --------------------------------------------------------
 
 # submit cancer type -------------------------------------------------------
+
 cnv_submit_analysis <- function(input, output, session){
 observeEvent(input$submit, {
   status$cnv_submit <- TRUE
@@ -57,39 +33,23 @@ observeEvent(input$submit, {
 })
 }
 callModule(cnv_submit_analysis,"cnv")
-# stop analysis -----------------------------------------------------------
-# observeEvent(input$cnv_stop, {
-#   status$cnv_submit <- FALSE
-#   shinyjs::enable(id = "cnv_submit")
-#   cnv_hide <- c("cnv_pie", "cnv_hete", "cnv_homo", "cnv_bar", "cnv_exp")
-#   hidePic(cnv_hide) # hide pic when stop clicked!
-# })
-
 
 # analysis core -----------------------------------------------------------
-# monitor for gene list change
+# monitor for gene list change--------------------------------------------
 cnv_gene_list <- eventReactive(
-  eventExpr = input$analysis,
+  eventExpr = status$analysis,
   ignoreNULL = TRUE,
   valueExpr = {
     # be sure the following code run after start analysis
     if (status$analysis == TRUE) {
       status$cnv_submit <- TRUE
-      shinyjs::disable(id = "cnv_submit")
+      shinyjs::disable(id = "cnv-submit")
+      shinyjs::disable(id = "cnv-switch")
       as.character(gene_set$match)
     }
   }
 )
 
-# monitor fot cancer type change
-# cnv_cancer_type <- eventReactive(
-#   eventExpr = input$stop,
-#   ignoreNULL = TRUE,
-#   valueExpr = {
-#     # be sure the following code run after start analysis
-#     cnv_cancer_type<-callModule(resetcancerType,"cnv")
-#   }
-# )
 
 
 # analysis start ----------------------------------------------------------
@@ -97,15 +57,25 @@ cnv_gene_list <- eventReactive(
 
 cnv_analysis <- eventReactive(
   {
-    status$cnv_submit == TRUE
+    status$cnv_submit
   },
   ignoreNULL = TRUE,
   valueExpr = {
     if (status$cnv_submit == TRUE) {
-      print(cnv_gene_list(), "2")
-      print("2")
-      print(cnv_cancer_type())
-      print(status$cnv_submit)
+      .msg<-c("NOTICE: ")
+      # load data----
+      load_data_cnv()
+      
+      # remove pic result generate before ----
+      
+      callModule(removePic,"cnv_pie",outtype="image")
+      callModule(removePic,"cnv_hete",outtype="plot")
+      callModule(removePic,"cnv_homo",outtype="plot")
+      callModule(removePic,"cnv_bar",outtype="plot")
+      callModule(removePic,"cnv_exp",outtype="plot")
+      
+      if(length(cnv_gene_list())!=0){
+      
       # cnv percent plot ------------------------------------------------------------
 
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} start cnv pie percent data processing@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
@@ -121,6 +91,7 @@ cnv_analysis <- eventReactive(
       gene_list_cancer_cnv %>%
         tidyr::unnest() %>%
         tidyr::drop_na() -> cnv_plot_ready
+      if(nrow(cnv_plot_ready)>0){
 
       # cancer rank ----
       cnv_plot_ready %>%
@@ -162,6 +133,9 @@ cnv_analysis <- eventReactive(
         fill = "type", facet_grid = "symbol ~ cancer_types",
         outfile = file.path(user_dir, "pngs", paste(user_id, "-CNV_pie_profile.png", sep = "")), height = cnv_pie_height
       )
+      } else {
+        .msg <- paste(.msg,glue::glue("No significant [CNV Pie distribution] result of gene: {paste0(cnv_gene_list(), collapse = ',')} in your selected cancer types."),sep=" ")
+      }
 
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} End gernerate cnv pie profile plot@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
@@ -239,6 +213,7 @@ cnv_analysis <- eventReactive(
         dplyr::mutate(spm = purrr::map(spm, filter_gene_list, gene_list = cnv_gene_list())) %>%
         dplyr::filter(cancer_types %in% cnv_cancer_type()) %>%
         tidyr::unnest() -> gene_list_cancer_cnv_cor
+      if (nrow(gene_list_cancer_cnv_cor)>0) {
 
       # cnv to expression plot  ----
       gene_list_cancer_cnv_cor %>%
@@ -252,11 +227,27 @@ cnv_analysis <- eventReactive(
         dplyr::arrange(rank) -> cancer_rank.cnvcor
 
       callModule(methy_diff_pointPlot, "cnv_exp", data = gene_list_cancer_cnv_cor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.cnvcor, gene_rank = gene_rank.cnvcor, sizename = "-Log10(P.value)", colorname = "Spearman Correlation Coefficient", title = "Spearman Correlation Coefficient of CNV and gene expression.")
+      } else{
+        .msg <- paste(.msg,glue::glue("No significant [CNV to Expression] result of gene: {paste0(cnv_gene_list(), collapse = ',')} in your selected cancer types: {paste0(cnv_cancer_type(), collapse = ',')}."),sep=" ")
+      }
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} End cnv cor to expression ploting@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-      # cnv_show <- c("cnv_pie", "cnv_hete", "cnv_homo", "cnv_bar", "cnv_exp")
-      # showPic(cnv_show) # hide pic when stop clicked!
+      
+        .msg <- paste(.msg,glue::glue("Since we just show significant results, so a small size of gene and cancer set may cause no significant result in some plots, if it happens, try more genes and cancer types."),sep = " ")
+      
+      # alert for information
+      shinyBS::createAlert(
+        session = session, anchorId = "cnv-no_gene_set", title = "Information", style = "info",
+        content = .msg, append = FALSE
+      )
       status$cnv_submit <- FALSE
-    }
+      shinyjs::enable("cnv-submit")
+      } else{
+        shinyBS::createAlert(
+          session = session, anchorId = "snv-no_gene_set", title = "Oops",
+          content = "No input gene set! Please go to Welcome page to input gene set.", style = "danger", append = FALSE
+        )
+      }
+    } 
   }
 )
 

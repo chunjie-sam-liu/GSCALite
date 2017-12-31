@@ -11,6 +11,7 @@ expr_cancer_type <- callModule(module = cancerType, id = "expr")
 # Cancer types value box selection ----------------------------------------
 
 expr_cancer_type <- callModule(cancerType, id = "expr")
+
 callModule(module = cancerTypesSelect, id = "expr", .sctps = expr_cancer_type)
 
 # Check box ---------------------------------------------------------------
