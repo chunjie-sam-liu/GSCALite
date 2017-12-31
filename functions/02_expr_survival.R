@@ -228,7 +228,7 @@ expr_subtype %>%
   dplyr::mutate(merged_clean = purrr::map2(filter_expr, subtype, fun_expr_subtype_merge)) %>%
   dplyr::select(-filter_expr, -subtype) %>%
   dplyr::mutate(diff_pval = purrr::map(merged_clean, fun_subtype_test)) %>%
-  dplyr::select(-merged_clean) %>% 
+  dplyr::select(-merged_clean) %>%
   dplyr::collect() %>%
   dplyr::as_tibble() %>%
   dplyr::ungroup() %>%
@@ -240,73 +240,74 @@ expr_subtype_sig_pval %>% readr::write_rds(path = "/data/GSCALite/TCGA/expr/expr
 
 # Stage -------------------------------------------------------------------
 
-clinical_stage <- 
-  readr::read_rds(path = file.path(tcga_path,"pancan34_clinical_stage.rds.gz")) %>% 
-  dplyr::filter(n >= 40) %>% 
+clinical_stage <-
+  readr::read_rds(path = file.path(tcga_path, "pancan34_clinical_stage.rds.gz")) %>%
+  dplyr::filter(n >= 40) %>%
   dplyr::select(-n)
 
 
-expr_stage <- 
+expr_stage <-
   expr %>%
   dplyr::inner_join(clinical_stage, by = "cancer_types")
 
-fun_expr_stage_merge <- function(filter_expr, stage){
+fun_expr_stage_merge <- function(filter_expr, stage) {
   # merge clinical and expr data
-  filter_expr %>% 
-    dplyr::select(-entrez_id) %>% 
-    tidyr::gather(key = barcode, value = expr, -symbol) %>% 
-    dplyr::mutate(type = fun_tn_type(barcode)) %>% 
-    dplyr::filter(type == "01") %>% 
-    dplyr::mutate(barcode = fun_barcode(barcode)) %>% 
+  filter_expr %>%
+    dplyr::select(-entrez_id) %>%
+    tidyr::gather(key = barcode, value = expr, -symbol) %>%
+    dplyr::mutate(type = fun_tn_type(barcode)) %>%
+    dplyr::filter(type == "01") %>%
+    dplyr::mutate(barcode = fun_barcode(barcode)) %>%
     dplyr::select(symbol, barcode, expr) -> expr_clean
   expr_clean %>% dplyr::inner_join(stage, by = "barcode") -> expr_stage_ready
-} # 
-fn_get_order <- function(.d){
-  .d %>% 
-    dplyr::group_by(stage ) %>% 
-    dplyr::summarise(me = mean(expr)) %>% 
-    .$me %>% rank() -> .d_m
-  
-  if(identical(.d_m, c(1,2,3,4))){
+} #
+fn_get_order <- function(.d) {
+  .d %>%
+    dplyr::group_by(stage) %>%
+    dplyr::summarise(me = mean(expr)) %>%
+    .$me %>%
+    rank() -> .d_m
+
+  if (identical(.d_m, c(1, 2, 3, 4))) {
     return(1)
-  } else if(identical(.d_m, c(4,3,2,1))){
+  } else if (identical(.d_m, c(4, 3, 2, 1))) {
     return(2)
-  } else{
+  } else {
     return(3)
   }
 }
-fun_stage_test <- function(expr_stage_ready){
-  expr_stage_ready %>% 
+fun_stage_test <- function(expr_stage_ready) {
+  expr_stage_ready %>%
     tidyr::drop_na(expr) %>%
-    dplyr::group_by(symbol, stage) %>% 
+    dplyr::group_by(symbol, stage) %>%
     dplyr::mutate(l = n() > 10) -> tl
-  
-  if(! all(tl$l)){
+
+  if (!all(tl$l)) {
     return(tibble::tibble())
-  } else{
-    expr_stage_ready %>% 
+  } else {
+    expr_stage_ready %>%
       tidyr::drop_na(expr) %>%
-      dplyr::group_by(symbol) %>% 
+      dplyr::group_by(symbol) %>%
       dplyr::do(broom::tidy(oneway.test(log2(expr + 1) ~ stage, data = .))) %>%
-      dplyr::ungroup() %>% 
-      dplyr::mutate(fdr = p.adjust(p.value, method = "fdr")) %>% 
+      dplyr::ungroup() %>%
+      dplyr::mutate(fdr = p.adjust(p.value, method = "fdr")) %>%
       dplyr::select(symbol, p.value, fdr) -> diff_pval
-    
-    expr_stage_ready %>% 
+
+    expr_stage_ready %>%
       tidyr::drop_na(expr) %>%
-      tidyr::nest(-symbol) %>% 
-      dplyr::mutate(order = purrr::map_dbl(data, .f = fn_get_order)) %>% 
-      dplyr::select(- data) -> symbol_order
-    
-    diff_pval %>% 
+      tidyr::nest(-symbol) %>%
+      dplyr::mutate(order = purrr::map_dbl(data, .f = fn_get_order)) %>%
+      dplyr::select(-data) -> symbol_order
+
+    diff_pval %>%
       dplyr::inner_join(symbol_order, by = "symbol")
   }
-} 
+}
 
 
 
 expr_stage %>%
-  dplyr::rename(filter_expr = expr) %>% 
+  dplyr::rename(filter_expr = expr) %>%
   dplyr::filter(cancer_types == "BRCA") %>%
   dplyr::mutate(merged_clean = purrr::map2(filter_expr, stage, fun_expr_stage_merge)) %>%
   dplyr::select(-filter_expr, -stage) %>%

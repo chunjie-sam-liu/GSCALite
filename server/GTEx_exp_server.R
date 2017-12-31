@@ -77,6 +77,26 @@ get_gene_exp_profile <- function(gene_set = gene_set, gtex_expr = gtex_expr, tis
 }
 
 
+get_gene_mean_profile <- function(gene_set = gene_set, gtex_expr_mean = gtex_expr_mean, tissue_set = tissue_set, filter_gene = 0) {
+  gtex_expr_mean <- gtex_expr_mean[gtex_expr_mean$SMTS %in% tissue_set, ]
+  if (filter_gene) {
+    gtex_expr_mean %>%
+      dplyr::mutate(
+        Mean = purrr::map(
+          .x = Mean,
+          .f = function(.x) {
+            .x %>%
+              dplyr::filter(symbol %in% gene_set)
+          }
+        )
+      ) -> gtex_gene_list_mean
+  } else {
+    gtex_gene_list_mean <- gtex_expr_mean
+  }
+  return(gtex_gene_list_mean)
+}
+
+
 
 ###### do heatmap and gsva for gene set ####
 heatmap_gsva_4_geneset <- eventReactive(
@@ -95,7 +115,8 @@ heatmap_gsva_4_geneset <- eventReactive(
 
       # load GTEx expression data ---------------------------------------------------------
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading GTEx data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-      gtex_expr <- readr::read_rds(file.path(config$database, "GTEx", "expression", "gtex_gene_tmp_annotation_phenotype_v7.rds.gz"))
+#      gtex_expr <- readr::read_rds(file.path(config$database, "GTEx", "expression", "gtex_gene_tmp_annotation_phenotype_v7.rds.gz"))
+      gtex_expr_mean <- readr::read_rds(file.path(config$database, "GTEx", "expression", "gtex_gene_mean_exp.rds.gz"))
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} end loading GTEx data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
       gene_set <- GTEx_expr_gene_list()
@@ -105,19 +126,11 @@ heatmap_gsva_4_geneset <- eventReactive(
 
       ##### start: draw heatmap for the gene set in GTEx dataset######
       print("start: draw heatmap for the gene set in GTEx dataset")
-      get_gene_exp_profile(gene_set = gene_set, gtex_expr = gtex_expr, tissue_set = tissue_set, filter_gene = 1) %>%
-        dplyr::mutate(
-          Mean = purrr::map(
-            .x = expr,
-            .f = function(.x) {
-              rowMeans(.x[, -c(1, 2)])
-            }
-          )
-        ) -> gtex_gene_list_expr.mean
+      gtex_gene_list_expr.mean <- get_gene_mean_profile(gene_set = gene_set, gtex_expr_mean = gtex_expr_mean, tissue_set = tissue_set, filter_gene = 1)
       gene_n <- length(gene_set)
-      display_matrix <- data.frame(round(matrix(unlist(gtex_gene_list_expr.mean$Mean), nrow = gene_n), 2))
+      display_matrix <- data.frame(round(matrix(unlist(lapply(gtex_gene_list_expr.mean$Mean,function(.x){.x[2]})), nrow = gene_n), 2))
       colnames(display_matrix) <- gtex_gene_list_expr.mean$SMTS
-      display_matrix$GeneName <- gtex_gene_list_expr.mean$expr[[1]]$symbol
+      display_matrix$GeneName <- gtex_gene_list_expr.mean$Mean[[1]]$symbol
       display_matrix %>% tidyr::gather(Tissue, RPKM, -GeneName) -> hm_4_p
       callModule(heatmap_GTEX_Plot, "GTEx_exp", data = hm_4_p)
       print("end: draw heatmap for the gene set in GTEx dataset")

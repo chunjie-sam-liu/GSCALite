@@ -13,9 +13,12 @@ config$version <- "1.0.0"
 # It's the working directory of app
 # DEFAULT getwd()
 
+
+
+# config$wd <- "/project/huff/huff/github/GSCALite"
 config$wd <- "/home/liucj/github/GSCALite"
 # config$wd <- "/home/zhangq/github/GSCALite"
-# config$wd <- "/project/huff/huff/github/GSCALite"
+
 
 
 # User directory ----------------------------------------------------------
@@ -61,4 +64,3 @@ config$userdata <- file.path(config$wd, config$userdata)
 
 # Path to zip -------------------------------------------------------------
 Sys.setenv("R_ZIPCMD" = "/usr/bin/zip")
-

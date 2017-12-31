@@ -75,7 +75,7 @@ sidebar <- dashboardSidebar(
     # Welcome ----
     menuItem("Welcome", tabName = "welcome", icon = icon("home")),
 
-    
+
 
     # TCGA ----
     menuItem(
@@ -84,10 +84,10 @@ sidebar <- dashboardSidebar(
       icon = icon("thumbs-up"),
       collapsible = TRUE,
       menuSubItem("mRNA Expression", tabName = "tcga_expr"),
-      menuSubItem("Single Nucleotide Mutation", tabName = "tcga_snv"),
+      menuSubItem("Single Nucleotide Variation", tabName = "tcga_snv"),
       menuSubItem("Copy Number Variation", tabName = "tcga_cnv"),
       menuSubItem("Methylation", tabName = "tcga_meth"),
-      menuSubItem("Protein Expression", tabName = "tcga_rppa"),
+      menuSubItem("Pathway Activity", tabName = "tcga_rppa"),
       menuSubItem("miRNA Network", tabName = "tcga_mirna")
     ),
 
@@ -100,7 +100,7 @@ sidebar <- dashboardSidebar(
       menuSubItem("GDSC", tabName = "gdsc"),
       menuSubItem("CTRP", tabName = "ctrp")
     ),
-    
+
     # GTEx ----
     menuItem(
       "GTEx Normal Tissue",
@@ -112,14 +112,13 @@ sidebar <- dashboardSidebar(
     ),
 
     # Downloads ----
-    menuItem("Report", tabName = "downloads", icon = icon("floppy-o")),
+    # menuItem("Report", tabName = "downloads", icon = icon("floppy-o")),
 
     # Help ----
     menuItem(
       "Help",
       tabName = "help",
-      icon = icon("question"),
-      collapsible = TRUE
+      icon = icon("question")
     ),
 
     # About ----
@@ -136,7 +135,7 @@ body <- dashboardBody(
     shinyjs::useShinyjs(),
     shinyjs::extendShinyjs(script = file.path(config$wd, "www", "js", "gscalite.js")),
     shiny::tags$link(rel = "stylesheet", type = "text/css", href = "css/main.css"),
-    shiny::tags$script(type = 'text/javascript', src = "js/main.js")
+    shiny::tags$script(type = "text/javascript", src = "js/main.js")
     # shiny::tags$style(HTML(config$stylesheet)),
     # shiny::includeScript(file.path(config$wd, "www", "js", "tooltip-delay.js"))
   ),
@@ -150,9 +149,8 @@ body <- dashboardBody(
 
     # GTEx ----
 
-
-    source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local =TRUE)$value,
-    source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local =TRUE)$value,
+    source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local = TRUE)$value,
 
 
     # TCGA ----
@@ -161,24 +159,26 @@ body <- dashboardBody(
     # cnv ----
     source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
     # snv ----
-#    source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value,
+
     # meth ----
-    source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value
+    source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value,
+
     # rppa ----
-  #  source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
     # mirna ----
-   # source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value
     # Drug ----
     # gdsc
-    # source(file = file.path(config$wd, "ui", "tcga_gdsc_ui.R"), local = TRUE)$value,
-    
+    # source(file = file.path(config$wd, "ui", "tcga_gdsc_ui.R"), local = TRUE)$value
+
     # ctrp
-     #source(file = file.path(config$wd, "ui", "tcga_ctrp_ui.R"), local = TRUE)$value
+    # source(file = file.path(config$wd, "ui", "tcga_ctrp_ui.R"), local = TRUE)$value
 
     # Download ----
 
     # Help ----
-
+#    source(file = file.path(config$wd, "ui", "help_ui.R"), local = TRUE)$value
     # About ----
   )
 
@@ -196,7 +196,7 @@ shinyUI(dashboardPage(
   header = header,
   sidebar = sidebar,
   body = body
-)) 
+))
 
 # Test --------------------------------------------------------------------
 # shinyApp(ui = ui, server = function(input, output, session){})

@@ -10,7 +10,7 @@ cancer1Input <- function(id) {
   ns <- NS(id)
   tagList(
     shinydashboard::box(
-      title = "Cancer Type Selection", solidHeader = TRUE, 
+      title = "Cancer Type Selection", solidHeader = TRUE,
       background = "olive", width = 12, height = NULL,
       collapsible = FALSE, collapsed = FALSE,
       navlistPanel(

@@ -19,8 +19,7 @@ tabItem(
                       </font>
                       </h1>
                       <hr>
-                      <p class='lead'>TCGA methylation data will be used to give you a visualization of you gene set for seleted cancer types.
-                      <br>GSCALite offers different types of results (Differential Methylation, Methylation to Survival, Methylation correlate to gene expression, see details in <code>help page</code> below.), you can have a visualization of methylation changes and the effect of it to survival and expression.</p>
+                      <p class='lead text-left'>TCGA methylation data will be used to give you a visualization of genes' methylation changes and the effect to survival and expressionyou gene set for seleted cancer types. GSCALite offers different types of results (Differential Methylation, Methylation to Survival, Methylation correlate to gene expression, see details on <code>help page</code> below).</p>
                       </div>
                       </div>
                       </div>
@@ -29,37 +28,15 @@ tabItem(
   ## Hlep message including in tcga_meth_help.ui----
   source(file.path(config$ui, "tcga_meth_help.R"))[1],
 
-  shiny::tags$br(),
   shiny::tags$hr(width = "85%"),
 
   # cancer type selection and result output---------------------------------------------------
   # cancer type selection----
   cancerTypeInput("meth"),
 
-  # Selected cancer show ----
-  shiny::tags$h3("Cancer Type Check", class = "text-success"),
-  shiny::tags$h4(
-    "The cancers you selected: ",
-    textOutput("meth_selected_cancer"),
-    " Confirm and start analysis by click Submit!"
-  ),
-
   # Confirm and submit ----
   fluidRow(
-    column(width = 4),
-    column(
-      width = 2, offset = 0,
-      actionButton("meth_submit", label = "Submit!", icon = icon("check"))
-    ),
-    column(
-      width = 2, offset = 0,
-      actionButton("meth_stop", label = "Stop!", icon = icon("pause"))
-    ),
-    # column(
-    #   width = 2, offset = 0,
-    #   actionButton("meth_reset", label = "Resect!", icon = icon("refresh")) # ,status = "danger"?
-    # ),
-    column(width = 4)
+    selectAndAnalysisInput("meth")
   ),
   shiny::tags$hr(width = "85%"),
 
@@ -69,17 +46,11 @@ tabItem(
     column(
       width = 10,
       offset = 1,
-      shiny::tags$br(),
       shinydashboard::tabBox(
         id = "snv_PLOT", title = "PLOT", width = 12,
         tabPanel(title = "Differential Methylation", PlotInput(id = "meth_diff")),
-        tabPanel(title = "Methylation Survival", PlotInput(id="meth_survival")),
-        tabPanel(title = "Methylation to Expression", PlotInput(id="meth_exp"))
-        # tabPanel(title="SNV oncoplot",plotOutput("snv_oncoplot-plot")),
-        # # tabPanel(title="SNV oncostrip",PlotInput("snv_oncostrip")),
-        # # tabPanel(title="SNV lollipop",PlotInput("snv_lollipop")),
-        # tabPanel(title="SNV survival",PlotInput("snv_survival"))
-        # #tabPanel(title="SNV mutation load",PlotInput("snv_mut_load"))
+        tabPanel(title = "Methylation Survival", PlotInput(id = "meth_survival")),
+        tabPanel(title = "Methylation to Expression", PlotInput(id = "meth_exp"))
       )
     )
   ),
