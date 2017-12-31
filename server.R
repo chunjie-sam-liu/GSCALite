@@ -47,14 +47,14 @@ shinyServer(
     
     # tcga expr
 
-<<<<<<< HEAD
+
 #    source(file = file.path(config$server, "tcga_expr_server.R"), local = TRUE)
 
 #   source(file = file.path(config$server, "tcga_expr_server.R"), local = TRUE)
-=======
-    source(file = file.path(config$server, "tcga_expr_server.R"), local = TRUE)
 
->>>>>>> df368f383a1586cd1e123cabbd9c8a599345a308
+#    source(file = file.path(config$server, "tcga_expr_server.R"), local = TRUE)
+
+
 
     
     # tcga cnv ----
@@ -65,17 +65,17 @@ shinyServer(
 #    source(file = file.path(config$server, "tcga_snv_server.R"), local = TRUE)
     
     # tcga meth ----
-   source(file = file.path(config$server, "tcga_meth_server.R"), local = TRUE)
+#   source(file = file.path(config$server, "tcga_meth_server.R"), local = TRUE)
     
     # tcga mirna ----
 
-    source(file = file.path(config$server, "tcga_mirna_server.R"), local = TRUE)
+#    source(file = file.path(config$server, "tcga_mirna_server.R"), local = TRUE)
 
 
 
     
     # tcga rppa ----
-   source(file = file.path(config$server, "tcga_rppa_server.R"), local = TRUE)
+#   source(file = file.path(config$server, "tcga_rppa_server.R"), local = TRUE)
     
     # drug ----
     # gdsc
@@ -88,13 +88,11 @@ shinyServer(
 
     source(file = file.path(config$server, "GTEx_eqtl_server.R"), local = TRUE)
 
-<<<<<<< HEAD
 
     
 
     # Load data
-=======
->>>>>>> df368f383a1586cd1e123cabbd9c8a599345a308
+
     
   }
 )
