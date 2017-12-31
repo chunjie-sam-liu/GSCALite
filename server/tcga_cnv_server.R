@@ -68,11 +68,11 @@ cnv_analysis <- eventReactive(
       
       # remove pic result generate before ----
       
-      callModule(removePic,"cnv_pie",outtype="image")
-      callModule(removePic,"cnv_hete",outtype="plot")
-      callModule(removePic,"cnv_homo",outtype="plot")
-      callModule(removePic,"cnv_bar",outtype="plot")
-      callModule(removePic,"cnv_exp",outtype="plot")
+      # callModule(removePic,"cnv_pie",outtype="image")
+      # callModule(removePic,"cnv_hete",outtype="plot")
+      # callModule(removePic,"cnv_homo",outtype="plot")
+      # callModule(removePic,"cnv_bar",outtype="plot")
+      # callModule(removePic,"cnv_exp",outtype="plot")
       
       if(length(cnv_gene_list())!=0){
       

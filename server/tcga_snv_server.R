@@ -69,10 +69,10 @@ snv_analysis <- eventReactive(
       # load_data_snv()
       
       # remove pic result generate before ----
-      callModule(removePic,"snv_percentage",outtype="plot")
+      # callModule(removePic,"snv_percentage",outtype="plot")
       # callModule(removePic,"snv_summary",outtype="image")
       # callModule(removePic,"snv_oncoplot",outtype="image")
-      callModule(removePic,"snv_survival",outtype="plot")
+      # callModule(removePic,"snv_survival",outtype="plot")
       if(length(snv_gene_list())!=0){
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start snvy part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 

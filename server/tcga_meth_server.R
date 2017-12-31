@@ -63,9 +63,9 @@ meth_analysis <- eventReactive(
       load_data_meth()
       
       # remove pic result generate before ----
-      callModule(removePic,"meth_diff",outtype="plot")
-      callModule(removePic,"meth_survival",outtype="plot")
-      callModule(removePic,"meth_exp",outtype="plot")
+      # callModule(removePic,"meth_diff",outtype="plot")
+      # callModule(removePic,"meth_survival",outtype="plot")
+      # callModule(removePic,"meth_exp",outtype="plot")
       
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start methy part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
       
