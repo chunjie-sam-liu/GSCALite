@@ -68,62 +68,61 @@ cnv_analysis <- eventReactive(
 
       # remove pic result generate before ----
 
-      callModule(removePic, "cnv_pie", outtype = "image")
-      callModule(removePic, "cnv_hete", outtype = "plot")
-      callModule(removePic, "cnv_homo", outtype = "plot")
-      callModule(removePic, "cnv_bar", outtype = "plot")
-      callModule(removePic, "cnv_exp", outtype = "plot")
+      # callModule(removePic,"cnv_pie",outtype="image")
+      # callModule(removePic,"cnv_hete",outtype="plot")
+      # callModule(removePic,"cnv_homo",outtype="plot")
+      # callModule(removePic,"cnv_bar",outtype="plot")
+      # callModule(removePic,"cnv_exp",outtype="plot")
+      
+      if(length(cnv_gene_list())!=0){
+      
+      # cnv percent plot ------------------------------------------------------------
 
-      if (length(cnv_gene_list()) != 0) {
+      print(glue::glue("{paste0(rep('-', 10), collapse = '')} start cnv pie percent data processing@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
-        # cnv percent plot ------------------------------------------------------------
+      # get cancer type cnv ----
 
-        print(glue::glue("{paste0(rep('-', 10), collapse = '')} start cnv pie percent data processing@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+      cnv %>%
+        dplyr::mutate(filter_cnv = purrr::map(cnv, filter_gene_list, gene_list = cnv_gene_list())) %>%
+        dplyr::select(-cnv) %>%
+        dplyr::filter(cancer_types %in% cnv_cancer_type()) -> gene_list_cancer_cnv
 
-        # get cancer type cnv ----
+      # get data for plot ----
+      gene_list_cancer_cnv %>%
+        tidyr::unnest() %>%
+        tidyr::drop_na() -> cnv_plot_ready
+      if(nrow(cnv_plot_ready)>0){
 
-        cnv %>%
-          dplyr::mutate(filter_cnv = purrr::map(cnv, filter_gene_list, gene_list = cnv_gene_list())) %>%
-          dplyr::select(-cnv) %>%
-          dplyr::filter(cancer_types %in% cnv_cancer_type()) -> gene_list_cancer_cnv
+      # cancer rank ----
+      cnv_plot_ready %>%
+        dplyr::group_by(cancer_types) %>%
+        dplyr::summarise(v = sum(a_total - d_total)) %>%
+        dplyr::arrange(dplyr::desc(v)) -> cnv_cancer_rank
 
-        # get data for plot ----
-        gene_list_cancer_cnv %>%
-          tidyr::unnest() %>%
-          tidyr::drop_na() -> cnv_plot_ready
-        if (nrow(cnv_plot_ready) > 0) {
+      # gene rank ----
+      cnv_plot_ready %>%
+        dplyr::group_by(symbol) %>%
+        dplyr::summarise(v = sum(a_total - d_total)) %>%
+        dplyr::arrange(v) -> cnv_gene_rank
 
-          # cancer rank ----
-          cnv_plot_ready %>%
-            dplyr::group_by(cancer_types) %>%
-            dplyr::summarise(v = sum(a_total - d_total)) %>%
-            dplyr::arrange(dplyr::desc(v)) -> cnv_cancer_rank
+      # plot generate ----
 
-          # gene rank ----
-          cnv_plot_ready %>%
-            dplyr::group_by(symbol) %>%
-            dplyr::summarise(v = sum(a_total - d_total)) %>%
-            dplyr::arrange(v) -> cnv_gene_rank
+      # pie plot ----
+      cnv_plot_ready %>%
+        dplyr::select(-a_total, -d_total) %>%
+        tidyr::gather(key = type, value = per, -c(cancer_types, symbol)) %>%
+        dplyr::mutate(
+          symbol = factor(x = symbol, levels = cnv_gene_rank$symbol),
+          cancer_types = factor(x = cancer_types, levels = cnv_cancer_rank$cancer_types)
+        ) -> pie_plot_ready
 
-          # plot generate ----
-
-          # pie plot ----
-          cnv_plot_ready %>%
-            dplyr::select(-a_total, -d_total) %>%
-            tidyr::gather(key = type, value = per, -c(cancer_types, symbol)) %>%
-            dplyr::mutate(
-              symbol = factor(x = symbol, levels = cnv_gene_rank$symbol),
-              cancer_types = factor(x = cancer_types, levels = cnv_cancer_rank$cancer_types)
-            ) -> pie_plot_ready
-
-          cnv_pie_height <- pie_plot_ready$symbol %>% unique() %>% length() * 0.25
-          if (cnv_pie_height > 15) {
-            cnv_pie_height <- 15
-          }
-          if (cnv_pie_height < 3) {
-            cnv_pie_height <- 3
-          }
-
+      cnv_pie_height <- pie_plot_ready$symbol %>% unique() %>% length() * 0.25
+      if (cnv_pie_height > 15) {
+        cnv_pie_height <- 15
+      }
+      if (cnv_pie_height < 3) {
+        cnv_pie_height <- 3
+      }
           print(glue::glue("{paste0(rep('-', 10), collapse = '')} End cnv percent data processing@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
           print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start gernerate cnv pie profile plot@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))

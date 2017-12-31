@@ -84,10 +84,10 @@ sidebar <- dashboardSidebar(
       icon = icon("thumbs-up"),
       collapsible = TRUE,
       menuSubItem("mRNA Expression", tabName = "tcga_expr"),
-      menuSubItem("Single Nucleotide Mutation", tabName = "tcga_snv"),
+      menuSubItem("Single Nucleotide Variation", tabName = "tcga_snv"),
       menuSubItem("Copy Number Variation", tabName = "tcga_cnv"),
       menuSubItem("Methylation", tabName = "tcga_meth"),
-      menuSubItem("Protein Expression", tabName = "tcga_rppa"),
+      menuSubItem("Pathway Activity", tabName = "tcga_rppa"),
       menuSubItem("miRNA Network", tabName = "tcga_mirna")
     ),
 
@@ -112,7 +112,7 @@ sidebar <- dashboardSidebar(
     ),
 
     # Downloads ----
-    menuItem("Report", tabName = "downloads", icon = icon("floppy-o")),
+    # menuItem("Report", tabName = "downloads", icon = icon("floppy-o")),
 
     # Help ----
     menuItem(
