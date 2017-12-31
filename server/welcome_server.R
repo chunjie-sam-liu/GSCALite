@@ -35,16 +35,14 @@ observeEvent(input$example, {
 
 # Example input gene set --------------------------------------------------
 
-addPopover(
-  session = session,
-  id = "example",
-  title = "Example gene list",
-  placement = "bottom",
-  trigger = "hover",
-  content = shiny::HTML(
-    "Please input a gene list with official gene symbol less than 200 genes separated by space or comma or semicolon"
-  )
-)
+# addPopover(
+#   session = session,
+#   id = "example",
+#   title = "Example gene list",
+#   placement = "bottom",
+#   trigger = "hover",
+#   content = shiny::HTML("Please input HGNC gene symbol")
+# )
 
 
 # Monitor search ----------------------------------------------------------
@@ -56,7 +54,7 @@ validate_input_gene_set <- eventReactive(
     status$gene_set <- TRUE
 
     if (is.null(input$input_gene_set) || input$input_gene_set == "") {
-      error$gene_set <- "Error: Input at least One symbol."
+      error$gene_set <- "Error: Input at least One gene symbol."
       status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
       status$gene_set <- FALSE
       return()

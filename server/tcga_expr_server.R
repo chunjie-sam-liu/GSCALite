@@ -134,7 +134,7 @@ expr_analysis <- eventReactive(
           if (progress$expr_calc == TRUE) {
             expr %>%
               dplyr::filter(cancer_types %in% paired_cancer_types) %>%
-              clean_expr(.gs = gene_set$match) ->> expr_clean
+              dplyr::filter(symbol %in% gene_set$match) ->> expr_clean
 
             print(glue::glue("{paste0(rep('-', 10), collapse = '')} clean data complete @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
