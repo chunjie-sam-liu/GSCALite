@@ -31,7 +31,7 @@ tabItem(
       shinyWidgets::searchInput(
         inputId = "input_gene_set",
         label = "",
-        placeholder = "Input gene list with comma seprated...",
+        placeholder = "Please input HGNC symbol gene set",
         btnSearch = icon("search"),
         btnReset = icon("remove"),
         width = "100%"

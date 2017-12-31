@@ -17,7 +17,7 @@ tabItem(
       ),
 
       shiny::tags$p(
-        class = "lead",
+        class = "lead text-left",
         "TCGA expression data will be used to give you a visualization of your gene set for seleted cancer types."
       )
     )

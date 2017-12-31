@@ -35,16 +35,14 @@ observeEvent(input$example, {
 
 # Example input gene set --------------------------------------------------
 
-addPopover(
-  session = session,
-  id = "example",
-  title = "Example gene list",
-  placement = "bottom",
-  trigger = "hover",
-  content = shiny::HTML(
-    "Please input a gene list with official gene symbol less than 200 genes separated by space or comma or semicolon"
-  )
-)
+# addPopover(
+#   session = session,
+#   id = "example",
+#   title = "Example gene list",
+#   placement = "bottom",
+#   trigger = "hover",
+#   content = shiny::HTML("Please input HGNC gene symbol")
+# )
 
 
 # Monitor search ----------------------------------------------------------
@@ -56,7 +54,7 @@ validate_input_gene_set <- eventReactive(
     status$gene_set <- TRUE
 
     if (is.null(input$input_gene_set) || input$input_gene_set == "") {
-      error$gene_set <- "Error: Input at least One symbol."
+      error$gene_set <- "Error: Input at least One gene symbol."
       status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
       status$gene_set <- FALSE
       return()
@@ -181,7 +179,7 @@ observeEvent(
 
       shinyBS::createAlert(
         session = session, anchorId = "ui_hint_alert", alertId = NULL, title = NULL, style = "primary",
-        content = HTML("<h3 ><i class='fa fa-hand-o-left fa-4'></i> Please check the result on the right panel.</h3>"), append = FALSE
+        content = HTML("<h3 style='color:red;'> Please check the results under the top-left menus of TCGA Cancer/Drug Response/GTEx Normal Tissue.</h3>"), append = FALSE
       )
 
       shinyjs::enable(id = "input_gene_set")

@@ -32,24 +32,22 @@ fluidRow(
                             which offered important information for exploring disease-related perturbations. 
                             GTEx Expressiondataset (V7.0) composed of 11,688 samples contains the expression profiles of 56,202 genes from 30 organs (53 tissues), 
                             which donated by 714 health individuals."),
-              shiny::tags$br(),
-              shiny::tags$hr(width = "100%")
-            ),
-            # result description----
-            column(
-              width = 10, offset = 1,
-              shiny::tags$h3("Results commentary", class = "text-success"),
-              shiny::tags$table(
-                class = "table table-striped",
-                shiny::tags$thead(
-                  shiny::tags$th("Results type"),
-                  shiny::tags$th("Description")
+
+            shiny::tags$hr(width="100%")
+          ),
+          # result description----
+          column(width=10, offset = 1,
+            shiny::tags$h3("Results commentary", class="text-success"),
+            shiny::tags$table(class="table table-striped",
+              shiny::tags$thead(
+                shiny::tags$th("Results type"),
+                shiny::tags$th("Description")
+              ),
+              shiny::tags$tbody(
+								shiny::tags$tr(
+                  shiny::tags$td("Heatmap"),
+                  shiny::tags$td("Heatmap gives you the expression profiles of your gene set in selected tissues.")
                 ),
-                shiny::tags$tbody(
-                  shiny::tags$tr(
-                    shiny::tags$td("Heatmap"),
-                    shiny::tags$td("Heatmap gives you the expression profiles of your gene set in selected tissues.")
-                  ),
                   shiny::tags$tr(
                     shiny::tags$td("GSVA Boxplot"),
                     shiny::tags$td("The Gene Set Variation Analysis (GSVA) boxplot displays the estimating variation of gene set enrichment through the samples in the GTEx expression dataset. 

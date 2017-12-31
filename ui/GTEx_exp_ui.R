@@ -19,7 +19,7 @@ tabItem(
                       </font>
                       </h1>
                       <hr>
-                      <p class='lead'>expression profiles and gene set variation analysis score (GSVAS) of query gene set in selected GTEx normal tissues will be visualized here in forms of heatmap and boxplot. See details in <code>help page</code> below.) </p>
+                      <p class='lead text-left'>expression profiles and gene set variation analysis score (GSVAS) of query gene set in selected GTEx normal tissues will be visualized here in forms of heatmap and boxplot. See details in <code>help page</code> below.) </p>
                       </div>
                       </div>
                       </div>
@@ -28,7 +28,6 @@ tabItem(
 
   source(file.path(config$ui, "GTEx_exp_help.R"))[1],
 
-  shiny::tags$br(),
   shiny::tags$hr(width = "85%"),
 
 
@@ -66,17 +65,16 @@ tabItem(
   # Cancer type selection ----
   fluidRow(selectAndAnalysisInput("gtex_expr")),
 
-  # Plot result ----
-  fluidRow(
-    column(
-      width = 10,
-      offset = 1,
-      shiny::tags$br(),
-      shinydashboard::tabBox(
-        id = "GTEx_PLOT", title = "PLOT", width = 12,
-        tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")) # ,tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
-      )
+# Plot result ----
+fluidRow(
+  column(
+    width = 10,
+    offset = 1,
+    shinydashboard::tabBox(
+      id = "GTEx_PLOT", title = "PLOT", width = 12,
+      tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")) #,tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
     )
+  )
   ),
 
   # load footer ----

@@ -48,23 +48,18 @@ shinyServer(
     # tcga expr
 #    source(file = file.path(config$server, "tcga_expr_server.R"), local = TRUE)
 
-
     # tcga cnv ----
     # source(file = file.path(config$server, "tcga_cnv_server.R"), local = TRUE)
-
-
-    # tcga snv ----
+    
+    #tcga snv ----
     # source(file = file.path(config$server, "tcga_snv_server.R"), local = TRUE)
-
+    
     # tcga meth ----
     # source(file = file.path(config$server, "tcga_meth_server.R"), local = TRUE)
 
     # tcga mirna ----
 
     # source(file = file.path(config$server, "tcga_mirna_server.R"), local = TRUE)
-
-
-
 
     # tcga rppa ----
     # source(file = file.path(config$server, "tcga_rppa_server.R"), local = TRUE)
@@ -76,6 +71,7 @@ shinyServer(
     #    source(file = file.path(config$server, "tcga_ctrp_server.R"), local = TRUE)
     # GTEx
 
+<<<<<<< HEAD
 
     source(file = file.path(config$server, "GTEx_exp_server.R"), local = TRUE)
 
@@ -84,7 +80,12 @@ shinyServer(
 
     # source(file = file.path(config$server, "GTEx_exp_server.R"), local = TRUE)
 
+=======
+    # source(file = file.path(config$server, "GTEx_exp_server.R"), local = TRUE)
+>>>>>>> fd66611be66888e0dad93bcc01abc61475e289a6
 
     # source(file = file.path(config$server, "GTEx_eqtl_server.R"), local = TRUE)
+
+
   }
 )
