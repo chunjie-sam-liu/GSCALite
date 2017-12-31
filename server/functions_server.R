@@ -3,9 +3,8 @@
 
 # Check input gene set ----------------------------------------------------
 check_gene_set <- function(.s, status = status, error = error) {
-  
   .s %>%
-    stringr::str_split(pattern = "[^[:alnum:]]+", simplify = TRUE) %>% 
+    stringr::str_split(pattern = "[^[:alnum:]]+", simplify = TRUE) %>%
     .[1, ] %>%
     stringr::str_trim(side = "both") -> .ss
 
@@ -14,7 +13,7 @@ check_gene_set <- function(.s, status = status, error = error) {
     status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
     status$gene_set <- FALSE
   }
-  
+
   .ss
 }
 
@@ -22,19 +21,19 @@ check_gene_set <- function(.s, status = status, error = error) {
 # Validate gene with TCGA gene symbol -------------------------------------
 validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, total_gene_symbol = total_gene_symbol, status = status, error = error, gene_set = gene_set) {
   .log_file <- file.path(user_dir, user_logs$gene_set)
-  
 
-  .v_dedup <- .v[.v != ""] %>% unique() %>% sapply(FUN = tolower, USE.NAMES = FALSE) 
+
+  .v_dedup <- .v[.v != ""] %>% unique() %>% sapply(FUN = tolower, USE.NAMES = FALSE)
   .v_dedup %in% names(total_gene_symbol) -> .inter
 
 
-  gene_set$match = total_gene_symbol[.v_dedup[.inter]]
-  gene_set$non_match = .v_dedup[!.inter]
-  gene_set$n_match = length(total_gene_symbol[.v_dedup[.inter]])
-  gene_set$n_non_match = length(.v_dedup[!.inter])
-  gene_set$n_total = length(total_gene_symbol[.v_dedup[.inter]]) + length(.v_dedup[!.inter])
-  
-  if (length(gene_set$match ) == 0) {
+  gene_set$match <- total_gene_symbol[.v_dedup[.inter]]
+  gene_set$non_match <- .v_dedup[!.inter]
+  gene_set$n_match <- length(total_gene_symbol[.v_dedup[.inter]])
+  gene_set$n_non_match <- length(.v_dedup[!.inter])
+  gene_set$n_total <- length(total_gene_symbol[.v_dedup[.inter]]) + length(.v_dedup[!.inter])
+
+  if (length(gene_set$match) == 0) {
     error$gene_set <- "Error: Please input at least one valid gene symbol."
     status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
     status$gene_set <- FALSE
@@ -105,9 +104,9 @@ fn_gen_combined_core_atg <- function(cancer_types, filter_cnv, g_list, n) {
     tidyr::spread(key = symbol, value = gistic) %>%
     dplyr::select(-barcode) -> .d
 
-  
+
   n_sample <- nrow(.d)
-  
+
   .d %>%
     dplyr::filter_all(.vars_predicate = dplyr::any_vars(. == -n)) %>%
     nrow() -> .del
@@ -209,120 +208,124 @@ get_rppa_text <- function(data) {
   data %>%
     dplyr::pull(pathway) %>%
     unique() -> pathway.text
-  
+
   c.text <- data.frame(x = 1, y = 1, text = "test", type = "test")
   g.l <- data$symbol %>% unique() %>% length()
   c.l <- data$cancer_types %>% unique() %>% length()
   p.l <- data$pathway %>% unique() %>% length()
 
-# condition 1: gene is more -----------------------------------------------
+  # condition 1: gene is more -----------------------------------------------
 
-  if(g.l>=c.l & g.l>=p.l){
+  if (g.l >= c.l & g.l >= p.l) {
     for (i in 1:length(gene.text)) {
-      data.frame(x = 4, y = 2*i-1, text = gene.text[i], type = "gene") -> tmp.text
+      data.frame(x = 4, y = 2 * i - 1, text = gene.text[i], type = "gene") -> tmp.text
       rbind(c.text, tmp.text) -> c.text
     }
     c.text %>%
-      dplyr::filter(type=="gene") %>%
+      dplyr::filter(type == "gene") %>%
       dplyr::select(y) %>%
       max() -> g.m
-    
-    g.m/c.l -> c.i
+
+    g.m / c.l -> c.i
     for (i in 1:length(cancer.text)) {
-      data.frame(x = 1, y = i*c.i-1, text = cancer.text[i], type = "cancer") -> tmp.text
+      data.frame(x = 1, y = i * c.i - 1, text = cancer.text[i], type = "cancer") -> tmp.text
       rbind(c.text, tmp.text) -> c.text
     }
-    
-    g.m/10 -> p.i
+
+    g.m / 10 -> p.i
     for (i in 1:length(pathway.text)) {
-      data.frame(x = 7, y = i*p.i-1, text = pathway.text[i], type = "pathway") -> tmp.text
+      data.frame(x = 7, y = i * p.i - 1, text = pathway.text[i], type = "pathway") -> tmp.text
       rbind(c.text, tmp.text) -> c.text
     }
   }
 
-# condition 2: cancer is more ---------------------------------------------
+  # condition 2: cancer is more ---------------------------------------------
 
-  if(c.l>=g.l & c.l>=p.l){
+  if (c.l >= g.l & c.l >= p.l) {
     for (i in 1:length(cancer.text)) {
-      data.frame(x = 1, y = 2*i-1, text = cancer.text[i], type = "cancer") -> tmp.text
+      data.frame(x = 1, y = 2 * i - 1, text = cancer.text[i], type = "cancer") -> tmp.text
       rbind(c.text, tmp.text) -> c.text
     }
     c.text %>%
-      dplyr::filter(type=="cancer") %>%
+      dplyr::filter(type == "cancer") %>%
       dplyr::select(y) %>%
       max() -> c.m
-    
-    c.m/g.l -> g.i
+
+    c.m / g.l -> g.i
     for (i in 1:length(gene.text)) {
-      data.frame(x = 4, y = i*g.i-1, text = gene.text[i], type = "gene") -> tmp.text
+      data.frame(x = 4, y = i * g.i - 1, text = gene.text[i], type = "gene") -> tmp.text
       rbind(c.text, tmp.text) -> c.text
     }
-    
-    c.m/10 -> p.i
+
+    c.m / 10 -> p.i
     for (i in 1:length(pathway.text)) {
-      data.frame(x = 7, y = i*p.i-1, text = pathway.text[i], type = "pathway") -> tmp.text
+      data.frame(x = 7, y = i * p.i - 1, text = pathway.text[i], type = "pathway") -> tmp.text
       rbind(c.text, tmp.text) -> c.text
     }
   }
 
-# condition 3: pathway is more --------------------------------------------
+  # condition 3: pathway is more --------------------------------------------
 
-  if(p.l>=c.l & p.l>=g.l){
+  if (p.l >= c.l & p.l >= g.l) {
     for (i in 1:length(pathway.text)) {
-      data.frame(x = 7, y = i*2-1, text = pathway.text[i], type = "pathway") -> tmp.text
+      data.frame(x = 7, y = i * 2 - 1, text = pathway.text[i], type = "pathway") -> tmp.text
       rbind(c.text, tmp.text) -> c.text
     }
-      
+
     c.text %>%
-      dplyr::filter(type=="pathway") %>%
+      dplyr::filter(type == "pathway") %>%
       dplyr::select(y) %>%
       max() -> p.m
-    
-    p.m/c.l -> c.i
+
+    p.m / c.l -> c.i
     for (i in 1:length(cancer.text)) {
-      data.frame(x = 1, y = i*c.i-1, text = cancer.text[i], type = "cancer") -> tmp.text
+      data.frame(x = 1, y = i * c.i - 1, text = cancer.text[i], type = "cancer") -> tmp.text
       rbind(c.text, tmp.text) -> c.text
     }
-    
-    p.m/g.l -> g.i
+
+    p.m / g.l -> g.i
     for (i in 1:length(gene.text)) {
-      data.frame(x = 4, y = i*g.i-1, text = gene.text[i], type = "gene") -> tmp.text
+      data.frame(x = 4, y = i * g.i - 1, text = gene.text[i], type = "gene") -> tmp.text
       rbind(c.text, tmp.text) -> c.text
     }
   }
-  return(c.text[-1,])
+  return(c.text[-1, ])
 }
 
-get_rppa_seg <- function(cancer_text,data){
-  .d_seg <- data.frame(x1=0,y1=0,x2=0,y2=0,Cancer="test",Regulation="test")
-  nrow(data) ->n
+get_rppa_seg <- function(cancer_text, data) {
+  .d_seg <- data.frame(x1 = 0, y1 = 0, x2 = 0, y2 = 0, Cancer = "test", Regulation = "test")
+  nrow(data) -> n
 
-  for(i in 1:n){
-    data[i,1] ->cancer
-    data[i,2] ->gene
-    data[i,3] ->pathway
-    data[i,4] ->diff
-    if(diff>0){line_type="Activate"}else{line_type="Inhibit"}
+  for (i in 1:n) {
+    data[i, 1] -> cancer
+    data[i, 2] -> gene
+    data[i, 3] -> pathway
+    data[i, 4] -> diff
+    if (diff > 0) {
+      line_type <- "Activate"
+    } else {
+      line_type <- "Inhibit"
+    }
     cancer_text %>%
       dplyr::filter(text %in% gene) %>%
-      dplyr::select(x,y) %>%
-      dplyr::mutate(x=x-0.5) ->g1.pos
+      dplyr::select(x, y) %>%
+      dplyr::mutate(x = x - 0.5) -> g1.pos
     cancer_text %>%
       dplyr::filter(text %in% gene) %>%
-      dplyr::select(x,y) %>%
-      dplyr::mutate(x=x+0.5) ->g2.pos
-    
+      dplyr::select(x, y) %>%
+      dplyr::mutate(x = x + 0.5) -> g2.pos
+
     cancer_text %>%
       dplyr::filter(text %in% cancer) %>%
-      dplyr::select(x,y) ->c.pos
+      dplyr::select(x, y) -> c.pos
     cancer_text %>%
       dplyr::filter(text %in% pathway) %>%
-      dplyr::select(x,y) ->p.pos
-    .d_seq_tmp1<- data.frame(x1=c.pos$x,y1=c.pos$y,x2=g1.pos$x,y2=g1.pos$y,Cancer=cancer$cancer_types,Regulation="Activate")
-    .d_seq_tmp2<- data.frame(x1=g2.pos$x,y1=g2.pos$y,x2=p.pos$x,y2=p.pos$y,Cancer=cancer$cancer_types,Regulation=line_type)
-    rbind(.d_seg,.d_seq_tmp1) %>% rbind(.d_seq_tmp2) -> .d_seg
+      dplyr::select(x, y) -> p.pos
+    .d_seq_tmp1 <- data.frame(x1 = c.pos$x, y1 = c.pos$y, x2 = g1.pos$x, y2 = g1.pos$y, Cancer = cancer$cancer_types, Regulation = "Activate")
+    .d_seq_tmp2 <- data.frame(x1 = g2.pos$x, y1 = g2.pos$y, x2 = p.pos$x, y2 = p.pos$y, Cancer = cancer$cancer_types, Regulation = line_type)
+    rbind(.d_seg, .d_seq_tmp1) %>% rbind(.d_seq_tmp2) -> .d_seg
   }
-  .d_seg[-1,] %>%
-    unique() ->.d_seg
+  .d_seg[-1, ] %>%
+    unique() -> .d_seg
   return(.d_seg)
 }

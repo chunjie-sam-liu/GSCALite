@@ -34,8 +34,10 @@ fluidRow(
 
               shiny::tags$p(
                 class = "text-justify", "A microRNA (abbreviated miRNA) is a small non-coding RNA molecule (containing about 22 nucleotides) found in plants, animals and some viruses, that functions in RNA silencing and post-transcriptional regulation of gene expression. See details at: ",
-                shiny::tags$a(href = "http://www.sciencedirect.com/science/article/pii/S0092867404000455?via%3Dihub", 
-                              shiny::tags$span("D. P. Bartel, MicroRNAs: Genomics, Biogenesis, Mechanism, and Function. Cell. 116, 281–297 (2004)",style="color:blue")), "."
+                shiny::tags$a(
+                  href = "http://www.sciencedirect.com/science/article/pii/S0092867404000455?via%3Dihub",
+                  shiny::tags$span("D. P. Bartel, MicroRNAs: Genomics, Biogenesis, Mechanism, and Function. Cell. 116, 281–297 (2004)", style = "color:blue")
+                ), "."
               ),
               # shiny::tags$p(class="text-justify",),
 
@@ -51,16 +53,26 @@ fluidRow(
               shiny::tags$p(
                 class = "text-justify", "miRNA regulation data was collected form databases: include experimental verified ( papers, ",
 
-                shiny::tags$a(href = "http://diana.imis.athena-innovation.gr/DianaTools/index.php?r=site/index", 
-                              shiny::tags$span("TarBase, ",style="color:blue")), 
-                shiny::tags$a(href = "http://mirtarbase.mbc.nctu.edu.tw/php/index.php", 
-                              shiny::tags$span("miRTarBase, ",style="color:blue")),
-                shiny::tags$a(href = "http://www.mir2disease.org/", 
-                              shiny::tags$span("mir2disease, ",style="color:blue")),"), and ",
-                shiny::tags$a(href = "http://www.targetscan.org/vert_70/", 
-                              shiny::tags$span("targetscan, ",style="color:blue")),
-                shiny::tags$a(href = "http://34.236.212.39/microrna/home.do", 
-                              shiny::tags$span("miRanda",style="color:blue")), 
+                shiny::tags$a(
+                  href = "http://diana.imis.athena-innovation.gr/DianaTools/index.php?r=site/index",
+                  shiny::tags$span("TarBase, ", style = "color:blue")
+                ),
+                shiny::tags$a(
+                  href = "http://mirtarbase.mbc.nctu.edu.tw/php/index.php",
+                  shiny::tags$span("miRTarBase, ", style = "color:blue")
+                ),
+                shiny::tags$a(
+                  href = "http://www.mir2disease.org/",
+                  shiny::tags$span("mir2disease, ", style = "color:blue")
+                ), "), and ",
+                shiny::tags$a(
+                  href = "http://www.targetscan.org/vert_70/",
+                  shiny::tags$span("targetscan, ", style = "color:blue")
+                ),
+                shiny::tags$a(
+                  href = "http://34.236.212.39/microrna/home.do",
+                  shiny::tags$span("miRanda", style = "color:blue")
+                ),
                 " predicted. And only miRNA-gene pairs who have been recorded will be used to calculate a expression correlation here."
               ),
               # shiny::tags$p(class="text-justify",),

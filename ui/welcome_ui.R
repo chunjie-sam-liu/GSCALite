@@ -82,8 +82,8 @@ tabItem(
       sytle = "margin-top:30px;",
       width = 8, offset = 2,
       shinyBS::bsAlert(anchorId = "ui_hint_alert")
-      )
-    ),
+    )
+  ),
 
   # Feature and descriptions ----
   fluidRow(
