@@ -34,8 +34,10 @@ fluidRow(
 
               shiny::tags$p(
                 class = "text-justify", "Reverse phase protein array (RPPA) is a high-throughput antibody-based technique with the procedures similar to that of Western blots. Proteins are extracted from tumor tissue or cultured cells, denatured by SDS, printed on nitrocellulose-coated slides followed by antibody probe (",
-                shiny::tags$a(href = "http://bioinformatics.mdanderson.org/main/TCPA:Overview", 
-                              shiny::tags$span("TCPA database",style="color:blue")),
+                shiny::tags$a(
+                  href = "http://bioinformatics.mdanderson.org/main/TCPA:Overview",
+                  shiny::tags$span("TCPA database", style = "color:blue")
+                ),
                 class = "text-justify", "), TCPA RPPA data are all from TCGA samples."
               ),
 
@@ -57,13 +59,13 @@ fluidRow(
             ),
             column(
               width = 10, offset = 1,
-              
+
               shiny::tags$h3("What pathway we included ?", class = "text-success"),
-              
+
               shiny::tags$p(class = "text-justify", "The pathway we included in are: TSC/mTOR, RTK, RAS/MAPK, PI3K/AKT, Hormone ER, Hormone AR, EMT, DNA Damage Response, Cell Cycle, Apoptosis pathways. They are all famous cancer related pathway."),
-              
+
               shiny::tags$br(),
-              
+
               shiny::tags$hr(width = "100%")
             ),
             column(
@@ -73,22 +75,25 @@ fluidRow(
 
               shiny::tags$p(
                 class = "text-justify", "RBN RPPA data were median-centered and normalized by standard deviation across all samples for each component to obtain the relative protein level. The pathway score is then the sum of the relative protein level of all positive regulatory components minus that of negative regulatory components in a particular pathway(",
-                shiny::tags$a(href = "https://doi.org/10.1038/ncomms4887", 
-                              shiny::tags$span("R. Akbani et al.",style="color:blue")), 
-                ")."),
+                shiny::tags$a(
+                  href = "https://doi.org/10.1038/ncomms4887",
+                  shiny::tags$span("R. Akbani et al.", style = "color:blue")
+                ),
+                ")."
+              ),
 
               shiny::tags$br(),
 
               shiny::tags$hr(width = "100%")
             ),
-            
+
             column(
               width = 10, offset = 1,
 
               shiny::tags$h3("Calculation method", class = "text-success"),
 
               shiny::tags$p(class = "text-justify", "Gene expression was divided into 2 groups(groupHigh and groupLow) by median expression, the difference of pathway activity score(PAS) between groups is defined by a student T test, p value <=0.05 is considered as significant, when PAS(Gene A groupHigh) > PAS(Gene A groupLow), we consider gene A may have a activate effect to a pathway."),
- 
+
               shiny::tags$br(),
 
               shiny::tags$hr(width = "100%")

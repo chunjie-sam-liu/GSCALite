@@ -34,8 +34,10 @@ fluidRow(
 
               shiny::tags$p(
                 class = "text-justify", "Copy number variation is a type of structural variation: specifically, it is a type of duplication or deletion event that affects a considerable number of base pairs. See details at: ",
-                shiny::tags$a(href = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1226196/", 
-                              shiny::tags$span("A. J. Sharp et al., Segmental Duplications and Copy-Number Variation in the Human Genome. Am J Hum Genet. 77, 78–88 (2005).",style="color:blue"))
+                shiny::tags$a(
+                  href = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1226196/",
+                  shiny::tags$span("A. J. Sharp et al., Segmental Duplications and Copy-Number Variation in the Human Genome. Am J Hum Genet. 77, 78–88 (2005).", style = "color:blue")
+                )
               ),
               # shiny::tags$p(class="text-justify",),
 

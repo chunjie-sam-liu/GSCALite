@@ -2,12 +2,14 @@
 # save as 'tcga_mirna_ui.R'
 # ui elements 'tcga_mirna' sub tab of 'tcga' tab
 
-tabItem(tabName = "tcga_mirna", align = "center",
-        shinyjs::useShinyjs(),
-        
-        ## SNV message ----
-        fluidRow(style="width:80%;",
-                 HTML("<div class='section'>
+tabItem(
+  tabName = "tcga_mirna", align = "center",
+  shinyjs::useShinyjs(),
+
+  ## SNV message ----
+  fluidRow(
+    style = "width:80%;",
+    HTML("<div class='section'>
                       <div class='container'>
                       <div class='row'>
                       <div class='col-md-12'>
@@ -25,33 +27,37 @@ tabItem(tabName = "tcga_mirna", align = "center",
                       </div>
                       </div>
                       </div>")
-                 ),
-        ## Hlep message including in tcga_mirna_help.ui----
-        source(file.path(config$ui,"tcga_mirna_help.R"))[1],
-        
-        shiny::tags$br(),
-        shiny::tags$hr(width="85%"),
-        
-        # cancer type no selection and only result output---------------------------------------------------
+  ),
+  ## Hlep message including in tcga_mirna_help.ui----
+  source(file.path(config$ui, "tcga_mirna_help.R"))[1],
 
-        
-        # output plot -------------------------------------------------------------
-        # Tabset Panel
-        fluidRow(
-          column(width = 10,
-                 offset = 1,
-                 shiny::tags$br(),
-                 shinydashboard::tabBox(id = "mirna_PLOT",title = "PLOT",width = 12,
-                                        tabPanel(title="networkD3",
-                                                 forceNetworkOutput("mirna_net1",height = "700px")),
-                                        tabPanel(title= "visNetwork",
-                                                 visNetwork::visNetworkOutput("mirna_net2",height = "700px"))
-                 )
-          )
+  shiny::tags$br(),
+  shiny::tags$hr(width = "85%"),
+
+  # cancer type no selection and only result output---------------------------------------------------
+
+
+  # output plot -------------------------------------------------------------
+  # Tabset Panel
+  fluidRow(
+    column(
+      width = 10,
+      offset = 1,
+      shiny::tags$br(),
+      shinydashboard::tabBox(
+        id = "mirna_PLOT", title = "PLOT", width = 12,
+        tabPanel(
+          title = "networkD3",
+          forceNetworkOutput("mirna_net1", height = "700px")
         ),
-        
-        # load footer ------------------------------------------------------
-        source(file.path(config$ui, "footer.R"))[1]
-        
-        
-                 ) # close tab
+        tabPanel(
+          title = "visNetwork",
+          visNetwork::visNetworkOutput("mirna_net2", height = "700px")
+        )
+      )
+    )
+  ),
+
+  # load footer ------------------------------------------------------
+  source(file.path(config$ui, "footer.R"))[1]
+) # close tab

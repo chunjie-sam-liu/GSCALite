@@ -25,7 +25,7 @@ tabItem(
                       </div>
                       </div>")
   ),
-  
+
   source(file.path(config$ui, "GTEx_eqtl_help.R"))[1],
 
   shiny::tags$br(),
@@ -33,47 +33,47 @@ tabItem(
 
   fluidRow(column(width = 12, GTExTissueeqtl("gtex_eqtl"))),
   fluidRow(selectAndAnalysisInput("gtex_eqtl")),
-#  GTExTissueType("gtex_eqtl"),
+  #  GTExTissueType("gtex_eqtl"),
 
   # Selected Tissue show ----
-#  shiny::tags$h3("Tissue Check", class = "text-success"),
-#  shiny::tags$h4(
-#    "The tissues you selected: ",
-#    textOutput("selected_tissues"),
-#    " Confirm and start analysis by click Submit!"
-#  ),
+  #  shiny::tags$h3("Tissue Check", class = "text-success"),
+  #  shiny::tags$h4(
+  #    "The tissues you selected: ",
+  #    textOutput("selected_tissues"),
+  #    " Confirm and start analysis by click Submit!"
+  #  ),
 
   # Confirm and submit ----
-  
 
-#  fluidRow(
-#    column(width = 4),
-#    column(
-#      width = 2, offset = 0,
-#      actionButton("GTEx_tissue_submit", label = "Submit!", icon = icon("check"))
-#    ),
-#    column(
-#      width = 2, offset = 0,
-#      actionButton("analysis_stop", label = "Stop!", icon = icon("pause")) 
-#    ),
-#    column(width = 4)
-# ),
-#  shiny::tags$hr(width = "85%"),
-  
+
+  #  fluidRow(
+  #    column(width = 4),
+  #    column(
+  #      width = 2, offset = 0,
+  #      actionButton("GTEx_tissue_submit", label = "Submit!", icon = icon("check"))
+  #    ),
+  #    column(
+  #      width = 2, offset = 0,
+  #      actionButton("analysis_stop", label = "Stop!", icon = icon("pause"))
+  #    ),
+  #    column(width = 4)
+  # ),
+  #  shiny::tags$hr(width = "85%"),
+
 
   # output plot -------------------------------------------------------------
   # Tabset Panel ----
-#  fluidRow(
-#    column(
-#      width = 10,
-#      offset = 1,
-#      shiny::tags$br(),
-#      shinydashboard::tabBox(
-#        id = "GTEx_TABLE", title = "TABLE", width = 12,
-#        tabPanel(title = "GTEx eQTLs", TableInput(id = "GTEx_eqtl"))
-#      )
-#    )
-#  ),
+  #  fluidRow(
+  #    column(
+  #      width = 10,
+  #      offset = 1,
+  #      shiny::tags$br(),
+  #      shinydashboard::tabBox(
+  #        id = "GTEx_TABLE", title = "TABLE", width = 12,
+  #        tabPanel(title = "GTEx eQTLs", TableInput(id = "GTEx_eqtl"))
+  #      )
+  #    )
+  #  ),
   fluidRow(GTEx_eqtl_Output("gtex_eqtl")),
   # load footer ----
   source(file.path(config$ui, "footer.R"))[1]
