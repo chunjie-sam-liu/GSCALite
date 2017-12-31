@@ -261,7 +261,7 @@ GTExTissueeqtl <- function(id) {
             shiny::tags$h4("Brain", class = "text-success"),
             checkboxGroupButtons(
               inputId = ns("Brain"), label = NULL,
-              choices = GTEx_Brain_choice,
+              choices = GTEx_eqtl_Brain_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -272,7 +272,7 @@ GTExTissueeqtl <- function(id) {
             "Liver",
             checkboxGroupButtons(
               inputId = ns("Liver"), label = NULL,
-              choices = GTEx_Liver_choice,
+              choices = GTEx_eqtl_Liver_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -283,7 +283,7 @@ GTExTissueeqtl <- function(id) {
             "Heart",
             checkboxGroupButtons(
               inputId = ns("Heart"), label = NULL,
-              choices = GTEx_Heart_choice,
+              choices = GTEx_eqtl_Heart_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -294,7 +294,7 @@ GTExTissueeqtl <- function(id) {
             "Ovary",
             checkboxGroupButtons(
               inputId = ns("Ovary"), label = NULL,
-              choices = GTEx_Ovary_choice,
+              choices = GTEx_eqtl_Ovary_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -305,7 +305,7 @@ GTExTissueeqtl <- function(id) {
             "Lung",
             checkboxGroupButtons(
               inputId = ns("Lung"), label = NULL,
-              choices = GTEx_Lung_choice,
+              choices = GTEx_eqtl_Lung_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -316,7 +316,7 @@ GTExTissueeqtl <- function(id) {
             "Breast",
             checkboxGroupButtons(
               inputId = ns("Breast"), label = NULL,
-              choices = GTEx_Breast_choice,
+              choices = GTEx_eqtl_Breast_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -327,7 +327,7 @@ GTExTissueeqtl <- function(id) {
             "Skin",
             checkboxGroupButtons(
               inputId = ns("Skin"), label = NULL,
-              choices = GTEx_Skin_choice,
+              choices = GTEx_eqtl_Skin_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -338,7 +338,7 @@ GTExTissueeqtl <- function(id) {
             "Blood",
             checkboxGroupButtons(
               inputId = ns("Blood"), label = NULL,
-              choices = GTEx_Blood_choice,
+              choices = GTEx_eqtl_Blood_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -349,7 +349,7 @@ GTExTissueeqtl <- function(id) {
             "Testis",
             checkboxGroupButtons(
               inputId = ns("Testis"), label = NULL,
-              choices = GTEx_Testis_choice,
+              choices = GTEx_eqtl_Testis_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
@@ -360,7 +360,7 @@ GTExTissueeqtl <- function(id) {
             "Colon",
             checkboxGroupButtons(
               inputId = ns("Colon"), label = NULL,
-              choices = GTEx_Colon_choice,
+              choices = GTEx_eqtl_Colon_choice,
               justified = TRUE,
               checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
               direction = "vertical",
