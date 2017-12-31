@@ -18,7 +18,7 @@ tabItem(tabName = "tcga_snv", align = "center",
                 </font>
                 </h1>
                 <hr>
-                <p class='lead text-left'>Single Nucleotide Variation(SNV) is a variation in a single nucleotide that occurs at a specific position in the genome. The TCGA data is used to give you a visualization about SNV of you gene set for seleted cancer types. GSAC offers different types of graphic layout (heatmap, oncoplot, lollipop, survival, and mutation load, see details in <code>help page</code> below).</p>
+                <p class='lead text-left'>Single Nucleotide Variation(SNV) is a variation in a single nucleotide that occurs at a specific position in the genome. The TCGA data is used to give you a visualization about SNV of you gene set for seleted cancer types. GSCALite offers different types of graphic layout (heatmap percentage, summary, oncoplot and survival, see details in <code>help page</code> below).</p>
                 </div>
                 </div>
                 </div>
@@ -48,7 +48,7 @@ tabItem(tabName = "tcga_snv", align = "center",
                  offset = 1,
                  shinydashboard::tabBox(id = "snv_PLOT",title = "PLOT",width = 12,
                                         tabPanel(title= "SNV percentage profile",PlotInput(id="snv_percentage")),
-                                        tabPanel(title="SNV summary plot",imagePlotInput("snv_summary",width=1200,height="100%")),
+                                        tabPanel(title="SNV summary",imagePlotInput("snv_summary",width=1200,height="100%")),
                                         tabPanel(title="SNV oncoplot",imagePlotInput("snv_oncoplot",width=1200,height="100%")),
                                         tabPanel(title="SNV survival",PlotInput("snv_survival"))
                  )
