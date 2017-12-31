@@ -36,6 +36,7 @@ fluidRow(
                 class = "text-justify", "Reverse phase protein array (RPPA) is a high-throughput antibody-based technique with the procedures similar to that of Western blots. Proteins are extracted from tumor tissue or cultured cells, denatured by SDS, printed on nitrocellulose-coated slides followed by antibody probe (",
                 shiny::tags$a(href = "http://bioinformatics.mdanderson.org/main/TCPA:Overview", 
                               shiny::tags$span("TCPA database",style="color:#008176"),target = "_blank"),
+
                 class = "text-justify", "), TCPA RPPA data are all from TCGA samples."
               ),
 
@@ -54,11 +55,11 @@ fluidRow(
             ),
             column(
               width = 10, offset = 1,
-              
+
               shiny::tags$h3("What pathway we included ?", class = "text-success"),
-              
+
               shiny::tags$p(class = "text-justify", "The pathway we included in are: TSC/mTOR, RTK, RAS/MAPK, PI3K/AKT, Hormone ER, Hormone AR, EMT, DNA Damage Response, Cell Cycle, Apoptosis pathways. They are all famous cancer related pathway."),
-              
+
               shiny::tags$hr(width = "100%")
             ),
             column(
@@ -72,9 +73,10 @@ fluidRow(
                               shiny::tags$span("R. Akbani et al.",style="color:#008176"),target = "_blank"), 
                 ")."),
 
+
               shiny::tags$hr(width = "100%")
             ),
-            
+
             column(
               width = 10, offset = 1,
 

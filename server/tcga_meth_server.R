@@ -24,14 +24,14 @@ callModule(module = selectAndAnalysis, id = "meth", .id = "meth")
 
 # submit cancer type -------------------------------------------------------
 
-meth_submit_analysis <- function(input, output, session){
+meth_submit_analysis <- function(input, output, session) {
   observeEvent(input$submit, {
     status$meth_submit <- TRUE
     print(status$meth_submit)
   })
 }
 
-callModule(meth_submit_analysis,"meth")
+callModule(meth_submit_analysis, "meth")
 
 # analysis core -----------------------------------------------------------
 # monitor for gene list change-----------------------------------
@@ -45,10 +45,10 @@ meth_gene_list <- eventReactive(
       shinyjs::disable(id = "meth-submit")
       shinyjs::disable(id = "meth-switch")
       as.character(gene_set$match)
-    } 
+    }
   }
 )
-  
+
 # analysis core -----------------------------------------------------------
 meth_analysis <- eventReactive(
   {

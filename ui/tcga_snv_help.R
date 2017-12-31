@@ -36,7 +36,6 @@ fluidRow(
 
               shiny::tags$p(
                 class = "text-justify",
-
                 "Single Nucleotide Variation (SNV) is variation in a single nucleotide that is the most common form of intra-species variation. It can play an important role in human traits and complex diseases. Here we give you a global profile as well as details status of SNV of your gene set for the cancers you interested in."
               ),
 
@@ -94,3 +93,4 @@ fluidRow(
     )
   )
 )
+

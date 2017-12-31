@@ -46,8 +46,7 @@ fluidRow(
               shiny::tags$h3("miRNA-gene data source", class = "text-success"),
 
               shiny::tags$p(
-                class = "text-justify", "miRNA regulation data was collected form databases: include experimental verified ( papers, ",
-
+                class = "text-justify", "miRNA regulation data was collected form databases: include experimental verified (papers, ",
                 shiny::tags$a(href = "http://diana.imis.athena-innovation.gr/DianaTools/index.php?r=site/index", 
                               shiny::tags$span("TarBase, ",style="color:#008176"),target = "_blank"), 
                 shiny::tags$a(href = "http://mirtarbase.mbc.nctu.edu.tw/php/index.php", 

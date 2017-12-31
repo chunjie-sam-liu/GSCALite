@@ -49,11 +49,13 @@ tabItem(
       offset = 1,
       shinydashboard::tabBox(
         id = "rppa_PLOT", title = "PLOT", width = 12,
-        tabPanel(title = "Global percentage", imagePlotInput(id = "rppa_pie",width="100%",height="100%")),
-        tabPanel(title = "Heatmap percentage", imagePlotInput(id = "rppa_per",width="100%",height="100%")),
-        tabPanel(title = "Relation network", 
-                 imageOutput("rppa_rela_plot",width="100%",height="100%"),
-                 hr())
+        tabPanel(title = "Global percentage", imagePlotInput(id = "rppa_pie", width = "100%", height = "100%")),
+        tabPanel(title = "Heatmap percentage", imagePlotInput(id = "rppa_per", width = "100%", height = "100%")),
+        tabPanel(
+          title = "Relation network",
+          imageOutput("rppa_rela_plot", width = "100%", height = "100%"),
+          hr()
+        )
       )
     )
   ),

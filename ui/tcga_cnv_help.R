@@ -36,6 +36,7 @@ fluidRow(
                 class = "text-justify", "Copy number variation is a type of structural variation: specifically, it is a type of duplication or deletion event that affects a considerable number of base pairs. See details at: ",
                 shiny::tags$a(href = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1226196/", 
                               shiny::tags$span("A. J. Sharp et al.",style="color:#008176"),target = "_blank")
+
               ),
               # shiny::tags$p(class="text-justify",),
 

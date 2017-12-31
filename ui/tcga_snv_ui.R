@@ -2,12 +2,14 @@
 # save as 'tcga_snv_ui.R'
 # ui elements 'tcga_snv' sub tab of 'tcga' tab
 
-tabItem(tabName = "tcga_snv", align = "center",
-        shinyjs::useShinyjs(),
-        
-        ## SNV message --------------------------------------------
-        fluidRow(style="width:80%;",
-                 HTML("<div class='section'>
+tabItem(
+  tabName = "tcga_snv", align = "center",
+  shinyjs::useShinyjs(),
+
+  ## SNV message --------------------------------------------
+  fluidRow(
+    style = "width:80%;",
+    HTML("<div class='section'>
                 <div class='container'>
                 <div class='row'>
                 <div class='col-md-12'>

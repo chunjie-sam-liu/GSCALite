@@ -25,45 +25,45 @@ tabItem(
                       </div>
                       </div>")
   ),
-  
+
   source(file.path(config$ui, "GTEx_exp_help.R"))[1],
 
   shiny::tags$hr(width = "85%"),
 
 
-#  GTExTissueType("GTEx_exp"),
+  #  GTExTissueType("GTEx_exp"),
 
   # Selected Tissue show ----
-#  shiny::tags$h3("Tissue Check", class = "text-success"),
-#  shiny::tags$h4(
-#    "The tissues you selected: ",
-#    textOutput("selected_tissues"),
-#    " Confirm and start analysis by click Submit!"
-#  ),
+  #  shiny::tags$h3("Tissue Check", class = "text-success"),
+  #  shiny::tags$h4(
+  #    "The tissues you selected: ",
+  #    textOutput("selected_tissues"),
+  #    " Confirm and start analysis by click Submit!"
+  #  ),
 
-#  # Confirm and submit ----
-#  fluidRow(
-#    column(width = 4),
-#    column(
-#      width = 2, offset = 0,
-#      actionButton("GTEx_tissue_submit", label = "Submit!", icon = icon("check"))
-#    ),
-#    column(
-#      width = 2, offset = 0,
-#      actionButton("analysis_stop", label = "Stop!", icon = icon("pause")) 
-#    ),
-#    column(width = 4)
-#  ),
-#  shiny::tags$hr(width = "85%"),
+  #  # Confirm and submit ----
+  #  fluidRow(
+  #    column(width = 4),
+  #    column(
+  #      width = 2, offset = 0,
+  #      actionButton("GTEx_tissue_submit", label = "Submit!", icon = icon("check"))
+  #    ),
+  #    column(
+  #      width = 2, offset = 0,
+  #      actionButton("analysis_stop", label = "Stop!", icon = icon("pause"))
+  #    ),
+  #    column(width = 4)
+  #  ),
+  #  shiny::tags$hr(width = "85%"),
 
   # output plot -------------------------------------------------------------
- # # Tabset Panel ----
+  # # Tabset Panel ----
 
 
-fluidRow(column(width = 12, GTExTissueType("gtex_expr"))),
+  fluidRow(column(width = 12, GTExTissueType("gtex_expr"))),
 
-# Cancer type selection ----
-fluidRow(selectAndAnalysisInput("gtex_expr")),
+  # Cancer type selection ----
+  fluidRow(selectAndAnalysisInput("gtex_expr")),
 
 # Plot result ----
 fluidRow(
@@ -75,7 +75,7 @@ fluidRow(
       tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")) #,tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
     )
   )
-),
+  ),
 
   # load footer ----
   source(file.path(config$ui, "footer.R"))[1]

@@ -75,7 +75,7 @@ sidebar <- dashboardSidebar(
     # Welcome ----
     menuItem("Welcome", tabName = "welcome", icon = icon("home")),
 
-    
+
 
     # TCGA ----
     menuItem(
@@ -100,7 +100,7 @@ sidebar <- dashboardSidebar(
       menuSubItem("GDSC", tabName = "gdsc"),
       menuSubItem("CTRP", tabName = "ctrp")
     ),
-    
+
     # GTEx ----
     menuItem(
       "GTEx Normal Tissue",
@@ -118,8 +118,7 @@ sidebar <- dashboardSidebar(
     menuItem(
       "Help",
       tabName = "help",
-      icon = icon("question"),
-      collapsible = TRUE
+      icon = icon("question")
     ),
 
     # About ----
@@ -136,7 +135,7 @@ body <- dashboardBody(
     shinyjs::useShinyjs(),
     shinyjs::extendShinyjs(script = file.path(config$wd, "www", "js", "gscalite.js")),
     shiny::tags$link(rel = "stylesheet", type = "text/css", href = "css/main.css"),
-    shiny::tags$script(type = 'text/javascript', src = "js/main.js")
+    shiny::tags$script(type = "text/javascript", src = "js/main.js")
     # shiny::tags$style(HTML(config$stylesheet)),
     # shiny::includeScript(file.path(config$wd, "www", "js", "tooltip-delay.js"))
   ),
@@ -150,9 +149,8 @@ body <- dashboardBody(
 
     # GTEx ----
 
-
-    source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local =TRUE)$value,
-    source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local =TRUE)$value,
+    source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local = TRUE)$value,
 
 
     # TCGA ----
@@ -165,21 +163,22 @@ body <- dashboardBody(
 
     # meth ----
     source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value,
+
     # rppa ----
-   source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
     # mirna ----
-   source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value
+    source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value
     # Drug ----
     # gdsc
-    # source(file = file.path(config$wd, "ui", "tcga_gdsc_ui.R"), local = TRUE)$value,
-    
+    # source(file = file.path(config$wd, "ui", "tcga_gdsc_ui.R"), local = TRUE)$value
+
     # ctrp
-     #source(file = file.path(config$wd, "ui", "tcga_ctrp_ui.R"), local = TRUE)$value
+    # source(file = file.path(config$wd, "ui", "tcga_ctrp_ui.R"), local = TRUE)$value
 
     # Download ----
 
     # Help ----
-
+#    source(file = file.path(config$wd, "ui", "help_ui.R"), local = TRUE)$value
     # About ----
   )
 
@@ -197,7 +196,7 @@ shinyUI(dashboardPage(
   header = header,
   sidebar = sidebar,
   body = body
-)) 
+))
 
 # Test --------------------------------------------------------------------
 # shinyApp(ui = ui, server = function(input, output, session){})

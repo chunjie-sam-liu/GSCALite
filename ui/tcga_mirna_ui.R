@@ -2,12 +2,14 @@
 # save as 'tcga_mirna_ui.R'
 # ui elements 'tcga_mirna' sub tab of 'tcga' tab
 
-tabItem(tabName = "tcga_mirna", align = "center",
-        shinyjs::useShinyjs(),
-        
-        ## SNV message ----
-        fluidRow(style="width:80%;",
-                 HTML("<div class='section'>
+tabItem(
+  tabName = "tcga_mirna", align = "center",
+  shinyjs::useShinyjs(),
+
+  ## SNV message ----
+  fluidRow(
+    style = "width:80%;",
+    HTML("<div class='section'>
                       <div class='container'>
                       <div class='row'>
                       <div class='col-md-12'>
@@ -45,9 +47,7 @@ tabItem(tabName = "tcga_mirna", align = "center",
                  )
           )
         ),
-        
-        # load footer ------------------------------------------------------
-        source(file.path(config$ui, "footer.R"))[1]
-        
-        
-                 ) # close tab
+
+  # load footer ------------------------------------------------------
+  source(file.path(config$ui, "footer.R"))[1]
+) # close tab

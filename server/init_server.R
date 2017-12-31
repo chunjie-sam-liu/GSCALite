@@ -76,16 +76,16 @@ user_logs <- list(
   "tcga_cnv" = "tcga_cnv.log",
   "gene_set" = "gene_set.log",
   "tcga_expr" = "tcga_expr.log"
-) 
+)
 
 user_logs %>%
   tibble::enframe() %>%
-  tidyr::unnest() %>% 
+  tidyr::unnest() %>%
   purrr::pwalk(
     .f = function(name, value) {
       .log_file <- file.path(user_dir, value)
       .log <- glue::glue("{paste0(rep('-', 10), collapse = '')} User : {user_id} @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}")
-      
+
       if (!file.exists(.log_file)) {
         write(x = .log, file = .log_file)
       } else {
@@ -129,14 +129,14 @@ local({
 progress <- reactiveValues(
   "expr_loading" = FALSE,
   "expr_calc" = FALSE,
-  "progress_end" = FALSE 
+  "progress_end" = FALSE
 )
 
 
 processing <- reactiveValues(
   "expr_loading_start" = FALSE,
   "expr_loading_end" = FALSE,
-  
+
   "expr_calc_start" = FALSE,
   "expr_calc_end" = FALSE
 )
@@ -198,11 +198,3 @@ print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading symbol @ {Sy
 # Global load data --------------------------------------------------------
 
 expr <- NULL
-
-
-
-
-
-
-
-
