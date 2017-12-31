@@ -59,8 +59,7 @@ fluidRow(
               shiny::tags$p(class = "text-justify", "Methylation data and clinical overall survival data was combined, and methylation level of gene was divided into 2 groups by middle methylation. Cox regression was performed to estimate the hazards of high methylation group, and a log rank test was also performed to compare the distributions of two groups, p value <0.05 was considered as significant."),
 
               shiny::tags$h4("Methylation correlate to expression"),
-              shiny::tags$p(class = "text-justify", "Methylation can influence the expression of gene in theory. Use person correlation to get the relationship between gene expression and methylation level, gene with FDR<=0.05 will be  remained. From this, we can have genes whose expression is significant influenced by genome methylation.
-"),
+              shiny::tags$p(class = "text-justify", "Methylation can influence the expression of gene in theory. Use person correlation to get the relationship between gene expression and methylation level, gene with FDR<=0.05 will be remained. From this, we can have genes whose expression is significantly influenced by genome methylation."),
 
               shiny::tags$hr(width = "100%")
             ),
@@ -72,8 +71,8 @@ fluidRow(
                 class = "table table-striped",
 
                 shiny::tags$thead(
-                  shiny::tags$th("Results type"),
-                  shiny::tags$th("Description")
+                  shiny::tags$th("Results type",width=4),
+                  shiny::tags$th("Description",width=8)
                 ),
                 shiny::tags$tbody(
                   shiny::tags$tr(
@@ -86,7 +85,7 @@ fluidRow(
                   ),
                   shiny::tags$tr(
                     shiny::tags$td("Methylation to Expression"),
-                    shiny::tags$td("Give you a person correlation between methylation and gene expression. Blue represent a negative correlation (means when methylation upregulate, the gene expression downregulate in stead of upregulate, they have opposite trend), and red represent positive correlation (means when methtlation upregulate, the gene expression upregulate too, they have consistent trend), the deeper of color, the higher the correlation. And size of the point represents statistic significance, the bigger of size, the more significantly.")
+                    shiny::tags$td("Give you a person correlation between methylation and gene expression. Blue represent a negative correlation (means when the level of gene's methylation upregulate, the gene expression downregulate in stead of upregulate, they have opposite trend), and red represent positive correlation (means when the level of gene's methylation upregulate, the gene expression upregulate too, they have consistent trend), the deeper of color, the higher the correlation. And size of the point represents statistic significance, the bigger of size, the more significantly.")
                   )
                 )
               )
