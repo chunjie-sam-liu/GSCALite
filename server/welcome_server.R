@@ -166,7 +166,9 @@ observeEvent(
       output$ui_progressbar <- renderUI({NULL})
       
       output$ui_hint <- renderUI({
-        
+        shiny::tagList(
+          "fuck me"
+        )
       })
       shinyjs::enable(id = "input_gene_set")
       shinyjs::enable(id = "analysis")

@@ -94,7 +94,7 @@ expr_analysis <- eventReactive(
       processing$start_loading_start <- TRUE
       print(glue::glue("processing$start_loading_start {processing$start_loading_start}"))
       
-      updateProgressBar(session = session, id = "progressbar", value = 10, status = "danger")
+      updateProgressBar(session = session, id = "progressbar", value = 40, status = "danger")
       session$onFlushed(function() {progress$expr_loading <- TRUE})
       
       observeEvent(
@@ -111,7 +111,7 @@ expr_analysis <- eventReactive(
       
       observeEvent(processing$start_loading_end, {
         if (processing$start_loading_end == TRUE) {
-          updateProgressBar(session = session, id = "progressbar", value = 50, status = "danger")
+          updateProgressBar(session = session, id = "progressbar", value = 70, status = "warning")
           session$onFlushed(function() {progress$expr_calc <- TRUE})
         }
       })
@@ -137,7 +137,7 @@ expr_analysis <- eventReactive(
       
       observeEvent(processing$expr_calc_end, {
         if (processing$expr_calc_end == TRUE) {
-          updateProgressBar(session = session, id = "progressbar", value = 100, status = "danger")
+          updateProgressBar(session = session, id = "progressbar", value = 100, status = "info")
           progress$progress_end <- TRUE
         }
       })

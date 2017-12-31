@@ -59,7 +59,7 @@ tabItem(
 
     # Control errors
     shinyBS::bsModal(
-      id = "gse_error_modal", title = "Error: Input symbol errors.",
+      id = "gse_error_modal", title = "",
       trigger = "gse_error_trigger", size = "large",
       fluidRow(
         style = "width:100%;",
@@ -76,30 +76,27 @@ tabItem(
 
   # progress bar for running -----
   fluidRow(shiny::uiOutput(outputId = "ui_progressbar")),
-  
+
   fluidRow(shiny::uiOutput(outputId = "ui_hint")),
 
   # Feature and descriptions ----
   fluidRow(
-    style = "margin-top: 30px;",
     column(
       width = 10, offset = 1,
-
+      style = "margin-top:30px;",
       # Descriptions ----
-      # column(width = 6,
       shinydashboard::box(
-        title = "Explore your data and analysis.",
+        title = "GSCALite Introduction.",
         solidHeader = TRUE,
         width = 6,
         status = "primary",
         shiny::tags$p(
-          style = "margin-top:20px;",
           class = "text-justify",
           "GSCALite is a web-based analysis platform for gene set cancer analysis. The alterations on DNA or RNA of cancer related genes may be contribute to the cancer initiation, progress, diagnosis, prognosis, therapy. As the cancer genomics big data available, it is very useful and urgent to provide a platform for gene set analysis in cancer."
         ),
 
         shiny::tags$p(
-          style = "margin-top:30px; margin-bottom:20px;",
+          style = "margin-top:30px; margin-bottom:10px;",
           class = "text-justify",
           "In this GSCALite, we integrated cancer genomics data of 33 cancer types from",
           shiny::tags$a("TCGA", href = "https://cancergenome.nih.gov/", target = "_blank", style = "color:#008176"),
@@ -112,11 +109,10 @@ tabItem(
           "for gene set analysis in a one-in-all data analysis workflow. When the analysis finished, users can download all the results and figures as an interactive HTML report."
         )
       ),
-      # ),
+
 
       # Features ----
-      # column(
-      #   width = 6,
+
       shinydashboard::box(
         title = HTML("In GSCALite, users can do following analysis for a <strong><font color='red'>gene set</font></strong>:"),
         width = 6,
@@ -163,7 +159,6 @@ tabItem(
           " GTEx: Gene expression in normal tissue and eQTL."
         )
       )
-      # )
     )
   ),
   # Load footer ----
