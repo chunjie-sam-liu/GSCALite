@@ -761,10 +761,10 @@ resetcancerType <- function(input, output, session){
 
 removePic <- function(input,output,session,outtype){
   if(outtype=="image"){
-    output$plot<-renderImage({})
+    output$plot<-renderImage({NULL})
   }
   if(outtype=="plot"){
-    output$plot<-renderPlot({})
+    output$plot<-renderPlot({NULL})
   }
 }
 
@@ -1048,7 +1048,7 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
 
 # 1. ui part -----------------------------------------------------------------
 
-imagePlotInput <- function(id, width=400, height=300) {
+imagePlotInput <- function(id, width="100%", height=300) {
   ns <- NS(id)
   
   tagList(
@@ -1061,22 +1061,22 @@ imagePlotInput <- function(id, width=400, height=300) {
 
 snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile) {
   output$plot <-renderImage({
-    png(outfile, width = 1000, height= 700)
-    maftools::plotmafSummary(gene_list_maf)
-    dev.off()
-    
+    # png(outfile, width = 1000, height= 700)
+    maftools::plotmafSummary(gene_list_maf) ->p
+    # dev.off()
+    ggsave(p$plot,filename = outfile, device = "png",width = 4,height = 3)
     list(src = outfile,
          contentType = 'image/png',
-         width = 1000,
-         height = 700,
+         # width = 1000,
+         # height = 700,
          alt = "This is alternate text")
-  }, deleteFile = TRUE)
+  }, deleteFile = FALSE)
 }
 
 
 snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cancer_type,outfile) {
   output$plot <-renderImage({
-    png(outfile, width = 1000, height= 700)
+    png(outfile, width = 800, height= 700)
     # col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
     # names(col) <- c(
     #   "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
@@ -1091,15 +1091,15 @@ snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cance
     #   clinicalFeatures = "cancer_types", sortByAnnotation = TRUE,
     #   annotationColor = fabcolors, top = 10
     # )
-    oncoplot(maf = gene_list_maf, top = 10, fontSize = 12)
+    oncoplot(maf = gene_list_maf, top = 10)#, fontSize = 12
     dev.off()
     
     list(src = outfile,
          contentType = 'image/png',
-         width = 1000,
+         width = 800,
          height = 700,
          alt = "This is alternate text")
-  }, deleteFile = TRUE)
+  }, deleteFile = FALSE)
 }
 
 
