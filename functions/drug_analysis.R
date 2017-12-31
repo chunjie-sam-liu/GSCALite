@@ -6,12 +6,11 @@ fn_filter_drug <- function(.x, .cor = 0.2, .fdr = 0.05) {
 fn_filter_drug_ctrp <- function(.x, .cor = 0.2, .fdr = 0.05) {
   .x %>% dplyr::filter(abs(cor_sprm) > .cor, p_val < .fdr)
 }
-
 # GDSC --------------------------------------------------------------------
 
 
 gdsc_plot <- function(tcga_path, gs) {
-  t_gdsc <- readr::read_rds(file.path(tcga_path, "drug_target_gdsc.rds.gz")) %>%
+  t_gdsc <- readr::read_rds(file.path(tcga_path, "Drug", "drug_target_gdsc.rds.gz")) %>%
     tidyr::unnest() %>%
     dplyr::select(drug_name, target_pathway) %>%
     dplyr::distinct() %>%
@@ -20,10 +19,11 @@ gdsc_plot <- function(tcga_path, gs) {
     dplyr::ungroup()
 
   print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start Load GDSC @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-  drug_gdsc <- readr::read_rds(file.path(tcga_path, "gdsc_exp_spearman.rds.gz"))
+  drug_gdsc <- readr::read_rds(file.path(tcga_path, "Drug", "gdsc_exp_spearman.rds.gz"))
   print(glue::glue("{paste0(rep('-', 10), collapse = '')} End Load GDSC @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
-  gdsc_gene_list %>%
+  print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start GDSC Plot @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+  drug_gdsc %>%
     dplyr::filter(symbol %in% gs) %>%
     dplyr::mutate(cor_drug = purrr::map(.x = drug, .f = fn_filter_drug)) %>%
     tidyr::unnest(cor_drug) -> gdsc_gene_list_sig_drug
@@ -114,6 +114,7 @@ gdsc_plot <- function(tcga_path, gs) {
         barwidth = 10
       )
     )
+  print(glue::glue("{paste0(rep('-', 10), collapse = '')} End GDSC Plot @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
   p
 }
 
@@ -121,17 +122,17 @@ gdsc_plot <- function(tcga_path, gs) {
 
 
 ctrp_plot <- function(tcga_path, gs) {
-  t_ctrp <- readr::read_rds(file.path(tcga_path, "drug_target_ctrp.rds.gz")) %>%
+  t_ctrp <- readr::read_rds(file.path(tcga_path, "Drug", "drug_target_ctrp.rds.gz")) %>%
     tidyr::unnest() %>%
     dplyr::select(drug_name, target_pathway) %>%
     dplyr::distinct()
 
   print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start Load CTRP @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-  drug_ctrp <- readr::read_rds(file.path(tcga_path, "drug_ctrp_exp_spearman.rds.gz"))
+  drug_ctrp <- readr::read_rds(file.path(tcga_path, "Drug", "ctrp_exp_spearman.rds.gz"))
   print(glue::glue("{paste0(rep('-', 10), collapse = '')} End Load CTRP @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
-
-  ctrp_gene_list %>%
+  print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start CTRP plot @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+  drug_ctrp %>%
     dplyr::filter(symbol %in% gs) %>%
     dplyr::mutate(cor_drug = purrr::map(.x = drug, .f = fn_filter_drug_ctrp)) %>%
     tidyr::unnest(cor_drug) -> ctrp_gene_list_sig_drug
@@ -202,5 +203,6 @@ ctrp_plot <- function(tcga_path, gs) {
         barwidth = 10
       )
     )
+  print(glue::glue("{paste0(rep('-', 10), collapse = '')} End CTRP plot @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
   p
 }

@@ -58,3 +58,7 @@ load_data_meth <- function() {
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading methy cor to expression data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
   }
 }
+
+
+# Load drug data ----------------------------------------------------------
+
