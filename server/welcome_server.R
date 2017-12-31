@@ -156,7 +156,6 @@ progressbar_start_analysis <- eventReactive(
           )
         })
         session$onFlushed(function() {status$analysis <- TRUE})
-        
   }
 )
 observeEvent(

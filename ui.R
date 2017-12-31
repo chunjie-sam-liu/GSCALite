@@ -161,13 +161,18 @@ body <- dashboardBody(
     # cnv ----
 #    source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
     # snv ----
-#    source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value,
+
     # meth ----
+<<<<<<< HEAD
 #    source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value
+=======
+    source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value,
+>>>>>>> df368f383a1586cd1e123cabbd9c8a599345a308
     # rppa ----
-  #  source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
+   source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
     # mirna ----
-   # source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value,
+   source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value
     # Drug ----
     # gdsc
     # source(file = file.path(config$wd, "ui", "tcga_gdsc_ui.R"), local = TRUE)$value,
