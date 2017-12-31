@@ -181,7 +181,7 @@ observeEvent(
 
       shinyBS::createAlert(
         session = session, anchorId = "ui_hint_alert", alertId = NULL, title = NULL, style = "primary",
-        content = HTML("<h3 ><i class='fa fa-hand-o-left fa-4'></i> Please check the result on the right panel.</h3>"), append = FALSE
+        content = HTML("<h3 style='color:red;'><i class='fa fa-hand-o-left fa-4'></i> Please check the results on the left panel.</h3>"), append = FALSE
       )
 
       shinyjs::enable(id = "input_gene_set")
