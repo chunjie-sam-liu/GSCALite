@@ -198,3 +198,5 @@ print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading symbol @ {Sy
 # Global load data --------------------------------------------------------
 
 expr <- NULL
+expr_survival <- NULL
+expr_subtype <- NULL

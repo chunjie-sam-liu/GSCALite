@@ -1331,6 +1331,14 @@ exprOutput <- function(id) {
       tabPanel(
         title = "Table of comparison",
         DT::dataTableOutput(outputId = ns("expr_dt_comparison"))
+      ),
+      tabPanel(
+        title = "Survival",
+        plotOutput(outputId = ns("survival"))
+      ),
+      tabPanel(
+        title = "Subtype",
+        plotOutput(outputId = ns("subtype"))
       )
     )
   )

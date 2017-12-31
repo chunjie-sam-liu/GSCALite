@@ -7,6 +7,8 @@ load_data_expr <- function() {
   if (is.null(expr)) {
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading expr data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
     expr <<- readr::read_rds(file.path(config$database, "TCGA", "expr", "pancan14_expr_fc_pval.rds.gz"))
+    expr_survival <<- readr::read_rds(file.path(config$database, "TCGA", "expr", "expr_survival.rds.gz"))
+    expr_subtype <<- readr::read_rds(file.path(config$database, "TCGA", "expr", "expr_subtype.rds.gz"))
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} loading expr data complete @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
   }
 }

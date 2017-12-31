@@ -145,6 +145,59 @@ expr_clinical %>%
 on.exit(parallel::stopCluster(cluster))
 
 expr_clinical_sig_pval %>% readr::write_rds(path = "/data/GSCALite/TCGA/expr/expr_survival.rds.gz", compress = "gz")
+expr_clinical_sig_pval <- readr::read_rds(path = "/data/GSCALite/TCGA/expr/expr_survival.rds.gz")
+
+fun_rank_cancer <- function(pattern){
+  pattern %>% 
+    dplyr::summarise_if(.predicate = is.numeric, dplyr::funs(sum(., na.rm = T))) %>%
+    tidyr::gather(key = cancer_types, value = rank) %>%
+    dplyr::arrange(dplyr::desc(rank))
+} #get cancer rank
+fun_rank_gene <- function(pattern){
+  pattern %>% 
+    dplyr::rowwise() %>%
+    dplyr::do(
+      symbol = .$symbol,
+      rank =  unlist(.[-1], use.names = F) %>% sum(na.rm = T)
+    ) %>%
+    dplyr::ungroup() %>%
+    tidyr::unnest() %>%
+    dplyr::arrange(rank)
+} # get gene rank
+
+expr_clinical_sig_pval %>% 
+  dplyr::select(cancer_types, symbol) %>% 
+  dplyr::mutate(n = 1) %>% 
+  tidyr::spread(key = cancer_types, value = n) -> pattern
+cancer_rank <- pattern %>% fun_rank_cancer()
+gene_rank <- pattern %>% fun_rank_gene() 
+
+expr_clinical_sig_pval %>% 
+  ggplot(aes(x = cancer_types, y = symbol, color = status)) +
+  geom_point(aes(size = -log10(p.value))) +
+  scale_x_discrete(limit = cancer_rank$cancer_types) +
+  scale_y_discrete(limit = gene_rank$symbol) +
+  scale_size_continuous(name = "P-value") +
+  theme(
+    panel.background = element_rect(colour = "black", fill = "white"),
+    panel.grid = element_line(colour = "grey", linetype = "dashed"),
+    panel.grid.major = element_line(
+      colour = "grey",
+      linetype = "dashed",
+      size = 0.2
+    ),
+    
+    axis.title = element_blank(),
+    axis.ticks = element_line(color = "black"),
+    axis.text.y = element_text(color = gene_rank$color),
+    
+    legend.text = element_text(size = 12),
+    legend.title = element_text(size = 14),
+    legend.key = element_rect(fill = "white", colour = "black")
+  ) +
+  ggthemes::scale_color_gdocs(name = "Surivival Worse")-> p
+
+
 
 
 # subtype -----------------------------------------------------------------
@@ -236,7 +289,7 @@ expr_subtype %>%
   tidyr::unnest(diff_pval, .drop = F) -> expr_subtype_sig_pval
 parallel::stopCluster(cluster)
 expr_subtype_sig_pval %>% readr::write_rds(path = "/data/GSCALite/TCGA/expr/expr_subtype.rds.gz", compress = "gz")
-
+expr_subtype_sig_pval <- readr::read_rds(path = "/data/GSCALite/TCGA/expr/expr_subtype.rds.gz")
 
 # Stage -------------------------------------------------------------------
 
