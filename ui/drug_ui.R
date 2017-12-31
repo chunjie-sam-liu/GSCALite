@@ -18,8 +18,17 @@ tabItem(
         "Drug resistance analaysis based on two databases ",
         shiny::tags$a("GDSC", href = "http://www.cancerrxgene.org/", target = "_blank", style = "color:#008176"),
         " and ",
-        shiny::tags$a("CTRP", href = "http://www.cancerrxgene.org/", target = "_blank", style = "color:#008176")
+        shiny::tags$a("CTRP", href = "http://www.cancerrxgene.org/", target = "_blank", style = "color:#008176"),
+        "."
       )
     )
-  )
+  ),
+  
+  fluidRow(drugOutput("drug")),
+  
+  
+  # Load footer ----
+  source(file.path(config$wd, "ui", "footer.R"), echo = FALSE, verbose = FALSE)$value
+  
+  
 )
