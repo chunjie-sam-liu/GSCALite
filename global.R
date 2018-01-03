@@ -621,24 +621,24 @@ cancerTypesSelect <- function(input, output, session, .sctps) {
     div(length(.sctps()))
     shiny::tagList(
       column(
-        width = 3, offset = 1,
+        width = 4, offset = 2,
         infoBox(
-          title = "Number of selected cancer", value = length(.sctps()),
-          width = 12, icon = icon("users"), color = "aqua", fill = TRUE
-        )
+          title = "Number of selected cancers", value = length(.sctps()),
+          width = 12,  color = "aqua", fill = TRUE
+        )#icon = icon("users"),
       ),
       column(
-        width = 3,
+        width = 4,
         infoBox(
-          title = "Number of unselected cancer", value = 33 - length(.sctps()),
-          width = 12, icon = icon("credit-card"), color = "red", fill = TRUE
-        )
+          title = "Number of unselected cancers", value = 33 - length(.sctps()),
+          width = 12, color = "red", fill = TRUE
+        ) #icon = icon("credit-card"),
       ),
       column(
-        width = 3,
+        width = 8,offset = 2,
         box(
           solidHeader = TRUE, status = "primary",
-          title = "Selected Cancer types", width = 12,
+          title = "Selected Cancer Types", width = 12,
           paste0(.sctps(), collapse = ", ")
         )
       )
@@ -1111,7 +1111,7 @@ snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cance
     #   clinicalFeatures = "cancer_types", sortByAnnotation = TRUE,
     #   annotationColor = fabcolors, top = 10
     # )
-    oncoplot(maf = gene_list_maf, top = 10)#, fontSize = 12
+    maftools::oncoplot(maf = gene_list_maf, top = 10)#, fontSize = 12
     dev.off()
     
     list(src = outfile,
