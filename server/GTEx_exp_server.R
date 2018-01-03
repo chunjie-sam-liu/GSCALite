@@ -120,7 +120,7 @@ heatmap_gsva_4_geneset <- eventReactive(
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} end loading GTEx data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
       gene_set <- GTEx_expr_gene_list()
-      tissue_set <- c("Heart", "Ovary", "Lung")
+      tissue_set <- c("Heart", "Ovary", "Lung","Muscle","Blood","Uterus","Vagina","Breast","Skin","Testis","Colon","Stomach","Pancreas")
       print(tissue_set)
       print(gene_set)
 

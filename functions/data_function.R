@@ -208,3 +208,91 @@ expr_buble_plot <- function(.expr) {
       legend.key = element_rect(fill = "white", colour = "black")
     )
 }
+
+
+
+# Survival bubble plot ----------------------------------------------------
+fun_rank_cancer <- function(pattern){
+  pattern %>% 
+    dplyr::summarise_if(.predicate = is.numeric, dplyr::funs(sum(., na.rm = T))) %>%
+    tidyr::gather(key = cancer_types, value = rank) %>%
+    dplyr::arrange(dplyr::desc(rank))
+} #get cancer rank
+fun_rank_gene <- function(pattern){
+  pattern %>% 
+    dplyr::rowwise() %>%
+    dplyr::do(
+      symbol = .$symbol,
+      rank =  unlist(.[-1], use.names = F) %>% sum(na.rm = T)
+    ) %>%
+    dplyr::ungroup() %>%
+    tidyr::unnest() %>%
+    dplyr::arrange(rank)
+}
+
+
+survival_bubble_plot <- function(.survival_clean) {
+  print(.survival_clean)
+  .survival_clean %>%
+    dplyr::select(cancer_types, symbol) %>% 
+    dplyr::mutate(n = 1) %>% 
+    tidyr::spread(key = cancer_types, value = n) -> pattern
+  
+  cancer_rank <- pattern %>% fun_rank_cancer()
+  gene_rank <- pattern %>% fun_rank_gene()
+  .survival_clean %>% 
+    ggplot(aes(x = cancer_types, y = symbol, color = status)) +
+    geom_point(aes(size = -log10(p.value))) +
+    scale_x_discrete(limit = cancer_rank$cancer_types) +
+    scale_y_discrete(limit = gene_rank$symbol) +
+    scale_size_continuous(name = "P-value") +
+    theme(
+      panel.background = element_rect(colour = "black", fill = "white"),
+      panel.grid = element_line(colour = "grey", linetype = "dashed"),
+      panel.grid.major = element_line(
+        colour = "grey",
+        linetype = "dashed",
+        size = 0.2
+      ),
+      
+      axis.title = element_blank(),
+      axis.ticks = element_line(color = "black"),
+      
+      legend.text = element_text(size = 12),
+      legend.title = element_text(size = 14),
+      legend.key = element_rect(fill = "white", colour = "black")
+    ) +
+    scale_color_manual(name = "Survival Worse", values = c("#e31a1c", "#1f78b4")) 
+}
+
+subtype_bubble_plot <- function(.subtype_clean){
+  .subtype_clean %>% 
+    dplyr::select(cancer_types, symbol) %>% 
+    dplyr::mutate(n = 1) %>% 
+    tidyr::spread(key = cancer_types, value = n) -> pattern
+  cancer_rank <- pattern %>% fun_rank_cancer()
+  gene_rank <- pattern %>% fun_rank_gene() 
+  
+  .subtype_clean %>% 
+    ggplot(aes(x = cancer_types, y = symbol, color = cancer_types)) +
+    geom_point(aes(size = -log10(p.value))) +
+    scale_x_discrete(limit = cancer_rank$cancer_types) +
+    scale_y_discrete(limit = gene_rank$symbol) +
+    scale_size_continuous(name = "P-value") +
+    theme(
+      panel.background = element_rect(colour = "black", fill = "white"),
+      panel.grid = element_line(colour = "grey", linetype = "dashed"),
+      panel.grid.major = element_line(
+        colour = "grey",
+        linetype = "dashed",
+        size = 0.2
+      ),
+      
+      axis.title = element_blank(),
+      axis.ticks = element_line(color = "black"),
+      
+      legend.text = element_text(size = 12),
+      legend.title = element_text(size = 14),
+      legend.key = element_rect(fill = "white", colour = "black")
+    ) 
+}
