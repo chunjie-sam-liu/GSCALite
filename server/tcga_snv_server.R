@@ -173,6 +173,7 @@ snv_global_analysis <- eventReactive(
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start maf part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
         
         # filter data
+        # query = as.expression("cacer_type %in% ")
         maftools::subsetMaf(mc3_pass, genes = snv_gene_list(), mafObj = T) -> gene_list_maf #query = query,
         
         #1. snv summary
