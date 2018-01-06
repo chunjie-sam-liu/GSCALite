@@ -1000,7 +1000,7 @@ snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, la
       ) +
       theme_bw() +
       theme(
-        axis.text.x = element_text(angle = 45, hjust = -0.05, size = "15"),
+        axis.text.x = element_text(angle = 45, hjust = -0.05, size = "10"),
         axis.title.y = element_text(size = "15"),
         panel.grid = element_line(colour = "grey", linetype = "dashed")
       ) +
@@ -1082,9 +1082,9 @@ imagePlotInput <- function(id, width="100%", height=300) {
 snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile) {
   output$plot <-renderImage({
     # png(outfile, width = 1000, height= 700)
-    maftools::plotmafSummary(gene_list_maf) ->p
+    maftools::plotmafSummary(gene_list_maf,fs = 5,statFontSize = 2) ->p
     # dev.off()
-    ggsave(p$plot,filename = outfile, device = "png",width = 4,height = 3)
+    ggsave(p$plot,filename = outfile, device = "png",width = 3,height = 2)
     list(src = outfile,
          contentType = 'image/png',
          # width = 1000,
@@ -1096,28 +1096,29 @@ snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile) 
 
 snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cancer_type,outfile) {
   output$plot <-renderImage({
-    png(outfile, width = 800, height= 700)
-    # col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
-    # names(col) <- c(
-    #   "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
-    #   "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
-    # )
-    # fabcolors <- RColorBrewer::brewer.pal(n = length(cancer_type), name = "Spectral")
-    # names(fabcolors) <- cancer_type
+    png(outfile, width = 800, height= 600)
+    col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
+    names(col) <- c(
+      "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
+      "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
+    )
+    gene_list_maf %>% maftools::getClinicalData() %>% dplyr::select(cancer_types) %>% unique() %>% t() %>% as.character() -> cancer_type
+    fabcolors <- rainbow(n = length(cancer_type))
+    names(fabcolors) <-  cancer_type
 
-    # fabcolors <- list(cancer_types = fabcolors)
-    # maftools::oncoplot(
-    #   maf = gene_list_maf, removeNonMutated = T, colors = col,
-    #   clinicalFeatures = "cancer_types", sortByAnnotation = TRUE,
-    #   annotationColor = fabcolors, top = 10
-    # )
-    maftools::oncoplot(maf = gene_list_maf, top = 10)#, fontSize = 12
+    fabcolors <- list(cancer_types = fabcolors)
+    maftools::oncoplot(
+      maf = gene_list_maf, removeNonMutated = T, colors = col,
+      clinicalFeatures = "cancer_types", sortByAnnotation = TRUE,
+      annotationColor = fabcolors, top = 10
+    )
+    # maftools::oncoplot(maf = gene_list_maf, top = 10)#, fontSize = 12
     dev.off()
     
     list(src = outfile,
          contentType = 'image/png',
          width = 800,
-         height = 700,
+         height = 600,
          alt = "This is alternate text")
   }, deleteFile = FALSE)
 }
