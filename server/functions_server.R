@@ -292,10 +292,45 @@ get_rppa_text <- function(data) {
   return(c.text[-1, ])
 }
 
-get_rppa_seg <- function(cancer_text, data) {
+get_rppa_seg <- function(data,cancer_text) {
+  # name <- c("x1","y1","x2","y2","Cancer","Regulation")
+  # print(n)
+  data[1,1] %>% as.character() -> cancer
+  data[1,2] %>% as.character() -> gene
+  data[1,3] %>% as.character() -> pathway
+  data[1,4] %>% as.numeric() -> diff
+  if (diff > 0) {
+    line_type <- "Activate"
+  } else {
+    line_type <- "Inhibit"
+  }
+  cancer_text %>%
+    dplyr::filter(text %in% gene) %>%
+    dplyr::select(x, y) %>%
+    dplyr::mutate(x = x - 0.5) -> g1.pos
+  cancer_text %>%
+    dplyr::filter(text %in% gene) %>%
+    dplyr::select(x, y) %>%
+    dplyr::mutate(x = x + 0.5) -> g2.pos
+
+  cancer_text %>%
+    dplyr::filter(text %in% cancer) %>%
+    dplyr::select(x, y) -> c.pos
+  cancer_text %>%
+    dplyr::filter(text %in% pathway) %>%
+    dplyr::select(x, y) -> p.pos
+  .d_seq_tmp1 <- data.frame(x1 = c.pos$x, y1 = c.pos$y, x2 = g1.pos$x, y2 = g1.pos$y, Cancer = cancer, Regulation = "Activate")
+  .d_seq_tmp2 <- data.frame(x1 = g2.pos$x, y1 = g2.pos$y, x2 = p.pos$x, y2 = p.pos$y, Cancer = cancer, Regulation = line_type)
+  rbind(.d_seq_tmp1,.d_seq_tmp2) -> .d_seg
+  .d_seg$Cancer <- .d_seg$Cancer %>% as.character()
+  .d_seg$Regulation <- .d_seg$Regulation %>% as.character()
+  tibble::as_tibble(.d_seg)
+}
+
+get_rppa_seg1 <- function(cancer_text, data) {
   .d_seg <- data.frame(x1 = 0, y1 = 0, x2 = 0, y2 = 0, Cancer = "test", Regulation = "test")
   nrow(data) -> n
-
+  
   for (i in 1:n) {
     data[i, 1] -> cancer
     data[i, 2] -> gene
@@ -314,7 +349,7 @@ get_rppa_seg <- function(cancer_text, data) {
       dplyr::filter(text %in% gene) %>%
       dplyr::select(x, y) %>%
       dplyr::mutate(x = x + 0.5) -> g2.pos
-
+    
     cancer_text %>%
       dplyr::filter(text %in% cancer) %>%
       dplyr::select(x, y) -> c.pos

@@ -91,8 +91,15 @@ rppa_analysis <- eventReactive(
         # rppa line contact ----
         # get data
         cancer_text <- get_rppa_text(gene_list_cancer_rppa_rela)
-        plot_seg <- get_rppa_seg(cancer_text, gene_list_cancer_rppa_rela)
-
+        gene_list_cancer_rppa_rela %>%
+          dplyr::mutate(n=1:nrow(gene_list_cancer_rppa_rela)) %>%
+          tidyr::nest(-n) %>%
+          dplyr::group_by(n) %>%
+          dplyr::mutate(seg=purrr::map(data,.f=get_rppa_seg,cancer_text=cancer_text)) %>%
+          dplyr::ungroup() %>%
+          dplyr::select(-n,-data) %>%
+          tidyr::unnest() ->plot_seg
+        # get_rppa_seg1(gene_list_cancer_rppa_rela,cancer_text = cancer_text) -> plot_seg
         cancer_text %>%
           dplyr::filter(type == "cancer") -> cancer.text
         cancer_text %>%
