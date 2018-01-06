@@ -50,8 +50,8 @@ tabItem(
                  offset = 1,
                  shinydashboard::tabBox(id = "snv_PLOT",title = "PLOT",width = 12,
                                         tabPanel(title= "SNV percentage profile",PlotInput(id="snv_percentage")),
-                                        tabPanel(title="SNV summary",imagePlotInput("snv_summary",width=1200,height="100%")),
-                                        tabPanel(title="SNV oncoplot",imagePlotInput("snv_oncoplot",width=1200,height="100%")),
+                                        tabPanel(title="SNV summary",imagePlotInput("snv_summary",width=700,height="100%")),
+                                        tabPanel(title="SNV oncoplot",imagePlotInput("snv_oncoplot",width=700,height="100%")),
                                         tabPanel(title="SNV survival",PlotInput("snv_survival"))
                  )
           )
