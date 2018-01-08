@@ -3,24 +3,29 @@
 
 
 # Load library ------------------------------------------------------------
+library(magrittr)
+library(ggplot2)
+library(tibble)
+
 # For shiny
-library(shinydashboard)
 library(shiny)
 library(shinyjs)
 library(shinyBS)
 library(shinyWidgets)
+library(shinydashboard)
 
-library(magrittr)
-
-library(highcharter)
+# For front end
 library(DT)
-# library(maftools)
-
 library(grid)
+library(highcharter)
 
 # For network
 library(igraph)
 library(networkD3)
+
+# For analysis
+# library(GSVA)
+# library(maftools)
 
 
 # Load configuration ------------------------------------------------------
@@ -30,7 +35,6 @@ source(file = "config.R", local = TRUE)
 # Load ui function --------------------------------------------------------
 
 source(file = file.path(config$ui, "functions_ui.R"), local = TRUE)
-
 
 # Load global module ------------------------------------------------------
 
@@ -128,6 +132,8 @@ sidebar <- dashboardSidebar(
 # Body Start --------------------------------------------------------------
 
 body <- dashboardBody(
+  
+  # for html head 
   shiny::tags$head(
     shinyjs::useShinyjs(),
     shinyjs::extendShinyjs(script = file.path(config$wd, "www", "js", "gscalite.js")),
@@ -143,26 +149,26 @@ body <- dashboardBody(
 
 
     # GTEx ----
-    source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local = TRUE)$value,
-    source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local = TRUE)$value,
+    # source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local = TRUE)$value,
+    # source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local = TRUE)$value,
 
     # TCGA ----
     # expr ----
-    source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
+    # source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
     # cnv ----
-    source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
+    # source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
     # snv ----
-    source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value,
+    # source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value,
 
     # meth ----
-    source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value,
+    # source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value,
 
     # rppa ----
-    source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
+    # source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
     # mirna ----
-    source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value,
+    # source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value,
     # Drug ----
-    source(file = file.path(config$wd, "ui", "drug_ui.R"), local = TRUE)$value,
+    # source(file = file.path(config$wd, "ui", "drug_ui.R"), local = TRUE)$value,
 
     # Download ----
 
