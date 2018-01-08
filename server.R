@@ -28,7 +28,7 @@ shinyServer(
     # Load database -----------------------------------------------------------
 
     source(file = file.path(config$server, "load_data.R"), local = TRUE)
-
+  
     ### Input Modules
 
     # Welcome ----

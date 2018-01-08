@@ -12,6 +12,7 @@ library(shiny)
 library(shinyjs)
 library(shinyBS)
 library(shinyWidgets)
+library(shinycssloaders)
 library(shinydashboard)
 
 # For front end
