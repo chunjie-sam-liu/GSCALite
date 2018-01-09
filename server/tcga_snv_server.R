@@ -65,15 +65,9 @@ snv_analysis <- eventReactive(
     if (status$snv_submit == TRUE) {
       print(snv_gene_list())
       .msg <- c("NOTICE: ")
-      # load data----
-      # load_data_snv()
-      
-      # remove pic result generate before ----
-      # callModule(removePic,"snv_percentage",outtype="plot")
-      # callModule(removePic,"snv_summary",outtype="image")
-      # callModule(removePic,"snv_oncoplot",outtype="image")
-      # callModule(removePic,"snv_survival",outtype="plot")
+
       if(length(snv_gene_list())!=0){
+        if(length(snv_cancer_type()!=0)){
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start snvy part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
         
         # snv percent -------------------------------------------------------------
@@ -118,7 +112,9 @@ snv_analysis <- eventReactive(
             # tidyr::unnest() %>%
             # tidyr::drop_na() %>%
             dplyr::mutate(logP = -log10(logRankP)) %>%
-            dplyr::mutate(logP = ifelse(logP > 15, 15, logP)) -> snv_sur_plot_ready
+            dplyr::mutate(logP = ifelse(logP > 15, 15, logP)) %>%
+            dplyr::mutate(logP = ifelse(logP < -log10(0.05), NA, logP)) %>%
+            tidyr::drop_na()-> snv_sur_plot_ready
           
           snv_sur_plot_ready %>%
             dplyr::mutate(s = ifelse(estimate > 0, 1, -1)) %>%
@@ -137,8 +133,9 @@ snv_analysis <- eventReactive(
           callModule(
             snv_sur_pointPlot, "snv_survival", data = snv_sur_plot_ready, cancer = "cancer_types",
             gene = "symbol", size = "logP", color = "worse", cancer_rank = snv_sur_cancer_rank,
-            gene_rank = snv_sur_gene_rank, sizename = "-Log10(P)", colorname = "Mutation Worse",title="Overall survival difference between mutation and non mutation genes."
+            gene_rank = snv_sur_gene_rank, sizename = "logRank P", colorname = "Mutation Worse",title="Overall survival difference between mutation and non mutation genes."
           )
+          
         } else{
           .msg <- paste(.msg,glue::glue("No significant [SNV survival] result of gene: {paste0(snv_gene_list(), collapse = ', ')} in your selected cancer type: {paste0(snv_cancer_type(), collapse = ', ')}."),sep=" ")
         }
@@ -152,6 +149,25 @@ snv_analysis <- eventReactive(
         )
         status$snv_submit <- FALSE
         shinyjs::enable("snv-submit")
+
+# maf ---------------------------------------------------------------------
+
+        my_subsetMaf(mc3_pass, genes = snv_gene_list(), mafObj = T,cancer=snv_cancer_type()) -> gene_list_maf #query = query,
+        
+        #1. snv summary
+        snv_su_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_summary_profile.png", sep = ""))
+        callModule(snv_maf_summaryPlot,"snv_summary",gene_list_maf=gene_list_maf,outfile=snv_su_out)
+        
+        #2. oncoplot
+        snv_onco_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_oncoplot_profile.png", sep = ""))
+        callModule(snv_maf_oncoPlot,"snv_oncoplot",gene_list_maf=gene_list_maf,outfile=snv_onco_out,cancer_type=snv_cancer_type())
+        print(glue::glue("{paste0(rep('-', 10), collapse = '')} End maf part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))        
+        }else{
+          shinyBS::createAlert(
+            session = session, anchorId = "snv-no_cancer_set", title = "Oops",
+            content = "No cancer selected! Please select at least one cancer type.", style = "danger", append = FALSE
+          )
+        }
       } else{
         shinyBS::createAlert(
           session = session, anchorId = "snv-no_gene_set", title = "Oops",
@@ -162,40 +178,7 @@ snv_analysis <- eventReactive(
   }
 )
 
-snv_global_analysis <- eventReactive(
-  {
-    status$analysis == TRUE
-  },
-  ignoreNULL = TRUE,
-  valueExpr={
-    if (status$analysis == TRUE) {
-      if(length(snv_gene_list())!=0){
-        print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start maf part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-        
-        # filter data
-        # query = as.expression("cacer_type %in% ")
-        maftools::subsetMaf(mc3_pass, genes = snv_gene_list(), mafObj = T) -> gene_list_maf #query = query,
-        
-        #1. snv summary
-        snv_su_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_summary_profile.png", sep = ""))
-        callModule(snv_maf_summaryPlot,"snv_summary",gene_list_maf=gene_list_maf,outfile=snv_su_out)
-        
-        #2. oncoplot
-        snv_onco_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_oncoplot_profile.png", sep = ""))
-        callModule(snv_maf_oncoPlot,"snv_oncoplot",gene_list_maf=gene_list_maf,outfile=snv_onco_out,cancer_type=snv_cancer_type())
-        print(glue::glue("{paste0(rep('-', 10), collapse = '')} End maf part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-      }else{
-        shinyBS::createAlert(
-          session = session, anchorId = "snv-no_gene_set", title = "Oops",
-          content = "No input gene set! Please go to Welcome page to input gene set.", style = "danger", append = FALSE
-        )
-      }
-    }
-  }
-)
-
-
 # monitors -------------------------------------------------------
-observe(snv_global_analysis())
+# observe(snv_global_analysis())
 observe(snv_gene_list())
 observe(snv_analysis())
