@@ -980,10 +980,11 @@ cnvbarPlot <- function(input, output, session, data, x, y, fill) {
 
 # snv percentage plot -----------------------------------------------------
 
-snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, label, cancer_rank, gene_rank) {
+snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, label, cancer_rank, gene_rank,status_monitor,status) {
   output$plot <- renderPlot({
     # data$per %>% max() ->max.limit
     # max.limit/10 -> inter.limit
+    status[[status_monitor]]
     data %>%
       ggplot(aes_string(x = cancer, y = gene, fill = fill)) +
       geom_tile() +
@@ -1020,12 +1021,13 @@ snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, la
 
 # snv survival point plot -------------------------------------------------
 
-snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title) {
+snv_sur_pointPlot <- function( input, output, session,data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title,status_monitor,status) {
   # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
   #                     gene="symbol",size="per",color="color",sizename="CNV%",
   #                     colorname="SCNA Type",wrap="~ effect")
   # data should include x/y, point size and point color.
   output$plot <- renderPlot({
+    status[[status_monitor]]
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
       geom_point(aes_string(size = size, color = color)) +
@@ -1072,15 +1074,21 @@ imagePlotInput <- function(id, width="100%", height=300) {
   ns <- NS(id)
 
   tagList(
-    imageOutput(ns("plot"), width = width, height = height),
+    br(),
+    br(),
+    br(),
+    br(),
+    imageOutput(ns("plot"), width = width, height = height) %>% withSpinner(color="#0dc5c1"),
+    
     hr()
   )
 }
 
 # 2. server part ----------------------------------------------------------
 
-snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile) {
+snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile,status_monitor,status) {
   output$plot <-renderImage({
+    status[[status_monitor]]
     # png(outfile, width = 1000, height= 700)
     maftools::plotmafSummary(gene_list_maf,fs = 3,statFontSize = 2) ->p
     # dev.off()
@@ -1093,8 +1101,9 @@ snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile) 
   }, deleteFile = FALSE)
 }
 
-snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,outfile) {
+snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,outfile,status_monitor,status) {
   output$plot <-renderImage({
+    status[[status_monitor]]
     png(outfile, width = 800, height= 600)
     col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
     names(col) <- c(
