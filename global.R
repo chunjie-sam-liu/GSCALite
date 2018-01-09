@@ -1101,7 +1101,7 @@ snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile,s
   }, deleteFile = FALSE)
 }
 
-snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,outfile,status_monitor,status) {
+snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,pancan_color,outfile,status_monitor,status) {
   output$plot <-renderImage({
     status[[status_monitor]]
     png(outfile, width = 800, height= 600)

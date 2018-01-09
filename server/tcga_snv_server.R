@@ -169,7 +169,7 @@ snv_analysis <- eventReactive(
         
         #2. oncoplot
         snv_onco_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_oncoplot_profile.png", sep = ""))
-        callModule(snv_maf_oncoPlot,"snv_oncoplot",gene_list_maf=gene_list_maf,outfile=snv_onco_out,status_monitor="snv_submit",status)
+        callModule(snv_maf_oncoPlot,"snv_oncoplot",gene_list_maf=gene_list_maf,pancan_color=pancan_color,outfile=snv_onco_out,status_monitor="snv_submit",status)
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} End maf part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))        
         }else{
           shinyBS::createAlert(
