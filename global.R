@@ -1037,7 +1037,7 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
       scale_size_continuous(
         name = sizename,
         breaks = c(-log10(0.05), 5, 10, 15),
-        limits = c(-log10(0.05), 15),
+        # limits = c(-log10(0.05), 15),
         labels = c("0.05", latex2exp::TeX("$10^{-5}$"), latex2exp::TeX("$10^{-10}$"), latex2exp::TeX("$< 10^{-15}$"))
       ) +
       ggthemes::scale_color_gdocs(
@@ -1093,8 +1093,7 @@ snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile) 
   }, deleteFile = FALSE)
 }
 
-
-snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cancer_type,outfile) {
+snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,cancer_type,outfile) {
   output$plot <-renderImage({
     png(outfile, width = 800, height= 600)
     col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
@@ -1102,14 +1101,15 @@ snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cance
       "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
       "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
     )
-    gene_list_maf %>% maftools::getClinicalData() %>% dplyr::select(cancer_types) %>% unique() %>% t() %>% as.character() -> cancer_type
+    # gene_list_maf %>% maftools::getClinicalData() %>% dplyr::select(cancer_types) %>% unique() %>% t() %>% as.character() -> cancer_type
     fabcolors <- rainbow(n = length(cancer_type))
     names(fabcolors) <-  cancer_type
 
     fabcolors <- list(cancer_types = fabcolors)
     maftools::oncoplot(
+    # my_oncoplot(
       maf = gene_list_maf, removeNonMutated = T, colors = col,
-      clinicalFeatures = "cancer_types", sortByAnnotation = TRUE,
+      clinicalFeatures = "cancer_types", #sortByMutation=TRUE,sortByAnnotation = TRUE,
       annotationColor = fabcolors, top = 10
     )
     # maftools::oncoplot(maf = gene_list_maf, top = 10)#, fontSize = 12
