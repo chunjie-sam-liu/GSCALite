@@ -411,7 +411,7 @@ my_subsetMaf <- function (maf, tsb = NULL, genes = NULL, fields = NULL, cancer =
     maf.dat = droplevels.data.frame(maf.dat)
     maf.anno = droplevels.data.frame(maf.anno)
     mafSummary = my_summarizeMaf(maf.dat, chatty = FALSE, anno = maf.anno)
-    m = MAF(data = maf.dat, variants.per.sample = mafSummary$variants.per.sample, 
+    m = my_MAF(data = maf.dat, variants.per.sample = mafSummary$variants.per.sample, 
             variant.type.summary = mafSummary$variant.type.summary, 
             variant.classification.summary = mafSummary$variant.classification.summary, 
             gene.summary = mafSummary$gene.summary, summary = mafSummary$summary, 
@@ -615,7 +615,7 @@ my_summarizeMaf = function(maf, anno = NULL, chatty = TRUE){
 }
 
 ## MAF object
-MAF <- setClass(Class = 'MAF', slots =  c(data = 'data.table', variants.per.sample = 'data.table', variant.type.summary = 'data.table',
+my_MAF <- setClass(Class = 'MAF', slots =  c(data = 'data.table', variants.per.sample = 'data.table', variant.type.summary = 'data.table',
                                           variant.classification.summary = 'data.table', gene.summary = 'data.table',
                                           summary = 'data.table', maf.silent = 'data.table', clinical.data = 'data.table'))
 
