@@ -1037,7 +1037,7 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
       scale_size_continuous(
         name = sizename,
         breaks = c(-log10(0.05), 5, 10, 15),
-        # limits = c(-log10(0.05), 15),
+        limits = c(-log10(0.05), 15),
         labels = c("0.05", latex2exp::TeX("$10^{-5}$"), latex2exp::TeX("$10^{-10}$"), latex2exp::TeX("$< 10^{-15}$"))
       ) +
       ggthemes::scale_color_gdocs(
@@ -1082,7 +1082,7 @@ imagePlotInput <- function(id, width="100%", height=300) {
 snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile) {
   output$plot <-renderImage({
     # png(outfile, width = 1000, height= 700)
-    maftools::plotmafSummary(gene_list_maf,fs = 5,statFontSize = 2) ->p
+    maftools::plotmafSummary(gene_list_maf,fs = 3,statFontSize = 2) ->p
     # dev.off()
     ggsave(p$plot,filename = outfile, device = "png",width = 3,height = 2)
     list(src = outfile,
