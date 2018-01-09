@@ -8,7 +8,8 @@ snv <- readr::read_rds(file.path(config$database, "TCGA", "snv", ".rds_snv_all_g
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} end Load snv @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
 
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} start Load snv @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
-mc3_pass <- readr::read_rds(file.path(config$database, "TCGA", "snv", "snv_mutation_mc3_public.pass.filtered_maf-4cancers.rds.gz"))
+# mc3_pass <- readr::read_rds(file.path(config$database, "TCGA", "snv", "snv_mutation_mc3_public.pass.filtered_maf-4cancers.rds.gz"))
+mc3_pass <- readr::read_rds(file.path(config$database, "TCGA", "snv", "snv_mutation_mc3_public.pass.filtered_maf.rds.gz"))
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} end Load mc3_pass @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
 
 # mc3_maf <- readr::read_rds(file.path(config$database,"TCGA","snv","snv_mutation_mc3_public.pass.filtered_maf.rds.gz"))
@@ -58,11 +59,12 @@ snv_gene_list <- eventReactive(
 # get gene set snv --------------------------------------------------------
 snv_analysis <- eventReactive(
   {
-    status$snv_submit == TRUE
+    status$snv_submit
   },
   ignoreNULL = TRUE,
   valueExpr = {
     if (status$snv_submit == TRUE) {
+      
       print(snv_gene_list())
       .msg <- c("NOTICE: ")
 
@@ -97,7 +99,7 @@ snv_analysis <- eventReactive(
         callModule(
           snv_per_heatmap, "snv_percentage", data = snv_per_plot_ready,
           cancer = "x_label", gene = "symbol", fill = "per", label = "sm_count",
-          cancer_rank = snv_per_cancer_rank, gene_rank = snv_per_gene_rank
+          cancer_rank = snv_per_cancer_rank, gene_rank = snv_per_gene_rank,status_monitor="snv_submit",status
         )
         
         # snv survival ------------------------------------------------------------
@@ -129,15 +131,22 @@ snv_analysis <- eventReactive(
             dplyr::group_by(symbol) %>%
             dplyr::summarise(r = sum(s)) %>%
             dplyr::arrange(dplyr::desc(r)) -> snv_sur_gene_rank
-          
+          # output[["snv_survival-plot"]] <- renderPlot({
+          #   status$snv_submit
+          # snv_sur_pointPlot(data = snv_sur_plot_ready, cancer = "cancer_types",
+          #                   gene = "symbol", size = "logP", color = "worse", cancer_rank = snv_sur_cancer_rank,
+          #                   gene_rank = snv_sur_gene_rank, sizename = "logRank P", colorname = "Mutation Worse",
+          #                   title="Overall survival difference between mutation and non mutation genes.")
+          # })
           callModule(
             snv_sur_pointPlot, "snv_survival", data = snv_sur_plot_ready, cancer = "cancer_types",
             gene = "symbol", size = "logP", color = "worse", cancer_rank = snv_sur_cancer_rank,
-            gene_rank = snv_sur_gene_rank, sizename = "logRank P", colorname = "Mutation Worse",title="Overall survival difference between mutation and non mutation genes."
+            gene_rank = snv_sur_gene_rank, sizename = "logRank P", colorname = "Mutation Worse",title="Overall survival difference between mutation and non mutation genes.",status_monitor="snv_submit",status
           )
           
         } else{
           .msg <- paste(.msg,glue::glue("No significant [SNV survival] result of gene: {paste0(snv_gene_list(), collapse = ', ')} in your selected cancer type: {paste0(snv_cancer_type(), collapse = ', ')}."),sep=" ")
+          output[["snv_survival-plot"]] <- renderPlot({NULL})
         }
         
         
@@ -156,11 +165,11 @@ snv_analysis <- eventReactive(
         
         #1. snv summary
         snv_su_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_summary_profile.png", sep = ""))
-        callModule(snv_maf_summaryPlot,"snv_summary",gene_list_maf=gene_list_maf,outfile=snv_su_out)
+        callModule(snv_maf_summaryPlot,"snv_summary",gene_list_maf=gene_list_maf,outfile=snv_su_out,status_monitor="snv_submit",status)
         
         #2. oncoplot
         snv_onco_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_oncoplot_profile.png", sep = ""))
-        callModule(snv_maf_oncoPlot,"snv_oncoplot",gene_list_maf=gene_list_maf,outfile=snv_onco_out,cancer_type=snv_cancer_type())
+        callModule(snv_maf_oncoPlot,"snv_oncoplot",gene_list_maf=gene_list_maf,outfile=snv_onco_out,status_monitor="snv_submit",status)
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} End maf part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))        
         }else{
           shinyBS::createAlert(
