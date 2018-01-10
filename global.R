@@ -861,13 +861,14 @@ Plot <- function(input, output, session) { # data(raw data, gene set, cancer typ
 # cnv Point plot --------------------------------------------------------------
 
 
-pointPlot <- function(input, output, session, data, cancer, gene, size, color, sizename, colorname, wrap) {
+cnv_pointPlot <- function(input, output, session, data, cancer, gene, size, color, sizename, colorname, wrap,status_monitor,status) {
 
   # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
   #                     gene="symbol",size="per",color="color",sizename="CNV%",
   #                     colorname="SCNA Type",wrap="~ effect")
   # data should include x/y, point size and point color.
   output$plot <- renderPlot({
+    status[[status_monitor]]
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
       geom_point(aes_string(size = size, color = color)) +
@@ -893,12 +894,14 @@ pointPlot <- function(input, output, session, data, cancer, gene, size, color, s
 
 # cnv pie plot ----------------------------------------------------------------
 
-piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, height) {
+piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, height,status_monitor,status) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
   output$plot <- renderImage({
+    status[[status_monitor]]
+    
     data %>%
       ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack", color = NA) +
@@ -1231,12 +1234,13 @@ rppa_line_contact <- function(input, output, session, seg, cancer, gene, pathway
 }
 
 # rppa pie ----
-rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, height, outfile) {
+rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, height, outfile,status_monitor,status) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
   output$plot <- renderImage({
+    status[[status_monitor]]
     data %>%
       ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack", color = NA) +
