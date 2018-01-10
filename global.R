@@ -1112,7 +1112,7 @@ snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,pancan_color,o
     )
     gene_list_maf %>% maftools::getClinicalData() %>% dplyr::select(cancer_types) %>% unique() %>% t() %>% as.character() -> cancer_type
     fabcolors <- pancan_color %>%
-      dplyr::filter(cancer_types %in% cancer_type) %>%
+      dplyr::filter(Cancer_Types %in% cancer_type) %>%
       dplyr::pull(color) 
     names(fabcolors) <-  cancer_type
 
@@ -1120,7 +1120,7 @@ snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,pancan_color,o
     maftools::oncoplot(
     # my_oncoplot(
       maf = gene_list_maf, removeNonMutated = T, colors = col,
-      clinicalFeatures = "cancer_types", sortByMutation=TRUE,sortByAnnotation = TRUE,
+      clinicalFeatures = "Cancer_Types", sortByMutation=TRUE,sortByAnnotation = TRUE,
       annotationColor = fabcolors, top = 10
     )
     # maftools::oncoplot(maf = gene_list_maf, top = 10)#, fontSize = 12
@@ -1139,8 +1139,9 @@ snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,pancan_color,o
 
 
 # 1. methy diff -----------------------------------------------------------
-methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title) {
+methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title,status_monitor,status) {
   output$plot <- renderPlot({
+    status[[status_monitor]]
     CPCOLS <- c("red", "white", "blue")
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +

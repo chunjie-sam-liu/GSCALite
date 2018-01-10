@@ -225,7 +225,7 @@ cnv_analysis <- eventReactive(
             dplyr::summarise(rank = sum(spm)) %>%
             dplyr::arrange(rank) -> cancer_rank.cnvcor
 
-          callModule(methy_diff_pointPlot, "cnv_exp", data = gene_list_cancer_cnv_cor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.cnvcor, gene_rank = gene_rank.cnvcor, sizename = "-Log10(P.value)", colorname = "Spearman Correlation Coefficient", title = "Spearman Correlation Coefficient of CNV and gene expression.")
+          callModule(methy_diff_pointPlot, "cnv_exp", data = gene_list_cancer_cnv_cor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.cnvcor, gene_rank = gene_rank.cnvcor, sizename = "-Log10(P.value)", colorname = "Spearman Correlation Coefficient", title = "Spearman Correlation Coefficient of CNV and gene expression.",status_monitor="cnv_submit",status)
         } else {
           .msg <- paste(.msg, glue::glue("No significant [CNV to Expression] result of gene: {paste0(cnv_gene_list(), collapse = ',')} in your selected cancer types: {paste0(cnv_cancer_type(), collapse = ',')}."), sep = " ")
         }
