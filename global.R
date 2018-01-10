@@ -1115,19 +1115,30 @@ snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,pancan_color,o
       "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
       "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
     )
-    gene_list_maf %>% maftools::getClinicalData() %>% dplyr::select(cancer_types) %>% unique() %>% t() %>% as.character() -> cancer_type
-    fabcolors <- pancan_color %>%
-      dplyr::filter(Cancer_Types %in% cancer_type) %>%
-      dplyr::pull(color) 
-    names(fabcolors) <-  cancer_type
+    gene_list_maf %>% maftools::getClinicalData() %>% dplyr::select(Cancer_Types) %>% unique() %>% t() %>% as.character() -> snv_maf_cancer_type
+    pancan_color %>%
+      dplyr::filter(cancer_types %in% snv_maf_cancer_type) %>%
+      dplyr::select(color,cancer_types) -> snv_maf_cancer_type_color
+      
+    fabcolors <-  snv_maf_cancer_type_color$color
+    names(fabcolors) <-  snv_maf_cancer_type_color$cancer_types
 
     fabcolors <- list(Cancer_Types = fabcolors)
-    maftools::oncoplot(
+    if(length(snv_maf_cancer_type)>1){
+      maftools::oncoplot(
     # my_oncoplot(
       maf = gene_list_maf, removeNonMutated = T, colors = col,
       clinicalFeatures = "Cancer_Types", sortByMutation=TRUE,sortByAnnotation = TRUE,
       annotationColor = fabcolors, top = 10
-    )
+      )}else{
+        maftools::oncoplot(
+          # my_oncoplot(
+          maf = gene_list_maf, removeNonMutated = T, colors = col,
+          clinicalFeatures = "Cancer_Types", sortByMutation=TRUE,#sortByAnnotation = TRUE,
+          annotationColor = fabcolors, top = 10
+        )
+    }
+    
     # maftools::oncoplot(maf = gene_list_maf, top = 10)#, fontSize = 12
     dev.off()
     
