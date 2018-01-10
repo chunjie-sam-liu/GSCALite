@@ -9,7 +9,7 @@ print(glue::glue("{paste0(rep('-', 10), collapse = '')} end Load snv @ {Sys.time
 
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} start Load snv @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
 # mc3_pass <- readr::read_rds(file.path(config$database, "TCGA", "snv", "snv_mutation_mc3_public.pass.filtered_maf-4cancers.rds.gz"))
-mc3_pass <- readr::read_rds(file.path(config$database, "TCGA", "snv", "snv_mutation_mc3_public.pass.filtered_maf.rds.gz"))
+mc3_pass <- readr::read_rds(file.path(config$database, "TCGA", "snv", "01-snv_mutation_mc3_public.pass.filtered_maf.rds.gz"))
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} end Load mc3_pass @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
 
 # mc3_maf <- readr::read_rds(file.path(config$database,"TCGA","snv","snv_mutation_mc3_public.pass.filtered_maf.rds.gz"))
