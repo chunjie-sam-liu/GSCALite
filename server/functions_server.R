@@ -387,9 +387,9 @@ my_subsetMaf <- function (maf, tsb = NULL, genes = NULL, fields = NULL, cancer =
   }
   if (!is.null(cancer)) {
     # maf.dat = maf.dat[eval(parse(text = query))]
-    maf.dat = maf.dat[cancer_types %in% cancer,]
+    maf.dat = maf.dat[Cancer_Types %in% cancer,]
     # maf.silent = maf.silent[eval(parse(text = query))]
-    maf.silent = maf.silent[cancer_types %in% cancer,]
+    maf.silent = maf.silent[Cancer_Types %in% cancer,]
   }
   default.fields = c("Hugo_Symbol", "Chromosome", "Start_Position", 
                      "End_Position", "Reference_Allele", "Tumor_Seq_Allele2", 
