@@ -115,6 +115,7 @@ rppa_analysis <- eventReactive(
         }
         # plot draw
         output$rppa_rela_plot <- renderImage({
+          status[["rppa_submit"]]
           ggplot() -> p
           for (cancers in plot_seg$Cancer %>% unique()) {
             # cancers="LUSC"
@@ -234,7 +235,7 @@ rppa_global_analysis <- eventReactive(
       rppa_pie_outfile <- file.path(user_dir, "pngs", paste(user_id, "-", "TCGA_rppa_pie_profile.png", sep = ""))
 
       # draw ----
-      callModule(rppaPiePlot, "rppa_pie", data = rppa_pie_plot_ready, y = "per", fill = "class", facet_grid = " symbol~pathway", height = rppa_pie_height, outfile = rppa_pie_outfile)
+      callModule(rppaPiePlot, "rppa_pie", data = rppa_pie_plot_ready, y = "per", fill = "class", facet_grid = " symbol~pathway", height = rppa_pie_height, outfile = rppa_pie_outfile,status)
 
       # rppa global percentage ----
       # data process
@@ -255,7 +256,7 @@ rppa_global_analysis <- eventReactive(
         rppa_heat_height <- 3
       }
       rppa_heat_outfile <- file.path(user_dir, "pngs", paste(user_id, "-", "TCGA_rppa_heatmap_percentage.png", sep = ""))
-      callModule(rppa_heat_per, "rppa_per", rppa_per_ready = rppa_per_ready, pathway = "pathway", symbol = "symbol", per = "per", height = rppa_heat_height, outfile = rppa_heat_outfile)
+      callModule(rppa_heat_per, "rppa_per", rppa_per_ready = rppa_per_ready, pathway = "pathway", symbol = "symbol", per = "per", height = rppa_heat_height, outfile = rppa_heat_outfile,status)
       print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start rppa global analysis part@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
     }
   }

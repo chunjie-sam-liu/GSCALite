@@ -1247,13 +1247,13 @@ rppa_line_contact <- function(input, output, session, seg, cancer, gene, pathway
 }
 
 # rppa pie ----
-rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, height, outfile,status_monitor,status) {
+rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, height, outfile,status) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
   output$plot <- renderImage({
-    status[[status_monitor]]
+    status$analysis
     data %>%
       ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack", color = NA) +
@@ -1301,8 +1301,9 @@ rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, heigh
 }
 
 # rppa heatmap percent ----
-rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbol, per, height, outfile) {
+rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbol, per, height, outfile, status) {
   output$plot <- renderImage({
+    status$analysis
     rppa_per_ready %>%
       ggplot(aes(x = pathway, y = symbol)) +
       xlab("Pathway") + ylab("Symbol") +
