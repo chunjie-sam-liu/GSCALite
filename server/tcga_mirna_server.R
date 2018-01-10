@@ -47,6 +47,7 @@ mirna_analysis <- eventReactive(
       # output ------------------------------------------------------------------
 
       output$mirna_net1 <- renderForceNetwork({
+        status$analysis
         networkD3::forceNetwork(
           Links = mirna_d$links, Nodes = mirna_d$nodes,
           Source = "source", Target = "target",
@@ -121,6 +122,7 @@ mirna_analysis <- eventReactive(
 
       # network generate
       output$mirna_net2 <- visNetwork::renderVisNetwork({
+        status$analysis
         visNetwork::visNetwork(mirna_nodes, mirna_edges, width = "100%") %>%
           visNetwork::visEdges(color = "darkorange") %>%
           visNetwork::visEdges(smooth = TRUE) %>%

@@ -43,7 +43,7 @@ tabItem(
                                         tabPanel(title="networkD3",
                                                  forceNetworkOutput("mirna_net1",height = "700px")),
                                         tabPanel(title= "visNetwork",
-                                                 visNetwork::visNetworkOutput("mirna_net2",height = "700px"))
+                                                 visNetwork::visNetworkOutput("mirna_net2",height = "700px") %>% withSpinner(color="#0dc5c1"))
                  )
           )
         ),
