@@ -955,12 +955,14 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, 
 
 # gene set CNV frenquencey in each cancer ---------------------------------
 # bar stak plot
-cnvbarPlot <- function(input, output, session, data, x, y, fill) {
+cnvbarPlot <- function(input, output, session, data, x, y, fill,status_monitor,status) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
   output$plot <- renderPlot({
+    status[[status_monitor]]
+    
     data %>%
       ggplot(aes_string(x = x, y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack") +
