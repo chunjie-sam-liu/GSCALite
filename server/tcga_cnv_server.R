@@ -115,8 +115,15 @@ cnv_analysis <- eventReactive(
           symbol = factor(x = symbol, levels = cnv_gene_rank$symbol),
           cancer_types = factor(x = cancer_types, levels = cnv_cancer_rank$cancer_types)
         ) -> pie_plot_ready
-
-      cnv_pie_height <- pie_plot_ready$symbol %>% unique() %>% length() * 0.25
+        
+      cnvpie_getheight <- function(cn){
+        if(cn<=5){return(0.15)}
+        if(cn>5 && cn<=20){return(0.25-(cn-5)*0.01)}else{
+          return(0.15)
+        }
+      }
+      cnv_pie_h<-cnvpie_getheight(cn=pie_plot_ready$cancer_types %>% unique() %>% length())
+      cnv_pie_height <- pie_plot_ready$symbol %>% unique() %>% length() * cnv_pie_h
       if (cnv_pie_height > 15) {
         cnv_pie_height <- 15
       }
@@ -130,7 +137,8 @@ cnv_analysis <- eventReactive(
           callModule(
             piePlot, "cnv_pie", data = pie_plot_ready, y = "per",
             fill = "type", facet_grid = "symbol ~ cancer_types",
-            outfile = file.path(user_dir, "pngs", paste(user_id, "-CNV_pie_profile.png", sep = "")), height = cnv_pie_height
+            outfile = file.path(user_dir, "pngs", paste(user_id, "-CNV_pie_profile.png", sep = "")), height = cnv_pie_height,
+            status_monitor="cnv_submit",status
           )
         } else {
           .msg <- paste(.msg, glue::glue("No significant [CNV Pie distribution] result of gene: {paste0(cnv_gene_list(), collapse = ',')} in your selected cancer types."), sep = " ")
@@ -148,9 +156,9 @@ cnv_analysis <- eventReactive(
           dplyr::mutate(color = plyr::revalue(type, replace = c("a_homo" = "brown4", "d_homo" = "aquamarine4")))
 
         callModule(
-          pointPlot, "cnv_homo", data = cnv_homo_plot_ready, cancer = "cancer_types",
+          cnv_pointPlot, "cnv_homo", data = cnv_homo_plot_ready, cancer = "cancer_types",
           gene = "symbol", size = "per", color = "color", sizename = "Homo CNV%",
-          colorname = "SCNA Type", wrap = "~ effect"
+          colorname = "SCNA Type", wrap = "~ effect",status_monitor="cnv_submit",status
         )
 
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} End gernerate homo cnv profile plot@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
@@ -165,9 +173,9 @@ cnv_analysis <- eventReactive(
           dplyr::mutate(color = plyr::revalue(type, replace = c("a_hete" = "brown1", "d_hete" = "aquamarine3")))
 
         callModule(
-          pointPlot, "cnv_hete", data = cnv_hete_plot_ready, cancer = "cancer_types",
+          cnv_pointPlot, "cnv_hete", data = cnv_hete_plot_ready, cancer = "cancer_types",
           gene = "symbol", size = "per", color = "color", sizename = "Hete CNV%",
-          colorname = "SCNA Type", wrap = "~ effect"
+          colorname = "SCNA Type", wrap = "~ effect",status_monitor="cnv_submit",status
         )
 
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} End gernerate hete cnv profile plot@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
@@ -203,7 +211,7 @@ cnv_analysis <- eventReactive(
 
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} End processing cnv overall percent data@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
-        callModule(cnvbarPlot, "cnv_bar", data = cnv_bar_plot_ready, x = "cancer_types", y = "per", fill = "type")
+        callModule(cnvbarPlot, "cnv_bar", data = cnv_bar_plot_ready, x = "cancer_types", y = "per", fill = "type",status_monitor="cnv_submit",status)
 
         # cnv cor to expressin ----------------------------------------------------
 
