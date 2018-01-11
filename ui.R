@@ -14,13 +14,12 @@ library(shinyBS)
 library(shinyWidgets)
 library(shinycssloaders)
 library(shinydashboard)
-library(shinycssloaders)
 
 
 # For front end
 library(DT)
 library(grid)
-library(highcharter)
+# library(highcharter)
 
 # For network
 library(igraph)
@@ -38,21 +37,6 @@ source(file = "config.R", local = TRUE)
 # Load ui function --------------------------------------------------------
 
 source(file = file.path(config$ui, "functions_ui.R"), local = TRUE)
-
-# Load global module ------------------------------------------------------
-
-source(file = file.path(config$wd, "global.R"), local = TRUE)
-
-# Repeated ui stuff for modals --------------------------------------------
-
-addReport_modelTrivia <- tagList(
-  shiny::tags$br(),
-  shiny::tags$br(),
-  shiny::tags$p("The report can be downloaded in the Report section.")
-)
-
-jscode <- "shinyjs.collapse = function(boxid) {$('#' + boxid).closest('.box').find('[data-widget=collapse]').click();}"
-
 
 # Header Start ------------------------------------------------------------
 
@@ -81,8 +65,6 @@ sidebar <- dashboardSidebar(
   sidebarMenu(
     # Welcome ----
     menuItem("Welcome", tabName = "welcome", icon = icon("home")),
-
-
 
     # TCGA ----
     menuItem(
@@ -186,10 +168,18 @@ body <- dashboardBody(
 # Body End ----------------------------------------------------------------
 
 
-# Shiny UI ----------------------------------------------------------------
-shinyUI(dashboardPage(
+# dashboadpage ------------------------------------------------------------
+page <- dashboardPage(
   title = "GSCA - Gene Set Cancer Analysis",
   header = header,
   sidebar = sidebar,
   body = body
-))
+)
+
+# Shiny UI ----------------------------------------------------------------
+ui <- tagList(
+  div(id = "loading-content",h2("Loading...")),
+  shinyjs::hidden(div(id = "app-content", page))
+)
+
+shinyUI(ui = ui)

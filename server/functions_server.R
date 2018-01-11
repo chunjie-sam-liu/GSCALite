@@ -619,3 +619,11 @@ my_MAF <- setClass(Class = 'MAF', slots =  c(data = 'data.table', variants.per.s
                                           variant.classification.summary = 'data.table', gene.summary = 'data.table',
                                           summary = 'data.table', maf.silent = 'data.table', clinical.data = 'data.table'))
 
+
+
+# Loading screen ----------------------------------------------------------
+
+loading_screen <- function(){
+  shinyjs::hide(id = "loading-content", anim = TRUE, animType = "fade")
+  shinyjs::show("app-content")
+}
