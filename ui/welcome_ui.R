@@ -54,12 +54,20 @@ tabItem(
       )
     )
   ),
+  
   # gene set input stat output ----
-  fluidRow(shiny::uiOutput(outputId = "gene_set_stat")),
-
+  fluidRow(shiny::uiOutput(outputId = "ui_gene_set_stat")),
+  
+  # Select cancer types ----
+  fluidRow(shiny::uiOutput(outputId = "ui_multi_cancer_input")),
+  
+  # Start analysis ---- 
+  fluidRow(shiny::uiOutput(outputId = 'ui_start_analysis')),
+  
   # progress bar for running -----
   fluidRow(shiny::uiOutput(outputId = "ui_progressbar")),
-
+  
+  # Guide to result
   fluidRow(
     column(
       sytle = "margin-top:30px;",
