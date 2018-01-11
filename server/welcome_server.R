@@ -31,18 +31,7 @@ observeEvent(input$example, {
 
 # after progress done
 
-
-
 # Example input gene set --------------------------------------------------
-
-# addPopover(
-#   session = session,
-#   id = "example",
-#   title = "Example gene list",
-#   placement = "bottom",
-#   trigger = "hover",
-#   content = shiny::HTML("Please input HGNC gene symbol")
-# )
 
 
 # Monitor search ----------------------------------------------------------
@@ -189,15 +178,18 @@ observeEvent(
 )
 
 
-
-#  Oberseve status$trigger -----------------------------------------------
+# create alert for invalid gene set
 observeEvent(status$trigger, {
   if (error$gene_set != "" && !is.null(error$gene_set)) {
-    shinyBS::toggleModal(session = session, modalId = "gse_error_modal", toggle = "open")
+    shinyWidgets::sendSweetAlert(
+      session = session,
+      title = "Error...",
+      text = error$gene_set,
+      type = "error"
+    )
   }
 })
 
-output$output_gene_set <- renderUI(return(shiny::HTML(error$gene_set)))
 
 observe(validate_input_gene_set())
 observe(progressbar_start_analysis())

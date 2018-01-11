@@ -22,7 +22,7 @@ tabItem(
     )
   ),
 
-  shiny::tags$hr(width = "50%"),
+  shiny::tags$hr(width = "80%"),
 
   # Input gene list ----
   fluidRow(
@@ -50,23 +50,6 @@ tabItem(
             class = "input-group-btn",
             shinyBS::bsButton(inputId = "example", label = "Show me example", icon = icon(name = "fire"))
           )
-        )
-      ),
-
-      # shinybs popover ----
-      shiny::uiOutput(outputId = "example_popover")
-    ),
-
-    # Control errors
-    shinyBS::bsModal(
-      id = "gse_error_modal", title = "",
-      trigger = "gse_error_trigger", size = "large",
-      fluidRow(
-        style = "width:100%;",
-        column(
-          width = 8, offset = 2, class = "alert alert-danger text-justify",
-          shiny::tags$span(style = "float:left; padding:10px;", shiny::icon(name = "exclamation-triangle", class = "fa-4x")),
-          shiny::tags$span(shiny::tags$p(class = "lead text-center", shiny::uiOutput("output_gene_set")))
         )
       )
     )

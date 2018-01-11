@@ -120,7 +120,8 @@ body <- dashboardBody(
   
   # for html head 
   shiny::tags$head(
-    shinyjs::useShinyjs(),
+    shinyWidgets::useSweetAlert(), # For sweet alert
+    shinyjs::useShinyjs(), # For shinyjs
     shinyjs::extendShinyjs(script = file.path(config$wd, "www", "js", "gscalite.js")),
     shiny::tags$link(rel = "stylesheet", type = "text/css", href = "css/main.css"),
     shiny::tags$script(type = "text/javascript", src = "js/main.js")

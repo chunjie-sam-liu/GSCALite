@@ -9,7 +9,7 @@ check_gene_set <- function(.s, status = status, error = error) {
     stringr::str_trim(side = "both") -> .ss
 
   if (!dplyr::between(length(.ss), 1, 200)) {
-    error$gene_set <- "Error: The number of genes should be less than 200."
+    error$gene_set <- "The number of genes should be less than 200."
     status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
     status$gene_set <- FALSE
   }
@@ -34,7 +34,7 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, to
   gene_set$n_total <- length(total_gene_symbol[.v_dedup[.inter]]) + length(.v_dedup[!.inter])
 
   if (length(gene_set$match) == 0) {
-    error$gene_set <- "Error: Please input at least one valid gene symbol."
+    error$gene_set <- "Please input at least one valid gene symbol."
     status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
     status$gene_set <- FALSE
   }
