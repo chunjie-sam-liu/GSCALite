@@ -795,7 +795,7 @@ PlotInput <- function(id, width, height) {
   ns <- NS(id)
 
   tagList(
-    plotOutput(ns("plot")),
+    plotOutput(ns("plot")) %>% withSpinner(color="#0dc5c1"),
     hr()
     # sliderInput(ns("num"),label = "Select size of number",min=10,max = 100,value = 50)
   )
@@ -861,13 +861,14 @@ Plot <- function(input, output, session) { # data(raw data, gene set, cancer typ
 # cnv Point plot --------------------------------------------------------------
 
 
-pointPlot <- function(input, output, session, data, cancer, gene, size, color, sizename, colorname, wrap) {
+cnv_pointPlot <- function(input, output, session, data, cancer, gene, size, color, sizename, colorname, wrap,status_monitor,status) {
 
   # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
   #                     gene="symbol",size="per",color="color",sizename="CNV%",
   #                     colorname="SCNA Type",wrap="~ effect")
   # data should include x/y, point size and point color.
   output$plot <- renderPlot({
+    status[[status_monitor]]
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
       geom_point(aes_string(size = size, color = color)) +
@@ -893,12 +894,14 @@ pointPlot <- function(input, output, session, data, cancer, gene, size, color, s
 
 # cnv pie plot ----------------------------------------------------------------
 
-piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, height) {
+piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, height,status_monitor,status) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
   output$plot <- renderImage({
+    status[[status_monitor]]
+    
     data %>%
       ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack", color = NA) +
@@ -952,12 +955,14 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, 
 
 # gene set CNV frenquencey in each cancer ---------------------------------
 # bar stak plot
-cnvbarPlot <- function(input, output, session, data, x, y, fill) {
+cnvbarPlot <- function(input, output, session, data, x, y, fill,status_monitor,status) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
   output$plot <- renderPlot({
+    status[[status_monitor]]
+    
     data %>%
       ggplot(aes_string(x = x, y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack") +
@@ -980,10 +985,11 @@ cnvbarPlot <- function(input, output, session, data, x, y, fill) {
 
 # snv percentage plot -----------------------------------------------------
 
-snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, label, cancer_rank, gene_rank) {
+snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, label, cancer_rank, gene_rank,status_monitor,status) {
   output$plot <- renderPlot({
     # data$per %>% max() ->max.limit
     # max.limit/10 -> inter.limit
+    status[[status_monitor]]
     data %>%
       ggplot(aes_string(x = cancer, y = gene, fill = fill)) +
       geom_tile() +
@@ -1000,7 +1006,7 @@ snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, la
       ) +
       theme_bw() +
       theme(
-        axis.text.x = element_text(angle = 45, hjust = -0.05, size = "15"),
+        axis.text.x = element_text(angle = 45, hjust = -0.05, size = "10"),
         axis.title.y = element_text(size = "15"),
         panel.grid = element_line(colour = "grey", linetype = "dashed")
       ) +
@@ -1020,12 +1026,13 @@ snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, la
 
 # snv survival point plot -------------------------------------------------
 
-snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title) {
+snv_sur_pointPlot <- function( input, output, session,data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title,status_monitor,status) {
   # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
   #                     gene="symbol",size="per",color="color",sizename="CNV%",
   #                     colorname="SCNA Type",wrap="~ effect")
   # data should include x/y, point size and point color.
   output$plot <- renderPlot({
+    status[[status_monitor]]
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
       geom_point(aes_string(size = size, color = color)) +
@@ -1072,19 +1079,25 @@ imagePlotInput <- function(id, width="100%", height=300) {
   ns <- NS(id)
 
   tagList(
-    imageOutput(ns("plot"), width = width, height = height),
+    br(),
+    br(),
+    br(),
+    br(),
+    imageOutput(ns("plot"), width = width, height = height) %>% withSpinner(color="#0dc5c1"),
+    
     hr()
   )
 }
 
 # 2. server part ----------------------------------------------------------
 
-snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile) {
+snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile,status_monitor,status) {
   output$plot <-renderImage({
+    status[[status_monitor]]
     # png(outfile, width = 1000, height= 700)
-    maftools::plotmafSummary(gene_list_maf) ->p
+    maftools::plotmafSummary(gene_list_maf,fs = 3,statFontSize = 2) ->p
     # dev.off()
-    ggsave(p$plot,filename = outfile, device = "png",width = 4,height = 3)
+    ggsave(p$plot,filename = outfile, device = "png",width = 3,height = 2)
     list(src = outfile,
          contentType = 'image/png',
          # width = 1000,
@@ -1093,31 +1106,46 @@ snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile) 
   }, deleteFile = FALSE)
 }
 
-
-snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cancer_type,outfile) {
+snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,pancan_color,outfile,status_monitor,status) {
   output$plot <-renderImage({
-    png(outfile, width = 800, height= 700)
-    # col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
-    # names(col) <- c(
-    #   "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
-    #   "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
-    # )
-    # fabcolors <- RColorBrewer::brewer.pal(n = length(cancer_type), name = "Spectral")
-    # names(fabcolors) <- cancer_type
+    status[[status_monitor]]
+    png(outfile, width = 800, height= 600)
+    col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
+    names(col) <- c(
+      "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
+      "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
+    )
+    gene_list_maf %>% maftools::getClinicalData() %>% dplyr::select(Cancer_Types) %>% unique() %>% t() %>% as.character() -> snv_maf_cancer_type
+    pancan_color %>%
+      dplyr::filter(cancer_types %in% snv_maf_cancer_type) %>%
+      dplyr::select(color,cancer_types) -> snv_maf_cancer_type_color
+      
+    fabcolors <-  snv_maf_cancer_type_color$color
+    names(fabcolors) <-  snv_maf_cancer_type_color$cancer_types
 
-    # fabcolors <- list(cancer_types = fabcolors)
-    # maftools::oncoplot(
-    #   maf = gene_list_maf, removeNonMutated = T, colors = col,
-    #   clinicalFeatures = "cancer_types", sortByAnnotation = TRUE,
-    #   annotationColor = fabcolors, top = 10
-    # )
-    maftools::oncoplot(maf = gene_list_maf, top = 10)#, fontSize = 12
+    fabcolors <- list(Cancer_Types = fabcolors)
+    if(length(snv_maf_cancer_type)>1){
+      maftools::oncoplot(
+    # my_oncoplot(
+      maf = gene_list_maf, removeNonMutated = T, colors = col,
+      clinicalFeatures = "Cancer_Types", sortByMutation=TRUE,sortByAnnotation = TRUE,
+      annotationColor = fabcolors, top = 10
+      )}else{
+        maftools::oncoplot(
+          # my_oncoplot(
+          maf = gene_list_maf, removeNonMutated = T, colors = col,
+          clinicalFeatures = "Cancer_Types", sortByMutation=TRUE,#sortByAnnotation = TRUE,
+          annotationColor = fabcolors, top = 10
+        )
+    }
+    
+    # maftools::oncoplot(maf = gene_list_maf, top = 10)#, fontSize = 12
     dev.off()
     
     list(src = outfile,
          contentType = 'image/png',
          width = 800,
-         height = 700,
+         height = 600,
          alt = "This is alternate text")
   }, deleteFile = FALSE)
 }
@@ -1127,8 +1155,9 @@ snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cance
 
 
 # 1. methy diff -----------------------------------------------------------
-methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title) {
+methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title,status_monitor,status) {
   output$plot <- renderPlot({
+    status[[status_monitor]]
     CPCOLS <- c("red", "white", "blue")
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
@@ -1218,12 +1247,13 @@ rppa_line_contact <- function(input, output, session, seg, cancer, gene, pathway
 }
 
 # rppa pie ----
-rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, height, outfile) {
+rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, height, outfile,status) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
   output$plot <- renderImage({
+    status$analysis
     data %>%
       ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack", color = NA) +
@@ -1271,8 +1301,9 @@ rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, heigh
 }
 
 # rppa heatmap percent ----
-rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbol, per, height, outfile) {
+rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbol, per, height, outfile, status) {
   output$plot <- renderImage({
+    status$analysis
     rppa_per_ready %>%
       ggplot(aes(x = pathway, y = symbol)) +
       xlab("Pathway") + ylab("Symbol") +

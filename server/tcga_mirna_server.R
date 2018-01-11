@@ -1,7 +1,7 @@
 
 # load mirna target data --------------------------------------------------
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} start Load mirna data @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
-mirna2target <- readr::read_rds(file.path(config$database, "TCGA", "mirna", "pan_overall_gene_cor_with_mirna.rds.gz"))
+mirna2target <- readr::read_rds(file.path(config$database, "TCGA", "mirna", "pan_overall_gene_cor-0.5_with_mirna.rds.gz"))
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} end Load mirna data @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
 
 # start analysis ----------------------------------------------------------
@@ -47,6 +47,7 @@ mirna_analysis <- eventReactive(
       # output ------------------------------------------------------------------
 
       output$mirna_net1 <- renderForceNetwork({
+        status$analysis
         networkD3::forceNetwork(
           Links = mirna_d$links, Nodes = mirna_d$nodes,
           Source = "source", Target = "target",
@@ -78,7 +79,7 @@ mirna_analysis <- eventReactive(
       get_node_freq_vis %>%
         table() %>%
         as.data.frame() %>%
-        dplyr::mutate(Freq = ifelse(Freq > 20, 20, Freq)) -> mirna_node_size_vis
+        dplyr::mutate(Freq = ifelse(Freq > 10, 10, Freq)) -> mirna_node_size_vis
       names(mirna_node_size_vis) <- c("name", "size")
       mirna_node_size_vis$name <- as.character(mirna_node_size_vis$name)
 
@@ -109,7 +110,8 @@ mirna_analysis <- eventReactive(
         label = mirna_node_name, # add labels on nodes
         group = c(rep("miRNA", mirna_mirna_num), rep("Gene", mirna_gene_num)), # add groups on nodes
         value = mirna_vis_ready$size, # size adding value
-        shape = c(rep("circle", mirna_mirna_num), rep("database", mirna_gene_num)), # control shape of nodes
+        scaling = list(min = 1, max = 10),
+        shape = c(rep("database", mirna_mirna_num), rep("circle", mirna_gene_num)), # control shape of nodes
         # color = c(rep("orange",mirna_mirna_num),rep("purple",mirna_gene_num))# color
         title = paste0("<p>", mirna_node_name, "</p>"),
         stringsAsFactors = FALSE
@@ -121,11 +123,12 @@ mirna_analysis <- eventReactive(
 
       # network generate
       output$mirna_net2 <- visNetwork::renderVisNetwork({
+        status$analysis
         visNetwork::visNetwork(mirna_nodes, mirna_edges, width = "100%") %>%
           visNetwork::visEdges(color = "darkorange") %>%
           visNetwork::visEdges(smooth = TRUE) %>%
-          visNetwork::visGroups(groupname = "miRNA", color = "lightpink", shape = "circle") %>%
-          visNetwork::visGroups(groupname = "Gene", color = "gold", shape = "database") %>%
+          visNetwork::visGroups(groupname = "miRNA", color = "lightpink", shape = "database") %>%
+          visNetwork::visGroups(groupname = "Gene", color = "gold", shape = "circle") %>%
           visNetwork::visLegend() %>%
           visNetwork::visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE, manipulation = TRUE) %>% # Highlight nearest & Select by node id
           visNetwork::visInteraction(navigationButtons = TRUE) %>%
