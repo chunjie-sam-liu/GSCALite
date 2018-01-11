@@ -14,6 +14,8 @@ library(shinyBS)
 library(shinyWidgets)
 library(shinycssloaders)
 library(shinydashboard)
+library(shinycssloaders)
+
 
 # For front end
 library(DT)
@@ -150,26 +152,26 @@ body <- dashboardBody(
 
 
     # GTEx ----
-    # source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local = TRUE)$value,
-    # source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local = TRUE)$value,
 
     # TCGA ----
     # expr ----
-    # source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
     # cnv ----
-    # source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
     # snv ----
-    # source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value,
 
     # meth ----
-    # source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value,
 
     # rppa ----
-    # source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
     # mirna ----
-    # source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value,
     # Drug ----
-    # source(file = file.path(config$wd, "ui", "drug_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "drug_ui.R"), local = TRUE)$value,
 
     # Download ----
 

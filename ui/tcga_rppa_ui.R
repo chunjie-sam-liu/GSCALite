@@ -53,7 +53,10 @@ tabItem(
         tabPanel(title = "Heatmap percentage", imagePlotInput(id = "rppa_per", width = "100%", height = "100%")),
         tabPanel(
           title = "Relation network",
-          imageOutput("rppa_rela_plot", width = "100%", height = "100%"),
+          br(),
+          br(),
+          br(),
+          imageOutput("rppa_rela_plot", width = "100%", height = "100%") %>% withSpinner(color="#0dc5c1"),
           hr()
         )
       )
