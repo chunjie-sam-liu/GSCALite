@@ -1,16 +1,19 @@
 # source by "server.R"
+source(file.path(config$wd, "functions", "welcome_function.R"))
 
 # Clear input -------------------------------------------------------------
 observeEvent(input$input_gene_set_reset, {
   shinyjs::reset("input_gene_set")
   status$gene_set <- FALSE
 })
+
 observeEvent(input$analysis, {
   # shinyjs::js$checkall()
   shinyjs::disable(id = "input_gene_set")
   shinyjs::disable(id = "analysis")
   # status$analysis <- TRUE
 })
+
 observeEvent(input$stop, {
   status$analysis <- FALSE
   status$gene_set <- FALSE
@@ -21,6 +24,7 @@ observeEvent(input$stop, {
     NULL
   })
 })
+
 observeEvent(input$example, {
   status$analysis <- FALSE
   status$gene_set <- FALSE
@@ -29,10 +33,16 @@ observeEvent(input$example, {
   shinyjs::enable(id = "analysis")
 })
 
-# after progress done
-
-# Example input gene set --------------------------------------------------
-
+observeEvent(status$trigger, {
+  if (error$gene_set != "" && !is.null(error$gene_set)) {
+    shinyWidgets::sendSweetAlert(
+      session = session,
+      title = "Error...",
+      text = error$gene_set,
+      type = "error"
+    )
+  }
+})
 
 # Monitor search ----------------------------------------------------------
 
@@ -59,86 +69,21 @@ validate_input_gene_set <- eventReactive(
 
 
 # Statistics of input gene list -------------------------------------------
-output$gene_set_stat <- renderUI({
-  if (status$gene_set) {
-    shiny::tagList(
-      # value box
-      column(
-        width = 8, offset = 2,
+output$ui_gene_set_stat <- renderUI({if (status$gene_set) {fn_gene_set_stat(gene_set)} else {NULL}})
 
-        downloadLink(
-          outputId = "download_total_gene_set", label = NULL, class = NULL,
+# Download gene set -------------------------------------------------------
+output$download_total_gene_set <- fn_gs_download(user_dir, user_id, user_logs, txt = "total_gene_set.txt", s = 3)
+output$download_valid_gene_set <- fn_gs_download(user_dir, user_id, user_logs, txt = "valid_gene_set.txt", s = 4)
+output$download_input_logs <- fn_gs_download(user_dir, user_id, user_logs, txt = "input_gene_set_log.txt", s = 0)
 
-          valueBox(value = gene_set$n_total, subtitle = "Total Input Gene Set", icon = icon("users"), color = "yellow")
-        ),
+# cancer types selection --------------------------------------------------
+output$ui_multi_cancer_input <- renderUI({if (status$gene_set) {fn_multi_cancer_input()} else {NULL}})
 
-        downloadLink(
-          outputId = "download_valid_gene_set", label = NULL, class = NULL,
+# Start analysis ----------------------------------------------------------
+output$ui_start_analysis <- renderUI({if (status$gene_set) {fn_start_analysis()} else {NULL}})
 
-          valueBox(
-            value = gene_set$n_match, subtitle = "Valid Gene Set", icon = icon("credit-card"),
-            color = "green"
-          )
-        ),
-        downloadLink(
-          outputId = "download_input_logs", label = NULL, class = NULL,
-
-          valueBox(
-            value = gene_set$n_non_match, subtitle = "Invalid Gene Set",
-            icon = icon("line-chart"), color = "red"
-          )
-        )
-      ),
-      # proceed to analysis
-      column(
-        width = 8, offset = 2,
-        shinyBS::bsButton(inputId = "analysis", label = "Start Gene Set Analysis", icon = icon("play"), class = "btn-lg"),
-        shinyBS::bsButton(inputId = "stop", label = "Stop", icon = icon("pause"), class = "btn-lg danger")
-      )
-    )
-  } else {
-    NULL
-  }
-})
-output$download_total_gene_set <- downloadHandler(
-  filename = function() {
-    glue::glue("{user_id}_total_gene_set.txt")
-  },
-  content = function(con) {
-    .f <- file.path(user_dir, user_logs$gene_set)
-    .d <- readr::read_delim(file = .f, delim = ":", skip = 3, col_names = FALSE, trim_ws = TRUE) %>%
-      head(1) %>%
-      .[[2]]
-    readr::write_file(.d, con)
-  }
-)
-
-output$download_valid_gene_set <- downloadHandler(
-  filename = function() {
-    glue::glue("{user_id}_valid_gene_set.txt")
-  },
-  content = function(con) {
-    .f <- file.path(user_dir, user_logs$gene_set)
-    .d <- readr::read_delim(file = .f, delim = ":", skip = 4, col_names = FALSE, trim_ws = TRUE) %>%
-      head(1) %>%
-      .[[2]]
-    readr::write_file(.d, con)
-  }
-)
-
-output$download_input_logs <- downloadHandler(
-  filename = function() {
-    glue::glue("{user_id}_input_gene_set_log.txt")
-  },
-  content = function(con) {
-    .f <- file.path(user_dir, user_logs$gene_set)
-    .d <- readr::read_file(file = .f)
-    readr::write_file(.d, con)
-  }
-)
 
 # progress bar ui -----------------------------------------------------
-
 
 progressbar_start_analysis <- eventReactive(
   eventExpr = input$analysis,
@@ -178,18 +123,8 @@ observeEvent(
 )
 
 
-# create alert for invalid gene set
-observeEvent(status$trigger, {
-  if (error$gene_set != "" && !is.null(error$gene_set)) {
-    shinyWidgets::sendSweetAlert(
-      session = session,
-      title = "Error...",
-      text = error$gene_set,
-      type = "error"
-    )
-  }
-})
 
+# Observe -----------------------------------------------------------------
 
 observe(validate_input_gene_set())
 observe(progressbar_start_analysis())
