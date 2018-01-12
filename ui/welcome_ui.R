@@ -14,11 +14,8 @@ tabItem(
   # Input gene list ----
   fluidRow(shiny::uiOutput(outputId = "ui_search_example")),
   
-  # gene set input stat output ----
-  fluidRow(shiny::uiOutput(outputId = "ui_gene_set_stat")),
-  
   # Select cancer types ----
-  fluidRow(shiny::uiOutput(outputId = "ui_multi_cancer_input")),
+  shiny::uiOutput(outputId = "ui_multi_cancer_input"),
   
   # Start analysis ---- 
   fluidRow(shiny::uiOutput(outputId = 'ui_start_analysis')),
@@ -28,6 +25,9 @@ tabItem(
   
   # Guide to result
   fluidRow(shiny::uiOutput(outputId = "ui_guide_result")),
+  
+  # gene set input stat output ----
+  fluidRow(shiny::uiOutput(outputId = "ui_gene_set_stat")),
 
   # Feature and descriptions ----
   fluidRow(shiny::uiOutput(outputId = "ui_feature_description")),

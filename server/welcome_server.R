@@ -85,7 +85,7 @@ output$download_valid_gene_set <- fn_gs_download(user_dir, user_id, user_logs, t
 output$download_input_logs <- fn_gs_download(user_dir, user_id, user_logs, txt = "input_gene_set_log.txt", s = 0)
 
 # cancer types selection --------------------------------------------------
-output$ui_multi_cancer_input <- renderUI({if (status$gene_set) {fn_multi_cancer_input()} else {NULL}})
+output$ui_multi_cancer_input <- renderUI({if (status$gene_set) {fn_multi_cancer_input(.ctps = ctps)} else {NULL}})
 
 # Start analysis ----------------------------------------------------------
 output$ui_start_analysis <- renderUI({if (status$gene_set) {fn_start_analysis()} else {NULL}})

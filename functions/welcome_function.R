@@ -51,7 +51,7 @@ fn_search_example <- function(){
 # Gene set stat -----------------------------------------------------------
 fn_gene_set_stat <- function(gene_set){
   column(
-    width = 8, offset = 2,
+    width = 8, offset = 2, style = "margin-top:20px",
     downloadLink(
       outputId = "download_total_gene_set", label = NULL, class = NULL,
       valueBox(value = gene_set$n_total, subtitle = "Total Input Gene Set", icon = icon("users"), color = "yellow")
@@ -77,18 +77,37 @@ fn_gene_set_stat <- function(gene_set){
 
 # multi cancer types input ------------------------------------------------
 
-fn_multi_cancer_input <- function(){
-  .ctps <- c("BRCA", "KIRC", "KIRP")
-  multiInput(
-    inputId = "multi_cancer_types", label = "Select Cancer Types",
-    choices = .ctps, selected = "", width = "350px"
+fn_multi_cancer_input <- function(.ctps){
+  shiny::fluidRow(
+    column(
+      width = 4, offset = 2,
+      multiInput(
+        inputId = "select_ctps", label = "Select TCGA Cancer Types or GTEx Tissue",
+        choices = .ctps, selected = NULL, width = "550px"
+      ),
+      switchInput(
+        inputId = "ctps_switch", label = "Cancers", value = FALSE,
+        onLabel = "All", offLabel = "None", size = "large", offStatus = "danger"
+      )
+    ),
+    column(
+      width = 4,
+      multiInput(
+        inputId = "select_analysis", label = "Select Analysis", width = "550px",
+        choices = c("mRNA Expression" = "expr", "Single Nucleotide Variation" = "snv"), selected = NULL
+      ),
+      switchInput(
+        inputId = "ana_switch", label = "Analysis", value = FALSE,
+        onLabel = "All", offLabel = "None", size = "large", offStatus = "danger"
+      )
+    )
   )
 }
 
 # start analysis widgets --------------------------------------------------
 fn_start_analysis <- function(){
   column(
-    width = 8, offset = 2,
+    width = 8, offset = 2, style = "margin-top:20px",
     shinyBS::bsButton(inputId = "analysis", label = "Start Gene Set Analysis", icon = icon("play"), class = "btn-lg"),
     shinyBS::bsButton(inputId = "stop", label = "Stop", icon = icon("pause"), class = "btn-lg danger")
   )
