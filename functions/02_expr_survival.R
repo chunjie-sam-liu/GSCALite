@@ -8,8 +8,14 @@ library(magrittr)
 
 
 expr <- readr::read_rds(path = "/data/TCGA/TCGA_data/pancan33_expr.rds.gz")
+expr$cancer_types -> .ctps
+paste("TCGA",expr$cancer_types, sep = "-") -> names(.ctps)
+.ctps %>% readr::write_rds(path = "/data/GSCALite/03_cpts.rds.gz", compress = "gz")
+
 
 clinical <- readr::read_rds(path = "/data/TCGA/TCGA_data/pancan34_clinical.rds.gz")
+
+
 
 # Analysis ----------------------------------------------------------------
 
