@@ -44,6 +44,14 @@ observeEvent(status$trigger, {
   }
 })
 
+
+# welcome message ---------------------------------------------------------
+output$ui_welcom_msg <- renderUI({fn_welcom_msg()})
+
+# Search box and examples -------------------------------------------------
+
+output$ui_search_example <- renderUI({fn_search_example()})
+
 # Monitor search ----------------------------------------------------------
 
 validate_input_gene_set <- eventReactive(
@@ -122,6 +130,11 @@ observeEvent(
   }
 )
 
+# guide result ------------------------------------------------------------
+
+output$ui_guide_result <- renderUI({fn_guide_result()})
+
+output$ui_feature_description <- renderUI({fn_feature_description()})
 
 
 # Observe -----------------------------------------------------------------
