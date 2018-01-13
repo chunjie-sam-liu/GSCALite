@@ -111,6 +111,7 @@ progressbar_start_analysis <- eventReactive(
     })
   }
 )
+
 observeEvent(
   progress$progress_end, {
     if (progress$progress_end == TRUE) {
