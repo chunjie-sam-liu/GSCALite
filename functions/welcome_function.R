@@ -83,7 +83,7 @@ fn_multi_cancer_input <- function(.ctps){
       width = 4, offset = 2,
       multiInput(
         inputId = "select_ctps", label = "Select TCGA Cancer Types or GTEx Tissue",
-        choices = .ctps, selected = NULL, width = "550px"
+        choices = .ctps, selected = c('LUSC', 'LUAD'), width = "550px"
       ),
       shinyjs::hide(switchInput(
         inputId = "ctps_switch", label = "Cancers", value = FALSE,
@@ -94,7 +94,7 @@ fn_multi_cancer_input <- function(.ctps){
       width = 4,
       multiInput(
         inputId = "select_analysis", label = "Select Analysis", width = "550px",
-        choices = c("mRNA Expression" = "expr", "Single Nucleotide Variation" = "snv"), selected = NULL
+        choices = c("mRNA Expression" = "expr", "Single Nucleotide Variation" = "snv"), selected = c("expr", "snv")
       ),
        shinyjs::hide(switchInput(
         inputId = "ana_switch", label = "Analysis", value = FALSE,

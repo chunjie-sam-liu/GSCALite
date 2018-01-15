@@ -7,6 +7,9 @@ observeEvent(input$input_gene_set_reset, {
   status$gene_set <- FALSE
 })
 
+
+# Example -----------------------------------------------------------------
+
 observeEvent(input$example, {
   status$analysis <- FALSE
   status$gene_set <- FALSE
@@ -15,11 +18,26 @@ observeEvent(input$example, {
   shinyjs::enable(id = "analysis")
 })
 
+# Analysis ----------------------------------------------------------------
+
+
 observeEvent(input$analysis, {
-  # shinyjs::js$checkall()
-  shinyjs::disable(id = "input_gene_set")
-  shinyjs::disable(id = "analysis")
-  # status$analysis <- TRUE
+  
+  print(input$select_ctps)
+  print(input$select_analysis)
+  
+  if (length(input$select_ctps) == 0 || length(input$select_analysis) == 0) {
+    shinyWidgets::sendSweetAlert(
+      session = session,
+      title = "Error...",
+      text = "Please select at least one cancer types and analaysis",
+      type = "error"
+    )
+  } else{
+    shinyjs::disable(id = "input_gene_set")
+    shinyjs::disable(id = "analysis")
+  }
+  
 })
 
 observeEvent(input$stop, {
@@ -44,17 +62,7 @@ observeEvent(status$trigger, {
   }
 })
 
-observeEvent(input$ctps_switch, {
-  if (input$ctps_switch == TRUE) {
-    shinyWidgets:::updateMultiInput(session = session, inputId = "select_ctps", selected = ctps)
-    shinyjs::js$switch("select_ctps")
-  } else {
-    shinyWidgets:::updateMultiInput(session = session, inputId = "select_ctps", selected = character(0))
-  }
-  
-})
 
-observeEvent(input$select_analysis, {})
 
 
 # welcome message ---------------------------------------------------------
