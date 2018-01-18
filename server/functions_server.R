@@ -20,7 +20,7 @@ check_gene_set <- function(.s, status = status, error = error) {
 
 # Validate gene with TCGA gene symbol -------------------------------------
 validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, total_gene_symbol = total_gene_symbol, status = status, error = error, gene_set = gene_set) {
-  .log_file <- file.path(user_dir, user_logs$gene_set)
+  .log_file <- user_logs$gene_set
 
 
   .v_dedup <- .v[.v != ""] %>% unique() %>% sapply(FUN = tolower, USE.NAMES = FALSE)

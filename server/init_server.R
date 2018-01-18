@@ -125,13 +125,13 @@ info_files %>%
 
 # Poll handle -------------------------------------------------------------
 
-info_trigger_gene_set <- function() {
+info_trigger <- function() {
   .x <- scan(info_files$gene_set, what = "", sep = "\n", n = 1, quiet = TRUE)
   .xlist <- strsplit(.x, split = ";", fixed = TRUE)
   return(.xlist[[1]][-1])
 }
 
-info_read_gene_set <- function() {
+info_read <- function() {
   .x <- scan(info_files$gene_set, what = "", sep = "\n", n = 2, quiet = TRUE)
   .xlist <- strsplit(.x, split = ";", fixed = TRUE)
   return(list("progress" = as.numeric(.xlist[[1]][-1]), "info" = .xlist[[2]][-1]))
