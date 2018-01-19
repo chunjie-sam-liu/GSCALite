@@ -155,16 +155,12 @@ progress <- reactiveValues(
   "expr_calc" = FALSE,
   "progress_end" = FALSE
 )
-
-
 processing <- reactiveValues(
   "expr_loading_start" = FALSE,
   "expr_loading_end" = FALSE,
   "expr_calc_start" = FALSE,
   "expr_calc_end" = FALSE
 )
-
-
 status <- reactiveValues(
   "gene_set" = FALSE,
   "analysis" = FALSE,
