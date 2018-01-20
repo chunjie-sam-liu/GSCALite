@@ -161,6 +161,7 @@ processing <- reactiveValues(
   "expr_calc_start" = FALSE,
   "expr_calc_end" = FALSE
 )
+
 status <- reactiveValues(
   "gene_set" = FALSE,
   "analysis" = FALSE,
