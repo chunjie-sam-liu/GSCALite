@@ -27,6 +27,7 @@ observeEvent(input$analysis, {
   print(input$select_analysis)
   
   if (length(input$select_ctps) == 0 || length(input$select_analysis) == 0) {
+    status$analysis <- FALSE
     shinyWidgets::sendSweetAlert(
       session = session,
       title = "Error...",

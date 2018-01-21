@@ -128,7 +128,7 @@ info_files %>%
 info_trigger <- function() {
   .x <- scan(info_files$gene_set, what = "", sep = "\n", n = 1, quiet = TRUE)
   .xlist <- strsplit(.x, split = ";", fixed = TRUE)
-  return(.xlist[[1]][-1])
+  return(.xlist[[1]][-1]) 
 }
 
 info_read <- function() {

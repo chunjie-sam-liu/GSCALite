@@ -472,152 +472,155 @@ cancerTypeInput <- function(id) {
 
   tagList(
     # cancer type selection----
-    fluidRow(
-      column(
-        width = 10,
-        offset = 1,
-        shiny::tags$br(),
-        shiny::tags$h3("Cancer Type Selection", class = "text-success"),
-        shiny::tags$br(),
-
-        shinydashboard::tabBox(
-          width = 12, title = "Tissue",
-          tabPanel(
-            "Kidney",
-            shiny::tags$h4("Kidney", class = "text-success"),
-            checkboxGroupButtons(
-              inputId = ns("Kidney"), label = NULL,
-              choices = Kidney_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Adrenal Gland",
-            checkboxGroupButtons(
-              inputId = ns("Adrenal_Gland"), label = NULL,
-              choices = Adrenal_Gland_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Brain",
-            checkboxGroupButtons(
-              inputId = ns("Brain"), label = NULL,
-              choices = Brain_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Colorectal",
-            checkboxGroupButtons(
-              inputId = ns("Colorectal"), label = NULL,
-              choices = Colorectal_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Lung",
-            checkboxGroupButtons(
-              inputId = ns("Lung"), label = NULL,
-              choices = Lung_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Uterus",
-            checkboxGroupButtons(
-              inputId = ns("Uterus"), label = NULL,
-              choices = Uterus_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Bile Duct",
-            checkboxGroupButtons(
-              inputId = ns("Bile_Duct"), label = NULL,
-              choices = Bile_Duct_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Bone Marrow",
-            checkboxGroupButtons(
-              inputId = ns("Bone_Marrow"), label = NULL,
-              choices = Bone_Marrow_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Breast",
-            checkboxGroupButtons(
-              inputId = ns("Breast"), label = NULL,
-              choices = Breast_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Cervix",
-            checkboxGroupButtons(
-              inputId = ns("Cervix"), label = NULL,
-              choices = Cervix_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Other tissues",
-            checkboxGroupButtons(
-              inputId = ns("other_tissue"), label = NULL,
-              choices = other_tissue_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          )
-        )
-      )
-    ),
+    # fluidRow(
+    #   column(
+    #     width = 10,
+    #     offset = 1,
+    #     shiny::tags$br(),
+    #     shiny::tags$h3("Cancer Type Selection", class = "text-success"),
+    #     shiny::tags$br(),
+    # 
+    #     shinydashboard::tabBox(
+    #       width = 12, title = "Tissue",
+    #       tabPanel(
+    #         "Kidney",
+    #         shiny::tags$h4("Kidney", class = "text-success"),
+    #         checkboxGroupButtons(
+    #           inputId = ns("Kidney"), label = NULL,
+    #           choices = Kidney_choice,
+    #           justified = TRUE,
+    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+    #           direction = "vertical",
+    #           individual = TRUE
+    #         )
+    #       ),
+    #       tabPanel(
+    #         "Adrenal Gland",
+    #         checkboxGroupButtons(
+    #           inputId = ns("Adrenal_Gland"), label = NULL,
+    #           choices = Adrenal_Gland_choice,
+    #           justified = TRUE,
+    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+    #           direction = "vertical",
+    #           individual = TRUE
+    #         )
+    #       ),
+    #       tabPanel(
+    #         "Brain",
+    #         checkboxGroupButtons(
+    #           inputId = ns("Brain"), label = NULL,
+    #           choices = Brain_choice,
+    #           justified = TRUE,
+    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+    #           direction = "vertical",
+    #           individual = TRUE
+    #         )
+    #       ),
+    #       tabPanel(
+    #         "Colorectal",
+    #         checkboxGroupButtons(
+    #           inputId = ns("Colorectal"), label = NULL,
+    #           choices = Colorectal_choice,
+    #           justified = TRUE,
+    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+    #           direction = "vertical",
+    #           individual = TRUE
+    #         )
+    #       ),
+    #       tabPanel(
+    #         "Lung",
+    #         checkboxGroupButtons(
+    #           inputId = ns("Lung"), label = NULL,
+    #           choices = Lung_choice,
+    #           justified = TRUE,
+    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+    #           direction = "vertical",
+    #           individual = TRUE
+    #         )
+    #       ),
+    #       tabPanel(
+    #         "Uterus",
+    #         checkboxGroupButtons(
+    #           inputId = ns("Uterus"), label = NULL,
+    #           choices = Uterus_choice,
+    #           justified = TRUE,
+    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+    #           direction = "vertical",
+    #           individual = TRUE
+    #         )
+    #       ),
+    #       tabPanel(
+    #         "Bile Duct",
+    #         checkboxGroupButtons(
+    #           inputId = ns("Bile_Duct"), label = NULL,
+    #           choices = Bile_Duct_choice,
+    #           justified = TRUE,
+    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+    #           direction = "vertical",
+    #           individual = TRUE
+    #         )
+    #       ),
+    #       tabPanel(
+    #         "Bone Marrow",
+    #         checkboxGroupButtons(
+    #           inputId = ns("Bone_Marrow"), label = NULL,
+    #           choices = Bone_Marrow_choice,
+    #           justified = TRUE,
+    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+    #           direction = "vertical",
+    #           individual = TRUE
+    #         )
+    #       ),
+    #       tabPanel(
+    #         "Breast",
+    #         checkboxGroupButtons(
+    #           inputId = ns("Breast"), label = NULL,
+    #           choices = Breast_choice,
+    #           justified = TRUE,
+    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+    #           direction = "vertical",
+    #           individual = TRUE
+    #         )
+    #       ),
+    #       tabPanel(
+    #         "Cervix",
+    #         checkboxGroupButtons(
+    #           inputId = ns("Cervix"), label = NULL,
+    #           choices = Cervix_choice,
+    #           justified = TRUE,
+    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+    #           direction = "vertical",
+    #           individual = TRUE
+    #         )
+    #       ),
+    #       tabPanel(
+    #         "Other tissues",
+    #         checkboxGroupButtons(
+    #           inputId = ns("other_tissue"), label = NULL,
+    #           choices = other_tissue_choice,
+    #           justified = TRUE,
+    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
+    #           direction = "vertical",
+    #           individual = TRUE
+    #         )
+    #       )
+    #     )
+    #   )
+    # ),
     # value box for selected cancer types ----
     fluidRow(shiny::uiOutput(outputId = ns("cancer_types_select"))),
     shiny::tags$hr(width = "85%")
   )
 }
 
+
+
 # Value box for selection cancer types ------------------------------------
 
 
 cancerTypesSelect <- function(input, output, session, .sctps) {
   output$cancer_types_select <- renderUI({
+    
     div(length(.sctps()))
     shiny::tagList(
       column(

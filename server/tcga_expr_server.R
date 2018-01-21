@@ -1,19 +1,25 @@
 # source by "server.R"
 
 source(file.path(config$wd, "functions", "data_function.R"))
+source(file.path(config$wd, "functions", "tcga_expr_function.R"))
 
 expr_clean <- NULL
 survival_clean <- NULL
 
-# Selected cancer types ---------------------------------------------------
 
-expr_cancer_type <- callModule(module = cancerType, id = "expr")
+# toga expr welcome -------------------------------------------------------
+output$ui_expr_welcome <- shiny::renderUI({fn_expr_welcome()})
 
 # Cancer types value box selection ----------------------------------------
 
-expr_cancer_type <- callModule(cancerType, id = "expr")
+# expr_cancer_type <- callModule(cancerType, id = "expr")
 
-callModule(module = cancerTypesSelect, id = "expr", .sctps = expr_cancer_type)
+callModule(module = cancerTypesSelect, id = "expr", .sctps = input$select_ctps)
+
+# Selected cancer types ---------------------------------------------------
+
+# expr_cancer_type <- callModule(module = cancerType, id = "expr")
+
 
 # Check box ---------------------------------------------------------------
 
