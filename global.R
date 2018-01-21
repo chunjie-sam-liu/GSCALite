@@ -471,142 +471,6 @@ cancerTypeInput <- function(id) {
   ns <- NS(id)
 
   tagList(
-    # cancer type selection----
-    # fluidRow(
-    #   column(
-    #     width = 10,
-    #     offset = 1,
-    #     shiny::tags$br(),
-    #     shiny::tags$h3("Cancer Type Selection", class = "text-success"),
-    #     shiny::tags$br(),
-    # 
-    #     shinydashboard::tabBox(
-    #       width = 12, title = "Tissue",
-    #       tabPanel(
-    #         "Kidney",
-    #         shiny::tags$h4("Kidney", class = "text-success"),
-    #         checkboxGroupButtons(
-    #           inputId = ns("Kidney"), label = NULL,
-    #           choices = Kidney_choice,
-    #           justified = TRUE,
-    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-    #           direction = "vertical",
-    #           individual = TRUE
-    #         )
-    #       ),
-    #       tabPanel(
-    #         "Adrenal Gland",
-    #         checkboxGroupButtons(
-    #           inputId = ns("Adrenal_Gland"), label = NULL,
-    #           choices = Adrenal_Gland_choice,
-    #           justified = TRUE,
-    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-    #           direction = "vertical",
-    #           individual = TRUE
-    #         )
-    #       ),
-    #       tabPanel(
-    #         "Brain",
-    #         checkboxGroupButtons(
-    #           inputId = ns("Brain"), label = NULL,
-    #           choices = Brain_choice,
-    #           justified = TRUE,
-    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-    #           direction = "vertical",
-    #           individual = TRUE
-    #         )
-    #       ),
-    #       tabPanel(
-    #         "Colorectal",
-    #         checkboxGroupButtons(
-    #           inputId = ns("Colorectal"), label = NULL,
-    #           choices = Colorectal_choice,
-    #           justified = TRUE,
-    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-    #           direction = "vertical",
-    #           individual = TRUE
-    #         )
-    #       ),
-    #       tabPanel(
-    #         "Lung",
-    #         checkboxGroupButtons(
-    #           inputId = ns("Lung"), label = NULL,
-    #           choices = Lung_choice,
-    #           justified = TRUE,
-    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-    #           direction = "vertical",
-    #           individual = TRUE
-    #         )
-    #       ),
-    #       tabPanel(
-    #         "Uterus",
-    #         checkboxGroupButtons(
-    #           inputId = ns("Uterus"), label = NULL,
-    #           choices = Uterus_choice,
-    #           justified = TRUE,
-    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-    #           direction = "vertical",
-    #           individual = TRUE
-    #         )
-    #       ),
-    #       tabPanel(
-    #         "Bile Duct",
-    #         checkboxGroupButtons(
-    #           inputId = ns("Bile_Duct"), label = NULL,
-    #           choices = Bile_Duct_choice,
-    #           justified = TRUE,
-    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-    #           direction = "vertical",
-    #           individual = TRUE
-    #         )
-    #       ),
-    #       tabPanel(
-    #         "Bone Marrow",
-    #         checkboxGroupButtons(
-    #           inputId = ns("Bone_Marrow"), label = NULL,
-    #           choices = Bone_Marrow_choice,
-    #           justified = TRUE,
-    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-    #           direction = "vertical",
-    #           individual = TRUE
-    #         )
-    #       ),
-    #       tabPanel(
-    #         "Breast",
-    #         checkboxGroupButtons(
-    #           inputId = ns("Breast"), label = NULL,
-    #           choices = Breast_choice,
-    #           justified = TRUE,
-    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-    #           direction = "vertical",
-    #           individual = TRUE
-    #         )
-    #       ),
-    #       tabPanel(
-    #         "Cervix",
-    #         checkboxGroupButtons(
-    #           inputId = ns("Cervix"), label = NULL,
-    #           choices = Cervix_choice,
-    #           justified = TRUE,
-    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-    #           direction = "vertical",
-    #           individual = TRUE
-    #         )
-    #       ),
-    #       tabPanel(
-    #         "Other tissues",
-    #         checkboxGroupButtons(
-    #           inputId = ns("other_tissue"), label = NULL,
-    #           choices = other_tissue_choice,
-    #           justified = TRUE,
-    #           checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-    #           direction = "vertical",
-    #           individual = TRUE
-    #         )
-    #       )
-    #     )
-    #   )
-    # ),
     # value box for selected cancer types ----
     fluidRow(shiny::uiOutput(outputId = ns("cancer_types_select"))),
     shiny::tags$hr(width = "85%")
@@ -620,20 +484,18 @@ cancerTypeInput <- function(id) {
 
 cancerTypesSelect <- function(input, output, session, .sctps) {
   output$cancer_types_select <- renderUI({
-    
-    div(length(.sctps()))
     shiny::tagList(
       column(
         width = 4, offset = 2,
         infoBox(
-          title = "Number of selected cancers", value = length(.sctps()),
+          title = "Number of selected cancers", value = length(.sctps),
           width = 12,  color = "aqua", fill = TRUE
         )#icon = icon("users"),
       ),
       column(
         width = 4,
         infoBox(
-          title = "Number of unselected cancers", value = 33 - length(.sctps()),
+          title = "Number of unselected cancers", value = 33 - length(.sctps),
           width = 12, color = "red", fill = TRUE
         ) #icon = icon("credit-card"),
       ),
@@ -642,7 +504,7 @@ cancerTypesSelect <- function(input, output, session, .sctps) {
         box(
           solidHeader = TRUE, status = "primary",
           title = "Selected Cancer Types", width = 12,
-          paste0(.sctps(), collapse = ", ")
+          paste0(.sctps, collapse = ", ")
         )
       )
     )
@@ -654,24 +516,6 @@ cancerTypesSelect <- function(input, output, session, .sctps) {
 selectAndAnalysisInput <- function(id) {
   ns <- NS(id)
   shiny::tagList(
-    fluidRow(
-      column(
-        width = 3, offset = 4,
-        switchInput(
-          inputId = ns("switch"), value = TRUE,
-          onLabel = "Select All",
-          offLabel = "Deselect All"
-        )
-      ),
-      column(
-        width = 2,
-        shiny::tags$div(
-          style = "margin:3px;", class = "form-group shiny-input-container",
-          shinyBS::bsButton(inputId = ns("submit"), label = "Analysis", icon = icon(name = "fire"))
-        )
-      ),
-      column(width = 4)
-    ),
     fluidRow(
       column(
         width = 8, offset = 2,
@@ -1348,35 +1192,7 @@ rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbo
 
 
 
-# Expr output -------------------------------------------------------------
 
-exprOutput <- function(id) {
-  ns <- NS(id)
-  column(
-    width = 10, offset = 1,
-    shinydashboard::tabBox(
-      id = "expr_plot", title = "PLOT", width = 12,
-      # bubble plot for tumor vs. normal
-      tabPanel(
-        title = "Tumor vs. Normal",
-        plotOutput(outputId = ns("expr_bubble_plot"))
-      ),
-      # datatable
-      tabPanel(
-        title = "Table of comparison",
-        DT::dataTableOutput(outputId = ns("expr_dt_comparison"))
-      ),
-      tabPanel(
-        title = "Survival",
-        plotOutput(outputId = ns("survival"))
-      ),
-      tabPanel(
-        title = "Subtype",
-        plotOutput(outputId = ns("subtype"))
-      )
-    )
-  )
-}
 
 
 # Drug output -------------------------------------------------------------

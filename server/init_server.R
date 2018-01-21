@@ -183,7 +183,16 @@ error <- reactiveValues(
 )
 
 
+# analysis ----------------------------------------------------------------
 
+selected_analysis <- reactiveValues(
+  'expr' = FALSE,
+  'snv' = FALSE,
+  'cnv' = FALSE,
+  'meth' = FALSE
+)
+
+selected_ctyps <- reactiveVal()
 
 # Gene sets ---------------------------------------------------------------
 gene_set <- reactiveValues(

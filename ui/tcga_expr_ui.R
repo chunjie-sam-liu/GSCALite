@@ -8,6 +8,8 @@ tabItem(
   
   # welcome info
   fluidRow(style = "width:80%;", shiny::uiOutput(outputId = "ui_expr_welcome")),
+  
+  # not selected
 
   # For help page
   
@@ -19,8 +21,9 @@ tabItem(
   fluidRow(selectAndAnalysisInput("expr")),
 
   # Plot result ----
-  fluidRow(exprOutput("expr")),
-
+  fluidRow(shiny::uiOutput(outputId = "ui_expr_result")),
+  
+  # fluidRow(exprOutput("expr")),
 
   # Load footer ----
   source(file.path(config$wd, "ui", "footer.R"), echo = FALSE, verbose = FALSE)$value

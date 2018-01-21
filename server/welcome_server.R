@@ -23,9 +23,6 @@ observeEvent(input$example, {
 
 observeEvent(input$analysis, {
   
-  print(input$select_ctps)
-  print(input$select_analysis)
-  
   if (length(input$select_ctps) == 0 || length(input$select_analysis) == 0) {
     status$analysis <- FALSE
     shinyWidgets::sendSweetAlert(
@@ -35,6 +32,15 @@ observeEvent(input$analysis, {
       type = "error"
     )
   } else{
+    # reactiveVal for selected cancer types
+    selected_ctyps(input$select_ctps)
+    
+    # set TRUE for analysis
+    input$select_analysis %>% 
+      purrr::walk(.f = function(.x) {
+        selected_analysis[[.x]] <- TRUE
+      })
+    
     shinyjs::disable(id = "input_gene_set")
     shinyjs::disable(id = "analysis")
   }
