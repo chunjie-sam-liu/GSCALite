@@ -375,4 +375,8 @@ input[type='radio']:checked:before {
     color: #FFFFFF;
 }
 
-
+.jumbotron{
+  margin: 50px 0;
+  background-color: #ffffff;
+  border: 1px solid #008176;
+}
