@@ -172,7 +172,8 @@ status <- reactiveValues(
   "meth_submit" = FALSE,
   "rppa_submit" = FALSE,
   "gtex_expr_submit" = FALSE,
-  "gtex_eqtl_submit" = FALSE
+  "gtex_eqtl_submit" = FALSE,
+  "progressbar" = FALSE
 )
 
 error <- reactiveValues(

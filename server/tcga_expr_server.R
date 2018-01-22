@@ -51,7 +51,6 @@ expr_analysis <- eventReactive(
     if (status$analysis == TRUE) {
         # load data expr ----
         processing$start_loading_start <- TRUE
-        print(glue::glue("processing$start_loading_start {processing$start_loading_start}"))
         
         updateProgressBar(session = session, id = "progressbar", value = 40, status = "danger")
         session$onFlushed(function() {
