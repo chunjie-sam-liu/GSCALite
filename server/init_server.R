@@ -190,7 +190,7 @@ selected_analysis <- reactiveValues(
   'snv' = FALSE,
   'cnv' = FALSE,
   'meth' = FALSE,
-  'path' = FALSE,
+  'rppa' = FALSE,
   'mirna' = FALSE,
   'drug' = FALSE
 )
@@ -225,6 +225,6 @@ expr_subtype <- NULL
 cnv_load <- NULL
 snv_load <- NULL
 meth_load <- NULL
-pathway_load <- NULL
+rppa_load <- NULL
 mirna_load <- NULL
 
