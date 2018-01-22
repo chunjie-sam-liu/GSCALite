@@ -189,7 +189,10 @@ selected_analysis <- reactiveValues(
   'expr' = FALSE,
   'snv' = FALSE,
   'cnv' = FALSE,
-  'meth' = FALSE
+  'meth' = FALSE,
+  'path' = FALSE,
+  'mirna' = FALSE,
+  'drug' = FALSE
 )
 
 selected_ctyps <- reactiveVal()
