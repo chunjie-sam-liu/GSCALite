@@ -222,3 +222,9 @@ print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading symbol @ {Sy
 expr <- NULL
 expr_survival <- NULL
 expr_subtype <- NULL
+cnv_load <- NULL
+snv_load <- NULL
+meth_load <- NULL
+pathway_load <- NULL
+mirna_load <- NULL
+
