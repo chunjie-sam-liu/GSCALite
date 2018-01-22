@@ -14,24 +14,29 @@ load_data_expr <- function() {
 }
 
 
+# load snv data -----------------------------------------------------------
+
+load_data_snv <- function() {
+  if (is.null(snv_load)) {
+    # load snv data  ----------------------------------------------------------
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} start Load snv data@ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
+    snv <<- readr::read_rds(file.path(config$database, "TCGA", "snv", ".rds_snv_all_gene_snv_count.rds.gz"))
+    mc3_pass <<- readr::read_rds(file.path(config$database, "TCGA", "snv", "01-snv_mutation_mc3_public.pass.filtered_maf.rds.gz"))
+    snv_survival <<- readr::read_rds(file.path(config$database, "TCGA", "snv", "pancan32_snv_survival_genelist_sig_pval.rds.gz"))
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} end Load snv data @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
+  }
+}
+
 # load cnv data --------------------------------------------------------------
 load_data_cnv <- function() {
   # load cnv percent
-  if (is.null(cnv)) {
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv percent data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+  if (is.null(cnv_load)) {
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
     cnv <<- readr::read_rds(file.path(config$database, "TCGA", "cnv", "pancan34_cnv_percent.rds.gz"))
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} end loading cnv percent data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-  }
-  # load cnv raw
-  if (is.null(cnv_raw)) {
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv raw data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
     cnv_raw <<- readr::read_rds(file.path(config$database, "TCGA", "cnv", "pancan34_cnv_threshold.rds.gz"))
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv raw data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-  }
-  if (is.null(cnv_cor)) {
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv cor data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
     cnv_cor <<- readr::read_rds(file.path(config$database, "TCGA", "cnv", "pancan34_all_gene_exp-cor-cnv.rds.gz"))
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv cor data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
   }
 }
 
@@ -40,20 +45,35 @@ load_data_cnv <- function() {
 
 load_data_meth <- function() {
   # load cnv percent
-  if (is.null(meth_diff)) {
+  if (is.null(meth_load)) {
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading methy diff data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
     meth_diff <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pan33_allgene_methy_diff.simplification.rds.gz"))
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading methy diff data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-  }
-  # genes' survival diffenence hypermethylation and hypomethylation
-  if (is.null(meth_survival)) {
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading methy survival data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
     meth_survival <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pancan32_meth_survival_genelist_sig_pval0.05.rds.gz"))
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading methy survival data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+    meth_cor <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pancan34_all_gene_exp-cor-meth.rds.gz"))
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading methy cor to expression data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
   }
-  # genes' expression correlate with methylation
-  if (is.null(meth_cor)) {
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading methy cor to expression data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+}
+
+
+# load miRNA data ---------------------------------------------------------
+load_data_mirna <- function() {
+  # load cnv percent
+  if (is.null(mirna_load)) {
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading methy diff data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+    meth_diff <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pan33_allgene_methy_diff.simplification.rds.gz"))
+    meth_survival <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pancan32_meth_survival_genelist_sig_pval0.05.rds.gz"))
+    meth_cor <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pancan34_all_gene_exp-cor-meth.rds.gz"))
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading methy cor to expression data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+  }
+}
+
+# load pathway data ----------------------------------------------------------
+load_data_ccle <- function() {
+  # load cnv percent
+  if (is.null(pathway_load)) {
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading methy diff data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+    meth_diff <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pan33_allgene_methy_diff.simplification.rds.gz"))
+    meth_survival <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pancan32_meth_survival_genelist_sig_pval0.05.rds.gz"))
     meth_cor <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pancan34_all_gene_exp-cor-meth.rds.gz"))
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading methy cor to expression data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
   }
