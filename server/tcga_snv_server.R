@@ -30,19 +30,19 @@ callModule(module = selectAndAnalysis, id = "snv", .id = "snv")
 
 # analysis core -----------------------------------------------------------
 # monitor for gene list change-----------------------------------
-snv_gene_list <- eventReactive(
-  eventExpr = status$analysis,
-  ignoreNULL = TRUE,
-  valueExpr = {
-    # be sure the following code run after start analysis
-    if (status$analysis == TRUE) {
-      status$snv_submit <- TRUE
-      shinyjs::disable(id = "snv-submit")
-      shinyjs::disable(id = "snv-switch")
-      as.character(gene_set$match)
-    } 
-  }
-)
+# snv_gene_list <- eventReactive(
+#   eventExpr = status$analysis,
+#   ignoreNULL = TRUE,
+#   valueExpr = {
+#     # be sure the following code run after start analysis
+#     if (status$analysis == TRUE) {
+#       status$snv_submit <- TRUE
+#       shinyjs::disable(id = "snv-submit")
+#       shinyjs::disable(id = "snv-switch")
+#       as.character(gene_set$match)
+#     } 
+#   }
+# )
 
 # snv result out ui -------------------------------------------------------
 
@@ -167,13 +167,10 @@ snv_analysis <- eventReactive(
           )
         }
       }
-      print(gene_set$match)
-      .msg <- c("NOTICE: ")
     }
   }
 )
 
 # monitors -------------------------------------------------------
 # observe(snv_global_analysis())
-observe(gene_set$match)
 observe(snv_analysis())
