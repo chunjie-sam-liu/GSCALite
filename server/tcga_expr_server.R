@@ -53,20 +53,15 @@ expr_analysis <- eventReactive(
         processing$start_loading_start <- TRUE
         
         updateProgressBar(session = session, id = "progressbar", value = 40, status = "danger")
-        session$onFlushed(function() {
-          progress$expr_loading <- TRUE
-        })
-        
-        observeEvent(
-          eventExpr = progress$expr_loading,
-          handlerExpr = {
+        session$onFlushed(function() {progress$expr_loading <- TRUE})
+        print("cj---------------------")
+        observeEvent(eventExpr = progress$expr_loading, handlerExpr = {
             if (progress$expr_loading == TRUE) {
               # load data
               load_data_expr()
               processing$start_loading_end <- TRUE
             }
-          }
-        )
+          })
         
         observeEvent(processing$start_loading_end, {
           if (processing$start_loading_end == TRUE) {
@@ -77,9 +72,7 @@ expr_analysis <- eventReactive(
           }
         })
         
-        observeEvent(
-          eventExpr = progress$expr_calc,
-          handlerExpr = {
+        observeEvent(eventExpr = progress$expr_calc, handlerExpr = {
             if (progress$expr_calc == TRUE) {
               
               .valid_ctps <- intersect(paired_cancer_types, selected_ctyps())
@@ -115,8 +108,7 @@ expr_analysis <- eventReactive(
               
               processing$expr_calc_end <- TRUE
             }
-          }
-        )
+          })
         
         observeEvent(processing$expr_calc_end, {
           if (processing$expr_calc_end == TRUE) {
