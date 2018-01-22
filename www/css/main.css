@@ -376,7 +376,7 @@ input[type='radio']:checked:before {
     height: 100%;
     text-align: center;
     color: #000000;
-    vertical-align: middle;
+    
 }
 
 .jumbotron{
