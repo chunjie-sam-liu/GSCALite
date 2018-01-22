@@ -94,7 +94,7 @@ fn_multi_cancer_input <- function(.ctps){
       width = 4,
       multiInput(
         inputId = "select_analysis", label = "Select Analysis", width = "550px",
-        choices = c("mRNA Expression" = "expr", "Single Nucleotide Variation" = "snv"), selected = c("expr", "snv")
+        choices = c("mRNA Expression" = "expr", "Single Nucleotide Variation" = "snv", "Drug Response" = "drug"), selected = c("expr", "snv", "drug")
       ),
        shinyjs::hide(switchInput(
         inputId = "ana_switch", label = "Analysis", value = FALSE,
