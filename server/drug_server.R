@@ -24,10 +24,7 @@ drug_analysis <- eventReactive(
   eventExpr = status$analysis,
   ignoreNULL = TRUE,
   valueExpr = {
-    if (status$analysis == TRUE) {
-      print(gene_set$match)
-      # load gdsc
-      
+    if (status$analysis == TRUE && selected_analysis$drug == TRUE) {
       callModule(module = drug_output, id = "drug", .path = config$database, .gs = gene_set$match)
       
     }
