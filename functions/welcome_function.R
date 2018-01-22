@@ -98,7 +98,7 @@ fn_multi_cancer_input <- function(.ctps){
                     "Single Nucleotide Variation" = "snv",
                     "Copy Number Variation" = "cnv",
                     "Methylation" = "meth",
-                    "Pathway Activity" = "ccle",
+                    "Pathway Activity" = "rppa",
                     "miRNA Network" = "mirna"), selected = c("expr", "snv")
       ),
        shinyjs::hide(switchInput(
