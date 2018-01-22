@@ -1193,29 +1193,6 @@ rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbo
 
 
 
-
-
-# Drug output -------------------------------------------------------------
-drugOutput <- function(id) {
-  ns <- NS(id)
-  column(
-    width = 10, offset = 1,
-    shinydashboard::tabBox(
-      id = "expr_plot", title = "PLOT", width = 12,
-      # drug output
-      tabPanel(
-        title = "GDSC",
-        plotOutput(outputId = ns("gdsc"))
-      ),
-      tabPanel(
-        title = "CTRP",
-        plotOutput(outputId = ns("ctrp"))
-      )
-    )
-  )
-}
-
-
 #### GTEx eqtl table output-------------
 
 GTEx_eqtl_Output <- function(id) {
