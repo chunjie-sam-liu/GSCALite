@@ -1,11 +1,20 @@
 # source by "server.R"
 
-source(file.path(config$wd, "functions", "drug_analysis.R"))
+# source(file.path(config$wd, "functions", "drug_analysis.R"))
+source(file.path(config$wd, "functions", "drug_function.R"))
+
+# drug welcome info -------------------------------------------------------
+
+output$ui_drug_welcome <- shiny::renderUI({fn_drug_welcome()})
+
+
+# drug result -------------------------------------------------------------
+
+output$ui_drug_result <- shiny::renderUI({fn_expr_result(selected_analysis$drug)})
 
 drug_output <- function(input, output, session, .path, .gs){
   output$gdsc <- renderPlot({NULL})
   output$ctrp <- renderPlot({NULL})
-  print("---run drug---")
   
   output$gdsc <- renderPlot({gdsc_plot(.path, .gs)})
   output$ctrp <- renderPlot({ctrp_plot(.path, .gs)})
