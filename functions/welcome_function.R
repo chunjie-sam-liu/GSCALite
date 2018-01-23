@@ -85,6 +85,7 @@ fn_multi_cancer_input <- function(.ctps){
         inputId = "select_ctps", label = "Select TCGA Cancer Types or GTEx Tissue",
         choices = .ctps, selected = c('LUSC', 'LUAD'), width = "550px"
       ),
+      
       shinyjs::hide(switchInput(
         inputId = "ctps_switch", label = "Cancers", value = FALSE,
         onLabel = "All", offLabel = "None", size = "large", offStatus = "danger"
@@ -99,7 +100,8 @@ fn_multi_cancer_input <- function(.ctps){
                     "Copy Number Variation" = "cnv",
                     "Methylation" = "meth",
                     "Pathway Activity" = "rppa",
-                    "miRNA Network" = "mirna"), selected = c("expr", "snv")
+                    "miRNA Network" = "mirna",
+                    "Drug Response" = "drug"), selected = c("expr", "snv", "drug")
       ),
        shinyjs::hide(switchInput(
         inputId = "ana_switch", label = "Analysis", value = FALSE,

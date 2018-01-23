@@ -52,7 +52,7 @@ fn_expr_result <- function(.expr){
   } else{
     column(
       width = 10, offset = 1,
-      tags$div("This analysis is not selected")
+      shiny::tags$div(style = "height=500px;", class = "jumbotron", shiny::tags$h2("This analysis is not selected"))
     )
   }
 }
