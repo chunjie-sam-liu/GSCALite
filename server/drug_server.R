@@ -10,7 +10,7 @@ output$ui_drug_welcome <- shiny::renderUI({fn_drug_welcome()})
 
 # drug result -------------------------------------------------------------
 
-output$ui_drug_result <- shiny::renderUI({fn_expr_result(selected_analysis$drug)})
+output$ui_drug_result <- shiny::renderUI({fn_drug_result(selected_analysis$drug)})
 
 drug_output <- function(input, output, session, .path, .gs){
   output$gdsc <- renderPlot({NULL})

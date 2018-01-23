@@ -12,7 +12,7 @@ output$ui_expr_welcome <- shiny::renderUI({fn_expr_welcome()})
 
 # Cancer types value box selection ----------------------------------------
 
-callModule(module = cancerTypesSelect, id = "expr", .sctps = input$select_ctps)
+callModule(module = cancerTypesSelect, id = "expr", .sctps = selected_ctyps())
 
 # Check box ---------------------------------------------------------------
 

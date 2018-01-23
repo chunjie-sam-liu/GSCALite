@@ -43,8 +43,7 @@ drugOutput <- function(id) {
   )
 }
 
-fn_expr_result <- function(.test){
-  
+fn_drug_result <- function(.test){
   if (.test == TRUE) {
     drugOutput("drug")
   } else{
