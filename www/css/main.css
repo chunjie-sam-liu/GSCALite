@@ -54,7 +54,7 @@
   background-color: #ffffff;
 } /* background of dashboard body */
 body {
-font-size: 16px !important;
+font-size: 18px !important;
 font-weight: 200 !important;
 line-height: 1.5 !important;
 }
@@ -174,8 +174,11 @@ height: 60px;
 .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a, .navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a, .navbar-nav > .tasks-menu > .dropdown-menu > li .menu > li > a {
 }
 a {
-  color: #111111;
+  color: #000000;
 } /*   color of text in dropdown */
+a.selected {
+  color: #008176;
+}
 .alert-success, .bg-green, .callout.callout-success, .label-success, .modal-success .modal-body {
   background-color: #008c81 !important;
 } /* bkg color of little number of notification menu */
@@ -362,7 +365,22 @@ input[type='radio']:checked:before {
     color: #F44336;
 }
 
+/* Add Loading screen */
+#loading-content {
+    position: absolute;
+    background: #e4e4e7;
+    opacity: 0.9;
+    z-index: 100;
+    left: 0;
+    right: 0;
+    height: 100%;
+    text-align: center;
+    color: #000000;
+    
+}
 
-
-
-
+.jumbotron{
+  margin: 50px 0;
+  background-color: #ffffff;
+  border: 1px solid #008176;
+}

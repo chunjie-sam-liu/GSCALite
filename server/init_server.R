@@ -15,10 +15,12 @@ cdata <- session$clientData
 user_dir <- file.path(config$wd, "userdata", user_id)
 pngs_dir <- file.path(config$wd, "userdata", user_id, "pngs")
 jsons_dir <- file.path(config$wd, "userdata", user_id, "jsons")
+
 ifelse(dir.exists(user_dir), glue::glue("Directory {user_dir} exists!"), dir.create(user_dir))
 cmd <- "chmod"
 args <- c("-R", "777", user_dir)
 system2(command = cmd, args = args)
+
 dir.create(pngs_dir)
 dir.create(jsons_dir)
 
@@ -69,21 +71,29 @@ local({
 })
 
 
+# User logs and infos -----------------------------------------------------
+
+user_analysis <- c(
+  "gene_set", 
+  "tcga_expr", "tcga_expr", "tcga_snv", "tcga_cnv", "tcga_meth", "tcga_path", "tcga_mirna",
+  "drug_gdsc", "drug_ctrp", 
+  "gtex_expr", "gtex_eqtl")
+
 # Log analysis ------------------------------------------------------------
 
-user_logs <- list(
-  "tcga_snv" = "tcga_snv.log",
-  "tcga_cnv" = "tcga_cnv.log",
-  "gene_set" = "gene_set.log",
-  "tcga_expr" = "tcga_expr.log"
-)
+user_logs <- user_analysis %>% 
+  purrr::map(
+    .f = function(.x){
+      file.path(user_dir, paste(.x, "log", sep = "."))
+      })
+names(user_logs) <- user_analysis
 
 user_logs %>%
   tibble::enframe() %>%
   tidyr::unnest() %>%
   purrr::pwalk(
     .f = function(name, value) {
-      .log_file <- file.path(user_dir, value)
+      .log_file <- value
       .log <- glue::glue("{paste0(rep('-', 10), collapse = '')} User : {user_id} @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}")
 
       if (!file.exists(.log_file)) {
@@ -93,6 +103,40 @@ user_logs %>%
       }
     }
   )
+
+# Info analysis --------------------------------------------------------------
+info_files <- user_analysis %>% 
+  purrr::map(
+    .f = function(.x){
+      file.path(user_dir, paste(.x, "info", sep = "."))
+      })
+names(info_files) <- user_analysis
+
+info_files %>% 
+  tibble::enframe() %>% 
+  tidyr::unnest() %>% 
+  purrr::pwalk(
+    .f = function(name, value) {
+      .info_file = value
+      .info <- c("progress;0", "info;")
+      write(.info, .info_file)
+    }
+  )
+
+# Poll handle -------------------------------------------------------------
+
+info_trigger <- function() {
+  .x <- scan(info_files$gene_set, what = "", sep = "\n", n = 1, quiet = TRUE)
+  .xlist <- strsplit(.x, split = ";", fixed = TRUE)
+  return(.xlist[[1]][-1]) 
+}
+
+info_read <- function() {
+  .x <- scan(info_files$gene_set, what = "", sep = "\n", n = 2, quiet = TRUE)
+  .xlist <- strsplit(.x, split = ";", fixed = TRUE)
+  return(list("progress" = as.numeric(.xlist[[1]][-1]), "info" = .xlist[[2]][-1]))
+}
+
 
 # Time events -------------------------------------------------------------
 
@@ -104,26 +148,6 @@ time <- reactiveValues(
 )
 
 
-# Info files --------------------------------------------------------------
-
-info_files <- list(
-  "gene_set" = file.path(user_dir, "gene_set.info"),
-  "tcga_analysis" = file.path(user_dir, "tcga_analysis.info"),
-  "gtex_analysis" = file.path(user_dir, "gtex_analysis.info"),
-  "drug" = file.path(user_dir, "drug.info")
-)
-
-local({
-  info <- c("progress;0", "info;")
-  info_files %>%
-    purrr::walk(
-      .f = function(x) {
-        write(info, x)
-      }
-    )
-})
-
-
 # Status and error --------------------------------------------------------
 
 progress <- reactiveValues(
@@ -131,16 +155,12 @@ progress <- reactiveValues(
   "expr_calc" = FALSE,
   "progress_end" = FALSE
 )
-
-
 processing <- reactiveValues(
   "expr_loading_start" = FALSE,
   "expr_loading_end" = FALSE,
-
   "expr_calc_start" = FALSE,
   "expr_calc_end" = FALSE
 )
-
 
 status <- reactiveValues(
   "gene_set" = FALSE,
@@ -152,7 +172,8 @@ status <- reactiveValues(
   "meth_submit" = FALSE,
   "rppa_submit" = FALSE,
   "gtex_expr_submit" = FALSE,
-  "gtex_eqtl_submit" = FALSE
+  "gtex_eqtl_submit" = FALSE,
+  "progressbar" = FALSE
 )
 
 error <- reactiveValues(
@@ -163,20 +184,19 @@ error <- reactiveValues(
 )
 
 
-# Poll handle -------------------------------------------------------------
+# analysis ----------------------------------------------------------------
 
-info_trigger_gene_set <- function() {
-  .x <- scan(info_files$gene_set, what = "", sep = "\n", n = 1, quiet = TRUE)
-  .xlist <- strsplit(.x, split = ";", fixed = TRUE)
-  return(.xlist[[1]][-1])
-}
+selected_analysis <- reactiveValues(
+  'expr' = FALSE,
+  'snv' = FALSE,
+  'cnv' = FALSE,
+  'meth' = FALSE,
+  'rppa' = FALSE,
+  'mirna' = FALSE,
+  'drug' = FALSE
+)
 
-info_read_gene_set <- function() {
-  .x <- scan(info_files$gene_set, what = "", sep = "\n", n = 2, quiet = TRUE)
-  .xlist <- strsplit(.x, split = ";", fixed = TRUE)
-  return(list("progress" = as.numeric(.xlist[[1]][-1]), "info" = .xlist[[2]][-1]))
-}
-
+selected_ctyps <- reactiveVal()
 
 # Gene sets ---------------------------------------------------------------
 gene_set <- reactiveValues(
@@ -190,13 +210,22 @@ gene_set <- reactiveValues(
 # Load gene list ----------------------------------------------------------
 
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading symbol @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+
 total_gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
 paired_cancer_types <- readr::read_rds(file.path(config$database, "TCGA", "expr", "paired_cancer_types.rds.gz"))
+pancan_color <- readr::read_tsv(file.path(config$database,"02_pcc.tsv"))
+ctps <- readr::read_rds(file.path(config$database, "03_ctps.rds.gz"))
+
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading symbol @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-
-
+ 
 # Global load data --------------------------------------------------------
 
 expr <- NULL
 expr_survival <- NULL
 expr_subtype <- NULL
+cnv_raw <- NULL
+mc3_pass <- NULL
+meth_diff <- NULL
+rppa_per <- NULL
+mirna2target <- NULL
+

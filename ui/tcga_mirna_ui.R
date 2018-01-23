@@ -25,28 +25,14 @@ tabItem(
                       </div>
                       </div>
                       </div>")
-                 ),
-        ## Hlep message including in tcga_mirna_help.ui----
-        source(file.path(config$ui,"tcga_mirna_help.R"))[1],
-        
-        shiny::tags$hr(width="85%"),
-        
-        # cancer type no selection and only result output---------------------------------------------------
+  ),
+  ## Hlep message including in tcga_mirna_help.ui----
+  source(file.path(config$ui, "tcga_mirna_help.R"))[1],
 
-        
-        # output plot -------------------------------------------------------------
-        # Tabset Panel
-        fluidRow(
-          column(width = 10,
-                 offset = 1,
-                 shinydashboard::tabBox(id = "mirna_PLOT",title = "PLOT",width = 12,
-                                        tabPanel(title="networkD3",
-                                                 forceNetworkOutput("mirna_net1",height = "700px")),
-                                        tabPanel(title= "visNetwork",
-                                                 visNetwork::visNetworkOutput("mirna_net2",height = "700px"))
-                 )
-          )
-        ),
+  shiny::tags$hr(width = "85%"),
+
+  # generate result panel ----
+  fluidRow(shiny::uiOutput(outputId = "ui_mirna_result")),
 
   # load footer ------------------------------------------------------
   source(file.path(config$ui, "footer.R"))[1]

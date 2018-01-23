@@ -12,12 +12,14 @@ library(shiny)
 library(shinyjs)
 library(shinyBS)
 library(shinyWidgets)
+library(shinycssloaders)
 library(shinydashboard)
+
 
 # For front end
 library(DT)
 library(grid)
-library(highcharter)
+# library(highcharter)
 
 # For network
 library(igraph)
@@ -35,21 +37,6 @@ source(file = "config.R", local = TRUE)
 # Load ui function --------------------------------------------------------
 
 source(file = file.path(config$ui, "functions_ui.R"), local = TRUE)
-
-# Load global module ------------------------------------------------------
-
-source(file = file.path(config$wd, "global.R"), local = TRUE)
-
-# Repeated ui stuff for modals --------------------------------------------
-
-addReport_modelTrivia <- tagList(
-  shiny::tags$br(),
-  shiny::tags$br(),
-  shiny::tags$p("The report can be downloaded in the Report section.")
-)
-
-jscode <- "shinyjs.collapse = function(boxid) {$('#' + boxid).closest('.box').find('[data-widget=collapse]').click();}"
-
 
 # Header Start ------------------------------------------------------------
 
@@ -78,8 +65,6 @@ sidebar <- dashboardSidebar(
   sidebarMenu(
     # Welcome ----
     menuItem("Welcome", tabName = "welcome", icon = icon("home")),
-
-
 
     # TCGA ----
     menuItem(
@@ -135,7 +120,8 @@ body <- dashboardBody(
   
   # for html head 
   shiny::tags$head(
-    shinyjs::useShinyjs(),
+    shinyWidgets::useSweetAlert(), # For sweet alert
+    shinyjs::useShinyjs(), # For shinyjs
     shinyjs::extendShinyjs(script = file.path(config$wd, "www", "js", "gscalite.js")),
     shiny::tags$link(rel = "stylesheet", type = "text/css", href = "css/main.css"),
     shiny::tags$script(type = "text/javascript", src = "js/main.js")
@@ -149,26 +135,26 @@ body <- dashboardBody(
 
 
     # GTEx ----
-    # source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local = TRUE)$value,
-    # source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "GTEx_exp_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "GTEx_eqtl_ui.R"), local = TRUE)$value,
 
     # TCGA ----
     # expr ----
-    # source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_expr_ui.R"), local = TRUE)$value,
     # cnv ----
-    # source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_cnv_ui.R"), local = TRUE)$value,
     # snv ----
-    # source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_snv_ui.R"), local = TRUE)$value,
 
     # meth ----
-    # source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_meth_ui.R"), local = TRUE)$value,
 
     # rppa ----
-    # source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_rppa_ui.R"), local = TRUE)$value,
     # mirna ----
-    # source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "tcga_mirna_ui.R"), local = TRUE)$value,
     # Drug ----
-    # source(file = file.path(config$wd, "ui", "drug_ui.R"), local = TRUE)$value,
+    source(file = file.path(config$wd, "ui", "drug_ui.R"), local = TRUE)$value,
 
     # Download ----
 
@@ -183,10 +169,18 @@ body <- dashboardBody(
 # Body End ----------------------------------------------------------------
 
 
-# Shiny UI ----------------------------------------------------------------
-shinyUI(dashboardPage(
+# dashboadpage ------------------------------------------------------------
+page <- dashboardPage(
   title = "GSCA - Gene Set Cancer Analysis",
   header = header,
   sidebar = sidebar,
   body = body
-))
+)
+
+# Shiny UI ----------------------------------------------------------------
+ui <- tagList(
+  div(style = "padding:450px", id = "loading-content",h2("Loading...")),
+  shinyjs::hidden(div(id = "app-content", page))
+)
+
+shinyUI(ui = ui)

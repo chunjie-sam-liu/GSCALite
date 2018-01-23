@@ -471,166 +471,31 @@ cancerTypeInput <- function(id) {
   ns <- NS(id)
 
   tagList(
-    # cancer type selection----
-    fluidRow(
-      column(
-        width = 10,
-        offset = 1,
-        shiny::tags$br(),
-        shiny::tags$h3("Cancer Type Selection", class = "text-success"),
-        shiny::tags$br(),
-
-        shinydashboard::tabBox(
-          width = 12, title = "Tissue",
-          tabPanel(
-            "Kidney",
-            shiny::tags$h4("Kidney", class = "text-success"),
-            checkboxGroupButtons(
-              inputId = ns("Kidney"), label = NULL,
-              choices = Kidney_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Adrenal Gland",
-            checkboxGroupButtons(
-              inputId = ns("Adrenal_Gland"), label = NULL,
-              choices = Adrenal_Gland_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Brain",
-            checkboxGroupButtons(
-              inputId = ns("Brain"), label = NULL,
-              choices = Brain_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Colorectal",
-            checkboxGroupButtons(
-              inputId = ns("Colorectal"), label = NULL,
-              choices = Colorectal_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Lung",
-            checkboxGroupButtons(
-              inputId = ns("Lung"), label = NULL,
-              choices = Lung_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Uterus",
-            checkboxGroupButtons(
-              inputId = ns("Uterus"), label = NULL,
-              choices = Uterus_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Bile Duct",
-            checkboxGroupButtons(
-              inputId = ns("Bile_Duct"), label = NULL,
-              choices = Bile_Duct_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Bone Marrow",
-            checkboxGroupButtons(
-              inputId = ns("Bone_Marrow"), label = NULL,
-              choices = Bone_Marrow_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Breast",
-            checkboxGroupButtons(
-              inputId = ns("Breast"), label = NULL,
-              choices = Breast_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Cervix",
-            checkboxGroupButtons(
-              inputId = ns("Cervix"), label = NULL,
-              choices = Cervix_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          ),
-          tabPanel(
-            "Other tissues",
-            checkboxGroupButtons(
-              inputId = ns("other_tissue"), label = NULL,
-              choices = other_tissue_choice,
-              justified = TRUE,
-              checkIcon = list(yes = icon("ok", lib = "glyphicon"), no = icon("remove", lib = "glyphicon")),
-              direction = "vertical",
-              individual = TRUE
-            )
-          )
-        )
-      )
-    ),
     # value box for selected cancer types ----
     fluidRow(shiny::uiOutput(outputId = ns("cancer_types_select"))),
     shiny::tags$hr(width = "85%")
   )
 }
 
+
+
 # Value box for selection cancer types ------------------------------------
 
 
 cancerTypesSelect <- function(input, output, session, .sctps) {
   output$cancer_types_select <- renderUI({
-    div(length(.sctps()))
     shiny::tagList(
       column(
         width = 4, offset = 2,
         infoBox(
-          title = "Number of selected cancers", value = length(.sctps()),
+          title = "Number of selected cancers", value = length(.sctps),
           width = 12,  color = "aqua", fill = TRUE
         )#icon = icon("users"),
       ),
       column(
         width = 4,
         infoBox(
-          title = "Number of unselected cancers", value = 33 - length(.sctps()),
+          title = "Number of unselected cancers", value = 33 - length(.sctps),
           width = 12, color = "red", fill = TRUE
         ) #icon = icon("credit-card"),
       ),
@@ -639,7 +504,7 @@ cancerTypesSelect <- function(input, output, session, .sctps) {
         box(
           solidHeader = TRUE, status = "primary",
           title = "Selected Cancer Types", width = 12,
-          paste0(.sctps(), collapse = ", ")
+          paste0(.sctps, collapse = ", ")
         )
       )
     )
@@ -651,24 +516,6 @@ cancerTypesSelect <- function(input, output, session, .sctps) {
 selectAndAnalysisInput <- function(id) {
   ns <- NS(id)
   shiny::tagList(
-    fluidRow(
-      column(
-        width = 3, offset = 4,
-        switchInput(
-          inputId = ns("switch"), value = TRUE,
-          onLabel = "Select All",
-          offLabel = "Deselect All"
-        )
-      ),
-      column(
-        width = 2,
-        shiny::tags$div(
-          style = "margin:3px;", class = "form-group shiny-input-container",
-          shinyBS::bsButton(inputId = ns("submit"), label = "Analysis", icon = icon(name = "fire"))
-        )
-      ),
-      column(width = 4)
-    ),
     fluidRow(
       column(
         width = 8, offset = 2,
@@ -795,7 +642,7 @@ PlotInput <- function(id, width, height) {
   ns <- NS(id)
 
   tagList(
-    plotOutput(ns("plot")),
+    plotOutput(ns("plot")) %>% withSpinner(color="#0dc5c1"),
     hr()
     # sliderInput(ns("num"),label = "Select size of number",min=10,max = 100,value = 50)
   )
@@ -861,13 +708,14 @@ Plot <- function(input, output, session) { # data(raw data, gene set, cancer typ
 # cnv Point plot --------------------------------------------------------------
 
 
-pointPlot <- function(input, output, session, data, cancer, gene, size, color, sizename, colorname, wrap) {
+cnv_pointPlot <- function(input, output, session, data, cancer, gene, size, color, sizename, colorname, wrap,status_monitor,status) {
 
   # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
   #                     gene="symbol",size="per",color="color",sizename="CNV%",
   #                     colorname="SCNA Type",wrap="~ effect")
   # data should include x/y, point size and point color.
   output$plot <- renderPlot({
+    status[[status_monitor]]
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
       geom_point(aes_string(size = size, color = color)) +
@@ -893,12 +741,14 @@ pointPlot <- function(input, output, session, data, cancer, gene, size, color, s
 
 # cnv pie plot ----------------------------------------------------------------
 
-piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, height) {
+piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, height,status_monitor,status) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
   output$plot <- renderImage({
+    status[[status_monitor]]
+    
     data %>%
       ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack", color = NA) +
@@ -952,12 +802,14 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, 
 
 # gene set CNV frenquencey in each cancer ---------------------------------
 # bar stak plot
-cnvbarPlot <- function(input, output, session, data, x, y, fill) {
+cnvbarPlot <- function(input, output, session, data, x, y, fill,status_monitor,status) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
   output$plot <- renderPlot({
+    status[[status_monitor]]
+    
     data %>%
       ggplot(aes_string(x = x, y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack") +
@@ -980,10 +832,11 @@ cnvbarPlot <- function(input, output, session, data, x, y, fill) {
 
 # snv percentage plot -----------------------------------------------------
 
-snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, label, cancer_rank, gene_rank) {
+snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, label, cancer_rank, gene_rank,status_monitor,status) {
   output$plot <- renderPlot({
     # data$per %>% max() ->max.limit
     # max.limit/10 -> inter.limit
+    status[[status_monitor]]
     data %>%
       ggplot(aes_string(x = cancer, y = gene, fill = fill)) +
       geom_tile() +
@@ -1000,7 +853,7 @@ snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, la
       ) +
       theme_bw() +
       theme(
-        axis.text.x = element_text(angle = 45, hjust = -0.05, size = "15"),
+        axis.text.x = element_text(angle = 45, hjust = -0.05, size = "10"),
         axis.title.y = element_text(size = "15"),
         panel.grid = element_line(colour = "grey", linetype = "dashed")
       ) +
@@ -1020,12 +873,13 @@ snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, la
 
 # snv survival point plot -------------------------------------------------
 
-snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title) {
+snv_sur_pointPlot <- function( input, output, session,data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title,status_monitor,status) {
   # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
   #                     gene="symbol",size="per",color="color",sizename="CNV%",
   #                     colorname="SCNA Type",wrap="~ effect")
   # data should include x/y, point size and point color.
   output$plot <- renderPlot({
+    status[[status_monitor]]
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
       geom_point(aes_string(size = size, color = color)) +
@@ -1072,19 +926,25 @@ imagePlotInput <- function(id, width="100%", height=300) {
   ns <- NS(id)
 
   tagList(
-    imageOutput(ns("plot"), width = width, height = height),
+    br(),
+    br(),
+    br(),
+    br(),
+    imageOutput(ns("plot"), width = width, height = height) %>% withSpinner(color="#0dc5c1"),
+    
     hr()
   )
 }
 
 # 2. server part ----------------------------------------------------------
 
-snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile) {
+snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile,status_monitor,status) {
   output$plot <-renderImage({
+    status[[status_monitor]]
     # png(outfile, width = 1000, height= 700)
-    maftools::plotmafSummary(gene_list_maf) ->p
+    maftools::plotmafSummary(gene_list_maf,fs = 3,statFontSize = 2) ->p
     # dev.off()
-    ggsave(p$plot,filename = outfile, device = "png",width = 4,height = 3)
+    ggsave(p$plot,filename = outfile, device = "png",width = 3,height = 2)
     list(src = outfile,
          contentType = 'image/png',
          # width = 1000,
@@ -1093,31 +953,46 @@ snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile) 
   }, deleteFile = FALSE)
 }
 
-
-snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cancer_type,outfile) {
+snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,pancan_color,outfile,status_monitor,status) {
   output$plot <-renderImage({
-    png(outfile, width = 800, height= 700)
-    # col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
-    # names(col) <- c(
-    #   "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
-    #   "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
-    # )
-    # fabcolors <- RColorBrewer::brewer.pal(n = length(cancer_type), name = "Spectral")
-    # names(fabcolors) <- cancer_type
+    status[[status_monitor]]
+    png(outfile, width = 800, height= 600)
+    col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
+    names(col) <- c(
+      "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
+      "In_Frame_Ins", "Splice_Site", "In_Frame_Del"
+    )
+    gene_list_maf %>% maftools::getClinicalData() %>% dplyr::select(Cancer_Types) %>% unique() %>% t() %>% as.character() -> snv_maf_cancer_type
+    pancan_color %>%
+      dplyr::filter(cancer_types %in% snv_maf_cancer_type) %>%
+      dplyr::select(color,cancer_types) -> snv_maf_cancer_type_color
+      
+    fabcolors <-  snv_maf_cancer_type_color$color
+    names(fabcolors) <-  snv_maf_cancer_type_color$cancer_types
 
-    # fabcolors <- list(cancer_types = fabcolors)
-    # maftools::oncoplot(
-    #   maf = gene_list_maf, removeNonMutated = T, colors = col,
-    #   clinicalFeatures = "cancer_types", sortByAnnotation = TRUE,
-    #   annotationColor = fabcolors, top = 10
-    # )
-    maftools::oncoplot(maf = gene_list_maf, top = 10)#, fontSize = 12
+    fabcolors <- list(Cancer_Types = fabcolors)
+    if(length(snv_maf_cancer_type)>1){
+      maftools::oncoplot(
+    # my_oncoplot(
+      maf = gene_list_maf, removeNonMutated = T, colors = col,
+      clinicalFeatures = "Cancer_Types", sortByMutation=TRUE,sortByAnnotation = TRUE,
+      annotationColor = fabcolors, top = 10
+      )}else{
+        maftools::oncoplot(
+          # my_oncoplot(
+          maf = gene_list_maf, removeNonMutated = T, colors = col,
+          clinicalFeatures = "Cancer_Types", sortByMutation=TRUE,#sortByAnnotation = TRUE,
+          annotationColor = fabcolors, top = 10
+        )
+    }
+    
+    # maftools::oncoplot(maf = gene_list_maf, top = 10)#, fontSize = 12
     dev.off()
     
     list(src = outfile,
          contentType = 'image/png',
          width = 800,
-         height = 700,
+         height = 600,
          alt = "This is alternate text")
   }, deleteFile = FALSE)
 }
@@ -1127,8 +1002,9 @@ snv_maf_oncoPlot <-function(input, output, session, gene_list_maf, figname,cance
 
 
 # 1. methy diff -----------------------------------------------------------
-methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title) {
+methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title,status_monitor,status) {
   output$plot <- renderPlot({
+    status[[status_monitor]]
     CPCOLS <- c("red", "white", "blue")
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
@@ -1218,12 +1094,13 @@ rppa_line_contact <- function(input, output, session, seg, cancer, gene, pathway
 }
 
 # rppa pie ----
-rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, height, outfile) {
+rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, height, outfile,status) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
   output$plot <- renderImage({
+    status$analysis
     data %>%
       ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack", color = NA) +
@@ -1271,8 +1148,9 @@ rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, heigh
 }
 
 # rppa heatmap percent ----
-rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbol, per, height, outfile) {
+rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbol, per, height, outfile, status) {
   output$plot <- renderImage({
+    status$analysis
     rppa_per_ready %>%
       ggplot(aes(x = pathway, y = symbol)) +
       xlab("Pathway") + ylab("Symbol") +
@@ -1313,57 +1191,6 @@ rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbo
 
 
 
-
-# Expr output -------------------------------------------------------------
-
-exprOutput <- function(id) {
-  ns <- NS(id)
-  column(
-    width = 10, offset = 1,
-    shinydashboard::tabBox(
-      id = "expr_plot", title = "PLOT", width = 12,
-      # bubble plot for tumor vs. normal
-      tabPanel(
-        title = "Tumor vs. Normal",
-        plotOutput(outputId = ns("expr_bubble_plot"))
-      ),
-      # datatable
-      tabPanel(
-        title = "Table of comparison",
-        DT::dataTableOutput(outputId = ns("expr_dt_comparison"))
-      ),
-      tabPanel(
-        title = "Survival",
-        plotOutput(outputId = ns("survival"))
-      ),
-      tabPanel(
-        title = "Subtype",
-        plotOutput(outputId = ns("subtype"))
-      )
-    )
-  )
-}
-
-
-# Drug output -------------------------------------------------------------
-drugOutput <- function(id) {
-  ns <- NS(id)
-  column(
-    width = 10, offset = 1,
-    shinydashboard::tabBox(
-      id = "expr_plot", title = "PLOT", width = 12,
-      # drug output
-      tabPanel(
-        title = "GDSC",
-        plotOutput(outputId = ns("gdsc"))
-      ),
-      tabPanel(
-        title = "CTRP",
-        plotOutput(outputId = ns("ctrp"))
-      )
-    )
-  )
-}
 
 
 #### GTEx eqtl table output-------------
