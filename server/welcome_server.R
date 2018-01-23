@@ -59,9 +59,7 @@ observeEvent(input$analysis, {
     selected_ctyps(input$select_ctps)
     
     # set TRUE for analysis
-    input$select_analysis %>% purrr::walk(.f = function(.x) {
-        selected_analysis[[.x]] <- TRUE
-      })
+    input$select_analysis %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- TRUE })
     
     shinyjs::disable(id = "input_gene_set")
     shinyjs::disable(id = "analysis")
@@ -161,6 +159,7 @@ observeEvent(
       
       names(progress) %>% purrr::map(.f = function(.x) { progress[[.x]] <- FALSE})
       names(processing) %>% purrr::map(.f = function(.x) {processing[[.x]] <- FALSE})
+      input$select_analysis %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
     }
   }
 )
