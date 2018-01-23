@@ -17,7 +17,7 @@ load_data_expr <- function() {
 # load snv data -----------------------------------------------------------
 
 load_data_snv <- function() {
-  if (is.null(snv_load)) {
+  if (is.null(mc3_pass)) {
     # load snv data  ----------------------------------------------------------
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} start Load snv data@ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
     snv <<- readr::read_rds(file.path(config$database, "TCGA", "snv", ".rds_snv_all_gene_snv_count.rds.gz"))
@@ -30,11 +30,10 @@ load_data_snv <- function() {
 # load cnv data --------------------------------------------------------------
 load_data_cnv <- function() {
   # load cnv percent
-  if (is.null(cnv_load)) {
+  if (is.null(cnv_raw)) {
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
     cnv <<- readr::read_rds(file.path(config$database, "TCGA", "cnv", "pancan34_cnv_percent.rds.gz"))
     cnv_raw <<- readr::read_rds(file.path(config$database, "TCGA", "cnv", "pancan34_cnv_threshold.rds.gz"))
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv cor data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
     cnv_cor <<- readr::read_rds(file.path(config$database, "TCGA", "cnv", "pancan34_all_gene_exp-cor-cnv.rds.gz"))
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading cnv data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
   }
@@ -45,7 +44,7 @@ load_data_cnv <- function() {
 
 load_data_meth <- function() {
   # load cnv percent
-  if (is.null(meth_load)) {
+  if (is.null(meth_diff)) {
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading methy diff data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
     meth_diff <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pan33_allgene_methy_diff.simplification.rds.gz"))
     meth_survival <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pancan32_meth_survival_genelist_sig_pval0.05.rds.gz"))
@@ -58,24 +57,21 @@ load_data_meth <- function() {
 # load miRNA data ---------------------------------------------------------
 load_data_mirna <- function() {
   # load cnv percent
-  if (is.null(mirna_load)) {
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading methy diff data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-    meth_diff <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pan33_allgene_methy_diff.simplification.rds.gz"))
-    meth_survival <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pancan32_meth_survival_genelist_sig_pval0.05.rds.gz"))
-    meth_cor <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pancan34_all_gene_exp-cor-meth.rds.gz"))
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading methy cor to expression data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+  if (is.null(mirna2target)) {
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} start Load mirna data @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
+    mirna2target <<- readr::read_rds(file.path(config$database, "TCGA", "mirna", "pan_overall_gene_cor-0.5_with_mirna.rds.gz"))
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} end Load mirna data @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
   }
 }
 
 # load pathway data ----------------------------------------------------------
-load_data_ccle <- function() {
+load_data_rppa <- function() {
   # load cnv percent
-  if (is.null(pathway_load)) {
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading methy diff data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-    meth_diff <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pan33_allgene_methy_diff.simplification.rds.gz"))
-    meth_survival <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pancan32_meth_survival_genelist_sig_pval0.05.rds.gz"))
-    meth_cor <<- readr::read_rds(file.path(config$database, "TCGA", "meth", "pancan34_all_gene_exp-cor-meth.rds.gz"))
-    print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading methy cor to expression data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+  if (is.null(rppa_per)) {
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading rppa percent data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+    rppa_per <<- readr::read_rds(file.path(config$database, "TCGA", "rppa", "pan32_gene_activate.inhibit_pathway_percent.rds.gz"))
+    rppa_relation <<- readr::read_rds(file.path(config$database, "TCGA", "rppa", "pan32_gene_A-I-N_sig_pval_class.siplification.rds.gz"))
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading rppa regulate data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
   }
 }
 
