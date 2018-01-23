@@ -191,7 +191,7 @@ selected_analysis <- reactiveValues(
   'snv' = FALSE,
   'cnv' = FALSE,
   'meth' = FALSE,
-  'path' = FALSE,
+  'rppa' = FALSE,
   'mirna' = FALSE,
   'drug' = FALSE
 )
@@ -223,3 +223,9 @@ print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading symbol @ {Sy
 expr <- NULL
 expr_survival <- NULL
 expr_subtype <- NULL
+cnv_raw <- NULL
+mc3_pass <- NULL
+meth_diff <- NULL
+rppa_per <- NULL
+mirna2target <- NULL
+

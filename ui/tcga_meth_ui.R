@@ -29,31 +29,34 @@ tabItem(
   source(file.path(config$ui, "tcga_meth_help.R"))[1],
 
   shiny::tags$hr(width = "85%"),
+  
 
   # cancer type selection and result output---------------------------------------------------
   # cancer type selection----
-  cancerTypeInput("meth"),
-
+  fluidRow(column(width = 10, offset = 1, cancerTypeInput("meth"))),
+  
   # Confirm and submit ----
   fluidRow(
     selectAndAnalysisInput("meth")
   ),
-  shiny::tags$hr(width = "85%"),
+  
+  # generate result panel ----
+  fluidRow(shiny::uiOutput(outputId = "ui_meth_result")),
 
   # output plot -------------------------------------------------------------
   # Tabset Panel
-  fluidRow(
-    column(
-      width = 10,
-      offset = 1,
-      shinydashboard::tabBox(
-        id = "snv_PLOT", title = "PLOT", width = 12,
-        tabPanel(title = "Differential Methylation", PlotInput(id = "meth_diff")),
-        tabPanel(title = "Methylation Survival", PlotInput(id = "meth_survival")),
-        tabPanel(title = "Methylation to Expression", PlotInput(id = "meth_exp"))
-      )
-    )
-  ),
+  # fluidRow(
+  #   column(
+  #     width = 10,
+  #     offset = 1,
+  #     shinydashboard::tabBox(
+  #       id = "snv_PLOT", title = "PLOT", width = 12,
+  #       tabPanel(title = "Differential Methylation", PlotInput(id = "meth_diff")),
+  #       tabPanel(title = "Methylation Survival", PlotInput(id = "meth_survival")),
+  #       tabPanel(title = "Methylation to Expression", PlotInput(id = "meth_exp"))
+  #     )
+  #   )
+  # ),
   # load footer
   source(file.path(config$ui, "footer.R"))[1]
 ) # close tab

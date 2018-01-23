@@ -33,35 +33,36 @@ tabItem(
 
   # cancer type selection and result output---------------------------------------------------
   # cancer type selection----
-  cancerTypeInput("rppa"),
+  fluidRow(column(width = 10, offset = 1, cancerTypeInput("rppa"))),
 
   # Confirm and submit ----
   fluidRow(
     selectAndAnalysisInput("rppa")
   ),
-  shiny::tags$hr(width = "85%"),
-
+  
+  # generate result panel ----
+  fluidRow(shiny::uiOutput(outputId = "ui_rppa_result")),
   # output plot -------------------------------------------------------------
   # Tabset Panel
-  fluidRow(
-    column(
-      width = 10,
-      offset = 1,
-      shinydashboard::tabBox(
-        id = "rppa_PLOT", title = "PLOT", width = 12,
-        tabPanel(title = "Global percentage", imagePlotInput(id = "rppa_pie", width = "100%", height = "100%")),
-        tabPanel(title = "Heatmap percentage", imagePlotInput(id = "rppa_per", width = "100%", height = "100%")),
-        tabPanel(
-          title = "Relation network",
-          br(),
-          br(),
-          br(),
-          imageOutput("rppa_rela_plot", width = "100%", height = "100%") %>% withSpinner(color="#0dc5c1"),
-          hr()
-        )
-      )
-    )
-  ),
+  # fluidRow(
+  #   column(
+  #     width = 10,
+  #     offset = 1,
+  #     shinydashboard::tabBox(
+  #       id = "rppa_PLOT", title = "PLOT", width = 12,
+  #       tabPanel(title = "Global percentage", imagePlotInput(id = "rppa_pie", width = "100%", height = "100%")),
+  #       tabPanel(title = "Heatmap percentage", imagePlotInput(id = "rppa_per", width = "100%", height = "100%")),
+  #       tabPanel(
+  #         title = "Relation network",
+  #         br(),
+  #         br(),
+  #         br(),
+  #         imageOutput("rppa_rela_plot", width = "100%", height = "100%") %>% withSpinner(color="#0dc5c1"),
+  #         hr()
+  #       )
+  #     )
+  #   )
+  # ),
 
   # load footer ----
   source(file.path(config$ui, "footer.R"))[1]
