@@ -10,7 +10,7 @@ source(file.path(config$wd, "functions", "gtex_eqtl_function.R"))
 # GTEx_eqtl_tissue <- callModule(GTEx_eqtl_Tissue, "gtex_eqtl")
 # output$eqtl_selected_tissues <- renderText(GTEx_eqtl_tissue())
 
-callModule(module = cancerTypesSelect, id = "gtex_eqtl", .sctps = input$select_ctps)
+callModule(module = tissueTypesSelect, id = "gtex_eqtl", .sctps = intersect(selected_ctyps(), gtex_data))
 callModule(module = selectAndAnalysis, id = "gtex_eqtl", .id = "gtex_eqtl")
 
 # generate eqtl result out ui -------------------------------------------------------

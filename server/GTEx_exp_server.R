@@ -6,7 +6,7 @@ source(file.path(config$wd, "functions", "data_function.R"))
 source(file.path(config$wd, "functions", "gtex_gexp_function.R"))
 
 # check box-------------------------
-callModule(module = cancerTypesSelect, id = "GTEx_exp", .sctps = input$select_ctps)
+callModule(module = tissueTypesSelect, id = "GTEx_exp", .sctps = intersect(selected_ctyps(), gtex_data))
 callModule(module = selectAndAnalysis, id = "GTEx_exp", .id = "GTEx_exp")
 
 # generate eqtl result out ui -------------------------------------------------------

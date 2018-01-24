@@ -31,6 +31,8 @@ tabItem(
 
   # fluidRow(column(width = 12, GTExTissueeqtl("gtex_eqtl"))),
   fluidRow(selectAndAnalysisInput("gtex_eqtl")),
+  # tissue type selection----
+  fluidRow(column(width = 10, offset = 1, tissueTypeInput("gtex_eqtl"))),
   # generate result panel ----
   fluidRow(shiny::uiOutput(outputId = "ui_eqtl_result")),
   #  GTExTissueType("gtex_eqtl"),

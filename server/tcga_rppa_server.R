@@ -8,7 +8,7 @@ source(file.path(config$wd, "functions", "tcga_rppa_function.R"))
 
 # Cancer types value box selection ----------------------------------------
 
-callModule(module = cancerTypesSelect, id = "rppa", .sctps = input$select_ctps)
+callModule(module = cancerTypesSelect, id = "rppa", .sctps = intersect(selected_ctyps(), tcga_data))
 # Check box ---------------------------------------------------------------
 
 callModule(module = selectAndAnalysis, id = "rppa", .id = "rppa")

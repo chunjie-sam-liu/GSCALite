@@ -9,7 +9,7 @@ source(file.path(config$wd, "functions", "tcga_cnv_function.R"))
 
 # Cancer types value box selection ----------------------------------------
 
-callModule(module = cancerTypesSelect, id = "cnv", .sctps = input$select_ctps)
+callModule(module = cancerTypesSelect, id = "cnv", .sctps = intersect(selected_ctyps(), tcga_data))
 
 # Check box ---------------------------------------------------------------
 
