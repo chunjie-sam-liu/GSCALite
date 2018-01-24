@@ -10,6 +10,8 @@ survival_clean <- NULL
 # toga expr welcome -------------------------------------------------------
 output$ui_expr_welcome <- shiny::renderUI({fn_expr_welcome()})
 
+output$ui_expr_help <- shiny::renderUI({fn_expr_help()})
+
 # Cancer types value box selection ----------------------------------------
 
 callModule(module = cancerTypesSelect, id = "expr", .sctps = selected_ctyps())
