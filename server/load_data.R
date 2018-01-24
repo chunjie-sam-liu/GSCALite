@@ -77,6 +77,10 @@ load_data_rppa <- function() {
 
 
 # Load drug data ----------------------------------------------------------
+
+
+# load GTEx eqtl data -----------------------------------------------------
+
 load_data_eqtl <- function(){
   if (is.null(GTEx_egene)) {
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading GTEx eqtl data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
@@ -84,3 +88,15 @@ load_data_eqtl <- function(){
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} end loading GTEx eqtl data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
   }
 }
+
+# load GTEx expr data -----------------------------------------------------
+load_data_gexp <- function(){
+  if (is.null(gtex_expr_mean)) {
+    # load GTEx expression data ---------------------------------------------------------
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading GTEx data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+    #      gtex_expr <- readr::read_rds(file.path(config$database, "GTEx", "expression", "gtex_gene_tmp_annotation_phenotype_v7.rds.gz"))
+    gtex_expr_mean <<- readr::read_rds(file.path(config$database, "GTEx", "expression", "gtex_gene_mean_exp.rds.gz"))
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} end loading GTEx data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+  }
+}
+
