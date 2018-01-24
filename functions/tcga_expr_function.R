@@ -10,11 +10,17 @@ fn_expr_welcome <- function(){
     ),
     shiny::tags$p(
       class = "lead text-left",
-      "TCGA expression data will be used to give you a visualization of your gene set for seleted cancer types."
+      "GCSALite mRNA expression module calculate the gene set differential expression across cancers based on the TCGA expression data.", 
+      "The module analysis result provides differential expression, survival analysis and subtype analysis.",
+      "See the details in",
+      shiny::tags$code("help page.")
     )
   )
 }
 
+fn_expr_help <- function(){
+  
+}
 # Expr output -------------------------------------------------------------
 
 exprOutput <- function(id) {
