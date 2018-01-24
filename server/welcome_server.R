@@ -3,7 +3,7 @@ source(file.path(config$wd, "functions", "welcome_function.R"))
 
 # Clear input -------------------------------------------------------------
 observeEvent(input$input_gene_set_reset, {
-  names(selected_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- TRUE })
+  names(selected_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
   shinyjs::reset("input_gene_set")
   status$gene_set <- FALSE
 })
@@ -39,7 +39,7 @@ observeEvent(input$example, {
   shinyjs::js$example_gene_set(id = "seinput_gene_set")
   shinyjs::enable(id = "input_gene_set")
   shinyjs::enable(id = "analysis")
-  names(selected_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- TRUE })
+  names(selected_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
 })
 
 # Analysis ----------------------------------------------------------------
@@ -71,7 +71,7 @@ observeEvent(input$analysis, {
 observeEvent(input$stop, {
   status$analysis <- FALSE
   status$gene_set <- FALSE
-  names(selected_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- TRUE })
+  names(selected_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
   shinyjs::reset("input_gene_set")
   shinyjs::enable(id = "input_gene_set")
   shinyjs::enable(id = "analysis")

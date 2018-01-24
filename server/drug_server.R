@@ -7,6 +7,8 @@ source(file.path(config$wd, "functions", "drug_function.R"))
 
 output$ui_drug_welcome <- shiny::renderUI({fn_drug_welcome()})
 
+output$ui_drug_help <- shiny::renderUI({fn_drug_help()})
+
 
 # drug result -------------------------------------------------------------
 

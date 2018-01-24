@@ -28,9 +28,11 @@ fn_expr_help <- function(){
         class = "panel-heading",
         shiny::tags$h3(
           class = "panel-title text-left",
-          HTML('<a data-toggle="collapse" href="#help_expr">
-               <i class="fa fa-question fa-fw"></i> 
-               Click here for help</a>')
+          shiny::tags$a(
+            "data-toggle" = "collapse", "href" = "#help_expr",
+            shiny::icon(name = "question", class = "fa-fw"),
+            "Click here for help"
+            )
           )
         )
       ),
@@ -39,8 +41,55 @@ fn_expr_help <- function(){
       shiny::tags$div(
         class = "panel-body",
         column(
-          width = 10, offset = 0
-        )
+          width = 12, offset = 0,
+          # methods
+          column(
+            width = 10, offset = 1,
+            shiny::tags$h3("Method", class = "text-success"),
+            shiny::tags$p(
+              class = "text-justify",
+              "1. The mRNA expression and clinical data was downloaded from", shiny::tags$a("href" = "https://gdc.cancer.gov/", "NCI Genomic Data Commons", style = "color:#08176" )
+            ),
+            
+            shiny::tags$p(
+              class = "text-justify",
+              "2. TCGA maintains 33 cancer types, but only 14 cancer types have paired tumor vs. normal data. The  gene set mRNA differential expression was based on the 14 cancer types."
+            ),
+            
+            shiny::tags$p(
+              class = "text-justify",
+              "3. Survival and subtype was analysis across all the cancer types the user chose"
+            ),
+            shiny::tags$hr(width = "100%")
+            ),
+          column(
+            width = 10, offset = 1,
+            shiny::tags$h3("Figure and Tables Description", class = "text-success"),
+            shiny::tags$table(
+              class = "table table-striped",
+              shiny::tags$thead(
+                shiny::tags$th("Result"),
+                shiny::tags$th("Description")
+              ),
+              shiny::tags$tr(
+                shiny::tags$td("Tumor vs. Normal"),
+                shiny::tags$td("In the result figure, the row is the gene set symbol and column is the selected cancer types. The color from purple to red represent the fold change between tumor vs normal. The size dot indicates the significance. The dot was filtered by the fold change (fc>2) and significance (fdr < 0.05)")
+              ),
+              shiny::tags$tr(
+                shiny::tags$td("Table of comparison"),
+                shiny::tags$td("The table provides the detailed information of first figure.")
+              ),
+              shiny::tags$tr(
+                shiny::tags$td("Survival"),
+                shiny::tags$td("The dot represent the gene affects survival of the cancer types, the p-value is the Kaplan Meier P-value. The dot color indicates the worse of the high or low expression in the cancer types.")
+              ),
+              shiny::tags$tr(
+                shiny::tags$td("Subtype"),
+                shiny::tags$td("Each gene may have different expression in the different subtypes. This figure represent the gene affect subtype.")
+              )
+            )
+          )
+          )
         )
       )
     )
