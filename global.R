@@ -650,8 +650,9 @@ PlotInput <- function(id, width, height) {
 
 ##################### GTEx expression heatmap plot by zhangq#########################
 
-heatmap_GTEX_Plot <- function(input, output, session, data) {
+heatmap_GTEX_Plot <- function(input, output, session, data,status) {
   output$plot <- renderPlot({
+    status$analysis
     ggplot(data, aes(Tissue, GeneName)) +
       geom_tile(aes(fill = RPKM)) +
       geom_text(aes(label = RPKM)) +
