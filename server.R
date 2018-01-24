@@ -55,9 +55,9 @@ server <- function(input, output, session) {
   # drug ----
   source(file = file.path(config$server, "drug_server.R"), local = TRUE)
   # 
-  # source(file = file.path(config$server, "GTEx_eqtl_server.R"), local = TRUE)
+  source(file = file.path(config$server, "GTEx_eqtl_server.R"), local = TRUE)
   # 
-  # source(file = file.path(config$server, "GTEx_exp_server.R"), local = TRUE)
+  source(file = file.path(config$server, "GTEx_exp_server.R"), local = TRUE)
   # 
   # source(file = file.path(config$server, "GTEx_eqtl_server.R"), local = TRUE)
   
