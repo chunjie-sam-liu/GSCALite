@@ -19,7 +19,29 @@ fn_expr_welcome <- function(){
 }
 
 fn_expr_help <- function(){
-  
+  column(
+    width = 12, offset = 0,
+    
+    shiny::tags$div(
+      class = "panel panel-default",
+      shiny::tags$div(
+        class = "panel-heading",
+        shiny::tags$h3(
+          class = "panel-title text-left",
+          HTML('<a data-toggle="collapse" href="#help_expr">
+               <i class="fa fa-question fa-fw"></i> 
+               Click here for help</a>')
+          )
+        )
+      ),
+    shiny::tags$div(
+      id = "help_expr", class = "panel-collapse collapse",
+      shiny::tags$div(
+        class = "panel-body",
+        column()
+        )
+      )
+    )
 }
 # Expr output -------------------------------------------------------------
 
