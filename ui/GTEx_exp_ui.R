@@ -60,22 +60,25 @@ tabItem(
   # # Tabset Panel ----
 
 
-  fluidRow(column(width = 12, GTExTissueType("gtex_expr"))),
+  # fluidRow(column(width = 12, GTExTissueType("gtex_expr"))),
 
   # Cancer type selection ----
   fluidRow(selectAndAnalysisInput("gtex_expr")),
+  
+  # generate result panel ----
+  fluidRow(shiny::uiOutput(outputId = "ui_gexp_result")),
 
 # Plot result ----
-fluidRow(
-  column(
-    width = 10,
-    offset = 1,
-    shinydashboard::tabBox(
-      id = "GTEx_PLOT", title = "PLOT", width = 12,
-      tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")) #,tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
-    )
-  )
-  ),
+# fluidRow(
+#   column(
+#     width = 10,
+#     offset = 1,
+#     shinydashboard::tabBox(
+#       id = "GTEx_PLOT", title = "PLOT", width = 12,
+#       tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")) #,tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
+#     )
+#   )
+#   ),
 
   # load footer ----
   source(file.path(config$ui, "footer.R"))[1]
