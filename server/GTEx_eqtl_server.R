@@ -10,7 +10,7 @@ source(file.path(config$wd, "functions", "gtex_eqtl_function.R"))
 # GTEx_eqtl_tissue <- callModule(GTEx_eqtl_Tissue, "gtex_eqtl")
 # output$eqtl_selected_tissues <- renderText(GTEx_eqtl_tissue())
 
-callModule(module = cancerTypesSelect, id = "gtex_eqtl", .sctps = GTEx_eqtl_tissue)
+callModule(module = cancerTypesSelect, id = "gtex_eqtl", .sctps = input$select_ctps)
 callModule(module = selectAndAnalysis, id = "gtex_eqtl", .id = "gtex_eqtl")
 
 # generate eqtl result out ui -------------------------------------------------------
@@ -67,6 +67,7 @@ filter_eqtl_4_geneset <- eventReactive(
         if (nrow(selected_eqtl_result) > 0) {
           .msg <- glue::glue("Complete")
           output$`gtex_eqtl-gtex_eqtl_dt` <- DT::renderDataTable({
+            status$analysis
             selected_eqtl_result
           })
         } else {
