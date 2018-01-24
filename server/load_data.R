@@ -77,4 +77,10 @@ load_data_rppa <- function() {
 
 
 # Load drug data ----------------------------------------------------------
-
+load_data_eqtl <- function(){
+  if (is.null(GTEx_egene)) {
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} start loading GTEx eqtl data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+    GTEx_egene <<- readr::read_rds(file.path(config$database, "GTEx", "eqtl", "GTEx_egene.merged.tissue.rds.gz"))
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} end loading GTEx eqtl data @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+  }
+}
