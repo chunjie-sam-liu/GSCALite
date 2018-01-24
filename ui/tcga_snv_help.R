@@ -61,7 +61,7 @@ fluidRow(
             ),
             column(
               width = 10, offset = 1,
-              shiny::tags$h3("Results commentary", class = "text-success"),
+              shiny::tags$h3("Results", class = "text-success"),
               shiny::tags$table(
                 class = "table table-striped",
 
