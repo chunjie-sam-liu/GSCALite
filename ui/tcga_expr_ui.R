@@ -8,10 +8,9 @@ tabItem(
   
   # welcome info
   fluidRow(style = "width:80%;", shiny::uiOutput(outputId = "ui_expr_welcome")),
-  
-  # not selected
 
   # For help page
+  fluidRow(style = "width:80%;margin:20px 0;", shiny::uiOutput(outputId = "ui_expr_help")),
   
   # source(file.path(config$ui,"tcga_cnv_help.R"))$value,
 
