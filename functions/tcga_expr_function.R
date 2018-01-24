@@ -61,7 +61,34 @@ fn_expr_help <- function(){
               "3. Survival and subtype was analysis across all the cancer types the user chose"
             ),
             shiny::tags$hr(width = "100%")
+            ),
+          column(
+            width = 10, offset = 1,
+            shiny::tags$h3("Figure and Tables Description", class = "text-success"),
+            shiny::tags$table(
+              class = "table table-striped",
+              shiny::tags$thead(
+                shiny::tags$th("Result"),
+                shiny::tags$th("Description")
+              ),
+              shiny::tags$tr(
+                shiny::tags$td("Tumor vs. Normal"),
+                shiny::tags$td("In the result figure, the row is the gene set symbol and column is the selected cancer types. The color from purple to red represent the fold change between tumor vs normal. The size dot indicates the significance. The dot was filtered by the fold change (fc>2) and significance (fdr < 0.05)")
+              ),
+              shiny::tags$tr(
+                shiny::tags$td("Table of comparison"),
+                shiny::tags$td("The table provides the detailed information of first figure.")
+              ),
+              shiny::tags$tr(
+                shiny::tags$td("Survival"),
+                shiny::tags$td("The dot represent the gene affects survival of the cancer types, the p-value is the Kaplan Meier P-value. The dot color indicates the worse of the high or low expression in the cancer types.")
+              ),
+              shiny::tags$tr(
+                shiny::tags$td("Subtype"),
+                shiny::tags$td("Each gene may have different expression in the different subtypes. This figure represent the gene affect subtype.")
+              )
             )
+          )
           )
         )
       )
