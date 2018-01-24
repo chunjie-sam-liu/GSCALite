@@ -25,7 +25,7 @@ output$ui_eqtl_result <- shiny::renderUI({
 #     print(status$gtex_eqtl_submit)
 #   })
 # }
-# 
+#
 # callModule(gtex_eqtl_submit_analysis, "gtex_eqtl")
 
 
@@ -56,10 +56,10 @@ filter_eqtl_4_geneset <- eventReactive(
         # load GTEx eqtl data ---------------------------------------------------------
         load_data_eqtl()
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} start: eqtl selection on GTEx dataset processing@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-        
+
         tissue_set <- c("Heart", "Ovary", "Lung")
         tissue_set <- selected_ctyps()
-        
+
         ##### start: select egenes ######
         print("start: select egenes in GTEx tissues")
         GTEx_egene %>% dplyr::filter(GTEx_egene$gene_name %in% gene_set$match & GTEx_egene$tissue %in% tissue_set) -> selected_eqtl_result
@@ -78,7 +78,6 @@ filter_eqtl_4_geneset <- eventReactive(
         )
         print("end: select egenes in GTEx tissues")
       }
-      
     }
   }
 )
