@@ -3,7 +3,7 @@ source(file.path(config$wd, "functions", "welcome_function.R"))
 
 # Clear input -------------------------------------------------------------
 observeEvent(input$input_gene_set_reset, {
-  input$select_analysis %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- TRUE })
+  names(select_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- TRUE })
   shinyjs::reset("input_gene_set")
   status$gene_set <- FALSE
 })
@@ -39,7 +39,7 @@ observeEvent(input$example, {
   shinyjs::js$example_gene_set(id = "seinput_gene_set")
   shinyjs::enable(id = "input_gene_set")
   shinyjs::enable(id = "analysis")
-  input$select_analysis %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- TRUE })
+  names(select_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- TRUE })
 })
 
 # Analysis ----------------------------------------------------------------
@@ -49,7 +49,7 @@ observeEvent(input$analysis, {
   
   if (length(input$select_ctps) == 0 || length(input$select_analysis) == 0) {
     status$progressbar <- FALSE
-    input$select_analysis %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
+    names(select_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
     shinyWidgets::sendSweetAlert(
       session = session,
       title = "Error...",
@@ -58,13 +58,10 @@ observeEvent(input$analysis, {
     )
   } else{
     status$progressbar <- TRUE
-    input$select_analysis %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
+    names(select_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
     # reactiveVal for selected cancer types
     selected_ctyps(input$select_ctps)
-    
-    # set TRUE for analysis
     input$select_analysis %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- TRUE })
-    
     shinyjs::disable(id = "input_gene_set")
     shinyjs::disable(id = "analysis")
   }
@@ -74,14 +71,11 @@ observeEvent(input$analysis, {
 observeEvent(input$stop, {
   status$analysis <- FALSE
   status$gene_set <- FALSE
-  input$select_analysis %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- TRUE })
+  names(select_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- TRUE })
   shinyjs::reset("input_gene_set")
   shinyjs::enable(id = "input_gene_set")
   shinyjs::enable(id = "analysis")
-  output$ui_progressbar <- renderUI({
-    NULL
-  })
-  
+  output$ui_progressbar <- renderUI({NULL})
 })
 
 observeEvent(status$trigger, {
