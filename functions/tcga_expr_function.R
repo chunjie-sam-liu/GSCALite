@@ -38,7 +38,9 @@ fn_expr_help <- function(){
       id = "help_expr", class = "panel-collapse collapse",
       shiny::tags$div(
         class = "panel-body",
-        column()
+        column(
+          width = 10, offset = 0
+        )
         )
       )
     )
