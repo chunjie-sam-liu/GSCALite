@@ -101,7 +101,7 @@ fn_multi_cancer_input <- function(.ctps){
                     "Methylation" = "meth",
                     "Pathway Activity" = "rppa",
                     "miRNA Network" = "mirna",
-                    "Drug Response" = "drug"), selected = c("expr", "snv", "drug")
+                    "Drug Response" = "drug"), selected = c("expr", "meth", "drug")
       ),
        shinyjs::hide(switchInput(
         inputId = "ana_switch", label = "Analysis", value = FALSE,
