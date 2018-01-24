@@ -14,7 +14,7 @@ output$ui_expr_help <- shiny::renderUI({fn_expr_help()})
 
 # Cancer types value box selection ----------------------------------------
 
-callModule(module = cancerTypesSelect, id = "expr", .sctps = selected_ctyps())
+callModule(module = cancerTypesSelect, id = "expr", .sctps = intersect(selected_ctyps(), tcga_data))
 
 # Check box ---------------------------------------------------------------
 
