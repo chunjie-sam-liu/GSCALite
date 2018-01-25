@@ -61,7 +61,7 @@ observeEvent(input$analysis, {
     shinyWidgets::sendSweetAlert(
       session = session,
       title = "Error...",
-      text = "Please Select GTEx data for GTEx analysis",
+      text = "Please Select GTEx analysis for GTEx data",
       type = "error"
     )
   } else if (xor(length(intersect(input$select_ctps, tcga_data)) >= 1, length(intersect(input$select_analysis, c("expr", "snv", "cnv", "meth", "rppa", "mirna", "drug"))) >= 1)) {
@@ -70,7 +70,7 @@ observeEvent(input$analysis, {
     shinyWidgets::sendSweetAlert(
       session = session,
       title = "Error...",
-      text = "Please Select TCGA data for TCGA analysis",
+      text = "Please Select TCGA analysis for TCGA data",
       type = "error"
     )
   } else{
