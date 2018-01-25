@@ -77,7 +77,10 @@ observeEvent(input$analysis, {
     status$progressbar <- TRUE
     names(selected_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
     # reactiveVal for selected cancer types
+    # selected_ctyps <- reactiveVal()
     selected_ctyps(input$select_ctps)
+    
+    print(selected_ctyps())
     
     input$select_analysis %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- TRUE })
     shinyjs::disable(id = "input_gene_set")
