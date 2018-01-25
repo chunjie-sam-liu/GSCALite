@@ -30,8 +30,6 @@ tabItem(
   # HELP as including of tcga_snv_help.R ---------------------
   source(file = file.path(config$wd, "ui", "tcga_snv_help.R"))[1],
 
-  shiny::tags$hr(width = "100%"),
-
 
   # cancer type selection and result output---------------------------------------------------
   # cancer type selection----

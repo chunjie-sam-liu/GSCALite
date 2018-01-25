@@ -27,7 +27,7 @@ tabItem(
   ),
 
   source(file.path(config$ui, "GTEx_eqtl_help.R"))[1],
-  shiny::tags$hr(width = "85%"),
+  # shiny::tags$hr(width = "85%"),
 
   # fluidRow(column(width = 12, GTExTissueeqtl("gtex_eqtl"))),
   fluidRow(selectAndAnalysisInput("gtex_eqtl")),

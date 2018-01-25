@@ -28,7 +28,7 @@ tabItem(
 
   source(file.path(config$ui, "GTEx_exp_help.R"))[1],
 
-  shiny::tags$hr(width = "85%"),
+  # shiny::tags$hr(width = "85%"),
   
   fluidRow(selectAndAnalysisInput("GTEx_exp")),
   # tissue type selection----
