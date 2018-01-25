@@ -232,7 +232,7 @@ fun_rank_gene <- function(pattern){
 
 
 survival_bubble_plot <- function(.survival_clean) {
-  print(.survival_clean)
+  
   .survival_clean %>%
     dplyr::select(cancer_types, symbol) %>% 
     dplyr::mutate(n = 1) %>% 

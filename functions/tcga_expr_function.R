@@ -105,7 +105,7 @@ exprOutput <- function(id) {
       # bubble plot for tumor vs. normal
       tabPanel(
         title = "Tumor vs. Normal",
-        plotOutput(outputId = ns("expr_bubble_plot")) %>% withSpinner()
+        plotOutput(outputId = ns("expr_bubble_plot")) 
       ),
       # datatable
       tabPanel(
