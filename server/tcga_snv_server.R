@@ -8,12 +8,7 @@ source(file.path(config$wd, "functions", "tcga_snv_function.R"))
 #  get cancer type --------------------------------------------------------
 # selected_ctyps <- callModule(cancerType, "snv")
 
-# Cancer types value box selection ----------------------------------------
 
-callModule(module = cancerTypesSelect, id = "snv", .sctps = intersect(selected_ctyps(), tcga_data))
-# Check box ---------------------------------------------------------------
-
-callModule(module = selectAndAnalysis, id = "snv", .id = "snv")
 
 # button control --------------------------------------------------------
 
@@ -59,6 +54,12 @@ snv_analysis <- eventReactive(
       # laod snv data ----
       if (selected_analysis$snv == TRUE) {
         load_data_snv()
+        # Cancer types value box selection ----------------------------------------
+        
+        callModule(module = cancerTypesSelect, id = "snv", .sctps = intersect(selected_ctyps(), tcga_data))
+        # Check box ---------------------------------------------------------------
+        
+        callModule(module = selectAndAnalysis, id = "snv", .id = "snv")
         if(length(gene_set$match)!=0){
           if(length(selected_ctyps()!=0)){
             .msg <- c("NOTICE: ")

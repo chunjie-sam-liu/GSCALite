@@ -10,8 +10,7 @@ source(file.path(config$wd, "functions", "gtex_eqtl_function.R"))
 # GTEx_eqtl_tissue <- callModule(GTEx_eqtl_Tissue, "gtex_eqtl")
 # output$eqtl_selected_tissues <- renderText(GTEx_eqtl_tissue())
 
-callModule(module = tissueTypesSelect, id = "gtex_eqtl", .sctps = intersect(selected_ctyps(), gtex_data))
-callModule(module = selectAndAnalysis, id = "gtex_eqtl", .id = "gtex_eqtl")
+
 
 # generate eqtl result out ui -------------------------------------------------------
 
@@ -53,6 +52,8 @@ filter_eqtl_4_geneset <- eventReactive(
   valueExpr = {
     if (status$analysis == TRUE) {
       if (selected_analysis$eqtl == TRUE) {
+        callModule(module = tissueTypesSelect, id = "gtex_eqtl", .sctps = intersect(selected_ctyps(), gtex_data))
+        callModule(module = selectAndAnalysis, id = "gtex_eqtl", .id = "gtex_eqtl")
         # load GTEx eqtl data ---------------------------------------------------------
         load_data_eqtl()
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} start: eqtl selection on GTEx dataset processing@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))

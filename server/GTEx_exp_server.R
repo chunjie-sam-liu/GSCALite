@@ -5,9 +5,7 @@
 source(file.path(config$wd, "functions", "data_function.R"))
 source(file.path(config$wd, "functions", "gtex_gexp_function.R"))
 
-# check box-------------------------
-callModule(module = tissueTypesSelect, id = "GTEx_exp", .sctps = intersect(selected_ctyps(), gtex_data))
-callModule(module = selectAndAnalysis, id = "GTEx_exp", .id = "GTEx_exp")
+
 
 # generate eqtl result out ui -------------------------------------------------------
 
@@ -112,6 +110,9 @@ heatmap_gsva_4_geneset <- eventReactive(
   valueExpr = {
     if (status$analysis == TRUE) {
       if (selected_analysis$gtex_exp == TRUE) {
+        # check box-------------------------
+        callModule(module = tissueTypesSelect, id = "GTEx_exp", .sctps = intersect(selected_ctyps(), gtex_data))
+        callModule(module = selectAndAnalysis, id = "GTEx_exp", .id = "GTEx_exp")
         load_data_gexp()
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} start: expression profiles of gene set on GTEx dataset processing@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
         # gene_set <- GTEx_expr_gene_list()

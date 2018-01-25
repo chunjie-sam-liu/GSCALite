@@ -7,13 +7,7 @@ source(file.path(config$wd, "functions", "tcga_cnv_function.R"))
 # Selected cancer types ---------------------------------------------------
 # cnv_cancer_type <- callModule(cancerType, "cnv")
 
-# Cancer types value box selection ----------------------------------------
 
-callModule(module = cancerTypesSelect, id = "cnv", .sctps = intersect(selected_ctyps(), tcga_data))
-
-# Check box ---------------------------------------------------------------
-
-callModule(module = selectAndAnalysis, id = "cnv", .id = "cnv")
 
 # button control --------------------------------------------------------
 
@@ -63,6 +57,13 @@ cnv_analysis <- eventReactive(
   valueExpr = {
     if (status$analysis == TRUE) {
       if (selected_analysis$cnv == TRUE) {
+        # Cancer types value box selection ----------------------------------------
+        
+        callModule(module = cancerTypesSelect, id = "cnv", .sctps = intersect(selected_ctyps(), tcga_data))
+        
+        # Check box ---------------------------------------------------------------
+        
+        callModule(module = selectAndAnalysis, id = "cnv", .id = "cnv")
         .msg <- c("NOTICE: ")
         # load data----
         load_data_cnv()
