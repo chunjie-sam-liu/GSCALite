@@ -193,7 +193,9 @@ selected_analysis <- reactiveValues(
   'meth' = FALSE,
   'rppa' = FALSE,
   'mirna' = FALSE,
-  'drug' = FALSE
+  'drug' = FALSE,
+  'gtex_exp' = FALSE,
+  'eqtl' = FALSE
 )
 
 selected_ctyps <- reactiveVal()
@@ -214,7 +216,10 @@ print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading symbol @ {
 total_gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
 paired_cancer_types <- readr::read_rds(file.path(config$database, "TCGA", "expr", "paired_cancer_types.rds.gz"))
 pancan_color <- readr::read_tsv(file.path(config$database,"02_pcc.tsv"))
-ctps <- readr::read_rds(file.path(config$database, "03_ctps.rds.gz"))
+
+tcga_data <- readr::read_rds(file.path(config$database, "03_tcga_cat.rds.gz"))
+gtex_data <- readr::read_rds(file.path(config$database, "04_gtex_cat.rds.gz"))
+ctps <- c(tcga_data, gtex_data)
 
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} End loading symbol @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
  
@@ -228,4 +233,5 @@ mc3_pass <- NULL
 meth_diff <- NULL
 rppa_per <- NULL
 mirna2target <- NULL
-
+GTEx_egene <- NULL
+gtex_expr_mean <- NULL

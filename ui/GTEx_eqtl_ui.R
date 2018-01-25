@@ -27,12 +27,14 @@ tabItem(
   ),
 
   source(file.path(config$ui, "GTEx_eqtl_help.R"))[1],
+  # shiny::tags$hr(width = "85%"),
 
-  shiny::tags$br(),
-  shiny::tags$hr(width = "85%"),
-
-  fluidRow(column(width = 12, GTExTissueeqtl("gtex_eqtl"))),
+  # fluidRow(column(width = 12, GTExTissueeqtl("gtex_eqtl"))),
   fluidRow(selectAndAnalysisInput("gtex_eqtl")),
+  # tissue type selection----
+  fluidRow(column(width = 10, offset = 1, tissueTypeInput("gtex_eqtl"))),
+  # generate result panel ----
+  fluidRow(shiny::uiOutput(outputId = "ui_eqtl_result")),
   #  GTExTissueType("gtex_eqtl"),
 
   # Selected Tissue show ----
@@ -74,7 +76,7 @@ tabItem(
   #      )
   #    )
   #  ),
-  fluidRow(GTEx_eqtl_Output("gtex_eqtl")),
+  # fluidRow(GTEx_eqtl_Output("gtex_eqtl")),
   # load footer ----
   source(file.path(config$ui, "footer.R"))[1]
 ) # close tab

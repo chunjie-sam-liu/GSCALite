@@ -46,7 +46,6 @@ observeEvent(input$example, {
 
 
 observeEvent(input$analysis, {
-  
   if (length(input$select_ctps) == 0 || length(input$select_analysis) == 0) {
     status$progressbar <- FALSE
     names(selected_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
@@ -56,11 +55,33 @@ observeEvent(input$analysis, {
       text = "Please select at least one cancer types and analaysis",
       type = "error"
     )
+  } else if (xor(length(intersect(input$select_ctps, gtex_data)) >= 1, length(intersect(input$select_analysis, c("gtex_exp", "eqtl"))) >= 1)) {
+    status$progressbar <- FALSE
+    names(selected_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
+    shinyWidgets::sendSweetAlert(
+      session = session,
+      title = "Error...",
+      text = "Please Select GTEx analysis for GTEx data",
+      type = "error"
+    )
+  } else if (xor(length(intersect(input$select_ctps, tcga_data)) >= 1, length(intersect(input$select_analysis, c("expr", "snv", "cnv", "meth", "rppa", "mirna", "drug"))) >= 1)) {
+    status$progressbar <- FALSE
+    names(selected_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
+    shinyWidgets::sendSweetAlert(
+      session = session,
+      title = "Error...",
+      text = "Please Select TCGA analysis for TCGA data",
+      type = "error"
+    )
   } else{
     status$progressbar <- TRUE
     names(selected_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
     # reactiveVal for selected cancer types
+    # selected_ctyps <- reactiveVal()
     selected_ctyps(input$select_ctps)
+    
+    print(selected_ctyps())
+    
     input$select_analysis %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- TRUE })
     shinyjs::disable(id = "input_gene_set")
     shinyjs::disable(id = "analysis")

@@ -28,7 +28,7 @@ tabItem(
   ## Hlep message including in tcga_meth_help.ui----
   source(file.path(config$ui, "tcga_meth_help.R"))[1],
 
-  shiny::tags$hr(width = "85%"),
+  # shiny::tags$hr(width = "85%"),
   
 
   # cancer type selection and result output---------------------------------------------------

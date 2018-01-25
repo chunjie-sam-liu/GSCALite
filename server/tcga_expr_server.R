@@ -12,14 +12,6 @@ output$ui_expr_welcome <- shiny::renderUI({fn_expr_welcome()})
 
 output$ui_expr_help <- shiny::renderUI({fn_expr_help()})
 
-# Cancer types value box selection ----------------------------------------
-
-callModule(module = cancerTypesSelect, id = "expr", .sctps = selected_ctyps())
-
-# Check box ---------------------------------------------------------------
-
-callModule(module = selectAndAnalysis, id = "expr", .id = "expr")
-
 # expr analysis result ----------------------------------------------------
 
 output$ui_expr_result <- shiny::renderUI({fn_expr_result(selected_analysis$expr)})
@@ -54,9 +46,16 @@ expr_analysis <- eventReactive(
         # load data expr ----
         processing$start_loading_start <- TRUE
         
+        # Cancer types value box selection ----------------------------------------
+        
+        callModule(module = cancerTypesSelect, id = "expr", .sctps = intersect(selected_ctyps(), tcga_data))
+        
+        # Check box ---------------------------------------------------------------
+        
+        callModule(module = selectAndAnalysis, id = "expr", .id = "expr")
+        
         updateProgressBar(session = session, id = "progressbar", value = 40, status = "danger")
         session$onFlushed(function() {progress$expr_loading <- TRUE})
-        print("cj---------------------")
         observeEvent(eventExpr = progress$expr_loading, handlerExpr = {
             if (progress$expr_loading == TRUE) {
               # load data

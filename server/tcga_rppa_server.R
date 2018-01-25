@@ -6,13 +6,6 @@
 source(file.path(config$wd, "functions", "tcga_rppa_function.R"))
 
 
-# Cancer types value box selection ----------------------------------------
-
-callModule(module = cancerTypesSelect, id = "rppa", .sctps = input$select_ctps)
-# Check box ---------------------------------------------------------------
-
-callModule(module = selectAndAnalysis, id = "rppa", .id = "rppa")
-
 # generate rppa result out ui -------------------------------------------------------
 
 output$ui_rppa_result <- shiny::renderUI({
@@ -29,6 +22,12 @@ rppa_analysis <- eventReactive(
   valueExpr = {
     if (status$analysis == TRUE) {
       if (selected_analysis$rppa == TRUE) {
+        # Cancer types value box selection ----------------------------------------
+        
+        callModule(module = cancerTypesSelect, id = "rppa", .sctps = intersect(selected_ctyps(), tcga_data))
+        # Check box ---------------------------------------------------------------
+        
+        callModule(module = selectAndAnalysis, id = "rppa", .id = "rppa")
         load_data_rppa()
       if (length(gene_set$match) != 0) {
         shinyBS::createAlert(

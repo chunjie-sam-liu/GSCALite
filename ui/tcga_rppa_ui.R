@@ -29,8 +29,6 @@ tabItem(
   ## Hlep message including in tcga_rppa_help.ui----
   source(file.path(config$ui, "tcga_rppa_help.R"))[1],
 
-  shiny::tags$hr(width = "85%"),
-
   # cancer type selection and result output---------------------------------------------------
   # cancer type selection----
   fluidRow(column(width = 10, offset = 1, cancerTypeInput("rppa"))),

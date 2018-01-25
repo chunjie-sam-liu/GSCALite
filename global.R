@@ -477,7 +477,15 @@ cancerTypeInput <- function(id) {
   )
 }
 
-
+tissueTypeInput <- function(id) {
+  ns <- NS(id)
+  
+  tagList(
+    # value box for selected cancer types ----
+    fluidRow(shiny::uiOutput(outputId = ns("tissue_types_select"))),
+    shiny::tags$hr(width = "85%")
+  )
+}
 
 # Value box for selection cancer types ------------------------------------
 
@@ -511,6 +519,36 @@ cancerTypesSelect <- function(input, output, session, .sctps) {
   })
 }
 
+tissueTypesSelect <- function(input, output, session, .sctps) {
+  
+  output$tissue_types_select <- renderUI({
+    print(.sctps)
+    shiny::tagList(
+      column(
+        width = 4, offset = 2,
+        infoBox(
+          title = "Number of selected tissues", value = length(.sctps),
+          width = 12,  color = "aqua", fill = TRUE
+        )#icon = icon("users"),
+      ),
+      column(
+        width = 4,
+        infoBox(
+          title = "Number of unselected tissues", value = 30 - length(.sctps),
+          width = 12, color = "red", fill = TRUE
+        ) #icon = icon("credit-card"),
+      ),
+      column(
+        width = 8,offset = 2,
+        box(
+          solidHeader = TRUE, status = "primary",
+          title = "Selected Tissue Types", width = 12,
+          paste0(.sctps, collapse = ", ")
+        )
+      )
+    )
+  })
+}
 # select and submit for UI----
 
 selectAndAnalysisInput <- function(id) {
@@ -650,8 +688,9 @@ PlotInput <- function(id, width, height) {
 
 ##################### GTEx expression heatmap plot by zhangq#########################
 
-heatmap_GTEX_Plot <- function(input, output, session, data) {
+heatmap_GTEX_Plot <- function(input, output, session, data, status) {
   output$plot <- renderPlot({
+    status$analysis
     ggplot(data, aes(Tissue, GeneName)) +
       geom_tile(aes(fill = RPKM)) +
       geom_text(aes(label = RPKM)) +
