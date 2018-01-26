@@ -205,12 +205,12 @@ fn_feature_description <- function(){
       shiny::tags$p(
         class = "text-left",
         icon("hand-o-right"),
-        " CNV: The statistics of deletion/amplification of hetero/homozygous CNV."
+        " CNV: Statistics of deletion/amplification of hetero/homozygous CNV."
       ),
       shiny::tags$p(
         class = "text-left",
         icon("hand-o-right"),
-        " Methylation: Differential methylation, correlation to survival and expression."
+        " Methylation: Methylation affects survival and expression."
       ),
       shiny::tags$p(
         class = "text-left",
@@ -225,7 +225,7 @@ fn_feature_description <- function(){
       shiny::tags$p(
         class = "text-left",
         icon("hand-o-right"),
-        " Drug response: Correlation of gene expression and drug sensitivity (IC50)."
+        " Drug analysis: Correlation of expression and drug sensitivity (IC50)."
       ),
       shiny::tags$p(
         class = "text-left",
