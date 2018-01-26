@@ -3,7 +3,7 @@ snvOutput <- function() {
   column(
     width = 10, offset = 1,
     shinydashboard::tabBox(
-      id = "snv_plot", title = "PLOT", width = 12,
+      id = "snv_plot", title = "", width = 12,
       # bubble plot for tumor vs. normal
       tabPanel(title= "SNV percentage profile",PlotInput(id="snv_percentage")),
       tabPanel(title="SNV summary",imagePlotInput("snv_summary",width=700,height="100%")),

@@ -97,15 +97,15 @@ drugOutput <- function(id) {
   column(
     width = 10, offset = 1,
     shinydashboard::tabBox(
-      id = "expr_plot", title = "PLOT", width = 12,
+      id = "expr_plot", title = "", width = 12,
       # drug output
       tabPanel(
         title = "GDSC",
-        plotOutput(outputId = ns("gdsc")) %>% withSpinner()
+        plotOutput(outputId = ns("gdsc"), height = "1000px") %>% withSpinner()
       ),
       tabPanel(
         title = "CTRP",
-        plotOutput(outputId = ns("ctrp")) %>% withSpinner()
+        plotOutput(outputId = ns("ctrp"), height = "2500px") %>% withSpinner()
       )
     )
   )

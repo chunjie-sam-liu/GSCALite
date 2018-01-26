@@ -18,8 +18,8 @@ drug_output <- function(input, output, session, .path, .gs){
   output$gdsc <- renderPlot({NULL})
   output$ctrp <- renderPlot({NULL})
   
-  output$gdsc <- renderPlot({gdsc_plot(.path, .gs)})
-  output$ctrp <- renderPlot({ctrp_plot(.path, .gs)})
+  output$gdsc <- renderPlot(expr = {gdsc_plot(.path, .gs)})
+  output$ctrp <- renderPlot(expr = {ctrp_plot(.path, .gs)})
 }
 
 drug_analysis <- eventReactive(

@@ -3,7 +3,7 @@ methOutput <- function() {
   column(
     width = 10, offset = 1,
     shinydashboard::tabBox(
-            id = "snv_PLOT", title = "PLOT", width = 12,
+            id = "snv_PLOT", title = "", width = 12,
             tabPanel(title = "Differential Methylation", PlotInput(id = "meth_diff")),
             tabPanel(title = "Methylation Survival", PlotInput(id = "meth_survival")),
             tabPanel(title = "Methylation to Expression", PlotInput(id = "meth_exp"))

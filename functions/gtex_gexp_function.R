@@ -3,7 +3,7 @@ gexpOutput <- function() {
   column(
     width = 10, offset = 1,
     fluidRow(shinydashboard::tabBox(
-      id = "GTEx_PLOT", title = "PLOT", width = 12,
+      id = "GTEx_PLOT", title = "", width = 12,
       tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")) #,tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
     ))
   )

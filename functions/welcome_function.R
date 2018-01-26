@@ -82,8 +82,8 @@ fn_multi_cancer_input <- function(.ctps){
     column(
       width = 4, offset = 2,
       multiInput(
-        inputId = "select_ctps", label = "Select TCGA Cancer Types or GTEx Tissue",
-        choices = .ctps, selected = c('LUSC', 'LUAD'), width = "550px"
+        inputId = "select_ctps", label = "Select Cancer or Tissue (Selected in right)",
+        choices = .ctps, selected = c('LUSC', 'LUAD', 'KICH', 'KIRP', 'KIRC'), width = "550px"
       ),
       
       shinyjs::hide(switchInput(
@@ -94,7 +94,7 @@ fn_multi_cancer_input <- function(.ctps){
     column(
       width = 4,
       multiInput(
-        inputId = "select_analysis", label = "Select Analysis", width = "550px",
+        inputId = "select_analysis", label = "Select Analysis (Selected in right)", width = "550px",
         choices = c("mRNA Expression" = "expr", 
                     "Single Nucleotide Variation" = "snv",
                     "Copy Number Variation" = "cnv",
@@ -205,12 +205,12 @@ fn_feature_description <- function(){
       shiny::tags$p(
         class = "text-left",
         icon("hand-o-right"),
-        " CNV: The statistics of deletion/amplification of hetero/homozygous CNV."
+        " CNV: Statistics of deletion/amplification of hetero/homozygous CNV."
       ),
       shiny::tags$p(
         class = "text-left",
         icon("hand-o-right"),
-        " Methylation: Differential methylation, correlation to survival and expression."
+        " Methylation: Methylation affects survival and expression."
       ),
       shiny::tags$p(
         class = "text-left",
@@ -225,7 +225,7 @@ fn_feature_description <- function(){
       shiny::tags$p(
         class = "text-left",
         icon("hand-o-right"),
-        " Drug response: Correlation of gene expression and drug sensitivity (IC50)."
+        " Drug analysis: Correlation of expression and drug sensitivity (IC50)."
       ),
       shiny::tags$p(
         class = "text-left",
