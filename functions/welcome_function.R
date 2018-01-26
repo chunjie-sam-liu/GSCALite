@@ -82,7 +82,7 @@ fn_multi_cancer_input <- function(.ctps){
     column(
       width = 4, offset = 2,
       multiInput(
-        inputId = "select_ctps", label = "Select TCGA Cancer Types or GTEx Tissue",
+        inputId = "select_ctps", label = "Select Cancer or Tissue (Selected in right)",
         choices = .ctps, selected = c('LUSC', 'LUAD', 'KICH', 'KIRP', 'KIRC'), width = "550px"
       ),
       
@@ -94,7 +94,7 @@ fn_multi_cancer_input <- function(.ctps){
     column(
       width = 4,
       multiInput(
-        inputId = "select_analysis", label = "Select Analysis", width = "550px",
+        inputId = "select_analysis", label = "Select Analysis (Selected in right)", width = "550px",
         choices = c("mRNA Expression" = "expr", 
                     "Single Nucleotide Variation" = "snv",
                     "Copy Number Variation" = "cnv",
