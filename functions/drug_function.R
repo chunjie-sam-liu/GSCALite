@@ -101,11 +101,11 @@ drugOutput <- function(id) {
       # drug output
       tabPanel(
         title = "GDSC",
-        plotOutput(outputId = ns("gdsc")) %>% withSpinner()
+        plotOutput(outputId = ns("gdsc"), height = "1000px") %>% withSpinner()
       ),
       tabPanel(
         title = "CTRP",
-        plotOutput(outputId = ns("ctrp")) %>% withSpinner()
+        plotOutput(outputId = ns("ctrp"), height = "2500px") %>% withSpinner()
       )
     )
   )
