@@ -101,7 +101,7 @@ exprOutput <- function(id) {
   column(
     width = 10, offset = 1,
     shinydashboard::tabBox(
-      id = "expr_plot", title = "PLOT", width = 12,
+      id = "expr_plot", title = "", width = 12,
       # bubble plot for tumor vs. normal
       tabPanel(
         title = "Tumor vs. Normal",

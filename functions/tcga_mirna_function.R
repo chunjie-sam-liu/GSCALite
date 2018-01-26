@@ -2,7 +2,7 @@ mirnaOutput <- function() {
   # ns <- NS(id)
   column(
     width = 10, offset = 1,
-    shinydashboard::tabBox(id = "mirna_PLOT",title = "PLOT",width = 12,
+    shinydashboard::tabBox(id = "mirna_PLOT",title = "",width = 12,
                            tabPanel(title="networkD3",
                                     forceNetworkOutput("mirna_net1",height = "700px") %>% withSpinner(color="#0dc5c1")),
                            tabPanel(title= "visNetwork",

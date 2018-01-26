@@ -97,7 +97,7 @@ drugOutput <- function(id) {
   column(
     width = 10, offset = 1,
     shinydashboard::tabBox(
-      id = "expr_plot", title = "PLOT", width = 12,
+      id = "expr_plot", title = "", width = 12,
       # drug output
       tabPanel(
         title = "GDSC",
