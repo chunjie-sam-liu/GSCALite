@@ -21,18 +21,10 @@ output$ui_expr_result <- shiny::renderUI({fn_expr_result(selected_analysis$expr)
 # Start analysis ----------------------------------------------------------
 
 expr_start_analysis <- function(input, output, session, .expr_clean, .survival_clean, .subtype_clean) {
-  output$expr_dt_comparison <- DT::renderDataTable({
-    expr_clean_datatable(.expr_clean)
-  })
-  output$expr_bubble_plot <- renderPlot({
-    .expr_clean %>% expr_buble_plot()
-  })
-  output$survival <- renderPlot({
-    .survival_clean %>% survival_bubble_plot()
-  })
-  output$subtype <- renderPlot({
-    .subtype_clean %>% subtype_bubble_plot()
-  })
+  output$expr_dt_comparison <- DT::renderDataTable({expr_clean_datatable(.expr_clean)})
+  output$expr_bubble_plot <- renderPlot({.expr_clean %>% expr_buble_plot()})
+  output$survival <- renderPlot({.survival_clean %>% survival_bubble_plot()})
+  output$subtype <- renderPlot({.subtype_clean %>% subtype_bubble_plot()})
 }
 
 
