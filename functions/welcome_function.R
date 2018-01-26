@@ -83,7 +83,7 @@ fn_multi_cancer_input <- function(.ctps){
       width = 4, offset = 2,
       multiInput(
         inputId = "select_ctps", label = "Select TCGA Cancer Types or GTEx Tissue",
-        choices = .ctps, selected = c('LUSC', 'LUAD'), width = "550px"
+        choices = .ctps, selected = c('LUSC', 'LUAD', 'KICH', 'KIRP', 'KIRC'), width = "550px"
       ),
       
       shinyjs::hide(switchInput(
