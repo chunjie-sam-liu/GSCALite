@@ -78,11 +78,24 @@ expr_analysis <- eventReactive(
               
               .valid_ctps <- intersect(paired_cancer_types, selected_ctyps())
               .invalid_ctps <- setdiff(selected_ctyps(), paired_cancer_types)
-              
+              .msg_valid_ctps <- ""
+              .msg_invalid_ctps <- ""
+              if (length(.valid_ctps) > 1) {
+                .msg_valid_ctps <- glue::glue("only {paste0(.valid_ctps, collapse = ', ')} have paired samples")
+              } else if (length(.valid_ctps) == 1) {
+                .msg_valid_ctps <- glue::glue("only {.valid_ctps} has paired samples")
+              } else{
+                .msg_valid_ctps <- "no cancer types have paired samples"
+              }
+              if (length(.invalid_ctps) > 1) {
+                .msg_invalid_ctps <- glue::glue("The cancer types {paste0(.invalid_ctps, collapse = ', ')} don't have paired samples.")
+              } else if (length(.invalid_ctps) == 1) {
+                .msg_invalid_ctps <- glue::glue("The cancer type {.invalid_ctps} doesn't have paired samples.")
+              } else {
+                .msg_invalid_ctps <- ""
+              }
               .msg <- glue::glue("
- The analysis based on paired sample in each cancer types.
-                                  In this analysis, only {length(.valid_ctps)} cancer types have paired samples.
-                                  They are {paste0(.valid_ctps, collapse = ', ')}. The cancer type {paste0(.invalid_ctps, collapse = ', ')} don't have paired samples.")
+In Tumor vs. Normal module, the analysis is based on paired samples in each cancer types. In your selected cancer types, {.msg_valid_ctps}. {.msg_invalid_ctps}")
               
               shinyBS::createAlert(
                 session = session, anchorId = "expr-no_gene_set", title = "Information", style = "info",
@@ -94,11 +107,9 @@ expr_analysis <- eventReactive(
                 dplyr::filter(cancer_types %in% selected_ctyps()) %>% 
                 dplyr::filter(symbol %in% gene_set$match) ->> expr_clean
               expr_survival %>% 
-                # dplyr::filter(cancer_types %in% paired_cancer_types) %>%
                 dplyr::filter(cancer_types %in% selected_ctyps()) %>% 
                 dplyr::filter(symbol %in% gene_set$match) ->> survival_clean
               expr_subtype %>% 
-                # dplyr::filter(cancer_types %in% paired_cancer_types) %>%
                 dplyr::filter(cancer_types %in% selected_ctyps()) %>% 
                 dplyr::filter(symbol %in% gene_set$match) ->> subtype_clean
               
