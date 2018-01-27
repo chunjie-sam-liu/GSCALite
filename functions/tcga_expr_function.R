@@ -135,3 +135,7 @@ fn_expr_result <- function(.expr){
     )
   }
 }
+
+fn_dropdown_download <- function(){
+  print("dropdown menu for the image")
+}
