@@ -136,7 +136,7 @@ fn_expr_result <- function(.expr){
   }
 }
 
-fn_dropdown_download <- function(){
+fn_dropdown_widget <- function(){
   print("dropdown menu for the image")
   dropdownButton(
     
@@ -162,5 +162,23 @@ fn_dropdown_download <- function(){
     icon = icon("gear"), width = "300px",
     
     tooltip = tooltipOptions(title = "Click to see inputs !")
+  )
+}
+
+fn_img_download <- function(){
+  output$down <- downloadHandler(
+    filename =  function() {
+      paste("iris", input$var3, sep = ".")
+    },
+    # content is a function with argument file. content writes the plot to the device
+    content = function(file) {
+      if (input$var3 == "png")
+        png(file) # open the png device
+      else
+        pdf(file) # open the pdf device
+      plot(x = x(), y = y(), main = "iris dataset plot", xlab = xl(), ylab = yl()) # draw the plot
+      dev.off()  # turn the device off
+      
+    } 
   )
 }
