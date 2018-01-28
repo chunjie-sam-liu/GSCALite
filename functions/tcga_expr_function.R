@@ -138,4 +138,29 @@ fn_expr_result <- function(.expr){
 
 fn_dropdown_download <- function(){
   print("dropdown menu for the image")
+  dropdownButton(
+    
+    tags$h3("List of Inputs"),
+    
+    selectInput(inputId = 'xcol',
+                label = 'X Variable',
+                choices = names(iris)),
+    
+    selectInput(inputId = 'ycol',
+                label = 'Y Variable',
+                choices = names(iris),
+                selected = names(iris)[[2]]),
+    
+    sliderInput(inputId = 'clusters',
+                label = 'Cluster count',
+                value = 3,
+                min = 1,
+                max = 9),
+    
+    
+    circle = TRUE, status = "danger",
+    icon = icon("gear"), width = "300px",
+    
+    tooltip = tooltipOptions(title = "Click to see inputs !")
+  )
 }
