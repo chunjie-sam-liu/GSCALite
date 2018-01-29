@@ -718,7 +718,7 @@ PlotInput <- function(id, width, height) {
         circle = TRUE, status = "default",
         right = TRUE,
         icon = icon("download"), width = "300px",
-        tooltip = shinyWidgets::tooltipOptions(title = "Click to download picture !")
+        tooltip = shinyWidgets::tooltipOptions(title = "Click to download")
       )
     ),
     column(
@@ -789,14 +789,13 @@ Plot <- function(input, output, session) { # data(raw data, gene set, cancer typ
 # cnv Point plot --------------------------------------------------------------
 
 
-cnv_pointPlot <- function(input, output, session, data, cancer, gene, size, color, sizename, colorname, wrap, status_monitor, status) {
+cnv_pointPlot <- function(input, output, session, data, cancer, gene, size, color, sizename, colorname, wrap, status_monitor, status,downloadname) {
 
   # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
   #                     gene="symbol",size="per",color="color",sizename="CNV%",
   #                     colorname="SCNA Type",wrap="~ effect")
   # data should include x/y, point size and point color.
-  output$plot <- renderPlot({
-    status[[status_monitor]]
+  plotinput <- reactive({
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
       geom_point(aes_string(size = size, color = color)) +
@@ -815,14 +814,25 @@ cnv_pointPlot <- function(input, output, session, data, cancer, gene, size, colo
       theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
       facet_wrap(as.formula(wrap)) +
       theme(strip.text.x = element_text(size = 15)) -> p
-    return(p)
   })
+  output$plot <- renderPlot({
+    status[[status_monitor]]
+    print(plotinput())
+  })
+  output$picdownload <-downloadHandler(
+    filename = function() {
+      paste(downloadname, ".", input$pictype, sep = "")
+    },
+    content = function(file){
+      ggsave(file,plotinput(),device = input$pictype,width = input$d_width,height = input$d_height)
+    }
+  )
 }
 
 
 # cnv pie plot ----------------------------------------------------------------
 
-piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, height, status_monitor, status) {
+piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, height, status_monitor, status,downloadname) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
@@ -867,6 +877,7 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, 
         values = c("brown1", "brown4", "aquamarine3", "aquamarine4", "grey")
       ) -> p
   })
+  
   output$plot <- renderImage({
     status[[status_monitor]]
     # outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_cnv_pie_rellation_network",'.png',sep="")
@@ -879,9 +890,10 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, 
       alt = "This is alternate text"
     )
   }, deleteFile = FALSE)
+  
   output$picdownload <- downloadHandler(
     filename = function() {
-      paste(outfile, ".", input$pictype, sep = "")
+      paste(downloadname, ".", input$pictype, sep = "")
     },
     content = function(file) {
       ggsave(file, imgplotInput(), device = input$pictype, width = input$d_width, height = input$d_height)
@@ -892,14 +904,12 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, 
 
 # gene set CNV frenquencey in each cancer ---------------------------------
 # bar stak plot
-cnvbarPlot <- function(input, output, session, data, x, y, fill, status_monitor, status) {
+cnvbarPlot <- function(input, output, session, data, x, y, fill, status_monitor, status, downloadname) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
-  output$plot <- renderPlot({
-    status[[status_monitor]]
-
+  plotinput <- reactive({
     data %>%
       ggplot(aes_string(x = x, y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack") +
@@ -915,8 +925,21 @@ cnvbarPlot <- function(input, output, session, data, x, y, fill, status_monitor,
         axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.3)
       ) +
       labs(x = "Cancer Types", y = "CNV Frequency") -> p
-    return(p)
   })
+  
+  output$plot <- renderPlot({
+    status[[status_monitor]]
+    print(plotinput())
+  })
+  
+  output$picdownload <- downloadHandler(
+    filename = function(){
+      paste(downloadname,".",input$pictype, sep='')
+    },
+    content = function(file) {
+      ggsave(file,plotinput(),device = input$pictype,width = input$d_width,height = input$d_height)
+    }
+  )
 }
 
 
@@ -1049,7 +1072,7 @@ imagePlotInput <- function(id, width="100%", height=300) {
         ),
         circle = TRUE, status = "default",
         icon = icon("download"), width = "300px",
-        tooltip = shinyWidgets::tooltipOptions(title = "Click to download picture !")
+        tooltip = shinyWidgets::tooltipOptions(title = "Click to download")
       )
     ),
     br(),
@@ -1134,9 +1157,8 @@ snv_maf_oncoPlot <- function(input, output, session, gene_list_maf, pancan_color
 
 
 # 1. methy diff -----------------------------------------------------------
-methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title, status_monitor, status) {
-  output$plot <- renderPlot({
-    status[[status_monitor]]
+methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title, status_monitor, status, downloadname) {
+  plotinput <- reactive({
     CPCOLS <- c("red", "white", "blue")
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
@@ -1171,8 +1193,19 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
         legend.key = element_rect(fill = "white", colour = "black"),
         plot.title = element_text(size = 20)
       ) -> p
-    return(p)
   })
+  
+  output$plot <- renderPlot({
+    status[[status_monitor]]
+    print(plotinput())
+  })
+  
+  output$picdownload <- downloadHandler(
+    filename = function() { paste("picture", '.',input$pictype, sep='') },
+    content = function(file) {
+      ggsave(file,plotinput(),device = input$pictype,width = input$d_width,height = input$d_height)
+    }
+  )
 }
 
 

@@ -136,7 +136,7 @@ cnv_analysis <- eventReactive(
               piePlot, "cnv_pie", data = pie_plot_ready, y = "per",
               fill = "type", facet_grid = "symbol ~ cancer_types",
               outfile = file.path(user_dir, "pngs", paste(user_id, "-CNV_pie_profile.png", sep = "")), height = cnv_pie_height,
-              status_monitor = "analysis", status
+              status_monitor = "analysis", status, downloadname = "cnv_percent_profile_figure"
             )
           } else {
             .msg <- paste(.msg, glue::glue("No significant [CNV Pie distribution] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types."), sep = " ")
@@ -156,7 +156,8 @@ cnv_analysis <- eventReactive(
           callModule(
             cnv_pointPlot, "cnv_homo", data = cnv_homo_plot_ready, cancer = "cancer_types",
             gene = "symbol", size = "per", color = "color", sizename = "Homo CNV%",
-            colorname = "SCNA Type", wrap = "~ effect", status_monitor = "analysis", status
+            colorname = "SCNA Type", wrap = "~ effect", status_monitor = "analysis", status,
+            downloadname = "cnv_homo_figure"
           )
 
           print(glue::glue("{paste0(rep('-', 10), collapse = '')} End gernerate homo cnv profile plot@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
@@ -173,7 +174,8 @@ cnv_analysis <- eventReactive(
           callModule(
             cnv_pointPlot, "cnv_hete", data = cnv_hete_plot_ready, cancer = "cancer_types",
             gene = "symbol", size = "per", color = "color", sizename = "Hete CNV%",
-            colorname = "SCNA Type", wrap = "~ effect", status_monitor = "analysis", status
+            colorname = "SCNA Type", wrap = "~ effect", status_monitor = "analysis", status,
+            downloadname = "cnv_hete_figure"
           )
 
           print(glue::glue("{paste0(rep('-', 10), collapse = '')} End gernerate hete cnv profile plot@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
@@ -209,7 +211,7 @@ cnv_analysis <- eventReactive(
 
           print(glue::glue("{paste0(rep('-', 10), collapse = '')} End processing cnv overall percent data@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
-          callModule(cnvbarPlot, "cnv_bar", data = cnv_bar_plot_ready, x = "cancer_types", y = "per", fill = "type", status_monitor = "analysis", status)
+          callModule(cnvbarPlot, "cnv_bar", data = cnv_bar_plot_ready, x = "cancer_types", y = "per", fill = "type", status_monitor = "analysis", status, downloadname = "cnv_hete_figure")
 
           # cnv cor to expressin ----------------------------------------------------
 
@@ -231,7 +233,7 @@ cnv_analysis <- eventReactive(
               dplyr::summarise(rank = sum(spm)) %>%
               dplyr::arrange(rank) -> cancer_rank.cnvcor
 
-            callModule(methy_diff_pointPlot, "cnv_exp", data = gene_list_cancer_cnv_cor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.cnvcor, gene_rank = gene_rank.cnvcor, sizename = "-Log10(P.value)", colorname = "Spearman Correlation Coefficient", title = "Spearman Correlation Coefficient of CNV and gene expression.", status_monitor = "analysis", status)
+            callModule(methy_diff_pointPlot, "cnv_exp", data = gene_list_cancer_cnv_cor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.cnvcor, gene_rank = gene_rank.cnvcor, sizename = "-Log10(P.value)", colorname = "Spearman Correlation Coefficient", title = "Spearman Correlation Coefficient of CNV and gene expression.", status_monitor = "analysis", status, downloadname = "cnv_correlate_to_expr")
           } else {
             .msg <- paste(.msg, glue::glue("No significant [CNV to Expression] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(selected_ctyps(), collapse = ',')}."), sep = " ")
           }
