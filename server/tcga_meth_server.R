@@ -39,11 +39,6 @@ meth_analysis <- eventReactive(
           # load data----
           load_data_meth()
 
-          # remove pic result generate before ----
-          # callModule(removePic,"meth_diff",outtype="plot")
-          # callModule(removePic,"meth_survival",outtype="plot")
-          # callModule(removePic,"meth_exp",outtype="plot")
-
           print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start methy part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
           # get gene set meth ----------------------------------------
@@ -78,7 +73,7 @@ meth_analysis <- eventReactive(
               dplyr::summarise(rank = sum(diff)) %>%
               dplyr::arrange(rank) -> cancer_rank.methdiff
 
-            callModule(methy_diff_pointPlot, "meth_diff", data = gene_list_cancer_methdiff, cancer = "cancer_types", gene = "symbol", size = "fdr", color = "diff", cancer_rank = cancer_rank.methdiff, gene_rank = gene_rank.methdiff, sizename = "-Log10(FDR)", colorname = "Methylation diff (T - N)", title = "Methylation difference between tumor and normal samples.", status_monitor = "analysis", status)
+            callModule(methy_diff_pointPlot, "meth_diff", data = gene_list_cancer_methdiff, cancer = "cancer_types", gene = "symbol", size = "fdr", color = "diff", cancer_rank = cancer_rank.methdiff, gene_rank = gene_rank.methdiff, sizename = "-Log10(FDR)", colorname = "Methylation diff (T - N)", title = "Methylation difference between tumor and normal samples.", status_monitor = "analysis", status, downloadname="Differential_methylation")
           } else {
             .msg <- paste(.msg, glue::glue("The [Differential Methylation] analysis based on paired sample in each cancer types.
 In this analysis, only {nrow(meth_diff)} cancer types have paired samples. They are {paste0(meth_diff$cancer_types, collapse = ', ')}."), sep = " ")
@@ -102,7 +97,7 @@ In this analysis, only {nrow(meth_diff)} cancer types have paired samples. They 
               dplyr::summarise(rank = sum(a)) %>%
               dplyr::arrange(rank) -> cancer_rank.methsur
 
-            callModule(snv_sur_pointPlot, "meth_survival", data = gene_list_cancer_methsur, cancer = "cancer_types", gene = "symbol", size = "log10logrankP", color = "Hyper_worse", cancer_rank = cancer_rank.methsur, gene_rank = gene_rank.methsur, sizename = "logRank Pvalue", colorname = "HyperMethy Worse", title = "Overall survival difference between hypermethylation and hypomethylation.", status_monitor = "analysis", status)
+            callModule(snv_sur_pointPlot, "meth_survival", data = gene_list_cancer_methsur, cancer = "cancer_types", gene = "symbol", size = "log10logrankP", color = "Hyper_worse", cancer_rank = cancer_rank.methsur, gene_rank = gene_rank.methsur, sizename = "logRank Pvalue", colorname = "HyperMethy Worse", title = "Overall survival difference between hypermethylation and hypomethylation.", status_monitor = "analysis", status, downloadname="Methylation_survival")
           } else {
             .msg <- paste(.msg, glue::glue("No significant [Methylation Survival] result of gene: {paste0(gene_set$match, collapse = ', ')} in your selected cancer type: {paste0(selected_ctyps(), collapse = ', ')}."), sep = " ")
             output[["meth_survival-plot"]] <- renderPlot({
@@ -126,7 +121,7 @@ In this analysis, only {nrow(meth_diff)} cancer types have paired samples. They 
               dplyr::summarise(rank = sum(spm)) %>%
               dplyr::arrange(rank) -> cancer_rank.methcor
 
-            callModule(methy_diff_pointPlot, "meth_exp", data = gene_list_cancer_methcor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.methcor, gene_rank = gene_rank.methcor, sizename = "-Log10(P.value)", colorname = "Spearman Correlation Coefficient", title = "Spearman Correlation Coefficient of methylation and gene expression.", status_monitor = "analysis", status)
+            callModule(methy_diff_pointPlot, "meth_exp", data = gene_list_cancer_methcor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.methcor, gene_rank = gene_rank.methcor, sizename = "-Log10(P.value)", colorname = "Spearman Correlation Coefficient", title = "Spearman Correlation Coefficient of methylation and gene expression.", status_monitor = "analysis", status, downloadname="Methylation_affect_exp")
           } else {
             msg <- paste(.msg, glue::glue("No significant [Methylation to Expression] result of gene: {paste0(gene_set$match, collapse = ', ')} in your selected cancer type: {paste0(selected_ctyps(), collapse = ', ')}."), sep = " ")
             output[["meth_exp-plot"]] <- renderPlot({
