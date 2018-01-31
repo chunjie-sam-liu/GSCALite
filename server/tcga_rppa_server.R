@@ -68,7 +68,7 @@ rppa_analysis <- eventReactive(
         rppa_pie_outfile <- file.path(user_dir, "pngs", paste(user_id, "-", "TCGA_rppa_pie_profile.png", sep = ""))
         
         # draw ----
-        callModule(rppaPiePlot, "rppa_pie", data = rppa_pie_plot_ready, y = "per", fill = "class", facet_grid = " symbol~pathway", height = rppa_pie_height, outfile = rppa_pie_outfile,status)
+        callModule(rppaPiePlot, "rppa_pie", data = rppa_pie_plot_ready, y = "per", fill = "class", facet_grid = " symbol~pathway", height = rppa_pie_height, outfile = rppa_pie_outfile, status, downloadname = "Pathway_activity_pie_percentage")
         
         # rppa global percentage ----
         # data process
@@ -89,7 +89,7 @@ rppa_analysis <- eventReactive(
           rppa_heat_height <- 3
         }
         rppa_heat_outfile <- file.path(user_dir, "pngs", paste(user_id, "-", "TCGA_rppa_heatmap_percentage.png", sep = ""))
-        callModule(rppa_heat_per, "rppa_per", rppa_per_ready = rppa_per_ready, pathway = "pathway", symbol = "symbol", per = "per", height = rppa_heat_height, outfile = rppa_heat_outfile,status)
+        callModule(rppa_heat_per, "rppa_per", rppa_per_ready = rppa_per_ready, pathway = "pathway", symbol = "symbol", per = "per", height = rppa_heat_height, outfile = rppa_heat_outfile, status, downloadname = "Pathway_activity_global_percentage")
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start rppa global analysis part@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
         
         # rppa relation plot ---------------------------------------------------
@@ -127,68 +127,12 @@ rppa_analysis <- eventReactive(
           rppa_line_height <- 3
         }
         # plot draw
-        output$rppa_rela_plot <- renderImage({
+        output$`rppa_line-plot` <- renderImage({
           status[["analysis"]]
-          ggplot() -> p
-          for (cancers in plot_seg$Cancer %>% unique()) {
-            # cancers="LUSC"
-            plot_seg %>%
-              dplyr::filter(Cancer == cancers) -> data
-            curvature <- runif(1, 0.1, 0.3)
-            p +
-              geom_curve(
-                data = data, mapping = aes(
-                  x = x1,
-                  y = y1,
-                  xend = x2,
-                  yend = y2,
-                  colour = Cancer,
-                  linetype = Regulation
-                ),
-                # colour = "red",
-                curvature = curvature
-              ) -> p
-          }
-
-          p +
-            guides(color = FALSE) +
-            geom_text(
-              data = cancer.text,
-              mapping = aes(x = x, y = y, label = text, color = text),
-              hjust = 1,
-              size = 2
-            ) +
-            geom_text(
-              data = gene.text,
-              mapping = aes(x = x - 0.4, y = y, label = text),
-              hjust = 0,
-              size = 2
-            ) +
-            geom_text(
-              data = path.text,
-              mapping = aes(x = x, y = y, label = text),
-              hjust = 0,
-              size = 2
-            ) +
-            expand_limits(x = c(-1, 10)) +
-            theme(
-              panel.background = element_blank(),
-              axis.text = element_blank(),
-              axis.ticks = element_blank(),
-              # text = element_text(size=5),
-              plot.title = element_text(hjust = 0.5, size = 7),
-              plot.margin = rep(unit(0, "null"), 4),
-              legend.position = "bottom",
-              legend.text = element_text(size = 3),
-              legend.key.size = unit(0.25, "cm"),
-              legend.title = element_text(size = 4)
-            ) +
-            xlab("") +
-            ylab("") +
-            labs(title = "Relation network between genes' expression and cancer related pathways' activity.") -> p
+          
           rppa_line_outfile <- file.path(user_dir, "pngs", paste(user_id, "-", "TCGA_rppa_network_profile.png", sep = ""))
 
-          ggsave(rppa_line_outfile, p, device = "png", width = 4, height = rppa_line_height)
+          ggsave(rppa_line_outfile, rppa_line_contact(plot_seg, cancer.text, gene.text, path.text), device = "png", width = 4, height = rppa_line_height)
           list(
             src = rppa_line_outfile,
             contentType = "image/png",
@@ -197,6 +141,14 @@ rppa_analysis <- eventReactive(
             alt = "This is alternate text"
           )
         }, deleteFile = FALSE)
+        
+        output$`rppa_line-picdownload` <- downloadHandler(
+          filename = function() { paste("Pathway_relation_network", '.',input$`rppa_line-pictype`, sep='') },
+          content = function(file) {
+            ggsave(file,rppa_line_contact(plot_seg, cancer.text, gene.text, path.text),device = input$`rppa_line-pictype`,width = input$`rppa_line-d_width`,height = input$`rppa_line-d_height`)
+          }
+        )
+        
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} End rppa relation analysis part@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
         # alert for information
         shinyBS::createAlert(
