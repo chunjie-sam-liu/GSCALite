@@ -8,12 +8,9 @@ rppaOutput <- function() {
       tabPanel(title = "Heatmap percentage", imagePlotInput(id = "rppa_per", width = "100%", height = "100%")),
       tabPanel(
         title = "Relation network",
-        br(),
-        br(),
-        br(),
-        imageOutput("rppa_rela_plot", width = "100%", height = "100%") %>% withSpinner(color="#0dc5c1"),
-        hr()
+        imagePlotInput(id = "rppa_line", width = "100%", height = "100%"
       )
+    )
     )
   )
 }
