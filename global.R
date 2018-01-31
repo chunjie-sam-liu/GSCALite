@@ -1264,59 +1264,75 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
 
 # rppa --------------------------------------------------------------------
 # line contact ----
-rppa_line_contact <- function(input, output, session, seg, cancer, gene, pathway, title) {
-  output$plot <- renderImage({
-    ggplot() +
-      geom_segment(data = seg, mapping = aes_string(
-        x = x1,
-        y = y1,
-        xend = x2,
-        yend = y2,
-        colour = Cancer,
-        linetype = Regulation
-      )) +
-      guides(color = FALSE) +
-      geom_text(
-        data = cancer,
-        mapping = aes_string(x = x, y = y, label = text, color = text),
-        hjust = 1
-      ) +
-      geom_text(
-        data = gene,
-        mapping = aes_string(x = x, y = y - 0.15, label = text)
-      ) +
-      geom_text(
-        data = path,
-        mapping = aes_string(x = x, y = y, label = text),
-        hjust = 0
-      ) +
-      expand_limits(x = c(0, 7)) +
-      theme(
-        panel.background = element_blank(),
-        axis.title = element_blank(),
-        axis.text = element_blank(),
-        axis.ticks = element_blank()
-      ) +
-      labs(title = title) -> p
-    return(p)
-    # outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_RPPA_rellation_network",'.png',sep="")
-    # ggsave(outfile,p,device ="png",dpi = 300)
-    # list(src = outfile,
-    #      contentType = 'image/png',
-    #      width=1200,
-    #      height= "100%" ,
-    #      alt = "This is alternate text")
-  })
+rppa_line_contact <- function(plot_seg, cancer.text, gene.text, path.text) {
+  
+  ggplot() -> p
+  for (cancers in plot_seg$Cancer %>% unique()) {
+    # cancers="LUSC"
+    plot_seg %>%
+      dplyr::filter(Cancer == cancers) -> data
+    curvature <- runif(1, 0.1, 0.3)
+    p +
+      geom_curve(
+        data = data, mapping = aes(
+          x = x1,
+          y = y1,
+          xend = x2,
+          yend = y2,
+          colour = Cancer,
+          linetype = Regulation
+        ),
+        # colour = "red",
+        curvature = curvature
+      ) -> p
+  }
+  
+  p +
+    guides(color = FALSE) +
+    geom_text(
+      data = cancer.text,
+      mapping = aes(x = x, y = y, label = text, color = text),
+      hjust = 1,
+      size = 2
+    ) +
+    geom_text(
+      data = gene.text,
+      mapping = aes(x = x - 0.4, y = y, label = text),
+      hjust = 0,
+      size = 2
+    ) +
+    geom_text(
+      data = path.text,
+      mapping = aes(x = x, y = y, label = text),
+      hjust = 0,
+      size = 2
+    ) +
+    expand_limits(x = c(-1, 10)) +
+    theme(
+      panel.background = element_blank(),
+      axis.text = element_blank(),
+      axis.ticks = element_blank(),
+      # text = element_text(size=5),
+      plot.title = element_text(hjust = 0.5, size = 7),
+      plot.margin = rep(unit(0, "null"), 4),
+      legend.position = "bottom",
+      legend.text = element_text(size = 3),
+      legend.key.size = unit(0.25, "cm"),
+      legend.title = element_text(size = 4)
+    ) +
+    xlab("") +
+    ylab("") +
+    labs(title = "Relation network between genes' expression and cancer related pathways' activity.") -> p
 }
 
 # rppa pie ----
-rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, height, outfile, status) {
+rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, height, outfile, status, downloadname) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
 
-  imgInput <- reactive({
+  imgInput <- function(){
     data %>%
       ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack", color = NA) +
@@ -1350,8 +1366,9 @@ rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, heigh
         # Del RColorBrewer name = "BrBG"
         values = c("brown1", "aquamarine3", "grey")
       ) -> p
-  })
-  output$plot <- renderPlot({
+  }
+  
+  output$plot <- renderImage({
     status$analysis
     ggsave(outfile, imgInput(), device = "png", width = 4, height = height)
     list(
@@ -1362,9 +1379,10 @@ rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, heigh
       alt = "This is alternate text"
     )
   }, deleteFile = TRUE)
+  
   output$picdownload <- downloadHandler(
     filename = function() {
-      paste(outfile, ".", input$pictype, sep = "")
+      paste(downloadname, ".", input$pictype, sep = "")
     },
     content = function(file) {
       ggsave(file, imgInput(), device = input$pictype, width = input$d_width, height = input$d_height)
@@ -1373,9 +1391,8 @@ rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, heigh
 }
 
 # rppa heatmap percent ----
-rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbol, per, height, outfile, status) {
-  output$plot <- renderImage({
-    status$analysis
+rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbol, per, height, outfile, status, downloadname) {
+  plotInput <- function(){
     rppa_per_ready %>%
       ggplot(aes(x = pathway, y = symbol)) +
       xlab("Pathway") + ylab("Symbol") +
@@ -1403,7 +1420,11 @@ rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbo
         legend.title = element_text(size = 6)
       ) +
       xlab("Pathway (a:activate; i:inhibit)") -> p
-    ggsave(outfile, p, device = "png", width = 4, height = height)
+  }
+  
+  output$plot <- renderImage({
+    status$analysis
+    ggsave(outfile, plotInput(), device = "png", width = 4, height = height)
     list(
       src = outfile,
       contentType = "image/png",
@@ -1412,6 +1433,13 @@ rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbo
       alt = "This is alternate text"
     )
   }, deleteFile = FALSE)
+  
+  output$picdownload <- downloadHandler(
+    filename = function() { paste(downloadname, '.',input$pictype, sep='') },
+    content = function(file) {
+      ggsave(file,plotInput(),device = input$pictype,width = input$d_width,height = input$d_height)
+    }
+  )
 }
 
 
