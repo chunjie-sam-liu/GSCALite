@@ -297,3 +297,4 @@ subtype_bubble_plot <- function(.subtype_clean){
       legend.key = element_rect(fill = "white", colour = "black")
     ) 
 }
+
