@@ -479,7 +479,7 @@ cancerTypeInput <- function(id) {
 
 tissueTypeInput <- function(id) {
   ns <- NS(id)
-  
+
   tagList(
     # value box for selected cancer types ----
     fluidRow(shiny::uiOutput(outputId = ns("tissue_types_select"))),
@@ -497,18 +497,18 @@ cancerTypesSelect <- function(input, output, session, .sctps) {
         width = 4, offset = 2,
         infoBox(
           title = "Number of selected cancers", value = length(.sctps),
-          width = 12,  color = "aqua", fill = TRUE
-        )#icon = icon("users"),
+          width = 12, color = "aqua", fill = TRUE
+        ) # icon = icon("users"),
       ),
       column(
         width = 4,
         infoBox(
           title = "Number of unselected cancers", value = 33 - length(.sctps),
           width = 12, color = "red", fill = TRUE
-        ) #icon = icon("credit-card"),
+        ) # icon = icon("credit-card"),
       ),
       column(
-        width = 8,offset = 2,
+        width = 8, offset = 2,
         box(
           solidHeader = TRUE, status = "primary",
           title = "Selected Cancer Types", width = 12,
@@ -520,7 +520,6 @@ cancerTypesSelect <- function(input, output, session, .sctps) {
 }
 
 tissueTypesSelect <- function(input, output, session, .sctps) {
-  
   output$tissue_types_select <- renderUI({
     print(.sctps)
     shiny::tagList(
@@ -528,18 +527,18 @@ tissueTypesSelect <- function(input, output, session, .sctps) {
         width = 4, offset = 2,
         infoBox(
           title = "Number of selected tissues", value = length(.sctps),
-          width = 12,  color = "aqua", fill = TRUE
-        )#icon = icon("users"),
+          width = 12, color = "aqua", fill = TRUE
+        ) # icon = icon("users"),
       ),
       column(
         width = 4,
         infoBox(
           title = "Number of unselected tissues", value = 30 - length(.sctps),
           width = 12, color = "red", fill = TRUE
-        ) #icon = icon("credit-card"),
+        ) # icon = icon("credit-card"),
       ),
       column(
-        width = 8,offset = 2,
+        width = 8, offset = 2,
         box(
           solidHeader = TRUE, status = "primary",
           title = "Selected Tissue Types", width = 12,
@@ -658,12 +657,16 @@ resetcancerType <- function(input, output, session) {
 # remove pic when stop clicked ----------------------------------------------
 
 
-removePic <- function(input,output,session,outtype){
-  if(outtype=="image"){
-    output$plot<-renderImage({NULL})
+removePic <- function(input, output, session, outtype) {
+  if (outtype == "image") {
+    output$plot <- renderImage({
+      NULL
+    })
   }
-  if(outtype=="plot"){
-    output$plot<-renderPlot({NULL})
+  if (outtype == "plot") {
+    output$plot <- renderPlot({
+      NULL
+    })
   }
 }
 
@@ -680,9 +683,48 @@ PlotInput <- function(id, width, height) {
   ns <- NS(id)
 
   tagList(
-    plotOutput(ns("plot")) %>% withSpinner(color="#0dc5c1"),
-    hr()
-    # sliderInput(ns("num"),label = "Select size of number",min=10,max = 100,value = 50)
+    column(
+      width = 2, offset = 0,
+      shinyWidgets::dropdownButton(
+        tags$h3("Download Options"),
+        prettyRadioButtons(
+          inputId = ns("pictype"),
+          label = "Selcet format for your pictur",
+          choices = list("PDF" = "pdf", "PNG" = "png"),
+          inline = TRUE,
+          icon = icon("check"),
+          bigger = TRUE, status = "info",
+          animation = "jelly"
+        ),
+        numericInput(
+          inputId = ns("d_width"),
+          label = "Width",
+          value = 4,
+          min = 1,
+          max = 10
+        ),
+
+        numericInput(
+          inputId = ns("d_height"),
+          label = "Height",
+          value = 6,
+          min = 3,
+          max = 20
+        ),
+        downloadButton(
+          outputId = ns("picdownload"),
+          label = "Download"
+        ),
+        circle = TRUE, status = "default",
+        right = TRUE,
+        icon = icon("download"), width = "300px",
+        tooltip = shinyWidgets::tooltipOptions(title = "Click to download")
+      )
+    ),
+    column(
+      width = 12, offset = 0,
+      plotOutput(ns("plot")) %>% withSpinner(color = "#0dc5c1")
+    )
   )
 }
 
@@ -747,14 +789,13 @@ Plot <- function(input, output, session) { # data(raw data, gene set, cancer typ
 # cnv Point plot --------------------------------------------------------------
 
 
-cnv_pointPlot <- function(input, output, session, data, cancer, gene, size, color, sizename, colorname, wrap,status_monitor,status) {
+cnv_pointPlot <- function(input, output, session, data, cancer, gene, size, color, sizename, colorname, wrap, status_monitor, status,downloadname) {
 
   # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
   #                     gene="symbol",size="per",color="color",sizename="CNV%",
   #                     colorname="SCNA Type",wrap="~ effect")
   # data should include x/y, point size and point color.
-  output$plot <- renderPlot({
-    status[[status_monitor]]
+  plotinput <- reactive({
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
       geom_point(aes_string(size = size, color = color)) +
@@ -773,21 +814,31 @@ cnv_pointPlot <- function(input, output, session, data, cancer, gene, size, colo
       theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
       facet_wrap(as.formula(wrap)) +
       theme(strip.text.x = element_text(size = 15)) -> p
-    return(p)
   })
+  output$plot <- renderPlot({
+    status[[status_monitor]]
+    print(plotinput())
+  })
+  output$picdownload <-downloadHandler(
+    filename = function() {
+      paste(downloadname, ".", input$pictype, sep = "")
+    },
+    content = function(file){
+      ggsave(file,plotinput(),device = input$pictype,width = input$d_width,height = input$d_height)
+    }
+  )
 }
 
 
 # cnv pie plot ----------------------------------------------------------------
 
-piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, height,status_monitor,status) {
+piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, height, status_monitor, status,downloadname) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
-  output$plot <- renderImage({
-    status[[status_monitor]]
-    
+
+  imgplotInput <- reactive({
     data %>%
       ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack", color = NA) +
@@ -825,9 +876,12 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, 
         # Del RColorBrewer name = "BrBG"
         values = c("brown1", "brown4", "aquamarine3", "aquamarine4", "grey")
       ) -> p
-
+  })
+  
+  output$plot <- renderImage({
+    status[[status_monitor]]
     # outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_cnv_pie_rellation_network",'.png',sep="")
-    ggsave(outfile, p, device = "png", width = 4, height = height)
+    ggsave(outfile, imgplotInput(), device = "png", width = 4, height = height)
     list(
       src = outfile,
       contentType = "image/png",
@@ -836,19 +890,26 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, 
       alt = "This is alternate text"
     )
   }, deleteFile = FALSE)
+  
+  output$picdownload <- downloadHandler(
+    filename = function() {
+      paste(downloadname, ".", input$pictype, sep = "")
+    },
+    content = function(file) {
+      ggsave(file, imgplotInput(), device = input$pictype, width = input$d_width, height = input$d_height)
+    }
+  )
 }
 
 
 # gene set CNV frenquencey in each cancer ---------------------------------
 # bar stak plot
-cnvbarPlot <- function(input, output, session, data, x, y, fill,status_monitor,status) {
+cnvbarPlot <- function(input, output, session, data, x, y, fill, status_monitor, status, downloadname) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
-  output$plot <- renderPlot({
-    status[[status_monitor]]
-    
+  plotinput <- reactive({
     data %>%
       ggplot(aes_string(x = x, y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack") +
@@ -864,18 +925,28 @@ cnvbarPlot <- function(input, output, session, data, x, y, fill,status_monitor,s
         axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.3)
       ) +
       labs(x = "Cancer Types", y = "CNV Frequency") -> p
-    return(p)
   })
+  
+  output$plot <- renderPlot({
+    status[[status_monitor]]
+    print(plotinput())
+  })
+  
+  output$picdownload <- downloadHandler(
+    filename = function(){
+      paste(downloadname,".",input$pictype, sep='')
+    },
+    content = function(file) {
+      ggsave(file,plotinput(),device = input$pictype,width = input$d_width,height = input$d_height)
+    }
+  )
 }
 
 
 # snv percentage plot -----------------------------------------------------
 
-snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, label, cancer_rank, gene_rank,status_monitor,status) {
-  output$plot <- renderPlot({
-    # data$per %>% max() ->max.limit
-    # max.limit/10 -> inter.limit
-    status[[status_monitor]]
+snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, label, cancer_rank, gene_rank, status_monitor, status, downloadname) {
+  plotInput <- reactive({
     data %>%
       ggplot(aes_string(x = cancer, y = gene, fill = fill)) +
       geom_tile() +
@@ -905,20 +976,32 @@ snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, la
         keyheight = 0.8
       )) +
       labs(x = "", y = "") -> p
-    return(p)
   })
+  
+  output$plot <- renderPlot({
+    # data$per %>% max() ->max.limit
+    # max.limit/10 -> inter.limit
+    status[[status_monitor]]
+    print(plotInput())
+  })
+  
+  output$picdownload <- downloadHandler(
+    filename = function() { paste(downloadname, '.',input$pictype, sep='') },
+    content = function(file) {
+      ggsave(file,plotInput(),device = input$pictype,width = input$d_width,height = input$d_height)
+    }
+  )
 }
 
 
 # snv survival point plot -------------------------------------------------
 
-snv_sur_pointPlot <- function( input, output, session,data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title,status_monitor,status) {
+snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title, status_monitor, status, downloadname) {
   # Example: callModule(pointPlot,"cnv_pie",data=cnv_plot_ready_1,cancer="cancer_types",
   #                     gene="symbol",size="per",color="color",sizename="CNV%",
   #                     colorname="SCNA Type",wrap="~ effect")
   # data should include x/y, point size and point color.
-  output$plot <- renderPlot({
-    status[[status_monitor]]
+  plotInput <- reactive({
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
       geom_point(aes_string(size = size, color = color)) +
@@ -951,8 +1034,19 @@ snv_sur_pointPlot <- function( input, output, session,data, cancer, gene, size, 
         plot.title = element_text(size = 20),
         plot.margin = grid::unit(c(0, 0, 0, 0), "mm")
       ) -> p
-    return(p)
   })
+  
+  output$plot <- renderPlot({
+    status[[status_monitor]]
+    print(plotInput())
+  })
+  
+  output$picdownload <- downloadHandler(
+    filename = function() { paste(downloadname, '.',input$pictype, sep='') },
+    content = function(file) {
+      ggsave(file,plotInput(),device = input$pictype,width = input$d_width,height = input$d_height)
+    }
+  )
 }
 
 
@@ -963,39 +1057,87 @@ snv_sur_pointPlot <- function( input, output, session,data, cancer, gene, size, 
 
 imagePlotInput <- function(id, width="100%", height=300) {
   ns <- NS(id)
+  shiny::tagList(
+    column(
+      width = 2, offset = 0,
+      shinyWidgets::dropdownButton(
+        tags$h3("Download Options"),
+        prettyRadioButtons(
+          inputId = ns("pictype"),
+          label = "Selcet format for your pictur",
+          choices = list("PDF" = "pdf", "PNG" = "png"),
+          inline = TRUE,
+          icon = icon("check"),
+          bigger = TRUE, status = "info",
+          animation = "jelly"
+        ),
+        numericInput(
+          inputId = ns("d_width"),
+          label = "Width",
+          value = 4,
+          min = 1,
+          max = 10
+        ),
 
-  tagList(
+        numericInput(
+          inputId = ns("d_height"),
+          label = "Height",
+          value = 6,
+          min = 3,
+          max = 20
+        ),
+        downloadButton(
+          outputId = ns("picdownload"),
+          label = "Download"
+        ),
+        circle = TRUE, status = "default",
+        icon = icon("download"), width = "300px",
+        tooltip = shinyWidgets::tooltipOptions(title = "Click to download")
+      )
+    ),
     br(),
     br(),
     br(),
     br(),
-    imageOutput(ns("plot"), width = width, height = height) %>% withSpinner(color="#0dc5c1"),
-    
-    hr()
+    column(
+      width = 12, offset = 0,
+      imageOutput(ns("plot"), width = width, height = height) %>% withSpinner(color = "#0dc5c1")
+    )
   )
 }
 
 # 2. server part ----------------------------------------------------------
 
-snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile,status_monitor,status) {
-  output$plot <-renderImage({
+snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile, status_monitor, status, downloadname) {
+  plotInput <- reactive({
+    maftools::plotmafSummary(gene_list_maf, fs = 3, statFontSize = 2) -> p
+    p$plot
+  })
+  output$plot <- renderImage({
     status[[status_monitor]]
     # png(outfile, width = 1000, height= 700)
-    maftools::plotmafSummary(gene_list_maf,fs = 3,statFontSize = 2) ->p
+    
     # dev.off()
-    ggsave(p$plot,filename = outfile, device = "png",width = 3,height = 2)
-    list(src = outfile,
-         contentType = 'image/png',
-         # width = 1000,
-         # height = 700,
-         alt = "This is alternate text")
+    ggsave(plotInput(), filename = outfile, device = "png", width = 3, height = 2)
+    list(
+      src = outfile,
+      contentType = "image/png",
+      # width = 1000,
+      # height = 700,
+      alt = "This is alternate text"
+    )
   }, deleteFile = FALSE)
+  
+  output$picdownload <- downloadHandler(
+    filename = function() { paste(downloadname, '.',input$pictype, sep='') },
+    content = function(file) {
+      ggsave(file,plotInput(),device = input$pictype,width = input$d_width,height = input$d_height)
+    }
+  )
 }
 
-snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,pancan_color,outfile,status_monitor,status) {
-  output$plot <-renderImage({
-    status[[status_monitor]]
-    png(outfile, width = 800, height= 600)
+snv_maf_oncoPlot <- function(input, output, session, gene_list_maf, pancan_color, outfile, status_monitor, status, downloadname) {
+  plotInput <- function(){
     col <- RColorBrewer::brewer.pal(n = 8, name = "Paired")
     names(col) <- c(
       "Frame_Shift_Del", "Missense_Mutation", "Nonsense_Mutation", "Multi_Hit", "Frame_Shift_Ins",
@@ -1004,36 +1146,61 @@ snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,pancan_color,o
     gene_list_maf %>% maftools::getClinicalData() %>% dplyr::select(Cancer_Types) %>% unique() %>% t() %>% as.character() -> snv_maf_cancer_type
     pancan_color %>%
       dplyr::filter(cancer_types %in% snv_maf_cancer_type) %>%
-      dplyr::select(color,cancer_types) -> snv_maf_cancer_type_color
-      
-    fabcolors <-  snv_maf_cancer_type_color$color
-    names(fabcolors) <-  snv_maf_cancer_type_color$cancer_types
-
-    fabcolors <- list(Cancer_Types = fabcolors)
-    if(length(snv_maf_cancer_type)>1){
-      maftools::oncoplot(
-    # my_oncoplot(
-      maf = gene_list_maf, removeNonMutated = T, colors = col,
-      clinicalFeatures = "Cancer_Types", sortByMutation=TRUE,sortByAnnotation = TRUE,
-      annotationColor = fabcolors, top = 10
-      )}else{
-        maftools::oncoplot(
-          # my_oncoplot(
-          maf = gene_list_maf, removeNonMutated = T, colors = col,
-          clinicalFeatures = "Cancer_Types", sortByMutation=TRUE,#sortByAnnotation = TRUE,
-          annotationColor = fabcolors, top = 10
-        )
-    }
+      dplyr::select(color, cancer_types) -> snv_maf_cancer_type_color
     
+    fabcolors <- snv_maf_cancer_type_color$color
+    names(fabcolors) <- snv_maf_cancer_type_color$cancer_types
+    
+    fabcolors <- list(Cancer_Types = fabcolors)
+    if (length(snv_maf_cancer_type) > 1) {
+      maftools::oncoplot(
+        # my_oncoplot(
+        maf = gene_list_maf, removeNonMutated = T, colors = col,
+        clinicalFeatures = "Cancer_Types", sortByMutation = TRUE, sortByAnnotation = TRUE,
+        annotationColor = fabcolors, top = 10
+      )
+    } else {
+      maftools::oncoplot(
+        # my_oncoplot(
+        maf = gene_list_maf, removeNonMutated = T, colors = col,
+        clinicalFeatures = "Cancer_Types", sortByMutation = TRUE, # sortByAnnotation = TRUE,
+        annotationColor = fabcolors, top = 10
+      )
+    }
+  }
+  output$plot <- renderImage({
+    status[[status_monitor]]
+    png(outfile, width = 800, height = 600)
+    plotInput()
     # maftools::oncoplot(maf = gene_list_maf, top = 10)#, fontSize = 12
     dev.off()
-    
-    list(src = outfile,
-         contentType = 'image/png',
-         width = 800,
-         height = 600,
-         alt = "This is alternate text")
+    list(
+      src = outfile,
+      contentType = "image/png",
+      width = 800,
+      height = 600,
+      alt = "This is alternate text"
+    )
   }, deleteFile = FALSE)
+  
+  fn_save <- function(.file,.pictyp,width,height){
+    print(.file)
+    if(.pictyp == "png"){
+      png(.file, width, height,units ="in",res=1200)
+      plotInput()
+      dev.off()
+    } else{
+      pdf(.file, width, height)
+      plotInput()
+      dev.off()
+    }
+  }
+  output$picdownload <- downloadHandler(
+    filename = function() {paste(downloadname, '.',input$pictype, sep='') },
+    content = function(filename) {
+      fn_save(.file=filename, .pictyp=input$pictype, width = input$d_width,height = input$d_height)
+    }
+  )
 }
 
 
@@ -1041,9 +1208,8 @@ snv_maf_oncoPlot <-function(input, output, session, gene_list_maf,pancan_color,o
 
 
 # 1. methy diff -----------------------------------------------------------
-methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title,status_monitor,status) {
-  output$plot <- renderPlot({
-    status[[status_monitor]]
+methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, size, color, cancer_rank, gene_rank, sizename, colorname, title, status_monitor, status, downloadname) {
+  plotinput <- reactive({
     CPCOLS <- c("red", "white", "blue")
     data %>%
       ggplot(aes_string(y = gene, x = cancer)) +
@@ -1078,8 +1244,19 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
         legend.key = element_rect(fill = "white", colour = "black"),
         plot.title = element_text(size = 20)
       ) -> p
-    return(p)
   })
+  
+  output$plot <- renderPlot({
+    status[[status_monitor]]
+    print(plotinput())
+  })
+  
+  output$picdownload <- downloadHandler(
+    filename = function() { paste("picture", '.',input$pictype, sep='') },
+    content = function(file) {
+      ggsave(file,plotinput(),device = input$pictype,width = input$d_width,height = input$d_height)
+    }
+  )
 }
 
 
@@ -1087,59 +1264,75 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
 
 # rppa --------------------------------------------------------------------
 # line contact ----
-rppa_line_contact <- function(input, output, session, seg, cancer, gene, pathway, title) {
-  output$plot <- renderImage({
-    ggplot() +
-      geom_segment(data = seg, mapping = aes_string(
-        x = x1,
-        y = y1,
-        xend = x2,
-        yend = y2,
-        colour = Cancer,
-        linetype = Regulation
-      )) +
-      guides(color = FALSE) +
-      geom_text(
-        data = cancer,
-        mapping = aes_string(x = x, y = y, label = text, color = text),
-        hjust = 1
-      ) +
-      geom_text(
-        data = gene,
-        mapping = aes_string(x = x, y = y - 0.15, label = text)
-      ) +
-      geom_text(
-        data = path,
-        mapping = aes_string(x = x, y = y, label = text),
-        hjust = 0
-      ) +
-      expand_limits(x = c(0, 7)) +
-      theme(
-        panel.background = element_blank(),
-        axis.title = element_blank(),
-        axis.text = element_blank(),
-        axis.ticks = element_blank()
-      ) +
-      labs(title = title) -> p
-    return(p)
-    # outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_RPPA_rellation_network",'.png',sep="")
-    # ggsave(outfile,p,device ="png",dpi = 300)
-    # list(src = outfile,
-    #      contentType = 'image/png',
-    #      width=1200,
-    #      height= "100%" ,
-    #      alt = "This is alternate text")
-  })
+rppa_line_contact <- function(plot_seg, cancer.text, gene.text, path.text) {
+  
+  ggplot() -> p
+  for (cancers in plot_seg$Cancer %>% unique()) {
+    # cancers="LUSC"
+    plot_seg %>%
+      dplyr::filter(Cancer == cancers) -> data
+    curvature <- runif(1, 0.1, 0.3)
+    p +
+      geom_curve(
+        data = data, mapping = aes(
+          x = x1,
+          y = y1,
+          xend = x2,
+          yend = y2,
+          colour = Cancer,
+          linetype = Regulation
+        ),
+        # colour = "red",
+        curvature = curvature
+      ) -> p
+  }
+  
+  p +
+    guides(color = FALSE) +
+    geom_text(
+      data = cancer.text,
+      mapping = aes(x = x, y = y, label = text, color = text),
+      hjust = 1,
+      size = 2
+    ) +
+    geom_text(
+      data = gene.text,
+      mapping = aes(x = x - 0.4, y = y, label = text),
+      hjust = 0,
+      size = 2
+    ) +
+    geom_text(
+      data = path.text,
+      mapping = aes(x = x, y = y, label = text),
+      hjust = 0,
+      size = 2
+    ) +
+    expand_limits(x = c(-1, 10)) +
+    theme(
+      panel.background = element_blank(),
+      axis.text = element_blank(),
+      axis.ticks = element_blank(),
+      # text = element_text(size=5),
+      plot.title = element_text(hjust = 0.5, size = 7),
+      plot.margin = rep(unit(0, "null"), 4),
+      legend.position = "bottom",
+      legend.text = element_text(size = 3),
+      legend.key.size = unit(0.25, "cm"),
+      legend.title = element_text(size = 4)
+    ) +
+    xlab("") +
+    ylab("") +
+    labs(title = "Relation network between genes' expression and cancer related pathways' activity.") -> p
 }
 
 # rppa pie ----
-rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, height, outfile,status) {
+rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, height, outfile, status, downloadname) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
   # data should include ...
-  output$plot <- renderImage({
-    status$analysis
+
+  imgInput <- function(){
     data %>%
       ggplot(aes_string(x = factor(1), y = y, fill = fill)) +
       geom_bar(stat = "identity", position = "stack", color = NA) +
@@ -1173,9 +1366,11 @@ rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, heigh
         # Del RColorBrewer name = "BrBG"
         values = c("brown1", "aquamarine3", "grey")
       ) -> p
-
-
-    ggsave(outfile, p, device = "png", width = 4, height = height)
+  }
+  
+  output$plot <- renderImage({
+    status$analysis
+    ggsave(outfile, imgInput(), device = "png", width = 4, height = height)
     list(
       src = outfile,
       contentType = "image/png",
@@ -1183,13 +1378,21 @@ rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, heigh
       # height = 900,
       alt = "This is alternate text"
     )
-  }, deleteFile = FALSE)
+  }, deleteFile = TRUE)
+  
+  output$picdownload <- downloadHandler(
+    filename = function() {
+      paste(downloadname, ".", input$pictype, sep = "")
+    },
+    content = function(file) {
+      ggsave(file, imgInput(), device = input$pictype, width = input$d_width, height = input$d_height)
+    }
+  )
 }
 
 # rppa heatmap percent ----
-rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbol, per, height, outfile, status) {
-  output$plot <- renderImage({
-    status$analysis
+rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbol, per, height, outfile, status, downloadname) {
+  plotInput <- function(){
     rppa_per_ready %>%
       ggplot(aes(x = pathway, y = symbol)) +
       xlab("Pathway") + ylab("Symbol") +
@@ -1217,7 +1420,11 @@ rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbo
         legend.title = element_text(size = 6)
       ) +
       xlab("Pathway (a:activate; i:inhibit)") -> p
-    ggsave(outfile, p, device = "png", width = 4, height = height)
+  }
+  
+  output$plot <- renderImage({
+    status$analysis
+    ggsave(outfile, plotInput(), device = "png", width = 4, height = height)
     list(
       src = outfile,
       contentType = "image/png",
@@ -1226,6 +1433,13 @@ rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbo
       alt = "This is alternate text"
     )
   }, deleteFile = FALSE)
+  
+  output$picdownload <- downloadHandler(
+    filename = function() { paste(downloadname, '.',input$pictype, sep='') },
+    content = function(file) {
+      ggsave(file,plotInput(),device = input$pictype,width = input$d_width,height = input$d_height)
+    }
+  )
 }
 
 

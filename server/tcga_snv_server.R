@@ -93,7 +93,8 @@ snv_analysis <- eventReactive(
             callModule(
               snv_per_heatmap, "snv_percentage", data = snv_per_plot_ready,
               cancer = "x_label", gene = "symbol", fill = "per", label = "sm_count",
-              cancer_rank = snv_per_cancer_rank, gene_rank = snv_per_gene_rank,status_monitor="analysis",status
+              cancer_rank = snv_per_cancer_rank, gene_rank = snv_per_gene_rank,status_monitor="analysis",status,
+              downloadname = "SNV_percentage_profile"
             )
             
             # snv survival ------------------------------------------------------------
@@ -125,7 +126,7 @@ snv_analysis <- eventReactive(
               callModule(
                 snv_sur_pointPlot, "snv_survival", data = snv_sur_plot_ready, cancer = "cancer_types",
                 gene = "symbol", size = "logP", color = "worse", cancer_rank = snv_sur_cancer_rank,
-                gene_rank = snv_sur_gene_rank, sizename = "logRank P", colorname = "Mutation Worse",title="Overall survival difference between mutation and non mutation genes.",status_monitor="analysis",status
+                gene_rank = snv_sur_gene_rank, sizename = "logRank P", colorname = "Mutation Worse",title="Overall survival difference between mutation and non mutation genes.",status_monitor="analysis",status, downloadname = "SNV_affect_survival"
               )
               
             } else{
@@ -149,11 +150,11 @@ snv_analysis <- eventReactive(
             
             #1. snv summary
             snv_su_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_summary_profile.png", sep = ""))
-            callModule(snv_maf_summaryPlot,"snv_summary",gene_list_maf=gene_list_maf,outfile=snv_su_out,status_monitor="analysis",status)
+            callModule(snv_maf_summaryPlot,"snv_summary",gene_list_maf=gene_list_maf,outfile=snv_su_out,status_monitor="analysis",status,downloadname="SNV_summary")
             
             #2. oncoplot
             snv_onco_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_oncoplot_profile.png", sep = ""))
-            callModule(snv_maf_oncoPlot,"snv_oncoplot",gene_list_maf=gene_list_maf,pancan_color=pancan_color,outfile=snv_onco_out,status_monitor="analysis",status)
+            callModule(snv_maf_oncoPlot,"snv_oncoplot",gene_list_maf=gene_list_maf,pancan_color=pancan_color,outfile=snv_onco_out,status_monitor="analysis",status,downloadname="SNV_oncoplot")
             print(glue::glue("{paste0(rep('-', 10), collapse = '')} End maf part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))        
           }else{
             shinyBS::createAlert(
