@@ -178,7 +178,7 @@ fn_img_download <- function(){
         pdf(file) # open the pdf device
       plot(x = x(), y = y(), main = "iris dataset plot", xlab = xl(), ylab = yl()) # draw the plot
       dev.off()  # turn the device off
-      
+
     } 
   )
 }
