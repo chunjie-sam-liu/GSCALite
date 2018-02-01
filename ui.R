@@ -82,7 +82,7 @@ sidebar <- dashboardSidebar(
 
     # Drug ----
     menuItem(
-      "Drug Response",
+      "Drug Sensitivity",
       tabName = "drug",
       icon = icon("medkit")
     ),

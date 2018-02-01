@@ -177,7 +177,7 @@ fn_feature_description <- function(){
         ", Drug response data from ",
         shiny::tags$a("GDSC", href = "http://www.cancerrxgene.org/", target = "_blank", style = "color:#008176"),
         " and ",
-        shiny::tags$a("CTRP", href = "http://www.cancerrxgene.org/", target = "_blank", style = "color:#008176"),
+        shiny::tags$a("CTRP", href = "https://portals.broadinstitute.org/ctrp/", target = "_blank", style = "color:#008176"),
         " as well as normal tissue data from",
         shiny::tags$a("GTEx", href = "https://www.gtexportal.org/home/datasets", target = "_blank", style = "color:#008176"),
         "for gene set analysis in a one-in-all data analysis workflow. When the analysis finished, users can download all the results and figures as an interactive HTML report."
