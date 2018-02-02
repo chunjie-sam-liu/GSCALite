@@ -50,17 +50,21 @@ mirna_analysis <- eventReactive(
           print("prepare data for networkD3 done!")
           
           # output ------------------------------------------------------------------
-          
+          mirna_d3 <- function(){
+            networkD3::forceNetwork(
+            Links = mirna_d$links, Nodes = mirna_d$nodes,
+            Source = "source", Target = "target",
+            NodeID = "name", Nodesize = "size", Group = "group", fontSize = 15, radiusCalculation = "Math.sqrt(d.nodesize)+6", zoom = TRUE,
+            fontFamily = "cursive", opacityNoHover = 0.7
+          )
+          }
           output$mirna_net1 <- renderForceNetwork({
             status$analysis
-            networkD3::forceNetwork(
-              Links = mirna_d$links, Nodes = mirna_d$nodes,
-              Source = "source", Target = "target",
-              NodeID = "name", Nodesize = "size", Group = "group", fontSize = 15, radiusCalculation = "Math.sqrt(d.nodesize)+6", zoom = TRUE,
-              fontFamily = "cursive", opacityNoHover = 0.7
-            )
+            mirna_d3()
             # print("draw networkD3 done!")
           })
+          
+          # rbokeh::widget2png(mirna_d3(), "sankey.png")
           
           
           # 2. visNetwork style ----
@@ -124,8 +128,7 @@ mirna_analysis <- eventReactive(
           mirna_edges <- data.frame(from = gene_list_mirmna2target_vis$mirna, to = gene_list_mirmna2target_vis$symbol, value = gene_list_mirmna2target_vis$cor)
           
           # network generate
-          output$mirna_net2 <- visNetwork::renderVisNetwork({
-            status$analysis
+          mirna_vis <- function(){
             visNetwork::visNetwork(mirna_nodes, mirna_edges, width = "100%") %>%
               visNetwork::visEdges(color = "darkorange") %>%
               visNetwork::visEdges(smooth = TRUE) %>%
@@ -134,10 +137,15 @@ mirna_analysis <- eventReactive(
               visNetwork::visLegend() %>%
               visNetwork::visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE, manipulation = TRUE) %>% # Highlight nearest & Select by node id
               visNetwork::visInteraction(navigationButtons = TRUE) %>%
-              visNetwork::visEdges(arrows = "to")
+              visNetwork::visEdges(arrows = "to") %>%
+              visNetwork::visExport( type = "pdf", name = "miRNA_visNet",
+                                     float = "right", style = NULL, loadDependencies = TRUE) 
+          }
+          output$mirna_net2 <- visNetwork::renderVisNetwork({
+            status$analysis
+            mirna_vis()
           })
           
-          print(selected_analysis$mirna)
         }else{
           .msg <- c("NOTICE: No significant (click to see help page above) miRNA-gene regulation relationship for your selected genes.")
           shinyBS::createAlert(
