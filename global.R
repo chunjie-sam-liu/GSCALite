@@ -730,17 +730,32 @@ PlotInput <- function(id, width, height) {
 
 ##################### GTEx expression heatmap plot by zhangq#########################
 
-heatmap_GTEX_Plot <- function(input, output, session, data, status) {
-  output$plot <- renderPlot({
-    status$analysis
+heatmap_GTEX_Plot <- function(input, output, session, data, status, downloadname) {
+  # plot function
+  plotinput <- function(){
     ggplot(data, aes(Tissue, GeneName)) +
       geom_tile(aes(fill = RPKM)) +
       geom_text(aes(label = RPKM)) +
       scale_fill_gradient(low = "white", high = "red") +
       labs(title = "Expression value of query genes in GTEx dataset") +
       theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, hjust = 1)) -> p
-    return(p)
+  }
+  
+  # get output
+  output$plot <- renderPlot({
+    status$analysis
+    print(plotinput())
   })
+  
+  # get download output
+  output$picdownload <-downloadHandler(
+    filename = function() {
+      paste(downloadname, ".", input$pictype, sep = "")
+    },
+    content = function(file){
+      ggsave(file,plotinput(),device = input$pictype,width = input$d_width,height = input$d_height)
+    }
+  )
 }
 
 box_GTEx_GSVA_Plot <- function(input, output, session, data) {
