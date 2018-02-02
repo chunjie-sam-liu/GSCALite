@@ -63,7 +63,12 @@ mirna_analysis <- eventReactive(
             mirna_d3()
             # print("draw networkD3 done!")
           })
-          
+          output$`mirna_net1-downloadNetwork`<- downloadHandler(
+            filename = function(){ paste("networkD3",Sys.Date(),Sys.time(),".html")},
+            content = function(file){
+              mirna_d3() %>% htmlwidgets::saveWidget(file)
+            }
+          )
           # rbokeh::widget2png(mirna_d3(), "sankey.png")
           
           
@@ -118,7 +123,7 @@ mirna_analysis <- eventReactive(
             group = c(rep("miRNA", mirna_mirna_num), rep("Gene", mirna_gene_num)), # add groups on nodes
             value = mirna_vis_ready$size, # size adding value
             scaling = list(min = 1, max = 10),
-            shape = c(rep("database", mirna_mirna_num), rep("circle", mirna_gene_num)), # control shape of nodes
+            shape = c(rep("circle", mirna_mirna_num), rep("circle", mirna_gene_num)), # control shape of nodes
             # color = c(rep("orange",mirna_mirna_num),rep("purple",mirna_gene_num))# color
             title = paste0("<p>", mirna_node_name, "</p>"),
             stringsAsFactors = FALSE
@@ -128,23 +133,67 @@ mirna_analysis <- eventReactive(
           mirna_edges <- data.frame(from = gene_list_mirmna2target_vis$mirna, to = gene_list_mirmna2target_vis$symbol, value = gene_list_mirmna2target_vis$cor)
           
           # network generate
-          mirna_vis <- function(){
-            visNetwork::visNetwork(mirna_nodes, mirna_edges, width = "100%") %>%
-              visNetwork::visEdges(color = "darkorange") %>%
+          mirna_vis <- function(nodes,edges){
+            visNetwork::visNetwork(nodes, edges, width = "1000px", height = "1000px") %>%
+              # visNetwork::visEdges(color = "darkorange") %>%
               visNetwork::visEdges(smooth = TRUE) %>%
-              visNetwork::visGroups(groupname = "miRNA", color = "lightpink", shape = "database") %>%
-              visNetwork::visGroups(groupname = "Gene", color = "gold", shape = "circle") %>%
+              # visNetwork::visGroups(groupname = "miRNA", color = "lightpink", shape = "database") %>%
+              # visNetwork::visGroups(groupname = "Gene", color = "gold", shape = "circle") %>%
               visNetwork::visLegend() %>%
-              visNetwork::visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE, manipulation = TRUE) %>% # Highlight nearest & Select by node id
-              visNetwork::visInteraction(navigationButtons = TRUE) %>%
-              visNetwork::visEdges(arrows = "to") %>%
-              visNetwork::visExport( type = "pdf", name = "miRNA_visNet",
-                                     float = "right", style = NULL, loadDependencies = TRUE) 
+              visNetwork::visOptions(highlightNearest = TRUE) %>%
+              # visNetwork::visInteraction(navigationButtons = TRUE) %>%
+              visNetwork::visEdges(arrows = "to") 
           }
           output$mirna_net2 <- visNetwork::renderVisNetwork({
             status$analysis
-            mirna_vis()
+            mirna_vis(mirna_nodes, mirna_edges) %>%
+              visNetwork::visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE, manipulation = TRUE) # Highlight nearest & Select by node id
           })
+          
+          # get position info
+          observeEvent(input$`mirna_net2-store_position`, {
+            print(input$`mirna_net2-store_position`)
+            visNetwork::visNetworkProxy("mirna_net2") %>% visNetwork::visGetPositions()
+          })
+          
+          # format positions
+          n2_nodes_positions <- reactive({
+            positions <- input$network_positions
+            if(!is.null(positions)){
+              nodes_positions <- do.call("rbind", lapply(positions, function(x){ data.frame(x = x$x, y = x$y)}))
+              nodes_positions$id <- names(positions)
+              nodes_positions
+            } else {
+              NULL
+            }
+          })
+          print(head(n2_nodes_positions()))
+          # get download file
+          output$`mirna_net2-downloadNetwork`<- downloadHandler(
+            filename = function() {
+              paste('visNetwork-', Sys.Date(), '.html', sep='')
+            },
+            content = function(con) {
+              print(con)
+              nodes_positions <- n2_nodes_positions()
+              if(!is.null(nodes_positions)){
+                nodes_save <- merge(mirna_nodes, nodes_positions, by = "id", all = T)
+              } else  {
+                nodes_save <- mirna_nodes
+              }
+              
+              mirna_vis(nodes_save,mirna_edges) %>%
+                visNetwork::visExport( type = "pdf", name = "miRNA_visNet",
+                                       float = "right", style = NULL, loadDependencies = TRUE) %>%
+                visNetwork::visPhysics(enabled = FALSE) %>%
+                visNetwork::visSave(con)
+              # visNetwork(nodes = nodes_save, edges = edges, height = "800px") %>%
+              #   visOptions(highlightNearest = TRUE) %>% visExport() %>%
+              #   visPhysics(enabled = FALSE) %>% visEdges(smooth = FALSE) %>% 
+              #   #visSave(file=file)
+              #   htmlwidgets::saveWidget(con)
+            }
+          )
           
         }else{
           .msg <- c("NOTICE: No significant (click to see help page above) miRNA-gene regulation relationship for your selected genes.")
