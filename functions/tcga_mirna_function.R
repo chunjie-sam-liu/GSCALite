@@ -1,41 +1,53 @@
-download_button <- function(id){
+download_button_2 <- function(id){
   ns <- NS(id)
   shiny::tagList(
     column(
-      width = 2, offset = 0,
-      shinyWidgets::dropdownButton(
-        tags$h3("Download Options"),
-        prettyRadioButtons(
-          inputId = ns("pictype"),
-          label = "Selcet format for your pictur",
-          choices = list("PDF" = "pdf", "PNG" = "png"),
-          inline = TRUE,
-          icon = icon("check"),
-          bigger = TRUE, status = "info",
-          animation = "jelly"
-        ),
-        numericInput(
-          inputId = ns("d_width"),
-          label = "Width",
-          value = 4,
-          min = 1,
-          max = 10
-        ),
-        
-        numericInput(
-          inputId = ns("d_height"),
-          label = "Height",
-          value = 6,
-          min = 3,
-          max = 20
-        ),
-        downloadButton(
-          outputId = ns("picdownload"),
-          label = "Download"
-        ),
-        circle = TRUE, status = "default",
-        icon = icon("download"), width = "300px",
-        tooltip = shinyWidgets::tooltipOptions(title = "Click to download")
+      width = 6, offset = 0,
+      column(width = 4,
+             prettyRadioButtons(
+               inputId = ns("pictype"),
+               label = "Format of result",
+               choices = list("HTML" = "html"),
+               inline = TRUE,
+               icon = icon("check"),
+               bigger = TRUE, status = "info",
+               animation = "jelly"
+             )
+             ),
+      column(width = 4,
+             actionButton("store_position", "Store positions of nodes")
+             ),
+      column(width = 4,
+             downloadButton(
+               outputId = ns("downloadNetwork"),
+               label = "Download"
+             )
+             )
+    )
+  )
+}
+
+download_button_1 <- function(id){
+  ns <- NS(id)
+  shiny::tagList(
+    column(
+      width = 6, offset = 0,
+      column(width = 4,
+             prettyRadioButtons(
+               inputId = ns("pictype"),
+               label = "Format of result",
+               choices = list("HTML" = "html"),
+               inline = TRUE,
+               icon = icon("check"),
+               bigger = TRUE, status = "info",
+               animation = "jelly"
+             )
+      ),
+      column(width = 4,
+             downloadButton(
+               outputId = ns("downloadNetwork"),
+               label = "Download"
+             )
       )
     )
   )
@@ -47,13 +59,15 @@ mirnaOutput <- function() {
     width = 10, offset = 1,
     shinydashboard::tabBox(id = "mirna_PLOT",title = "",width = 12,
                            tabPanel(title="networkD3",
-                                    # download_button("mirna_net1"),
+                                    download_button_1("mirna_net1"),
                                     column(width = 12,
-                                           forceNetworkOutput("mirna_net1",height = "700px") %>% withSpinner(color="#0dc5c1")
+                                           forceNetworkOutput("mirna_net1",height = "800px") %>% withSpinner(color="#0dc5c1")
                                            )
                                     ),
                            tabPanel(title= "visNetwork",
-                                           visNetwork::visNetworkOutput("mirna_net2",height = "700px") %>% withSpinner(color="#0dc5c1")
+                                    download_button_2("mirna_net2"),
+                                    column(width = 12,
+                                    visNetwork::visNetworkOutput("mirna_net2",height = "800px") %>% withSpinner(color="#0dc5c1"))
                                     )
     )
   )
