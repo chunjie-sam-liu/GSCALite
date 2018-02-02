@@ -128,7 +128,7 @@ heatmap_gsva_4_geneset <- eventReactive(
         colnames(display_matrix) <- gtex_gene_list_expr.mean$SMTS
         display_matrix$GeneName <- gtex_gene_list_expr.mean$Mean[[1]]$symbol
         display_matrix %>% tidyr::gather(Tissue, RPKM, -GeneName) -> hm_4_p
-        callModule(heatmap_GTEX_Plot, "GTEx_exp", data = hm_4_p,status=status)
+        callModule(heatmap_GTEX_Plot, "GTEx_exp", data = hm_4_p, status=status, downloadname = "heatmap_GTEX_Plot")
         print("end: draw heatmap for the gene set in GTEx dataset")
         ######## calculate and draw GSVA profiles for gene set in selected tissues in GTEx dataset############
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} start: calculating gene set on GTEx dataset@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
