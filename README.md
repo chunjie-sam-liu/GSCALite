@@ -31,5 +31,5 @@ Please try to collaborate with each other through GitHub, you can read two artic
 
 > icefoxx Joined the team.
 
-## Schema
+## The workflow of GSCALite
 ![GSCA pipeline](www/imgs/Figure-1_Schema_of_GSCALite.png)
