@@ -7,7 +7,8 @@ cnvOutput <- function() {
                                                            tabPanel(title= "Hete CNV profile",PlotInput(id="cnv_hete")),
                                                            tabPanel(title="Homo CNV profile",PlotInput(id="cnv_homo")),
                                                            tabPanel(title="Overall CNV frenquency",PlotInput("cnv_bar")),
-                                                           tabPanel(title="CNV to Expression",PlotInput("cnv_exp"))
+                                                           tabPanel(title="CNV to Expression",
+                                                                    PlotInput("cnv_exp"))
                                                            # tabPanel(title="CNV oncostrip",PlotInput("cnv_oncostrip")),
                                                            # tabPanel(title="Exclusive CNV",PlotInput("cnv_exclusive"))
                                     )
