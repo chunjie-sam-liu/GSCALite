@@ -117,7 +117,7 @@ exprOutput <- function(id) {
       # datatable
       tabPanel(
         title = "Table of comparison",
-        DT::dataTableOutput(outputId = ns("expr_dt_comparison")) %>% withSpinner()
+        DT::dataTableOutput(outputId = ns("expr_dt_comparison")) %>% withSpinner(color = "#0dc5c1")
       ),
       tabPanel(
         title = "Survival",
@@ -126,7 +126,7 @@ exprOutput <- function(id) {
         ),
         column(
           width=12,
-        plotOutput(outputId = ns("survival")) %>% withSpinner()
+        plotOutput(outputId = ns("survival")) %>% withSpinner(color = "#0dc5c1")
         )
       ),
       tabPanel(
@@ -136,7 +136,7 @@ exprOutput <- function(id) {
         ),
         column(
           width=12,
-        plotOutput(outputId = ns("subtype")) %>% withSpinner()
+        plotOutput(outputId = ns("subtype")) %>% withSpinner(color = "#0dc5c1")
         )
       )
     )
