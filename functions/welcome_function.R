@@ -10,7 +10,7 @@ fn_welcom_msg <- function(){
     shiny::tags$img(
       src = "./imgs/01.GSCA_logo_01.png",
       class = "center-block img-responsive",
-      style = "height: 200px;"
+      style = "height: 150px;"
     ),
     shiny::tags$h1("GSCALite offers you a web-based platform for Gene Set Cancer Analysis.")
   )
@@ -19,32 +19,34 @@ fn_welcom_msg <- function(){
 
 fn_search_example <- function(){
   tagList(
-    column(
-      width = 7, offset = 2,
-      shinyWidgets::searchInput(
-        inputId = "input_gene_set",
-        label = "",
-        placeholder = "Please input HGNC symbol gene set",
-        btnSearch = icon("search"),
-        btnReset = icon("remove"),
-        width = "100%"
-      )
-    ),
-    column(
-      width = 1,
-      shiny::tags$div(
-        class = "form-group shiny-input-container",
-        shiny::tags$label("for" = "margin"),
-        shiny::tags$div(
-          class = "input-group search-text",
-          shiny::tags$span(
-            class = "input-group-btn",
-            shinyBS::bsButton(inputId = "example", label = "Show me example", icon = icon(name = "fire"))
-          )
-        )
-      )
+    column(width = 10, offset = 1,
+           column(
+             width = 8, offset = 1,
+             shinyWidgets::searchInput(
+               inputId = "input_gene_set",
+               label = "",
+               placeholder = 'Please input HGNC symbol gene set separated by space or " , "or " ; "',
+               btnSearch = icon("search"),
+               btnReset = icon("remove"),
+               width = "100%"
+             )
+           ),
+           column(
+             width = 1,
+             shiny::tags$div(
+               class = "form-group shiny-input-container",
+               shiny::tags$label("for" = "margin"),
+               shiny::tags$div(
+                 class = "input-group search-text",
+                 shiny::tags$span(
+                   class = "input-group-btn",
+                   shinyBS::bsButton(inputId = "example", label = "Show me example", icon = icon(name = "fire"))
+                 )
+               )
+             )
+           )
+           )
     )
-  )
 }
 
 
@@ -162,7 +164,7 @@ fn_feature_description <- function(){
     shinydashboard::box(
       title = "GSCALite Introduction.",
       solidHeader = TRUE,
-      width = 6,
+      width = 5,
       status = "primary",
       shiny::tags$p(
         class = "text-justify",
@@ -170,7 +172,7 @@ fn_feature_description <- function(){
       ),
       
       shiny::tags$p(
-        style = "margin-top:30px; margin-bottom:10px;",
+        style = "margin-top:20px; margin-bottom:10px;",
         class = "text-justify",
         "In this GSCALite, we integrated cancer genomics data of 33 cancer types from",
         shiny::tags$a("TCGA", href = "https://cancergenome.nih.gov/", target = "_blank", style = "color:#008176"),
@@ -189,7 +191,7 @@ fn_feature_description <- function(){
     
     shinydashboard::box(
       title = HTML("In GSCALite, users can do following analysis for a <strong><font color='red'>gene set</font></strong>:"),
-      width = 6,
+      width = 7,
       status = "primary",
       solidHeader = TRUE,
       shiny::tags$p(
