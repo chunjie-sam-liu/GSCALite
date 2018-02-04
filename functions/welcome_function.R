@@ -188,7 +188,7 @@ fn_feature_description <- function(){
     # Features ----
     
     shinydashboard::box(
-      title = HTML("In GSCALite, users can do following analysis for a <strong><font color='red'>gene set</font></strong>:"),
+      title = HTML("In GSCALite, users can do analyses for a <strong><font color='red'>gene set</font></strong>:"),
       width = 6,
       status = "primary",
       solidHeader = TRUE,

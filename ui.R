@@ -72,7 +72,7 @@ sidebar <- dashboardSidebar(
       tabName = "tcga",
       icon = icon("user-md"),
       collapsible = TRUE,
-      menuSubItem("mRNA Expression", tabName = "tcga_expr"),
+      menuSubItem("Diff. Expr. & Survival", tabName = "tcga_expr"),
       menuSubItem("Single Nucleotide Variation", tabName = "tcga_snv"),
       menuSubItem("Copy Number Variation", tabName = "tcga_cnv"),
       menuSubItem("Methylation", tabName = "tcga_meth"),
