@@ -148,8 +148,9 @@ cnv_analysis <- eventReactive(
               outfile = file.path(user_dir, "pngs", paste(user_id, "-CNV_pie_profile.png", sep = "")), height = cnv_pie_height,
               status_monitor = "analysis", status, downloadname = "cnv_percent_profile_figure"
             )
+            .msg_cnv_pie <- NULL
           } else {
-            .msg_pie <- paste(.msg, glue::glue("No significant [CNV Pie distribution] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types. Please try more cancers or more genes."), sep = " ")
+            .msg_cnv_pie <- paste(.msg, glue::glue("No significant [CNV Pie distribution] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types. Please try more cancers or more genes."), sep = " ")
             output[["cnv_pie-plot"]] <- renderPlot({
               NULL
             })
@@ -172,6 +173,7 @@ cnv_analysis <- eventReactive(
               colorname = "SCNA Type", wrap = "~ effect", status_monitor = "analysis", status,
               downloadname = "cnv_homo_figure"
             )
+            .msg_cnv_homo <- NULL
           } else{
             .msg_cnv_homo <- paste(glue::glue("No significant [Homo CNV profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(selected_ctyps(), collapse = ',')}. Please try more cancers or more genes."), sep = " ")
             output[["cnv_homo-plot"]] <- renderPlot({
@@ -197,7 +199,9 @@ cnv_analysis <- eventReactive(
             gene = "symbol", size = "per", color = "color", sizename = "Hete CNV%",
             colorname = "SCNA Type", wrap = "~ effect", status_monitor = "analysis", status,
             downloadname = "cnv_hete_figure"
-          )} else {
+          )
+            .msg_cnv_hete <- NULL
+            } else {
             .msg_cnv_hete <- paste(glue::glue("No significant [Hete CNV profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(selected_ctyps(), collapse = ',')}. Please try more cancers or more genes."), sep = " ")
             output[["cnv_hete-plot"]] <- renderPlot({
               NULL
@@ -238,6 +242,7 @@ cnv_analysis <- eventReactive(
           print(glue::glue("{paste0(rep('-', 10), collapse = '')} End processing cnv overall percent data@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
           if(nrow(cnv_bar_plot_ready)>0){
             callModule(cnvbarPlot, "cnv_bar", data = cnv_bar_plot_ready, x = "cancer_types", y = "per", fill = "type", status_monitor = "analysis", status, downloadname = "cnv_hete_figure")
+            .msg_cnv_bar <- NULL
           } else{
             .msg_cnv_bar <- paste(glue::glue("No significant [Overall CNV frenquency] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(selected_ctyps(), collapse = ',')}. Please try more cancers or more genes."), sep = " ")
             output[["cnv_bar-plot"]] <- renderPlot({
@@ -278,22 +283,22 @@ cnv_analysis <- eventReactive(
           # infomation UI for each part
           output[["cnv_pie-massage"]] <- renderUI({
             tagList(
-              shiny::tags$p(.msg_cnv_exp,style= "color:#CD3700")
+              shiny::tags$p(.msg_cnv_pie,style= "color:#CD3700")
             )
           })
           output[["cnv_hete-massage"]] <- renderUI({
             tagList(
-              shiny::tags$p(.msg_cnv_exp,style= "color:#CD3700")
+              shiny::tags$p(.msg_cnv_hete,style= "color:#CD3700")
             )
           })
           output[["cnv_homo-massage"]] <- renderUI({
             tagList(
-              shiny::tags$p(.msg_cnv_exp,style= "color:#CD3700")
+              shiny::tags$p(.msg_cnv_homo,style= "color:#CD3700")
             )
           })
           output[["cnv_bar-massage"]] <- renderUI({
             tagList(
-              shiny::tags$p(.msg_cnv_exp,style= "color:#CD3700")
+              shiny::tags$p(.msg_cnv_bar,style= "color:#CD3700")
             )
           })
           output[["cnv_exp-massage"]] <- renderUI({
@@ -330,7 +335,5 @@ cnv_analysis <- eventReactive(
     }
   }
 )
-print(cnv_gene_old)
-print(cnv_cancer_old)
 # monitor ---------------------------------------------------------------------
 observe(cnv_analysis())
