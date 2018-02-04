@@ -1274,7 +1274,7 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
   })
   
   output$picdownload <- downloadHandler(
-    filename = function() { paste("picture", '.',input$pictype, sep='') },
+    filename = function() { paste(downloadname, '.',input$pictype, sep='') },
     content = function(file) {
       ggsave(file,plotinput(),device = input$pictype,width = input$d_width,height = input$d_height)
     }
