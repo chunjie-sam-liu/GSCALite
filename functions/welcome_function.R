@@ -20,7 +20,7 @@ fn_welcom_msg <- function(){
 fn_search_example <- function(){
   tagList(
     column(
-      width = 7, offset = 2,
+      width = 9, offset = 1,
       shinyWidgets::searchInput(
         inputId = "input_gene_set",
         label = "",
@@ -188,7 +188,7 @@ fn_feature_description <- function(){
     # Features ----
     
     shinydashboard::box(
-      title = HTML("In GSCALite, users can do analyses for a <strong><font color='red'>gene set</font></strong>:"),
+      title = HTML("Users can do analyses for a <strong><font color='red'>gene set</font></strong>:"),
       width = 6,
       status = "primary",
       solidHeader = TRUE,
