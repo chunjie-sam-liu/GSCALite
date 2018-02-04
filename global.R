@@ -679,47 +679,54 @@ removePic <- function(input, output, session, outtype) {
 ###############################################################
 # call in ui by PlotInput("cnv_pie",..) OR  PlotInput("cnv_bar",..)
 # call in ser by callModule(Plot,"cnv_pie",...) OR ...
+
+download_bt <- function(id){
+  ns <- NS(id)
+  tagList(
+    shinyWidgets::dropdownButton(
+      tags$h3("Download Options"),
+      prettyRadioButtons(
+        inputId = ns("pictype"),
+        label = "Selcet format for your pictur",
+        choices = list("PDF" = "pdf", "PNG" = "png","EPS"="eps"),
+        inline = TRUE,
+        icon = icon("check"),
+        bigger = TRUE, status = "info",
+        animation = "jelly"
+      ),
+      numericInput(
+        inputId = ns("d_width"),
+        label = "Width",
+        value = 4,
+        min = 1,
+        max = 10
+      ),
+      
+      numericInput(
+        inputId = ns("d_height"),
+        label = "Height",
+        value = 6,
+        min = 3,
+        max = 20
+      ),
+      downloadButton(
+        outputId = ns("picdownload"),
+        label = "Download"
+      ),
+      circle = TRUE, status = "default",
+      right = TRUE,
+      icon = icon("download"), width = "300px",
+      tooltip = shinyWidgets::tooltipOptions(title = "Click to download")
+    )
+  )
+}
 PlotInput <- function(id, width, height) {
   ns <- NS(id)
 
   tagList(
     column(
       width = 2, offset = 0,
-      shinyWidgets::dropdownButton(
-        tags$h3("Download Options"),
-        prettyRadioButtons(
-          inputId = ns("pictype"),
-          label = "Selcet format for your pictur",
-          choices = list("PDF" = "pdf", "PNG" = "png"),
-          inline = TRUE,
-          icon = icon("check"),
-          bigger = TRUE, status = "info",
-          animation = "jelly"
-        ),
-        numericInput(
-          inputId = ns("d_width"),
-          label = "Width",
-          value = 4,
-          min = 1,
-          max = 10
-        ),
-
-        numericInput(
-          inputId = ns("d_height"),
-          label = "Height",
-          value = 6,
-          min = 3,
-          max = 20
-        ),
-        downloadButton(
-          outputId = ns("picdownload"),
-          label = "Download"
-        ),
-        circle = TRUE, status = "default",
-        right = TRUE,
-        icon = icon("download"), width = "300px",
-        tooltip = shinyWidgets::tooltipOptions(title = "Click to download")
-      )
+      download_bt(id)
     ),
     column(
       width = 12, offset = 0,
@@ -1080,7 +1087,7 @@ imagePlotInput <- function(id, width="100%", height=300) {
         prettyRadioButtons(
           inputId = ns("pictype"),
           label = "Selcet format for your pictur",
-          choices = list("PDF" = "pdf", "PNG" = "png"),
+          choices = list("PDF" = "pdf", "PNG" = "png","EPS"="eps"),
           inline = TRUE,
           icon = icon("check"),
           bigger = TRUE, status = "info",
