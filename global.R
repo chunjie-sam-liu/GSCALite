@@ -724,6 +724,7 @@ PlotInput <- function(id, width, height) {
   ns <- NS(id)
 
   tagList(
+    uiOutput(ns("massage")),
     column(
       width = 2, offset = 0,
       download_bt(id)
@@ -1080,42 +1081,10 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
 imagePlotInput <- function(id, width="100%", height=300) {
   ns <- NS(id)
   shiny::tagList(
+    uiOutput(ns("massage")),
     column(
       width = 2, offset = 0,
-      shinyWidgets::dropdownButton(
-        tags$h3("Download Options"),
-        prettyRadioButtons(
-          inputId = ns("pictype"),
-          label = "Selcet format for your pictur",
-          choices = list("PDF" = "pdf", "PNG" = "png","EPS"="eps"),
-          inline = TRUE,
-          icon = icon("check"),
-          bigger = TRUE, status = "info",
-          animation = "jelly"
-        ),
-        numericInput(
-          inputId = ns("d_width"),
-          label = "Width",
-          value = 4,
-          min = 1,
-          max = 10
-        ),
-
-        numericInput(
-          inputId = ns("d_height"),
-          label = "Height",
-          value = 6,
-          min = 3,
-          max = 20
-        ),
-        downloadButton(
-          outputId = ns("picdownload"),
-          label = "Download"
-        ),
-        circle = TRUE, status = "default",
-        icon = icon("download"), width = "300px",
-        tooltip = shinyWidgets::tooltipOptions(title = "Click to download")
-      )
+      download_bt(id)
     ),
     br(),
     br(),
