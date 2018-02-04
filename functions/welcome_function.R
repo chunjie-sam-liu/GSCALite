@@ -188,14 +188,14 @@ fn_feature_description <- function(){
     # Features ----
     
     shinydashboard::box(
-      title = HTML("Users can do analyses for a <strong><font color='red'>gene set</font></strong>:"),
+      title = HTML("Users Can Analyze <strong><font color='red'>Gene Set</font></strong> For:"),
       width = 6,
       status = "primary",
       solidHeader = TRUE,
       shiny::tags$p(
         class = "text-left",
         icon("hand-o-right"),
-        " mRNA: Differential expression and cancer survival correlation."
+        " mRNA: Differential expression and survival analysis"
       ),
       shiny::tags$p(
         class = "text-left",
