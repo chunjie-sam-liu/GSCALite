@@ -98,6 +98,7 @@ fn_expr_help <- function(){
 
 exprOutput <- function(id) {
   ns <- NS(id)
+  
   column(
     width = 10, offset = 1,
     shinydashboard::tabBox(
@@ -105,7 +106,13 @@ exprOutput <- function(id) {
       # bubble plot for tumor vs. normal
       tabPanel(
         title = "Tumor vs. Normal",
-        plotOutput(outputId = ns("expr_bubble_plot")) 
+        column(width=2,
+               download_bt(ns("de"))
+               ),
+        column(
+          width=12,
+          plotOutput(outputId = ns("expr_bubble_plot")) 
+        )
       ),
       # datatable
       tabPanel(
@@ -114,11 +121,23 @@ exprOutput <- function(id) {
       ),
       tabPanel(
         title = "Survival",
+        column(width=2,
+               download_bt(ns("sur"))
+        ),
+        column(
+          width=12,
         plotOutput(outputId = ns("survival")) %>% withSpinner()
+        )
       ),
       tabPanel(
         title = "Subtype",
+        column(width=2,
+               download_bt(ns("sub"))
+        ),
+        column(
+          width=12,
         plotOutput(outputId = ns("subtype")) %>% withSpinner()
+        )
       )
     )
   )

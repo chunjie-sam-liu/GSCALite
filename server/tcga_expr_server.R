@@ -26,8 +26,39 @@ expr_start_analysis <- function(input, output, session, .expr_clean, .survival_c
   output$expr_bubble_plot <- renderPlot({
     .expr_clean %>% expr_buble_plot()
     })
+  output$`de-picdownload` <- downloadHandler(
+    filename = function() {
+      paste("Differential_Expression", ".", input$`de-pictype`, sep = "")
+    },
+    content = function(file){
+      print(file)
+      ggsave(file,expr_buble_plot(.expr_clean),device = input$`de-pictype`,width = input$`de-d_width`,height = input$`de-d_height`)
+    }
+  )
+  
+  # survival
   output$survival <- renderPlot({.survival_clean %>% survival_bubble_plot()})
+  output$`sur-picdownload` <- downloadHandler(
+    filename = function() {
+      paste("Expression_Survival", ".", input$`sur-pictype`, sep = "")
+    },
+    content = function(file){
+      print(file)
+      ggsave(file,survival_bubble_plot(.survival_clean),device = input$`sur-pictype`,width = input$`sur-d_width`,height = input$`sur-d_height`)
+    }
+  )
+  
+  # subtype
   output$subtype <- renderPlot({.subtype_clean %>% subtype_bubble_plot()})
+  output$`sub-picdownload` <- downloadHandler(
+    filename = function() {
+      paste("Subtype", ".", input$`sub-pictype`, sep = "")
+    },
+    content = function(file){
+      print(file)
+      ggsave(file,subtype_bubble_plot(.subtype_clean),device = input$`sub-pictype`,width = input$`sub-d_width`,height = input$`sub-d_height`)
+    }
+  )
 }
 
 
