@@ -495,6 +495,7 @@ cancerTypesSelect <- function(input, output, session, .sctps) {
     shiny::tagList(
       column(
         width = 4, offset = 2,
+        tags$head(tags$style(HTML('.info-box {min-height: 50px;} .info-box-icon {height: 50px; line-height: 50px;} .info-box-content {padding-top: 0px; padding-bottom: 0px;}'))),
         infoBox(
           title = "Number of selected cancers", value = length(.sctps),
           width = 12, color = "aqua", fill = TRUE
@@ -1086,8 +1087,6 @@ imagePlotInput <- function(id, width="100%", height=300) {
       width = 2, offset = 0,
       download_bt(id)
     ),
-    br(),
-    br(),
     br(),
     br(),
     column(
