@@ -19,7 +19,8 @@ drug_output <- function(input, output, session, ctrp_gene_list_sig_drug, gdsc_ge
   output$ctrp <- renderPlot({NULL})
   # GDSC 
   if(nrow(gdsc_gene_list_sig_drug)>0){
-    output$gdsc <- renderPlot(expr = {gdsc_plot(gdsc_gene_list_sig_drug, t_gdsc)})
+    gdsc_height <- gdsc_gene_list_sig_drug$drug_name %>% unique() %>% length()*18
+    output$gdsc <- renderPlot(expr = {gdsc_plot(gdsc_gene_list_sig_drug, t_gdsc)},height = function(){ifelse(gdsc_height<200,200,gdsc_height)})
     output$`gdsc-picdownload` <- downloadHandler(
       filename = function() {
         paste("GDSC_drug_sensitivity", ".", input$`gdsc-pictype`, sep = "")
@@ -37,7 +38,8 @@ drug_output <- function(input, output, session, ctrp_gene_list_sig_drug, gdsc_ge
   
   #CTRP
   if(nrow(ctrp_gene_list_sig_drug)>0){
-  output$ctrp <- renderPlot(expr = {ctrp_plot(ctrp_gene_list_sig_drug)})
+    ctrp_height <- ctrp_gene_list_sig_drug$drug_name %>% unique() %>% length()*20
+  output$ctrp <- renderPlot(expr = {ctrp_plot(ctrp_gene_list_sig_drug)},height = function(){ifelse(ctrp_height<200,200,ctrp_height)})
   output$`ctrp-picdownload` <- downloadHandler(
     filename = function() {
       paste("CTRP_drug_sensitivity", ".", input$`ctrp-pictype`, sep = "")

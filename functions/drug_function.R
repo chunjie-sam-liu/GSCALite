@@ -106,7 +106,7 @@ drugOutput <- function(id) {
                download_bt(ns("gdsc"))
         ),
         column(width = 12,
-               plotOutput(outputId = ns("gdsc"), height = "1000px") %>% withSpinner(color = "#0dc5c1")
+               plotOutput(outputId = ns("gdsc"), height = "100%") %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
                )
       ),
       tabPanel(
@@ -116,7 +116,7 @@ drugOutput <- function(id) {
                download_bt(ns("ctrp"))
         ),
         column(width = 12,
-        plotOutput(outputId = ns("ctrp"), height = "2500px") %>% withSpinner(color = "#0dc5c1")
+        plotOutput(outputId = ns("ctrp"), height = "100%") %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
         )
       )
     )
