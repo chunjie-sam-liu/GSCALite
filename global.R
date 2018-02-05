@@ -1453,3 +1453,31 @@ GTEx_eqtl_Output <- function(id) {
     )
   )
 }
+
+
+# white plot generate -----------------------------------------------------
+
+white_plot <- function(input, output, session, status_monitor, status, outfile){
+  data <- data.frame(x=c(1:100),y=c(1:100))
+  plotInput<- function(){
+      data %>%
+      ggplot(aes(x=x,y=y)) +
+      theme(
+        plot.background = element_blank(),
+        panel.background = element_rect(fill = "white", color = NA),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()
+      )}
+  output$plot <- renderImage({
+    status$analysis
+    ggsave(plotInput(), filename = outfile, device = "png", width = 3, height = 2)
+    list(
+      src = outfile,
+      contentType = "image/png",
+      # width = 1000,
+      # height = 700,
+      alt = "This is alternate text"
+    )
+  }, deleteFile = FALSE)
+}
