@@ -675,7 +675,6 @@ removePic <- function(input, output, session, outtype) {
 ###############################################################
 # Plot function to generate plot in ui#########################
 ## 1. plotoutout in ui and in server ###########################
-## 2. draw specific pic type by calling different function  ######
 ## PlotInput & Plot#################################
 ###############################################################
 # call in ui by PlotInput("cnv_pie",..) OR  PlotInput("cnv_bar",..)
@@ -721,7 +720,7 @@ download_bt <- function(id){
     )
   )
 }
-PlotInput <- function(id, width, height) {
+PlotInput <- function(id) {
   ns <- NS(id)
 
   tagList(
@@ -732,7 +731,7 @@ PlotInput <- function(id, width, height) {
     ),
     column(
       width = 12, offset = 0,
-      plotOutput(ns("plot")) %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
+      plotOutput(ns("plot"), height = "100%") %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
     )
   )
 }
@@ -751,10 +750,11 @@ heatmap_GTEX_Plot <- function(input, output, session, data, status, downloadname
   }
   
   # get output
+  plot_height <- data$GeneName %>% unique() %>% length()*20
   output$plot <- renderPlot({
     status$analysis
     print(plotinput())
-  })
+  } ,height = function(){ifelse(plot_height<200,200,plot_height)})
   
   # get download output
   output$picdownload <-downloadHandler(
@@ -839,10 +839,13 @@ cnv_pointPlot <- function(input, output, session, data, cancer, gene, size, colo
       facet_wrap(as.formula(wrap)) +
       theme(strip.text.x = element_text(size = 15)) -> p
   })
+  
+  plot_height <- data$symbol %>% unique() %>% length()*20
+  
   output$plot <- renderPlot({
     status[[status_monitor]]
     print(plotinput())
-  })
+  } ,height = function(){ifelse(plot_height<200,200,plot_height)})
   output$picdownload <-downloadHandler(
     filename = function() {
       paste(downloadname, ".", input$pictype, sep = "")
@@ -951,10 +954,12 @@ cnvbarPlot <- function(input, output, session, data, x, y, fill, status_monitor,
       labs(x = "Cancer Types", y = "CNV Frequency") -> p
   })
   
+  # plot_height <- data$symbol %>% unique() %>% length()*20
+  
   output$plot <- renderPlot({
     status[[status_monitor]]
     print(plotinput())
-  })
+  } )
   
   output$picdownload <- downloadHandler(
     filename = function(){
@@ -1001,13 +1006,14 @@ snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, la
       )) +
       labs(x = "", y = "") -> p
   })
+  plot_height <- data$symbol %>% unique() %>% length()*20
   
   output$plot <- renderPlot({
     # data$per %>% max() ->max.limit
     # max.limit/10 -> inter.limit
     status[[status_monitor]]
     print(plotInput())
-  })
+  } ,height = function(){ifelse(plot_height<200,200,plot_height)})
   
   output$picdownload <- downloadHandler(
     filename = function() { paste(downloadname, '.',input$pictype, sep='') },
@@ -1060,10 +1066,12 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
       ) -> p
   })
   
+  plot_height <- data$symbol %>% unique() %>% length()*20
+  
   output$plot <- renderPlot({
     status[[status_monitor]]
     print(plotInput())
-  })
+  } ,height = function(){ifelse(plot_height<200,200,plot_height)})
   
   output$picdownload <- downloadHandler(
     filename = function() { paste(downloadname, '.',input$pictype, sep='') },
@@ -1236,10 +1244,12 @@ methy_diff_pointPlot <- function(input, output, session, data, cancer, gene, siz
       ) -> p
   })
   
+  plot_height <- data$symbol %>% unique() %>% length()*20
+  
   output$plot <- renderPlot({
     status[[status_monitor]]
     print(plotinput())
-  })
+  },height = function(){ifelse(plot_height<200,200,plot_height)})
   
   output$picdownload <- downloadHandler(
     filename = function() { paste(downloadname, '.',input$pictype, sep='') },
