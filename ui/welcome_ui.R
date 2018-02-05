@@ -18,7 +18,7 @@ tabItem(
   # Start analysis ---- 
   fluidRow(shiny::uiOutput(outputId = 'ui_start_analysis')),
   
-  # progress bar for running -----
+  # progress bar for running ----
   fluidRow(shiny::uiOutput(outputId = "ui_progressbar")),
   
   # Guide to result
