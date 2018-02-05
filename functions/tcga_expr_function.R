@@ -112,13 +112,13 @@ exprOutput <- function(id) {
                ),
         column(
           width=12,
-          plotOutput(outputId = ns("expr_bubble_plot"),height = "100%") %>% withSpinner(color = "#0dc5c1")
+          plotOutput(outputId = ns("expr_bubble_plot"),height = "100%") %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
         )
       ),
       # datatable
       tabPanel(
         title = "Table of comparison",
-        DT::dataTableOutput(outputId = ns("expr_dt_comparison")) %>% withSpinner(color = "#0dc5c1")
+        DT::dataTableOutput(outputId = ns("expr_dt_comparison")) %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
       ),
       tabPanel(
         title = "Survival",
@@ -128,7 +128,7 @@ exprOutput <- function(id) {
         ),
         column(
           width=12,
-        plotOutput(outputId = ns("survival"),height = "100%") %>% withSpinner(color = "#0dc5c1")
+        plotOutput(outputId = ns("survival"),height = "100%") %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
         )
       ),
       tabPanel(
@@ -139,7 +139,7 @@ exprOutput <- function(id) {
         ),
         column(
           width=12,
-        plotOutput(outputId = ns("subtype"),height = "100%") %>% withSpinner(color = "#0dc5c1")
+        plotOutput(outputId = ns("subtype"),height = "100%") %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
         )
       )
     )
