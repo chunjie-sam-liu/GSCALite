@@ -158,13 +158,13 @@ fn_guide_result <- function(){
 
 fn_feature_description <- function(){
   column(
-    width = 10, offset = 1,
+    width = 10,offset = 1 ,
     style = "margin-top:30px;",
     # Descriptions ----
     shinydashboard::box(
       title = "GSCALite Introduction.",
       solidHeader = TRUE,
-      width = 5,
+      width = 6,
       status = "primary",
       shiny::tags$p(
         class = "text-justify",
@@ -172,7 +172,7 @@ fn_feature_description <- function(){
       ),
       
       shiny::tags$p(
-        style = "margin-top:20px; margin-bottom:10px;",
+        style = "margin-top:30px; margin-bottom:10px;",
         class = "text-justify",
         "In this GSCALite, we integrated cancer genomics data of 33 cancer types from",
         shiny::tags$a("TCGA", href = "https://cancergenome.nih.gov/", target = "_blank", style = "color:#008176"),
@@ -191,45 +191,53 @@ fn_feature_description <- function(){
     
     shinydashboard::box(
       title = HTML("In GSCALite, users can do following analysis for a <strong><font color='red'>gene set</font></strong>:"),
-      width = 7,
+      width = 6,
       status = "primary",
       solidHeader = TRUE,
       shiny::tags$p(
+        style = "margin-top:1px;",
         class = "text-left",
         icon("hand-o-right"),
         " mRNA: Differential expression and cancer survival correlation."
       ),
       shiny::tags$p(
+        style = "margin-top:1px;",
         class = "text-left",
         icon("hand-o-right"),
         " SNV: Statistics, distribution, types and its survival significance."
       ),
       shiny::tags$p(
+        style = "margin-top:1px;",
         class = "text-left",
         icon("hand-o-right"),
         " CNV: Statistics of deletion/amplification of hetero/homozygous CNV."
       ),
       shiny::tags$p(
+        style = "margin-top:1px;",
         class = "text-left",
         icon("hand-o-right"),
         " Methylation: Methylation affects survival and expression."
       ),
       shiny::tags$p(
+        style = "margin-top:1px;",
         class = "text-left",
         icon("hand-o-right"),
         " Cancer pathway activity: The activity of 10 cancer related pathways."
       ),
       shiny::tags$p(
+        style = "margin-top:1px;",
         class = "text-left",
         icon("hand-o-right"),
         " miRNA network: Gene regulatory network by miRNAs."
       ),
       shiny::tags$p(
+        style = "margin-top:1px;",
         class = "text-left",
         icon("hand-o-right"),
         " Drug analysis: Correlation of expression and drug sensitivity (IC50)."
       ),
       shiny::tags$p(
+        style = "margin-top:1px;margin-bottom:0px;",
         class = "text-left",
         icon("hand-o-right"),
         " GTEx: Gene expression in normal tissue and eQTL."
