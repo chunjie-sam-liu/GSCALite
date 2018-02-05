@@ -150,10 +150,8 @@ cnv_analysis <- eventReactive(
               )
               .msg_cnv_pie <- NULL
             } else {
-              .msg_cnv_pie <- paste(.msg, glue::glue("No significant [CNV Pie distribution] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types. Please try more cancers or more genes."), sep = " ")
-              output[["cnv_pie-plot"]] <- renderPlot({
-                NULL
-              })
+              .msg_cnv_pie <- paste(glue::glue("No significant [CNV Pie distribution] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types. Please try more cancers or more genes."), sep = " ")
+              output[["cnv_pie-plot"]] <- callModule(white_plot, "cnv_pie", status_monitor = "analysis", status = status, outfile = file.path(user_dir, "pngs", paste(user_id, "-white_1.png", sep = "")))
             }
 
             print(glue::glue("{paste0(rep('-', 10), collapse = '')} End gernerate cnv pie profile plot@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
