@@ -106,6 +106,7 @@ exprOutput <- function(id) {
       # bubble plot for tumor vs. normal
       tabPanel(
         title = "Tumor vs. Normal",
+        uiOutput(ns("de_massage")),
         column(width=2,
                download_bt(ns("de"))
                ),
@@ -121,6 +122,7 @@ exprOutput <- function(id) {
       ),
       tabPanel(
         title = "Survival",
+        uiOutput(ns("sur_massage")),
         column(width=2,
                download_bt(ns("sur"))
         ),
@@ -131,6 +133,7 @@ exprOutput <- function(id) {
       ),
       tabPanel(
         title = "Subtype",
+        uiOutput(ns("sub_massage")),
         column(width=2,
                download_bt(ns("sub"))
         ),
