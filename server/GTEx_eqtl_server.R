@@ -73,11 +73,11 @@ filter_eqtl_4_geneset <- eventReactive(
           })
         } else {
           .msg <- glue::glue("No eqtl in gene set for your selected tissue.")
+          shinyBS::createAlert(
+            session = session, anchorId = "expr-no_gene_set", title = "Oops", style = "danger",
+            content = .msg, append = FALSE
+          )
         }
-        shinyBS::createAlert(
-          session = session, anchorId = "expr-no_gene_set", title = "Information", style = "info",
-          content = .msg, append = FALSE
-        )
         print("end: select egenes in GTEx tissues")
       }
     }
