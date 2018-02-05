@@ -75,6 +75,7 @@ snv_analysis <- eventReactive(
             # plot out ----------------------------------------------------------------
             
             # snv percentage ----------------------------------------------------------
+            if(nrow(gene_list_cancer_snv)>0){
             gene_list_cancer_snv %>%
               tidyr::unnest(filter_snv) %>%
               tidyr::drop_na() %>%
@@ -96,7 +97,13 @@ snv_analysis <- eventReactive(
               cancer_rank = snv_per_cancer_rank, gene_rank = snv_per_gene_rank,status_monitor="analysis",status,
               downloadname = "SNV_percentage_profile"
             )
-            
+            .msg_snv_percentage <- NULL
+            } else{
+              .msg_snv_percentage <- paste(glue::glue("No significant [SNV percentage profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types. Please try more cancers or more genes."), sep = " ")
+              output[["snv_percentage-plot"]] <- renderPlot({
+                NULL
+              })
+            }
             # snv survival ------------------------------------------------------------
             snv_survival %>%
               dplyr::mutate(filter_survival = purrr::map(diff_pval, filter_gene_list, gene_list = gene_set$match)) %>%
@@ -128,14 +135,14 @@ snv_analysis <- eventReactive(
                 gene = "symbol", size = "logP", color = "worse", cancer_rank = snv_sur_cancer_rank,
                 gene_rank = snv_sur_gene_rank, sizename = "logRank P", colorname = "Mutation Worse",title="Overall survival difference between mutation and non mutation genes.",status_monitor="analysis",status, downloadname = "SNV_affect_survival"
               )
-              
+              .msg_snv_survival <- NULL
             } else{
-              .msg <- paste(.msg,glue::glue("No significant [SNV survival] result of gene: {paste0(gene_set$match, collapse = ', ')} in your selected cancer type: {paste0(selected_ctyps(), collapse = ', ')}."),sep=" ")
+              .msg_snv_survival <- paste(glue::glue("No significant [SNV survival] result of gene: {paste0(gene_set$match, collapse = ', ')} in your selected cancer type: {paste0(selected_ctyps(), collapse = ', ')}. Please try more cancers or more genes."),sep=" ")
               output[["snv_survival-plot"]] <- renderPlot({NULL})
             }
             
             
-            .msg <- paste(.msg,glue::glue("Since we just show significant results, so a small size of gene and cancer set may cause no significant result in some plots, if it happens, try more genes and cancer types."),sep=" ")
+            .msg <- paste(.msg,glue::glue("Please be patient, need some time to draw pictrue. Since we just show significant results, so a small size of gene and cancer set may cause no significant result in some plots. If it happens, try more genes and cancer types."),sep=" ")
             # alert for information
             shinyBS::createAlert(
               session = session, anchorId = "snv-no_gene_set", title = "Information", style = "info",
@@ -143,19 +150,60 @@ snv_analysis <- eventReactive(
             )
             
             # maf ---------------------------------------------------------------------
-            snv_InpSel <-  paste0(selected_ctyps(), collapse = "','")
-            query =  as.expression(paste0("Cancer_Types %in% c('",snv_InpSel,"')"))
-            # my_subsetMaf(mc3_pass, genes = gene_set$match, mafObj = T,query = query) -> gene_list_maf #
-            maftools::subsetMaf(mc3_pass, genes = gene_set$match, mafObj = T,query = query) -> gene_list_maf
+            if(length(gene_set$match)>=2){
+              snv_InpSel <-  paste0(selected_ctyps(), collapse = "','")
+              query =  as.expression(paste0("Cancer_Types %in% c('",snv_InpSel,"')"))
+              # my_subsetMaf(mc3_pass, genes = gene_set$match, mafObj = T,query = query) -> gene_list_maf #
+              tryCatch(maftools::subsetMaf(mc3_pass, genes = gene_set$match, mafObj = T,query = query) -> gene_list_maf,
+                       error = function(e){1},
+                       warning = function(e){1}) -> maf_error
+              if(class(maf_error)[1]=="MAF"){
+                #1. snv summary
+                snv_su_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_summary_profile.png", sep = ""))
+                callModule(snv_maf_summaryPlot,"snv_summary",gene_list_maf=gene_list_maf,outfile=snv_su_out,status_monitor="analysis",status,downloadname="SNV_summary")
+                
+                #2. oncoplot
+                snv_onco_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_oncoplot_profile.png", sep = ""))
+                callModule(snv_maf_oncoPlot,"snv_oncoplot",gene_list_maf=gene_list_maf,pancan_color=pancan_color,outfile=snv_onco_out,status_monitor="analysis",status,downloadname="SNV_oncoplot")
+                .msg_snv_oncoplot <- NULL
+                .msg_snv_summary <- NULL
+              } else{
+                .msg_snv_oncoplot <- paste(glue::glue("Your selected genes: {paste0(gene_set$match, collapse = ', ')} are not mutate in your selected cancer type: {paste0(selected_ctyps(), collapse = ', ')}. Please try other cancers or genes."),sep=" ")
+                .msg_snv_summary <- paste(glue::glue("Your selected genes: {paste0(gene_set$match, collapse = ', ')} are not mutate in your selected cancer type: {paste0(selected_ctyps(), collapse = ', ')}. Please try other cancers or genes."),sep=" ")
+                
+                callModule(white_plot,"snv_oncoplot",status_monitor="analysis",status=status, outfile=file.path(user_dir, "pngs", paste(user_id, "-white_2.png", sep = "")))
+                callModule(white_plot,"snv_summary",status_monitor="analysis",status=status, outfile=file.path(user_dir, "pngs", paste(user_id, "-white_1.png", sep = "")))
+              }
+            } else {
+              .msg_snv_oncoplot <- "Cannot create SNV oncoplot for single gene. Minimum two genes required ! "
+              .msg_snv_summary <- "Cannot create SNV summary plot for single gene. Minimum two genes required ! "
+              callModule(white_plot,"snv_oncoplot",status_monitor="analysis",status=status, outfile=file.path(user_dir, "pngs", paste(user_id, "-white_2.png", sep = "")))
+              callModule(white_plot,"snv_summary",status_monitor="analysis",status=status, outfile=file.path(user_dir, "pngs", paste(user_id, "-white_1.png", sep = "")))
+            }
             
-            #1. snv summary
-            snv_su_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_summary_profile.png", sep = ""))
-            callModule(snv_maf_summaryPlot,"snv_summary",gene_list_maf=gene_list_maf,outfile=snv_su_out,status_monitor="analysis",status,downloadname="SNV_summary")
+            print(glue::glue("{paste0(rep('-', 10), collapse = '')} End maf part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))       
             
-            #2. oncoplot
-            snv_onco_out<-file.path(user_dir, "pngs", paste(user_id, "-SNV_oncoplot_profile.png", sep = ""))
-            callModule(snv_maf_oncoPlot,"snv_oncoplot",gene_list_maf=gene_list_maf,pancan_color=pancan_color,outfile=snv_onco_out,status_monitor="analysis",status,downloadname="SNV_oncoplot")
-            print(glue::glue("{paste0(rep('-', 10), collapse = '')} End maf part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))        
+            # infomation UI for each part
+            output[["snv_percentage-massage"]] <- renderUI({
+              tagList(
+                shiny::tags$p(.msg_snv_percentage,style= "color:#CD3700")
+              )
+            })
+            output[["snv_summary-massage"]] <- renderUI({
+              tagList(
+                shiny::tags$p(.msg_snv_summary,style= "color:#CD3700")
+              )
+            })
+            output[["snv_oncoplot-massage"]] <- renderUI({
+              tagList(
+                shiny::tags$p(.msg_snv_oncoplot,style= "color:#CD3700")
+              )
+            })
+            output[["snv_survival-massage"]] <- renderUI({
+              tagList(
+                shiny::tags$p(.msg_snv_survival,style= "color:#CD3700")
+              )
+            })
           }else{
             shinyBS::createAlert(
               session = session, anchorId = "snv-no_cancer_set", title = "Oops",
