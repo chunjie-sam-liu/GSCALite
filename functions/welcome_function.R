@@ -132,7 +132,7 @@ fn_gs_download <- function(user_dir, user_id, user_logs, txt, s){
       glue::glue("{user_id}_{txt}")
     },
     content = function(con) {
-      .f <- file.path(user_dir, user_logs$gene_set)
+      .f <- user_logs$gene_set
       .d <- readr::read_delim(file = .f, delim = ":", skip = s, col_names = FALSE, trim_ws = TRUE) %>%
         head(1) %>%
         .[[2]]
