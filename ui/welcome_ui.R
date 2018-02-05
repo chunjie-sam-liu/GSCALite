@@ -9,8 +9,6 @@ tabItem(
   # Welcome ----
   fluidRow(shiny::uiOutput(outputId = "ui_welcom_msg")),
 
-  shiny::tags$hr(width = "80%"),
-
   # Input gene list ----
   fluidRow(shiny::uiOutput(outputId = "ui_search_example")),
   

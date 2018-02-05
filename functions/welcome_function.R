@@ -21,7 +21,7 @@ fn_search_example <- function(){
   tagList(
     column(width = 10, offset = 1,
            column(
-             width = 8, offset = 1,
+             width = 9, offset = 1,
              shinyWidgets::searchInput(
                inputId = "input_gene_set",
                label = "",
@@ -190,7 +190,7 @@ fn_feature_description <- function(){
     # Features ----
     
     shinydashboard::box(
-      title = HTML("In GSCALite, users can do following analysis for a <strong><font color='red'>gene set</font></strong>:"),
+      title = HTML("Users Can Analyze <strong><font color='red'>Gene Set</font></strong> For:"),
       width = 6,
       status = "primary",
       solidHeader = TRUE,
@@ -198,7 +198,7 @@ fn_feature_description <- function(){
         style = "margin-top:1px;",
         class = "text-left",
         icon("hand-o-right"),
-        " mRNA: Differential expression and cancer survival correlation."
+        " mRNA: Differential expression and survival analysis"
       ),
       shiny::tags$p(
         style = "margin-top:1px;",
