@@ -495,7 +495,7 @@ cancerTypesSelect <- function(input, output, session, .sctps) {
     shiny::tagList(
       column(
         width = 4, offset = 2,
-        tags$head(tags$style(HTML('.info-box {min-height: 50px;} .info-box-icon {height: 50px; line-height: 50px;} .info-box-content {padding-top: 0px; padding-bottom: 0px;}'))),
+        tags$head(tags$style(HTML('.info-box {min-height: 60px;} .info-box-icon {height: 60px; line-height: 60px;} .info-box-content {padding-top: 2px; padding-bottom: 2px;}'))),
         infoBox(
           title = "Number of selected cancers", value = length(.sctps),
           width = 12, color = "aqua", fill = TRUE
@@ -732,7 +732,7 @@ PlotInput <- function(id, width, height) {
     ),
     column(
       width = 12, offset = 0,
-      plotOutput(ns("plot")) %>% withSpinner(color = "#0dc5c1")
+      plotOutput(ns("plot")) %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
     )
   )
 }
@@ -1091,7 +1091,7 @@ imagePlotInput <- function(id, width="100%", height=300) {
     br(),
     column(
       width = 12, offset = 0,
-      imageOutput(ns("plot"), width = width, height = height) %>% withSpinner(color = "#0dc5c1")
+      imageOutput(ns("plot"), width = width, height = height) %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
     )
   )
 }
