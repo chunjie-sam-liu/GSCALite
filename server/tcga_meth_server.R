@@ -78,6 +78,7 @@ meth_analysis <- eventReactive(
           } else {
             .msg_meth_diff <- paste(glue::glue("The [Differential Methylation] analysis based on paired sample in each cancer types.
 In this analysis, only {nrow(meth_diff)} cancer types have paired samples. They are {paste0(meth_diff$cancer_types, collapse = ', ')}."), sep = " ")
+            output[["meth_diff-plot"]] <- renderPlot({NULL})
           }
 
           # meth survival point ----
@@ -112,6 +113,7 @@ In this analysis, only {nrow(meth_diff)} cancer types have paired samples. They 
             dplyr::filter(cancer_types %in% selected_ctyps()) %>%
             tidyr::unnest() %>%
             tidyr::drop_na() -> gene_list_cancer_methcor
+          
           if (nrow(gene_list_cancer_methcor) > 0) {
             gene_list_cancer_methcor %>%
               dplyr::group_by(symbol) %>%
