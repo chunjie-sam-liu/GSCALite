@@ -102,8 +102,7 @@ drugOutput <- function(id) {
       tabPanel(
         title = "GDSC",
         uiOutput(ns("gdsc_massage")),
-        column(width=2,
-               download_bt(ns("gdsc"))
+        column(width=2,download_bt(ns("gdsc"))
         ),
         column(width = 12,
                plotOutput(outputId = ns("gdsc"), height = "100%") %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
