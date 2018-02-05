@@ -112,7 +112,7 @@ exprOutput <- function(id) {
                ),
         column(
           width=12,
-          plotOutput(outputId = ns("expr_bubble_plot")) 
+          plotOutput(outputId = ns("expr_bubble_plot"),height = "100%") %>% withSpinner(color = "#0dc5c1")
         )
       ),
       # datatable
@@ -128,7 +128,7 @@ exprOutput <- function(id) {
         ),
         column(
           width=12,
-        plotOutput(outputId = ns("survival")) %>% withSpinner(color = "#0dc5c1")
+        plotOutput(outputId = ns("survival"),height = "100%") %>% withSpinner(color = "#0dc5c1")
         )
       ),
       tabPanel(
@@ -139,7 +139,7 @@ exprOutput <- function(id) {
         ),
         column(
           width=12,
-        plotOutput(outputId = ns("subtype")) %>% withSpinner(color = "#0dc5c1")
+        plotOutput(outputId = ns("subtype"),height = "100%") %>% withSpinner(color = "#0dc5c1")
         )
       )
     )

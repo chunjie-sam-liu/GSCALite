@@ -23,9 +23,11 @@ output$ui_expr_result <- shiny::renderUI({fn_expr_result(selected_analysis$expr)
 expr_start_analysis <- function(input, output, session, .expr_clean, .survival_clean, .subtype_clean, .msg, .msg_no_result) {
   output$expr_dt_comparison <- DT::renderDataTable({expr_clean_datatable(.expr_clean)})
   if(nrow(.expr_clean)>0){
+    exp_plot_height <- .expr_clean$symbol %>% unique() %>% length()*20
     output$expr_bubble_plot <- renderPlot({
     .expr_clean %>% expr_buble_plot()
-    })
+    } ,height = function(){ifelse(exp_plot_height<200,200,exp_plot_height)})
+    
   output$`de-picdownload` <- downloadHandler(
     filename = function() {
       paste("Differential_Expression", ".", input$`de-pictype`, sep = "")
@@ -45,7 +47,8 @@ expr_start_analysis <- function(input, output, session, .expr_clean, .survival_c
   
   # survival
   if(nrow(.survival_clean)>0){
-    output$survival <- renderPlot({.survival_clean %>% survival_bubble_plot()})
+    sur_plot_height <- .survival_clean$symbol %>% unique() %>% length()*20
+    output$survival <- renderPlot({.survival_clean %>% survival_bubble_plot()},height = function(){ifelse(sur_plot_height<200,200,sur_plot_height)})
     output$`sur-picdownload` <- downloadHandler(
       filename = function() {
         paste("Expression_Survival", ".", input$`sur-pictype`, sep = "")
@@ -65,7 +68,8 @@ expr_start_analysis <- function(input, output, session, .expr_clean, .survival_c
   
   # subtype
   if(nrow(.subtype_clean)>0){
-    output$subtype <- renderPlot({.subtype_clean %>% subtype_bubble_plot()})
+    sub_plot_height <- .subtype_clean$symbol %>% unique() %>% length()*20
+    output$subtype <- renderPlot({.subtype_clean %>% subtype_bubble_plot()},height = function(){ifelse(sub_plot_height<200,200,sub_plot_height)})
     output$`sub-picdownload` <- downloadHandler(
       filename = function() {
         paste("Subtype", ".", input$`sub-pictype`, sep = "")
