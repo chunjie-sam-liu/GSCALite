@@ -260,11 +260,7 @@ ctrp_plot <- function(ctrp_gene_list_sig_drug) {
       ggplot(aes(x = symbol, y = drug_name, color = cor_sprm)) +
       geom_point(aes(size = p_val)) +
       scale_x_discrete(limits = ctrp_gene_rank$symbol, expand = c(0.012, 0.012)) +
-      scale_y_discrete(
-        # limits = drug_rank$drug_name,
-        expand = c(0.012, 0.012),
-        position = "right"
-      ) +
+      scale_y_discrete(expand = c(0.012, 0.012), position = "right") +
       scale_color_gradient2(
         name = "Spearman Correlation",
         high = "red",
