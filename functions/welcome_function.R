@@ -56,20 +56,20 @@ fn_gene_set_stat <- function(gene_set){
     width = 8, offset = 2, style = "margin-top:20px",
     downloadLink(
       outputId = "download_total_gene_set", label = NULL, class = NULL,
-      valueBox(value = gene_set$n_total, subtitle = "Total Input Gene Set", icon = icon("users"), color = "yellow")
+      valueBox(value = gene_set$n_total, subtitle = "Total Input Genes", icon = icon("users"), color = "yellow")
     ),
     
     downloadLink(
       outputId = "download_valid_gene_set", label = NULL, class = NULL,
       valueBox(
-        value = gene_set$n_match, subtitle = "Valid Gene Set", icon = icon("credit-card"),
+        value = gene_set$n_match, subtitle = "Valid Genes", icon = icon("credit-card"),
         color = "green"
       )
     ),
     downloadLink(
       outputId = "download_input_logs", label = NULL, class = NULL,
       valueBox(
-        value = gene_set$n_non_match, subtitle = "Invalid Gene Set",
+        value = gene_set$n_non_match, subtitle = "Invalid Genes",
         icon = icon("line-chart"), color = "red"
       )
     )
