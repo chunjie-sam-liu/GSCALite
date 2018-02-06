@@ -5,6 +5,7 @@ source(file.path(config$wd, "functions", "welcome_function.R"))
 observeEvent(input$input_gene_set_reset, {
   names(selected_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
   shinyjs::reset("input_gene_set")
+  closeAlert(session = session, alertId = "guide-alert")
   status$gene_set <- FALSE
 })
 
@@ -36,6 +37,7 @@ validate_input_gene_set <- eventReactive(
 observeEvent(input$example, {
   status$analysis <- FALSE
   status$gene_set <- FALSE
+  closeAlert(session = session, alertId = "guide-alert")
   shinyjs::js$example_gene_set(id = "seinput_gene_set")
   shinyjs::enable(id = "input_gene_set")
   shinyjs::enable(id = "analysis")
@@ -90,6 +92,7 @@ observeEvent(input$analysis, {
 })
 
 observeEvent(input$stop, {
+  closeAlert(session = session, alertId = "guide-alert")
   status$analysis <- FALSE
   status$gene_set <- FALSE
   names(selected_analysis) %>% purrr::walk(.f = function(.x) { selected_analysis[[.x]] <- FALSE })
@@ -167,9 +170,10 @@ observeEvent(
       })
 
       shinyBS::createAlert(
-        session = session, anchorId = "ui_hint_alert", alertId = NULL, title = NULL, style = "primary",
+        session = session, anchorId = "ui_hint_alert", alertId = "guide-alert", title = NULL, style = "primary",
         content = HTML("<h3 style='color:red;'> Please check the results under the top-left menus of TCGA Cancer/Drug Response/GTEx Normal Tissue.</h3>"), append = FALSE
       )
+      
 
       shinyjs::enable(id = "input_gene_set")
       shinyjs::enable(id = "analysis")

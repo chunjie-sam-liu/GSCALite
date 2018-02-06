@@ -22,6 +22,8 @@ load_data_snv <- function() {
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} start Load snv data@ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
     snv <<- readr::read_rds(file.path(config$database, "TCGA", "snv", ".rds_snv_all_gene_snv_count.rds.gz"))
     mc3_pass <<- readr::read_rds(file.path(config$database, "TCGA", "snv", "01-snv_mutation_mc3_public.pass.filtered_maf.rds.gz"))
+    maf_gene_all <<- mc3_pass %>% maftools::getGeneSummary() %>% .$Hugo_Symbol
+    maf_cancer_all <<- mc3_pass %>% maftools::getClinicalData() %>% .$Cancer_Types %>% unique()
     snv_survival <<- readr::read_rds(file.path(config$database, "TCGA", "snv", "pancan32_snv_survival_genelist_sig_pval.rds.gz"))
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} end Load snv data @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
   }
@@ -77,7 +79,29 @@ load_data_rppa <- function() {
 
 
 # Load drug data ----------------------------------------------------------
-
+load_data_drug <- function() {
+  # load cnv percent
+  if (is.null(drug_gdsc)) {
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start Load GDSC @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+    drug_gdsc <<- readr::read_rds(file.path(config$database, "Drug", "gdsc_exp_spearman.rds.gz"))
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} End Load GDSC @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+    t_gdsc <<- readr::read_rds(file.path(config$database, "Drug", "drug_target_gdsc.rds.gz")) %>%
+      tidyr::unnest() %>%
+      dplyr::select(drug_name, target_pathway) %>%
+      dplyr::distinct() %>%
+      dplyr::group_by(target_pathway) %>%
+      dplyr::mutate(count = n()) %>%
+      dplyr::ungroup()
+    
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start Load CTRP @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+    t_ctrp <<- readr::read_rds(file.path(config$database, "Drug", "drug_target_ctrp.rds.gz")) %>%
+      tidyr::unnest() %>%
+      dplyr::select(drug_name, target_pathway) %>%
+      dplyr::distinct()
+    drug_ctrp <<- readr::read_rds(file.path(config$database, "Drug", "ctrp_exp_spearman.rds.gz"))
+    print(glue::glue("{paste0(rep('-', 10), collapse = '')} End Load CTRP @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+  }
+}
 
 # load GTEx eqtl data -----------------------------------------------------
 

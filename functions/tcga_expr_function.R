@@ -98,6 +98,7 @@ fn_expr_help <- function(){
 
 exprOutput <- function(id) {
   ns <- NS(id)
+  
   column(
     width = 10, offset = 1,
     shinydashboard::tabBox(
@@ -105,20 +106,41 @@ exprOutput <- function(id) {
       # bubble plot for tumor vs. normal
       tabPanel(
         title = "Tumor vs. Normal",
-        plotOutput(outputId = ns("expr_bubble_plot")) 
+        uiOutput(ns("de_massage")),
+        column(width=2,
+               download_bt(ns("de"))
+               ),
+        column(
+          width=12,
+          plotOutput(outputId = ns("expr_bubble_plot"),height = "100%") %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
+        )
       ),
       # datatable
       tabPanel(
         title = "Table of comparison",
-        DT::dataTableOutput(outputId = ns("expr_dt_comparison")) %>% withSpinner()
+        DT::dataTableOutput(outputId = ns("expr_dt_comparison")) %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
       ),
       tabPanel(
         title = "Survival",
-        plotOutput(outputId = ns("survival")) %>% withSpinner()
+        uiOutput(ns("sur_massage")),
+        column(width=2,
+               download_bt(ns("sur"))
+        ),
+        column(
+          width=12,
+        plotOutput(outputId = ns("survival"),height = "100%") %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
+        )
       ),
       tabPanel(
         title = "Subtype",
-        plotOutput(outputId = ns("subtype")) %>% withSpinner()
+        uiOutput(ns("sub_massage")),
+        column(width=2,
+               download_bt(ns("sub"))
+        ),
+        column(
+          width=12,
+        plotOutput(outputId = ns("subtype"),height = "100%") %>% withSpinner(color = "#0dc5c1",size = 0.5, proxy.height = "200px")
+        )
       )
     )
   )
@@ -134,4 +156,51 @@ fn_expr_result <- function(.expr){
       shiny::tags$div(style = "height=500px;", class = "jumbotron", shiny::tags$h2("This analysis is not selected"))
     )
   }
+}
+
+fn_dropdown_widget <- function(){
+  print("dropdown menu for the image")
+  dropdownButton(
+    
+    tags$h3("List of Inputs"),
+    
+    selectInput(inputId = 'xcol',
+                label = 'X Variable',
+                choices = names(iris)),
+    
+    selectInput(inputId = 'ycol',
+                label = 'Y Variable',
+                choices = names(iris),
+                selected = names(iris)[[2]]),
+    
+    sliderInput(inputId = 'clusters',
+                label = 'Cluster count',
+                value = 3,
+                min = 1,
+                max = 9),
+    
+    
+    circle = TRUE, status = "danger",
+    icon = icon("gear"), width = "300px",
+    
+    tooltip = tooltipOptions(title = "Click to see inputs !")
+  )
+}
+
+fn_img_download <- function(){
+  output$down <- downloadHandler(
+    filename =  function() {
+      paste("iris", input$var3, sep = ".")
+    },
+    # content is a function with argument file. content writes the plot to the device
+    content = function(file) {
+      if (input$var3 == "png")
+        png(file) # open the png device
+      else
+        pdf(file) # open the pdf device
+      plot(x = x(), y = y(), main = "iris dataset plot", xlab = xl(), ylab = yl()) # draw the plot
+      dev.off()  # turn the device off
+
+    } 
+  )
 }

@@ -80,7 +80,7 @@ fluidRow(
             column(
               width = 10, offset = 1,
 
-              shiny::tags$h3("Calculation method", class = "text-success"),
+              shiny::tags$h3("Method", class = "text-success"),
 
               shiny::tags$p(class = "text-justify", "Gene expression was divided into 2 groups(groupHigh and groupLow) by median expression, the difference of pathway activity score(PAS) between groups is defined by a student T test, p value <=0.05 is considered as significant, when PAS(Gene A groupHigh) > PAS(Gene A groupLow), we consider gene A may have a activate effect to a pathway."),
 

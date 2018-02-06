@@ -30,6 +30,11 @@ tabItem(
   source(file.path(config$ui, "tcga_mirna_help.R"))[1],
 
   shiny::tags$hr(width = "85%"),
+  
+  # Confirm and submit ----
+  fluidRow(
+    selectAndAnalysisInput("mirna")
+  ),
 
   # generate result panel ----
   fluidRow(shiny::uiOutput(outputId = "ui_mirna_result")),

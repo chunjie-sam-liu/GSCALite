@@ -279,6 +279,7 @@ subtype_bubble_plot <- function(.subtype_clean){
     scale_x_discrete(limit = cancer_rank$cancer_types) +
     scale_y_discrete(limit = gene_rank$symbol) +
     scale_size_continuous(name = "P-value") +
+    ggthemes::scale_color_gdocs(name = "Cancer Type") +
     theme(
       panel.background = element_rect(colour = "black", fill = "white"),
       panel.grid = element_line(colour = "grey", linetype = "dashed"),
@@ -296,3 +297,4 @@ subtype_bubble_plot <- function(.subtype_clean){
       legend.key = element_rect(fill = "white", colour = "black")
     ) 
 }
+

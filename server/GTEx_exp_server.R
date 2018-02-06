@@ -123,12 +123,21 @@ heatmap_gsva_4_geneset <- eventReactive(
         ##### start: draw heatmap for the gene set in GTEx dataset######
         print("start: draw heatmap for the gene set in GTEx dataset")
         gtex_gene_list_expr.mean <- get_gene_mean_profile(gene_set = gene_set$match, gtex_expr_mean = gtex_expr_mean, tissue_set = input$select_ctps, filter_gene = 1)
-        gene_n <- length(gene_set$match)
-        display_matrix <- data.frame(round(matrix(unlist(lapply(gtex_gene_list_expr.mean$Mean,function(.x){.x[2]})), nrow = gene_n), 2))
-        colnames(display_matrix) <- gtex_gene_list_expr.mean$SMTS
-        display_matrix$GeneName <- gtex_gene_list_expr.mean$Mean[[1]]$symbol
-        display_matrix %>% tidyr::gather(Tissue, RPKM, -GeneName) -> hm_4_p
-        callModule(heatmap_GTEX_Plot, "GTEx_exp", data = hm_4_p,status=status)
+        if(nrow(gtex_gene_list_expr.mean)>0){
+          gene_n <- length(gene_set$match)
+          display_matrix <- data.frame(round(matrix(unlist(lapply(gtex_gene_list_expr.mean$Mean,function(.x){.x[2]})), nrow = gene_n), 2))
+          colnames(display_matrix) <- gtex_gene_list_expr.mean$SMTS
+          display_matrix$GeneName <- gtex_gene_list_expr.mean$Mean[[1]]$symbol
+          display_matrix %>% tidyr::gather(Tissue, RPKM, -GeneName) -> hm_4_p
+          callModule(heatmap_GTEX_Plot, "GTEx_exp", data = hm_4_p, status=status, downloadname = "heatmap_GTEX_Plot")
+        } else {
+          .msg <- glue::glue("No GTEx expression in gene set for your selected tissue.")
+          shinyBS::createAlert(
+            session = session, anchorId = "expr-no_gene_set", title = "Oops", style = "danger",
+            content = .msg, append = FALSE
+          )
+        }
+        
         print("end: draw heatmap for the gene set in GTEx dataset")
         ######## calculate and draw GSVA profiles for gene set in selected tissues in GTEx dataset############
         print(glue::glue("{paste0(rep('-', 10), collapse = '')} start: calculating gene set on GTEx dataset@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))

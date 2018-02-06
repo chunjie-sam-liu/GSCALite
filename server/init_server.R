@@ -235,3 +235,8 @@ rppa_per <- NULL
 mirna2target <- NULL
 GTEx_egene <- NULL
 gtex_expr_mean <- NULL
+drug_gdsc <- NULL
+
+# store value of gene list and cancer--------------------------------------
+cnv_gene_old <- NULL
+cnv_cancer_old <- NULL
