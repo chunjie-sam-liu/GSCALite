@@ -149,7 +149,7 @@ cnv_analysis <- eventReactive(
               )
               .msg_cnv_pie <- NULL
             } else {
-              .msg_cnv_pie <- paste(glue::glue("No significant [CNV Pie distribution] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types {paste0(cancer_in_tcga_data_cnv,collapse=",")}. Please try more cancers or more genes."), sep = " ")
+              .msg_cnv_pie <- paste(glue::glue("No significant [CNV Pie distribution] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types {paste0(cancer_in_tcga_data_cnv,collapse=', ')}. Please try more cancers or more genes."), sep = " ")
               output[["cnv_pie-plot"]] <- callModule(white_plot, "cnv_pie", status_monitor = "analysis", status = status, outfile = file.path(user_dir, "pngs", paste(user_id, "-white_1.png", sep = "")))
             }
 
@@ -172,7 +172,7 @@ cnv_analysis <- eventReactive(
               )
               .msg_cnv_homo <- NULL
             } else {
-              .msg_cnv_homo <- paste(glue::glue("No significant [Homo CNV profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=", ")}. Please try more cancers or more genes."), sep = " ")
+              .msg_cnv_homo <- paste(glue::glue("No significant [Homo CNV profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=', ')}. Please try more cancers or more genes."), sep = " ")
               output[["cnv_homo-plot"]] <- renderPlot({
                 NULL
               })
@@ -199,7 +199,7 @@ cnv_analysis <- eventReactive(
               )
               .msg_cnv_hete <- NULL
             } else {
-              .msg_cnv_hete <- paste(glue::glue("No significant [Hete CNV profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=", ")}. Please try more cancers or more genes."), sep = " ")
+              .msg_cnv_hete <- paste(glue::glue("No significant [Hete CNV profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=', ')}. Please try more cancers or more genes."), sep = " ")
               output[["cnv_hete-plot"]] <- renderPlot({
                 NULL
               })
@@ -241,7 +241,7 @@ cnv_analysis <- eventReactive(
               callModule(cnvbarPlot, "cnv_bar", data = cnv_bar_plot_ready, x = "cancer_types", y = "per", fill = "type", status_monitor = "analysis", status, downloadname = "cnv_hete_figure")
               .msg_cnv_bar <- NULL
             } else {
-              .msg_cnv_bar <- paste(glue::glue("No significant [Overall CNV frenquency] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=", ")}. Please try more cancers or more genes."), sep = " ")
+              .msg_cnv_bar <- paste(glue::glue("No significant [Overall CNV frenquency] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=', ')}. Please try more cancers or more genes."), sep = " ")
               output[["cnv_bar-plot"]] <- renderPlot({
                 NULL
               })
@@ -270,7 +270,7 @@ cnv_analysis <- eventReactive(
               callModule(methy_diff_pointPlot, "cnv_exp", data = gene_list_cancer_cnv_cor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.cnvcor, gene_rank = gene_rank.cnvcor, sizename = "-Log10(P.value)", colorname = "Spearman Correlation Coefficient", title = "Spearman Correlation Coefficient of CNV and gene expression.", status_monitor = "analysis", status, downloadname = "cnv_correlate_to_expr")
               .msg_cnv_exp <- NULL
             } else {
-              .msg_cnv_exp <- paste(glue::glue("No significant [CNV to Expression] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=", ")}. Please try more cancers or more genes."), sep = " ")
+              .msg_cnv_exp <- paste(glue::glue("No significant [CNV to Expression] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=', ')}. Please try more cancers or more genes."), sep = " ")
 
               output[["cnv_exp-plot"]] <- renderPlot({
                 NULL
