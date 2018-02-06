@@ -38,6 +38,9 @@ meth_analysis <- eventReactive(
           .msg <- c("NOTICE: ")
           # load data----
           load_data_meth()
+          
+          # cancer overlap
+          cancer_in_tcga_data_meth <- intersect(selected_ctyps(),tcga_data)
 
           print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start methy part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
@@ -102,7 +105,7 @@ In this analysis, only {nrow(meth_diff)} cancer types have paired samples. They 
             callModule(snv_sur_pointPlot, "meth_survival", data = gene_list_cancer_methsur, cancer = "cancer_types", gene = "symbol", size = "log10logrankP", color = "Hyper_worse", cancer_rank = cancer_rank.methsur, gene_rank = gene_rank.methsur, sizename = "logRank Pvalue", colorname = "HyperMethy Worse", title = "Overall survival difference between hypermethylation and hypomethylation.", status_monitor = "analysis", status, downloadname="Methylation_survival")
             .msg_meth_survival <- NULL
           } else {
-            .msg_meth_survival <- paste(.msg, glue::glue("No significant [Methylation Survival] result of gene: {paste0(gene_set$match, collapse = ', ')} in your selected cancer type: {paste0(selected_ctyps(), collapse = ', ')}. Please try more cancers or more genes."), sep = " ")
+            .msg_meth_survival <- paste(.msg, glue::glue("No significant [Methylation Survival] result of gene: {paste0(gene_set$match, collapse = ', ')} in your selected cancer type: {paste0(cancer_in_tcga_data_meth,collapse=", ")}. Please try more cancers or more genes."), sep = " ")
             output[["meth_survival-plot"]] <- renderPlot({
               NULL
             })
@@ -128,7 +131,7 @@ In this analysis, only {nrow(meth_diff)} cancer types have paired samples. They 
             callModule(methy_diff_pointPlot, "meth_exp", data = gene_list_cancer_methcor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.methcor, gene_rank = gene_rank.methcor, sizename = "-Log10(P.value)", colorname = "Spearman Correlation Coefficient", title = "Spearman Correlation Coefficient of methylation and gene expression.", status_monitor = "analysis", status, downloadname="Methylation_affect_exp")
             .msg_meth_exp <- NULL
           } else {
-            .msg_meth_exp <- paste(.msg, glue::glue("No significant [Methylation to Expression] result of gene: {paste0(gene_set$match, collapse = ', ')} in your selected cancer type: {paste0(selected_ctyps(), collapse = ', ')}. Please try more cancers or more genes."), sep = " ")
+            .msg_meth_exp <- paste(.msg, glue::glue("No significant [Methylation to Expression] result of gene: {paste0(gene_set$match, collapse = ', ')} in your selected cancer type: {paste0(cancer_in_tcga_data_meth,collapse=", ")}. Please try more cancers or more genes."), sep = " ")
             output[["meth_exp-plot"]] <- renderPlot({
               NULL
             })
