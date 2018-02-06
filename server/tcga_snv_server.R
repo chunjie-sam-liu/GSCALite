@@ -69,7 +69,8 @@ snv_analysis <- eventReactive(
             print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start snv part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
             
             # cancer overlap
-            cancer_in_tcga_data_snv <- intersect(selected_ctyps(),tcga_data)
+            .cancer_in_tcga_data_snv <- intersect(selected_ctyps(),tcga_data)
+            print(.cancer_in_tcga_data_snv)
 
             # snv percent -------------------------------------------------------------
             snv %>%
@@ -106,13 +107,13 @@ snv_analysis <- eventReactive(
                 )
                 .msg_snv_percentage <- NULL
               } else {
-                .msg_snv_percentage <- paste(glue::glue("No significant [SNV percentage profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_snv, collapse=", ")}. Please try other cancers or genes."), sep = " ")
+                .msg_snv_percentage <- paste(glue::glue("No significant [SNV percentage profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(.cancer_in_tcga_data_snv, collapse=', ')}. Please try other cancers or genes."), sep = " ")
                 output[["snv_percentage-plot"]] <- renderPlot({
                   NULL
                 })
               }
             } else {
-              .msg_snv_percentage <- paste(glue::glue("No significant [SNV percentage profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_snv, collapse=", ")}. Please try other cancers or genes."), sep = " ")
+              .msg_snv_percentage <- paste(glue::glue("No significant [SNV percentage profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(.cancer_in_tcga_data_snv, collapse=', ')}. Please try other cancers or genes."), sep = " ")
               output[["snv_percentage-plot"]] <- renderPlot({
                 NULL
               })
@@ -149,7 +150,7 @@ snv_analysis <- eventReactive(
               )
               .msg_snv_survival <- NULL
             } else {
-              .msg_snv_survival <- paste(glue::glue("No significant [SNV survival] result of gene: {paste0(gene_set$match, collapse = ', ')} in your selected cancer type: {paste0(cancer_in_tcga_data_snv, collapse=", ")}. Please try other cancers or genes."), sep = " ")
+              .msg_snv_survival <- paste(glue::glue("No significant [SNV survival] result of gene: {paste0(gene_set$match, collapse = ', ')} in your selected cancer type: {paste0(.cancer_in_tcga_data_snv, collapse=', ')}. Please try other cancers or genes."), sep = " ")
               output[["snv_survival-plot"]] <- renderPlot({
                 NULL
               })
@@ -170,10 +171,10 @@ snv_analysis <- eventReactive(
               # my_subsetMaf(mc3_pass, genes = gene_set$match, mafObj = T,query = query) -> gene_list_maf #
               gene_set_in_maf <- intersect(maf_gene_all,gene_set$match) %>% length()
               cancer_in_maf <- intersect(maf_cancer_all,selected_ctyps()) 
-              cancer_noin_maf <- setdiff(selected_ctyps(),maf_cancer_all)
+              cancer_noin_maf <- setdiff(.cancer_in_tcga_data_snv,maf_cancer_all)
               
               if(length(cancer_noin_maf)>0){
-                cancer_no_data.msg <- glue::glue(" {paste0(cancer_noin_maf, collapse=",")} don't have data in this analysis.")
+                cancer_no_data.msg <- glue::glue(" {paste0(cancer_noin_maf, collapse=',')} don't have data in this analysis.")
               } else {cancer_no_data.msg <- NULL}
               
               if(gene_set_in_maf>=2 && length(cancer_in_maf)>0){
@@ -188,8 +189,8 @@ snv_analysis <- eventReactive(
                 .msg_snv_oncoplot <- cancer_no_data.msg
                 .msg_snv_summary <- cancer_no_data.msg
               } else {
-                .msg_snv_oncoplot <- paste(glue::glue("Your selected genes: {paste0(gene_set$match, collapse = ', ')} are not mutate in your selected cancer type: {paste0(cancer_in_tcga_data_snv, collapse = ', ')}.{cancer_no_data.msg} Please try other cancers or genes."), sep = " ")
-                .msg_snv_summary <- paste(glue::glue("Your selected genes: {paste0(gene_set$match, collapse = ', ')} are not mutate in your selected cancer type: {paste0(cancer_in_tcga_data_snv, collapse = ', ')}.{cancer_no_data.msg} Please try other cancers or genes."), sep = " ")
+                .msg_snv_oncoplot <- paste(glue::glue("Your selected genes: {paste0(gene_set$match, collapse = ', ')} are not mutate in your selected cancer type: {paste0(.cancer_in_tcga_data_snv, collapse = ', ')}.{cancer_no_data.msg} Please try other cancers or genes."), sep = " ")
+                .msg_snv_summary <- paste(glue::glue("Your selected genes: {paste0(gene_set$match, collapse = ', ')} are not mutate in your selected cancer type: {paste0(.cancer_in_tcga_data_snv, collapse = ', ')}.{cancer_no_data.msg} Please try other cancers or genes."), sep = " ")
 
                 callModule(white_plot, "snv_oncoplot", status_monitor = "analysis", status = status, outfile = file.path(user_dir, "pngs", paste(user_id, "-white_2.png", sep = "")))
                 callModule(white_plot, "snv_summary", status_monitor = "analysis", status = status, outfile = file.path(user_dir, "pngs", paste(user_id, "-white_1.png", sep = "")))
