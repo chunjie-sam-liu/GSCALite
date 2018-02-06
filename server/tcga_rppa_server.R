@@ -29,6 +29,10 @@ rppa_analysis <- eventReactive(
         
         callModule(module = selectAndAnalysis, id = "rppa", .id = "rppa")
         load_data_rppa()
+        
+        # cancer overlap
+        cancer_in_tcga_data_rppa <- intersect(selected_ctyps(),tcga_data)
+        
       if (length(gene_set$match) != 0) {
         shinyBS::createAlert(
           session = session, anchorId = "rppa-no_gene_set", title = "Information", style = "info",
@@ -156,7 +160,7 @@ rppa_analysis <- eventReactive(
                     )
                     .msg_rppa_line <- NULL
                   } else{
-                    .msg_rppa_line <- paste(glue::glue("No regulation relationship between {paste0(gene_set$match, collapse = ', ')} and pathway activity in {paste0(selected_ctyps(), collapse = ', ')}. Please try more cancers or more genes."))
+                    .msg_rppa_line <- paste(glue::glue("No regulation relationship between {paste0(gene_set$match, collapse = ', ')} and pathway activity in {paste0(cancer_in_tcga_data_rppa,collapse=", ")}. Please try more cancers or more genes."))
                     callModule(white_plot, "rppa_line", status_monitor = "analysis", status = status, outfile = file.path(user_dir, "pngs", paste(user_id, "-white_3.png", sep = "")))
                   }
                 } else {
