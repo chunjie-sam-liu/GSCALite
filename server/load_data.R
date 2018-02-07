@@ -61,7 +61,7 @@ load_data_mirna <- function() {
   # load cnv percent
   if (is.null(mirna2target)) {
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} start Load mirna data @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
-    mirna2target <<- readr::read_rds(file.path(config$database, "TCGA", "mirna", "pan_overall_gene_cor-0.5_with_mirna.rds.gz"))
+    mirna2target <<- readr::read_rds(file.path(config$database, "TCGA", "mirna", "pan_overall_gene_cor-0_with_mirna.rds.gz"))
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} end Load mirna data @ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
   }
 }
