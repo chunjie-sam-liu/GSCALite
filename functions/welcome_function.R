@@ -103,7 +103,7 @@ fn_multi_cancer_input <- function(.ctps){
                     "Methylation" = "meth",
                     "Pathway Activity" = "rppa",
                     "miRNA Network" = "mirna",
-                    "Drug Response" = "drug",
+                    "Drug Sensitivity" = "drug",
                     "GTEx Expression" = "gtex_exp",
                     "GTEx eQTL" = "eqtl"), selected = c("expr", "meth", "drug")
       ),
