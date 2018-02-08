@@ -13,7 +13,7 @@ tabItem(
   fluidRow(shiny::uiOutput(outputId = "ui_search_example")),
   
   # Select cancer types ----
-  shiny::uiOutput(outputId = "/home/liucj/github/GSCALite/www/imgs"),
+  shiny::uiOutput(outputId = "ui_multi_cancer_input"),
   
   # Start analysis ---- 
   fluidRow(shiny::uiOutput(outputId = 'ui_start_analysis')),
