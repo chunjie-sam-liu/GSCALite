@@ -8,8 +8,8 @@ check_gene_set <- function(.s, status = status, error = error) {
     .[1, ] %>%
     stringr::str_trim(side = "both") -> .ss
 
-  if (!dplyr::between(length(.ss), 1, 200)) {
-    error$gene_set <- "The number of genes should be less than 200."
+  if (!dplyr::between(length(.ss), 1, 100)) {
+    error$gene_set <- "The number of genes should be less than 100."
     status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
     status$gene_set <- FALSE
   }
