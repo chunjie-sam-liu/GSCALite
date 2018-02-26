@@ -119,24 +119,40 @@ cnv_analysis <- eventReactive(
                   cancer_types = factor(x = cancer_types, levels = cnv_cancer_rank$cancer_types)
                 ) -> pie_plot_ready
 
-              cnvpie_getheight <- function(cn) {
-                if (cn <= 5) {
-                  return(0.15)
-                }
-                if (cn > 5 && cn <= 20) {
-                  return(0.25 - (cn - 5) * 0.01)
-                } else {
-                  return(0.15)
-                }
+              # cnvpie_getheight <- function(cn) {
+              #   if (cn <= 5) {
+              #     return(0.27)
+              #   }
+              #   if (cn > 5 && cn <= 20) {
+              #     return(0.25 - (cn - 5) * 0.01)
+              #   } else {
+              #     return(0.15)
+              #   }
+              # }
+              cnv_pie_gn <- pie_plot_ready$symbol %>% unique() %>% length()
+              cnv_pie_cn <- pie_plot_ready$cancer_types %>% unique() %>% length()
+              if(cnv_pie_cn < 7){
+                cnv_pie_width <- 2
+                cnv_pie_height <- 0.2*cnv_pie_gn} 
+              if(cnv_pie_cn >= 7 && cnv_pie_cn<15){
+                cnv_pie_width <- cnv_pie_cn * 0.27
+                cnv_pie_height <- cnv_pie_gn * 0.27
               }
-              cnv_pie_h <- cnvpie_getheight(cn = pie_plot_ready$cancer_types %>% unique() %>% length())
-              cnv_pie_height <- pie_plot_ready$symbol %>% unique() %>% length() * cnv_pie_h
-              if (cnv_pie_height > 15) {
-                cnv_pie_height <- 15
+              if(cnv_pie_cn >= 15){
+                cnv_pie_width <- cnv_pie_cn * 0.27
+                cnv_pie_height <- cnv_pie_gn * 0.27
               }
-              if (cnv_pie_height < 3) {
-                cnv_pie_height <- 3
-              }
+              print(paste0("cnv_pie_width:",cnv_pie_width))
+              print(paste0("cnv_pie_height:",cnv_pie_height))
+              # cnv_pie_h <- cnvpie_getheight(cn = pie_plot_ready$cancer_types %>% unique() %>% length())
+              # cnv_pie_height <- pie_plot_ready$symbol %>% unique() %>% length() * 0.27 #cnv_pie_h
+              
+              # if (cnv_pie_height > 15) {
+              #   cnv_pie_height <- 15
+              # }
+              # if (cnv_pie_height < 3) {
+              #   cnv_pie_height <- 3
+              # }
               print(glue::glue("{paste0(rep('-', 10), collapse = '')} End cnv percent data processing@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
               print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start gernerate cnv pie profile plot@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
@@ -145,6 +161,7 @@ cnv_analysis <- eventReactive(
                 piePlot, "cnv_pie", data = pie_plot_ready, y = "per",
                 fill = "type", facet_grid = "symbol ~ cancer_types",
                 outfile = file.path(user_dir, "pngs", paste(user_id, "-CNV_pie_profile.png", sep = "")), height = cnv_pie_height,
+                width = cnv_pie_width,
                 status_monitor = "analysis", status, downloadname = "cnv_percent_profile_figure"
               )
               .msg_cnv_pie <- NULL

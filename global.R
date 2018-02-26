@@ -859,7 +859,7 @@ cnv_pointPlot <- function(input, output, session, data, cancer, gene, size, colo
 
 # cnv pie plot ----------------------------------------------------------------
 
-piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, height, status_monitor, status,downloadname) {
+piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, height, width, status_monitor, status,downloadname) {
   # Example:
   # callModule(piePlot,"cnv_pie",data=pie_plot_ready,y="per",
   #            fill="type",facet_grid="cancer_types ~ symbol")
@@ -908,7 +908,7 @@ piePlot <- function(input, output, session, data, y, fill, facet_grid, outfile, 
   output$plot <- renderImage({
     status[[status_monitor]]
     # outfile <- paste("/project/huff/huff/github/GSCALite/userdata","/","TCGA_cnv_pie_rellation_network",'.png',sep="")
-    ggsave(outfile, imgplotInput(), device = "png", width = 4, height = height)
+    ggsave(outfile, imgplotInput(), device = "png", width = width, height = height)
     list(
       src = outfile,
       contentType = "image/png",
