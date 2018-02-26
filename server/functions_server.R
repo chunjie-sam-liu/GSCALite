@@ -33,8 +33,8 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, to
   gene_set$n_non_match <- length(.v_dedup[!.inter])
   gene_set$n_total <- length(total_gene_symbol[.v_dedup[.inter]]) + length(.v_dedup[!.inter])
 
-  if (length(gene_set$match) == 0) {
-    error$gene_set <- "Please input at least one valid gene symbol."
+  if (length(gene_set$match) < 5) {
+    error$gene_set <- "Please input at least five valid gene symbol."
     status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
     status$gene_set <- FALSE
   }

@@ -18,7 +18,7 @@ validate_input_gene_set <- eventReactive(
     status$gene_set <- TRUE
     
     if (is.null(input$input_gene_set) || input$input_gene_set == "") {
-      error$gene_set <- "Error: Input at least One gene symbol."
+      error$gene_set <- "Error: Input at least Five gene symbol."
       status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
       status$gene_set <- FALSE
       return()
