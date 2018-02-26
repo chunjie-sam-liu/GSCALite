@@ -54,9 +54,13 @@
   background-color: #ffffff;
 } /* background of dashboard body */
 body {
+font-family: Times, TimesNR, 'New Century Schoolbook', Georgia, 'New York', serif;
 font-size: 18px !important;
 font-weight: 200 !important;
 line-height: 1.5 !important;
+}
+h1,h3 {
+  font-family: Times, TimesNR, 'New Century Schoolbook', Georgia, 'New York', serif;
 }
 
 
