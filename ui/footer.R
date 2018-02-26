@@ -16,5 +16,6 @@ shiny::fluidRow(
     shiny::tags$a("UTHealth", href = "https://med.uth.edu/", target = "_blank", style = "color:#008176"),
     " Houston, USA"
   ),
-  shiny::tags$p("Any comments and suggestions, please contact us.")
+  shiny::tags$p("Any comments and suggestions, please contact us."),
+  shiny::HTML(text='<div style="display:inline-block;width:200px;"><script type="text/javascript" src="//rf.revolvermaps.com/0/0/7.js?i=5yt30uug30e&amp;m=1&amp;c=ff0000&amp;cr1=ffffff&amp;sx=0" async="async"></script></div>')
 )

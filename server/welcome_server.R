@@ -130,7 +130,7 @@ output$ui_gene_set_stat <- renderUI({if (status$gene_set) {fn_gene_set_stat(gene
 # Download gene set -------------------------------------------------------
 output$download_total_gene_set <- fn_gs_download(user_dir, user_id, user_logs, txt = "total_gene_set.txt", s = 3)
 output$download_valid_gene_set <- fn_gs_download(user_dir, user_id, user_logs, txt = "valid_gene_set.txt", s = 4)
-output$download_input_logs <- fn_gs_download(user_dir, user_id, user_logs, txt = "input_gene_set_log.txt", s = 0)
+output$download_input_logs <- fn_gs_download(user_dir, user_id, user_logs, txt = "input_gene_set_log.txt", s = 5)
 
 # cancer types selection --------------------------------------------------
 output$ui_multi_cancer_input <- renderUI({if (status$gene_set) {fn_multi_cancer_input(.ctps = ctps)} else {NULL}})
