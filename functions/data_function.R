@@ -245,7 +245,7 @@ survival_bubble_plot <- function(.survival_clean) {
     geom_point(aes(size = -log10(p.value))) +
     scale_x_discrete(limit = cancer_rank$cancer_types) +
     scale_y_discrete(limit = gene_rank$symbol) +
-    scale_size_continuous(name = "P-value") +
+    scale_size_continuous(name = "-log10(P-value)") +
     theme(
       panel.background = element_rect(colour = "black", fill = "white"),
       panel.grid = element_line(colour = "grey", linetype = "dashed"),
@@ -278,7 +278,7 @@ subtype_bubble_plot <- function(.subtype_clean){
     geom_point(aes(size = -log10(p.value))) +
     scale_x_discrete(limit = cancer_rank$cancer_types) +
     scale_y_discrete(limit = gene_rank$symbol) +
-    scale_size_continuous(name = "P-value") +
+    scale_size_continuous(name = "-log10(P-value)") +
     ggthemes::scale_color_gdocs(name = "Cancer Type") +
     theme(
       panel.background = element_rect(colour = "black", fill = "white"),
