@@ -76,7 +76,7 @@ meth_analysis <- eventReactive(
               dplyr::summarise(rank = sum(diff)) %>%
               dplyr::arrange(rank) -> cancer_rank.methdiff
 
-            callModule(methy_diff_pointPlot, "meth_diff", data = gene_list_cancer_methdiff, cancer = "cancer_types", gene = "symbol", size = "fdr", color = "diff", cancer_rank = cancer_rank.methdiff, gene_rank = gene_rank.methdiff, sizename = "-Log10(FDR)", colorname = "Methylation diff (T - N)", title = "Methylation difference between tumor and normal samples.", status_monitor = "analysis", status, downloadname="Differential_methylation")
+            callModule(methy_diff_pointPlot, "meth_diff", data = gene_list_cancer_methdiff, cancer = "cancer_types", gene = "symbol", size = "fdr", color = "diff", cancer_rank = cancer_rank.methdiff, gene_rank = gene_rank.methdiff, sizename = "-Log10(FDR)", colorname = "Methylation Diff (T - N)", title = "Methylation difference between tumor and normal samples.", status_monitor = "analysis", status, downloadname="Differential_methylation")
             .msg_meth_diff <- NULL
           } else {
             .msg_meth_diff <- paste(glue::glue("The [Differential Methylation] analysis based on paired sample in each cancer types.
