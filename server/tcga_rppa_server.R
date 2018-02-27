@@ -58,9 +58,9 @@ rppa_analysis <- eventReactive(
           
           # arugument for plot
           rppa_pie_height <- gene_set$match %>% length() * 0.25
-          if (rppa_pie_height > 15) {
-            rppa_pie_height <- 15
-          }
+          # if (rppa_pie_height > 15) {
+          #   rppa_pie_height <- 15
+          # }
           if (rppa_pie_height < 3) {
             rppa_pie_height <- 3
           }
@@ -77,6 +77,7 @@ rppa_analysis <- eventReactive(
             dplyr::select(-n) %>%
             tidyr::gather(-symbol, -pathway, key = "class", value = "per") %>%
             dplyr::mutate(per = ifelse(class == "i", -per * 100, per * 100)) %>%
+            dplyr::mutate(class = plyr::revalue(class, replace = c("a" = "A", "i" = "I"))) %>%
             tidyr::unite(pathway, c(pathway, class)) -> rppa_per_ready
           
           # pic draw
@@ -92,7 +93,8 @@ rppa_analysis <- eventReactive(
           .msg_rppa_global <- NULL
         } else {
           .msg_rppa_global <- c("No significant result for your input genes in this part of analysis.")
-          callModule(white_plot, "rppa_per", status_monitor = "analysis", status = status, outfile = file.path(user_dir, "pngs", paste(user_id, "-white_1.png", sep = "")))
+          # callModule(white_plot, "rppa_per", status_monitor = "analysis", status = status, outfile = file.path(user_dir, "pngs", paste(user_id, "-white_1.png", sep = "")))
+          output[["rppa_per-plot"]] <- renderPlot({NULL})
           callModule(white_plot, "rppa_pie", status_monitor = "analysis", status = status, outfile = file.path(user_dir, "pngs", paste(user_id, "-white_2.png", sep = "")))
         }
         # rppa global pie plot----
@@ -129,20 +131,20 @@ rppa_analysis <- eventReactive(
                       dplyr::filter(type == "gene") -> gene.text
                     cancer_text %>%
                       dplyr::filter(type == "pathway") -> path.text
-                    rppa_line_height <- gene_set$match %>% length() * 0.1
-                    if (rppa_line_height > 15) {
-                      rppa_line_height <- 15
+                    rppa_line_height <- gene_set$match %>% length() * 0.15
+                    if (rppa_heat_height > 15) {
+                      rppa_heat_height <- 15
                     }
-                    if (rppa_line_height < 3) {
-                      rppa_line_height <- 3
+                    if (rppa_heat_height < 3) {
+                      rppa_heat_height <- 3
                     }
                     # plot draw
                     output$`rppa_line-plot` <- renderImage({
                       status[["analysis"]]
-                      
+
                       rppa_line_outfile <- file.path(user_dir, "pngs", paste(user_id, "-", "TCGA_rppa_network_profile.png", sep = ""))
-                      
-                      ggsave(rppa_line_outfile, rppa_line_contact(plot_seg, cancer.text, gene.text, path.text), device = "png", width = 4, height = rppa_line_height)
+
+                      ggsave(rppa_line_outfile, rppa_line_contact(plot_seg, cancer.text, gene.text, path.text), device = "png", width = 3, height = rppa_line_height)
                       list(
                         src = rppa_line_outfile,
                         contentType = "image/png",
@@ -151,6 +153,11 @@ rppa_analysis <- eventReactive(
                         alt = "This is alternate text"
                       )
                     }, deleteFile = FALSE)
+                    
+                    # output$`rppa_line-plot` <- renderPlot({
+                    #   status[["analysis"]]
+                    #   rppa_line_contact(plot_seg, cancer.text, gene.text, path.text)
+                    # },height = function(){ifelse(rppa_line_height<200,200,rppa_line_height)})
                     
                     output$`rppa_line-picdownload` <- downloadHandler(
                       filename = function() { paste("Pathway_relation_network", '.',input$`rppa_line-pictype`, sep='') },
@@ -161,10 +168,12 @@ rppa_analysis <- eventReactive(
                     .msg_rppa_line <- NULL
                   } else{
                     .msg_rppa_line <- paste(glue::glue("No regulation relationship between {paste0(gene_set$match, collapse = ', ')} and pathway activity in {paste0(cancer_in_tcga_data_rppa,collapse=', ')}. Please try more cancers or more genes."))
+                    # output[["rppa_line-plot"]] <- renderPlot({NULL})
                     callModule(white_plot, "rppa_line", status_monitor = "analysis", status = status, outfile = file.path(user_dir, "pngs", paste(user_id, "-white_3.png", sep = "")))
                   }
                 } else {
                   .msg_rppa_line <- c("No significant result in this [Regulation network], try more genes or cancers.")
+                  # output[["rppa_line-plot"]] <- renderPlot({NULL})
                   callModule(white_plot, "rppa_line", status_monitor = "analysis", status = status, outfile = file.path(user_dir, "pngs", paste(user_id, "-white_3.png", sep = "")))
                 }
                 
