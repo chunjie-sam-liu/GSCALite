@@ -79,7 +79,7 @@ mirna_analysis <- eventReactive(
           # get data for visnetwork, cor control edge width
           genelist_mirna %>%
             tidyr::unnest() %>%
-            dplyr::mutate(cor = abs(cor - 1)) %>%
+            dplyr::mutate(cor = abs(cor)) %>%
             dplyr::arrange(mirna) %>%
             dplyr::select(mirna, symbol, cor) -> gene_list_mirmna2target_vis
           

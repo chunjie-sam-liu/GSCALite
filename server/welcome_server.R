@@ -18,7 +18,7 @@ validate_input_gene_set <- eventReactive(
     status$gene_set <- TRUE
     
     if (is.null(input$input_gene_set) || input$input_gene_set == "") {
-      error$gene_set <- "Error: Input at least One gene symbol."
+      error$gene_set <- "Error: Input at least Five gene symbol."
       status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
       status$gene_set <- FALSE
       return()
@@ -130,7 +130,7 @@ output$ui_gene_set_stat <- renderUI({if (status$gene_set) {fn_gene_set_stat(gene
 # Download gene set -------------------------------------------------------
 output$download_total_gene_set <- fn_gs_download(user_dir, user_id, user_logs, txt = "total_gene_set.txt", s = 3)
 output$download_valid_gene_set <- fn_gs_download(user_dir, user_id, user_logs, txt = "valid_gene_set.txt", s = 4)
-output$download_input_logs <- fn_gs_download(user_dir, user_id, user_logs, txt = "input_gene_set_log.txt", s = 0)
+output$download_input_logs <- fn_gs_download(user_dir, user_id, user_logs, txt = "input_gene_set_log.txt", s = 5)
 
 # cancer types selection --------------------------------------------------
 output$ui_multi_cancer_input <- renderUI({if (status$gene_set) {fn_multi_cancer_input(.ctps = ctps)} else {NULL}})
@@ -171,7 +171,7 @@ observeEvent(
 
       shinyBS::createAlert(
         session = session, anchorId = "ui_hint_alert", alertId = "guide-alert", title = NULL, style = "primary",
-        content = HTML("<h3 style='color:red;'> Please check the results under the top-left menus of TCGA Cancer/Drug Response/GTEx Normal Tissue.</h3>"), append = FALSE
+        content = HTML("<h3 style='color:red;'> Please check the results on top-left menus of TCGA Cancer/Drug Response/GTEx Normal Tissue.</h3>"), append = FALSE
       )
       
 

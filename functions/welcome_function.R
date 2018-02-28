@@ -103,7 +103,7 @@ fn_multi_cancer_input <- function(.ctps){
                     "Methylation" = "meth",
                     "Pathway Activity" = "rppa",
                     "miRNA Network" = "mirna",
-                    "Drug Response" = "drug",
+                    "Drug Sensitivity" = "drug",
                     "GTEx Expression" = "gtex_exp",
                     "GTEx eQTL" = "eqtl"), selected = c("expr", "meth", "drug")
       ),
@@ -133,10 +133,8 @@ fn_gs_download <- function(user_dir, user_id, user_logs, txt, s){
     },
     content = function(con) {
       .f <- user_logs$gene_set
-      .d <- readr::read_delim(file = .f, delim = ":", skip = s, col_names = FALSE, trim_ws = TRUE) %>%
-        head(1) %>%
-        .[[2]]
-      if (s == 0) .d <- readr::read_file(file = .f)
+      .d <- readr::read_delim(file = .f, delim = ":", skip = s, col_names = FALSE, trim_ws = TRUE) %>% head(1) %>% .[[2]]
+      if (is.na(.d)) .d <- ""
       readr::write_file(.d, con)
     }
   )

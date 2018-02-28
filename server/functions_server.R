@@ -8,8 +8,8 @@ check_gene_set <- function(.s, status = status, error = error) {
     .[1, ] %>%
     stringr::str_trim(side = "both") -> .ss
 
-  if (!dplyr::between(length(.ss), 1, 200)) {
-    error$gene_set <- "The number of genes should be less than 200."
+  if (!dplyr::between(length(.ss), 5, 100)) {
+    error$gene_set <- "The number of genes should be between 5 and 100."
     status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
     status$gene_set <- FALSE
   }
@@ -33,8 +33,8 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, to
   gene_set$n_non_match <- length(.v_dedup[!.inter])
   gene_set$n_total <- length(total_gene_symbol[.v_dedup[.inter]]) + length(.v_dedup[!.inter])
 
-  if (length(gene_set$match) == 0) {
-    error$gene_set <- "Please input at least one valid gene symbol."
+  if (length(gene_set$match) < 5) {
+    error$gene_set <- "Please input at least five valid gene symbol."
     status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
     status$gene_set <- FALSE
   }
@@ -209,7 +209,7 @@ get_rppa_text <- function(data) {
     dplyr::pull(pathway) %>%
     unique() -> pathway.text
 
-  c.text <- data.frame(x = 1, y = 1, text = "test", type = "test")
+  c.text <- data.frame(x = 0.5, y = 1, text = "test", type = "test")
   g.l <- data$symbol %>% unique() %>% length()
   c.l <- data$cancer_types %>% unique() %>% length()
   p.l <- data$pathway %>% unique() %>% length()

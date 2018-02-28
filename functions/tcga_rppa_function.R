@@ -5,11 +5,10 @@ rppaOutput <- function() {
     shinydashboard::tabBox(
       id = "rppa_PLOT", title = "", width = 12,
       tabPanel(title = "Global percentage", imagePlotInput(id = "rppa_pie", width = "100%", height = "100%")),
-      tabPanel(title = "Heatmap percentage", imagePlotInput(id = "rppa_per", width = "100%", height = "100%")),
+      tabPanel(title = "Heatmap percentage", PlotInput(id = "rppa_per")),
       tabPanel(
         title = "Relation network",
-        imagePlotInput(id = "rppa_line", width = "100%", height = "100%"
-      )
+        imagePlotInput(id = "rppa_line", width = "100%", height = "100%")
     )
     )
   )

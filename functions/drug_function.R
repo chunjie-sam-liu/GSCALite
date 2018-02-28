@@ -205,7 +205,7 @@ gdsc_plot <- function(gdsc_gene_list_sig_drug,t_gdsc) {
         low = "blue"
       ) +
       scale_size_continuous(
-        name = "FDR"
+        name = "-log10(FDR)"
       ) +
       # ggthemes::theme_gdocs() +
       theme(
@@ -268,7 +268,7 @@ ctrp_plot <- function(ctrp_gene_list_sig_drug) {
         low = "blue"
       ) +
       scale_size_continuous(
-        name = "FDR"
+        name = "-log10(FDR)"
       ) +
       # ggthemes::theme_gdocs() +
       theme(

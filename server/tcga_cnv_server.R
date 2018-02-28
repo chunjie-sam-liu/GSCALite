@@ -119,24 +119,40 @@ cnv_analysis <- eventReactive(
                   cancer_types = factor(x = cancer_types, levels = cnv_cancer_rank$cancer_types)
                 ) -> pie_plot_ready
 
-              cnvpie_getheight <- function(cn) {
-                if (cn <= 5) {
-                  return(0.15)
-                }
-                if (cn > 5 && cn <= 20) {
-                  return(0.25 - (cn - 5) * 0.01)
-                } else {
-                  return(0.15)
-                }
+              # cnvpie_getheight <- function(cn) {
+              #   if (cn <= 5) {
+              #     return(0.27)
+              #   }
+              #   if (cn > 5 && cn <= 20) {
+              #     return(0.25 - (cn - 5) * 0.01)
+              #   } else {
+              #     return(0.15)
+              #   }
+              # }
+              cnv_pie_gn <- pie_plot_ready$symbol %>% unique() %>% length()
+              cnv_pie_cn <- pie_plot_ready$cancer_types %>% unique() %>% length()
+              if(cnv_pie_cn < 7){
+                cnv_pie_width <- 2
+                cnv_pie_height <- 0.2*cnv_pie_gn} 
+              if(cnv_pie_cn >= 7 && cnv_pie_cn<15){
+                cnv_pie_width <- cnv_pie_cn * 0.27
+                cnv_pie_height <- cnv_pie_gn * 0.27
               }
-              cnv_pie_h <- cnvpie_getheight(cn = pie_plot_ready$cancer_types %>% unique() %>% length())
-              cnv_pie_height <- pie_plot_ready$symbol %>% unique() %>% length() * cnv_pie_h
-              if (cnv_pie_height > 15) {
-                cnv_pie_height <- 15
+              if(cnv_pie_cn >= 15){
+                cnv_pie_width <- cnv_pie_cn * 0.27
+                cnv_pie_height <- cnv_pie_gn * 0.27
               }
-              if (cnv_pie_height < 3) {
-                cnv_pie_height <- 3
-              }
+              print(paste0("cnv_pie_width:",cnv_pie_width))
+              print(paste0("cnv_pie_height:",cnv_pie_height))
+              # cnv_pie_h <- cnvpie_getheight(cn = pie_plot_ready$cancer_types %>% unique() %>% length())
+              # cnv_pie_height <- pie_plot_ready$symbol %>% unique() %>% length() * 0.27 #cnv_pie_h
+              
+              # if (cnv_pie_height > 15) {
+              #   cnv_pie_height <- 15
+              # }
+              # if (cnv_pie_height < 3) {
+              #   cnv_pie_height <- 3
+              # }
               print(glue::glue("{paste0(rep('-', 10), collapse = '')} End cnv percent data processing@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
               print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start gernerate cnv pie profile plot@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
@@ -145,11 +161,12 @@ cnv_analysis <- eventReactive(
                 piePlot, "cnv_pie", data = pie_plot_ready, y = "per",
                 fill = "type", facet_grid = "symbol ~ cancer_types",
                 outfile = file.path(user_dir, "pngs", paste(user_id, "-CNV_pie_profile.png", sep = "")), height = cnv_pie_height,
+                width = cnv_pie_width,
                 status_monitor = "analysis", status, downloadname = "cnv_percent_profile_figure"
               )
               .msg_cnv_pie <- NULL
             } else {
-              .msg_cnv_pie <- paste(glue::glue("No significant [CNV Pie distribution] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types {paste0(cancer_in_tcga_data_cnv,collapse=",")}. Please try more cancers or more genes."), sep = " ")
+              .msg_cnv_pie <- paste(glue::glue("No significant [CNV Pie distribution] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types {paste0(cancer_in_tcga_data_cnv,collapse=', ')}. Please try more cancers or more genes."), sep = " ")
               output[["cnv_pie-plot"]] <- callModule(white_plot, "cnv_pie", status_monitor = "analysis", status = status, outfile = file.path(user_dir, "pngs", paste(user_id, "-white_1.png", sep = "")))
             }
 
@@ -172,7 +189,7 @@ cnv_analysis <- eventReactive(
               )
               .msg_cnv_homo <- NULL
             } else {
-              .msg_cnv_homo <- paste(glue::glue("No significant [Homo CNV profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=", ")}. Please try more cancers or more genes."), sep = " ")
+              .msg_cnv_homo <- paste(glue::glue("No significant [Homo CNV profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=', ')}. Please try more cancers or more genes."), sep = " ")
               output[["cnv_homo-plot"]] <- renderPlot({
                 NULL
               })
@@ -199,7 +216,7 @@ cnv_analysis <- eventReactive(
               )
               .msg_cnv_hete <- NULL
             } else {
-              .msg_cnv_hete <- paste(glue::glue("No significant [Hete CNV profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=", ")}. Please try more cancers or more genes."), sep = " ")
+              .msg_cnv_hete <- paste(glue::glue("No significant [Hete CNV profile] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=', ')}. Please try more cancers or more genes."), sep = " ")
               output[["cnv_hete-plot"]] <- renderPlot({
                 NULL
               })
@@ -209,43 +226,43 @@ cnv_analysis <- eventReactive(
 
             # cnv bar plot ------------------------------------------------------------
 
-            print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start processing cnv overall percent data@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-            cnv_raw %>%
-              dplyr::mutate(filter_cnv = purrr::map(cnv, filter_gene_list, gene_list = gene_set$match)) %>%
-              dplyr::select(-cnv) %>%
-              dplyr::filter(cancer_types %in% selected_ctyps()) -> gene_list_cancer_cnv_raw
+            # print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start processing cnv overall percent data@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+            # cnv_raw %>%
+            #   dplyr::mutate(filter_cnv = purrr::map(cnv, filter_gene_list, gene_list = gene_set$match)) %>%
+            #   dplyr::select(-cnv) %>%
+            #   dplyr::filter(cancer_types %in% selected_ctyps()) -> gene_list_cancer_cnv_raw
 
             # bar stack plot ----
-            gene_list_cancer_cnv_raw %>%
-              dplyr::mutate(rs = purrr::map2(cancer_types, filter_cnv, fn_gen_combined_core_atg, g_list = gene_set$match, n = 1)) %>%
-              dplyr::select(-filter_cnv) %>%
-              tidyr::unnest(rs) %>%
-              dplyr::mutate(del_a = -del_a) %>%
-              dplyr::mutate(del_s = -del_s) %>%
-              tidyr::gather(key = type, value = per, -cancer_types) %>%
-              dplyr::mutate(cnv_type = "Hete CNV") -> cnv_hete_bar_plot_ready
-
-            gene_list_cancer_cnv_raw %>%
-              dplyr::mutate(rs = purrr::map2(cancer_types, filter_cnv, fn_gen_combined_core_atg, g_list = gene_set$match, n = 2)) %>%
-              dplyr::select(-filter_cnv) %>%
-              tidyr::unnest(rs) %>%
-              dplyr::mutate(del_a = -del_a) %>%
-              dplyr::mutate(del_s = -del_s) %>%
-              tidyr::gather(key = type, value = per, -cancer_types) %>%
-              dplyr::mutate(cnv_type = "Homo CNV") -> cnv_homo_bar_plot_ready
-
-            rbind(cnv_hete_bar_plot_ready, cnv_homo_bar_plot_ready) -> cnv_bar_plot_ready
-
-            print(glue::glue("{paste0(rep('-', 10), collapse = '')} End processing cnv overall percent data@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-            if (nrow(cnv_bar_plot_ready) > 0) {
-              callModule(cnvbarPlot, "cnv_bar", data = cnv_bar_plot_ready, x = "cancer_types", y = "per", fill = "type", status_monitor = "analysis", status, downloadname = "cnv_hete_figure")
-              .msg_cnv_bar <- NULL
-            } else {
-              .msg_cnv_bar <- paste(glue::glue("No significant [Overall CNV frenquency] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=", ")}. Please try more cancers or more genes."), sep = " ")
-              output[["cnv_bar-plot"]] <- renderPlot({
-                NULL
-              })
-            }
+            # gene_list_cancer_cnv_raw %>%
+            #   dplyr::mutate(rs = purrr::map2(cancer_types, filter_cnv, fn_gen_combined_core_atg, g_list = gene_set$match, n = 1)) %>%
+            #   dplyr::select(-filter_cnv) %>%
+            #   tidyr::unnest(rs) %>%
+            #   dplyr::mutate(del_a = -del_a) %>%
+            #   dplyr::mutate(del_s = -del_s) %>%
+            #   tidyr::gather(key = type, value = per, -cancer_types) %>%
+            #   dplyr::mutate(cnv_type = "Hete CNV") -> cnv_hete_bar_plot_ready
+            # 
+            # gene_list_cancer_cnv_raw %>%
+            #   dplyr::mutate(rs = purrr::map2(cancer_types, filter_cnv, fn_gen_combined_core_atg, g_list = gene_set$match, n = 2)) %>%
+            #   dplyr::select(-filter_cnv) %>%
+            #   tidyr::unnest(rs) %>%
+            #   dplyr::mutate(del_a = -del_a) %>%
+            #   dplyr::mutate(del_s = -del_s) %>%
+            #   tidyr::gather(key = type, value = per, -cancer_types) %>%
+            #   dplyr::mutate(cnv_type = "Homo CNV") -> cnv_homo_bar_plot_ready
+            # 
+            # rbind(cnv_hete_bar_plot_ready, cnv_homo_bar_plot_ready) -> cnv_bar_plot_ready
+            # 
+            # print(glue::glue("{paste0(rep('-', 10), collapse = '')} End processing cnv overall percent data@ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
+            # if (nrow(cnv_bar_plot_ready) > 0) {
+            #   callModule(cnvbarPlot, "cnv_bar", data = cnv_bar_plot_ready, x = "cancer_types", y = "per", fill = "type", status_monitor = "analysis", status, downloadname = "cnv_hete_figure")
+            #   .msg_cnv_bar <- NULL
+            # } else {
+            #   .msg_cnv_bar <- paste(glue::glue("No significant [Overall CNV frenquency] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=', ')}. Please try more cancers or more genes."), sep = " ")
+            #   output[["cnv_bar-plot"]] <- renderPlot({
+            #     NULL
+            #   })
+            # }
 
             # cnv cor to expressin ----------------------------------------------------
 
@@ -270,7 +287,7 @@ cnv_analysis <- eventReactive(
               callModule(methy_diff_pointPlot, "cnv_exp", data = gene_list_cancer_cnv_cor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.cnvcor, gene_rank = gene_rank.cnvcor, sizename = "-Log10(P.value)", colorname = "Spearman Correlation Coefficient", title = "Spearman Correlation Coefficient of CNV and gene expression.", status_monitor = "analysis", status, downloadname = "cnv_correlate_to_expr")
               .msg_cnv_exp <- NULL
             } else {
-              .msg_cnv_exp <- paste(glue::glue("No significant [CNV to Expression] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=", ")}. Please try more cancers or more genes."), sep = " ")
+              .msg_cnv_exp <- paste(glue::glue("No significant [CNV to Expression] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=', ')}. Please try more cancers or more genes."), sep = " ")
 
               output[["cnv_exp-plot"]] <- renderPlot({
                 NULL

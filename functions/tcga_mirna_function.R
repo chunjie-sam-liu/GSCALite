@@ -6,7 +6,7 @@ download_button_2 <- function(id){
       column(width = 4,
              prettyRadioButtons(
                inputId = ns("pictype"),
-               label = "Format of result",
+               label = "Format",
                choices = list("HTML" = "html"),
                inline = TRUE,
                icon = icon("check"),
@@ -14,9 +14,9 @@ download_button_2 <- function(id){
                animation = "jelly"
              )
              ),
-      column(width = 4,
-             actionButton("store_position", "Store positions of nodes")
-             ),
+      # column(width = 4,
+      #        actionButton("store_position", "Store positions of nodes")
+      #        ),
       column(width = 4,
              downloadButton(
                outputId = ns("downloadNetwork"),
@@ -35,7 +35,7 @@ download_button_1 <- function(id){
       column(width = 4,
              prettyRadioButtons(
                inputId = ns("pictype"),
-               label = "Format of result",
+               label = "Format",
                choices = list("HTML" = "html"),
                inline = TRUE,
                icon = icon("check"),
