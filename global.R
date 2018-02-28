@@ -1322,7 +1322,7 @@ rppa_line_contact <- function(plot_seg, cancer.text, gene.text, path.text) {
     ) +
     xlab("") +
     ylab("") +
-    labs(title = "Relation network between genes' expression and cancer related pathways' activity.") -> p
+    labs(title = "Interaction map of gene and pathway.") -> p
 }
 
 # rppa pie ----
@@ -1370,7 +1370,7 @@ rppaPiePlot <- function(input, output, session, data, y, fill, facet_grid, heigh
   
   output$plot <- renderImage({
     status$analysis
-    ggsave(outfile, imgInput(), device = "png", width = 4, height = height)
+    ggsave(outfile, imgInput(), device = "png", width = 3, height = height)
     list(
       src = outfile,
       contentType = "image/png",
@@ -1399,8 +1399,8 @@ rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbo
       guides(fill = guide_colorbar("Percent")) +
       geom_tile(aes(fill = per), col = "white") +
       geom_text(
-        label = ceiling(rppa_per_ready$per),
-        size = 1
+        label = ceiling(rppa_per_ready$per)
+        # size = 1
       ) +
       scale_fill_gradient2(
         high = "red",
@@ -1408,31 +1408,45 @@ rppa_heat_per <- function(input, output, session, rppa_per_ready, pathway, symbo
         low = "blue"
       ) +
       theme(
-        axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 5),
-        axis.text.y = element_text(size = 5),
-        legend.key.size = unit(0.25, "cm"),
+        axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+        axis.text = element_text(colour = "black",size = 10),
+        axis.title = element_text(size = 13),
+        # legend.key.size = unit(0.25, "cm"),
         legend.position = "bottom",
         plot.margin = rep(unit(0, "null"), 4),
         axis.ticks.length = unit(0, "cm"),
-        legend.text = element_text(size = 5),
-        axis.title.x = element_text(size = 6),
-        axis.title.y = element_text(size = 6),
-        legend.title = element_text(size = 6)
+        # legend.text = element_text(size = 5),
+        # axis.title.x = element_text(size = 6),
+        # axis.title.y = element_text(size = 6),
+        # legend.title = element_text(size = 6),
+        panel.background = element_rect(fill = "white", color = NA),
+        panel.grid = element_line(colour = "grey", linetype = "dashed"),
+        panel.grid.major = element_line(
+          colour = "grey",
+          linetype = "dashed",
+          size = 0.2
+        )
       ) +
-      xlab("Pathway (a:activate; i:inhibit)") -> p
+      xlab("Pathway (A:Activate; I:Inhibit)") -> p
   }
   
-  output$plot <- renderImage({
+  plot_height <- rppa_per_ready$symbol %>% unique() %>% length()*20
+  output$plot <- renderPlot({
     status$analysis
-    ggsave(outfile, plotInput(), device = "png", width = 4, height = height)
-    list(
-      src = outfile,
-      contentType = "image/png",
-      # width = "100%" ,
-      # height = 900,
-      alt = "This is alternate text"
-    )
-  }, deleteFile = FALSE)
+    print(plotInput())
+  },height = function(){ifelse(plot_height<200,200,plot_height)})
+  
+  # output$plot <- renderImage({
+  #   status$analysis
+  #   ggsave(outfile, plotInput(), device = "png", width = 4, height = height)
+  #   list(
+  #     src = outfile,
+  #     contentType = "image/png",
+  #     # width = "100%" ,
+  #     # height = 900,
+  #     alt = "This is alternate text"
+  #   )
+  # }, deleteFile = FALSE)
   
   output$picdownload <- downloadHandler(
     filename = function() { paste(downloadname, '.',input$pictype, sep='') },

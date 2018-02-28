@@ -209,7 +209,7 @@ get_rppa_text <- function(data) {
     dplyr::pull(pathway) %>%
     unique() -> pathway.text
 
-  c.text <- data.frame(x = 1, y = 1, text = "test", type = "test")
+  c.text <- data.frame(x = 0.5, y = 1, text = "test", type = "test")
   g.l <- data$symbol %>% unique() %>% length()
   c.l <- data$cancer_types %>% unique() %>% length()
   p.l <- data$pathway %>% unique() %>% length()
