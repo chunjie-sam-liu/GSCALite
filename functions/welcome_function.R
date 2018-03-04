@@ -19,7 +19,7 @@ fn_welcom_msg <- function(){
 
 fn_search_example <- function(){
   tagList(
-    column(width = 10, offset = 1,
+
            column(
              width = 9, offset = 1,
              shinyWidgets::searchInput(
@@ -46,7 +46,7 @@ fn_search_example <- function(){
              )
            )
            )
-    )
+    
 }
 
 
@@ -82,7 +82,7 @@ fn_gene_set_stat <- function(gene_set){
 fn_multi_cancer_input <- function(.ctps){
   shiny::fluidRow(
     column(
-      width = 4, offset = 2,
+      width = 4, offset = 1,
       multiInput(
         inputId = "select_ctps", label = "Select Cancer or Tissue (Selected in right)",
         choices = .ctps, selected = c('KICH', 'KIRP', 'KIRC', 'LUSC', 'LUAD'), width = "550px"
