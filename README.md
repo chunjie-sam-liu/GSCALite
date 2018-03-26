@@ -23,14 +23,6 @@ Please try to collaborate with each other through GitHub, you can read two artic
 
 ![GSCA logo](www/imgs/01.GSCA_logo_01.png)
 
-> Huffyphenix Joined the team
-
-> Import the project logo.
-
-> Move to GuoBioinfoLab Org.
-
-> icefoxx Joined the team.
-
 
 ## The workflow of GSCALite
 ![GSCA pipeline](www/imgs/Figure-1_Schema_of_GSCALite.png)
