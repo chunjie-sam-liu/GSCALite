@@ -8,6 +8,7 @@ fn_expr_welcome <- function(){
       shiny::icon(name = "angle-double-right", class = "fa-fw"),
       "Gene Set Expression"
     ),
+    shiny::hr(),
     shiny::tags$p(
       class = "lead text-left",
       "GCSALite mRNA expression module calculate the gene set differential expression across cancers based on the TCGA expression data.", 
