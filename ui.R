@@ -91,7 +91,7 @@ sidebar <- dashboardSidebar(
     menuItem(
       "GTEx Normal Tissue",
       tabName = "gtex",
-      icon = icon("gear"),
+      icon = icon("suitcase"),
       collapsible = TRUE,
       menuSubItem("GTEx expression", tabName = "gtex_expr"),
       menuSubItem("GTEx eQTL", tabName = "GTEx_eqtl")
@@ -101,13 +101,13 @@ sidebar <- dashboardSidebar(
     # menuItem("Report", tabName = "downloads", icon = icon("floppy-o")),
     
     # Tutorial ----
-    menuItem("Tutorial", tabName = "tutorial", icon = icon("question")),
+    menuItem("Tutorial", tabName = "tutorial", icon = icon("rocket")),
     
     # Help ----
-    menuItem("Help", tabName = "help", icon = icon('help')),
+    menuItem("Document", tabName = "help", icon = icon('file-text')),
 
     # About ----
-    menuItem("About", tabName = "about", icon = icon("graduation-cap"))
+    menuItem("Contact", tabName = "contact", icon = icon("address-book"))
   )
 )
 
@@ -160,7 +160,7 @@ body <- dashboardBody(
     # Tutorial ----
     source(file = file.path(config$wd, "ui", "tutorial_ui.R"), local = TRUE)$value,
     # About ----
-    source(file = file.path(config$wd, "ui", "about_ui.R"), local = TRUE)$value
+    source(file = file.path(config$wd, "ui", "contact_ui.R"), local = TRUE)$value
   )
 )
 
