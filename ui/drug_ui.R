@@ -7,6 +7,8 @@ tabItem(
   
   fluidRow(style = "width:80%", shiny::uiOutput(outputId = "ui_drug_help")),
   
+  fluidRow(style = "width:80%", shiny::tags$hr(style = "width:80%")),
+  
   fluidRow(shiny::uiOutput(outputId = "ui_drug_result")),
 
   # Load footer ----

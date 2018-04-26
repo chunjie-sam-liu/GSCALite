@@ -12,6 +12,8 @@ fn_drug_welcome <- function(){
       "Drug Sensitivity Analysis"
     ),
     
+    shiny::hr(),
+    
     shiny::tags$p(
       class = "lead text-left",
       "Drug resistance analaysis based on two databases ",
