@@ -22,19 +22,32 @@ tabItem(
       
       shiny::tags$address(
         shiny::tags$p(shiny::tags$strong("An-Yuan Guo, Ph.D. Professor of Bioinformatics")),
-        shiny::tags$p(shiny::tags$strong("Email: guoay@hust.edu.cn"))
+        shiny::fluidRow(
+          shiny::column(width = 1, offset = 0, shiny::div(shiny::strong("Email: "))),
+          shiny::column(width = 3, offset = 0, shiny::plotOutput(outputId = "ay", height = "20px", width = "200px"))
+          )
         ),
+      
       shiny::tags$address(
         shiny::tags$p(shiny::tags$strong("Chun-Jie Liu, Ph.D. Candidate")),
-        shiny::tags$p(shiny::tags$strong("Email: samliu@hust.edu.cn"))
+        shiny::fluidRow(
+          shiny::column(width = 1, offset = 0, shiny::div(shiny::strong("Email: "))),
+          shiny::column(width = 3, offset = 0, shiny::plotOutput(outputId = "cj", height = "20px", width = "200px"))
+        )
       ),
       shiny::tags$address(
-        shiny::tags$p(shiny::tags$strong("Fei-Fei LHu, Ph.D. Candidate")),
-        shiny::tags$p(shiny::tags$strong("Email: hufeifei@hust.edu.cn"))
+        shiny::tags$p(shiny::tags$strong("Fei-Fei Hu, Ph.D. Candidate")),
+        shiny::fluidRow(
+          shiny::column(width = 1, offset = 0, shiny::div(shiny::strong("Email: "))),
+          shiny::column(width = 3, offset = 0, shiny::plotOutput(outputId = "ff", height = "20px", width = "200px"))
+        )
       ),
       shiny::tags$address(
         shiny::tags$p(shiny::tags$strong("Qiong Zhang, Postdoc Fellow")),
-        shiny::tags$p(shiny::tags$strong("Email: zhangqiong@hust.edu.cn"))
+        shiny::fluidRow(
+          shiny::column(width = 1, offset = 0, shiny::div(shiny::strong("Email: "))),
+          shiny::column(width = 3, offset = 0, shiny::plotOutput(outputId = "zq", height = "20px", width = "250px"))
+        )
       )
       # shiny::tags$img(
       #   src = "./imgs/about.png",

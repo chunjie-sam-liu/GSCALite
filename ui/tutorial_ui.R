@@ -4,16 +4,23 @@
 
 
 tabItem(
-  tabName = "tutorial",
+  tabName = "tutorial", align = "center",
 
   # help information ----
   fluidRow(
-    style = "width:100%;",
+    style = "width:80%;", 
 
     column(
-      width = 12, offset = 0,
-      shiny::tags$h1("Simple usage for GSCALite", align = "center"),
-      shiny::tags$br(),
+      width = 12, offset = 0, align = "left",
+      
+      shiny::tags$h1(
+        class = "text-success text-left",
+        shiny::icon(name = "angle-double-right", class = "fa-fw"),
+        "Tutorial"
+      ),
+      
+      shiny::hr(),
+
       shiny::tags$video(src = "./videos/guide_video.mp4", controls = "controls", width = "100%", height = "100%"),
       shiny::tags$br(),
       shiny::tags$img(
