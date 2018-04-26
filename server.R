@@ -61,6 +61,8 @@ server <- function(input, output, session) {
   # 
   source(file = file.path(config$server, "GTEx_eqtl_server.R"), local = TRUE)
   
+  source(file = file.path(config$server, "contact_server.R"), local = TRUE)
+  
 
 # Loading screen ----------------------------------------------------------
   loading_screen()
