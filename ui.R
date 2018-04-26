@@ -104,7 +104,7 @@ sidebar <- dashboardSidebar(
     menuItem("Tutorial", tabName = "tutorial", icon = icon("rocket")),
     
     # Help ----
-    menuItem("Document", tabName = "document", icon = icon('file-text')),
+    # menuItem("Document", tabName = "document", icon = icon('file-text')),
 
     # About ----
     menuItem("Contact", tabName = "contact", icon = icon("address-book"))
@@ -159,7 +159,7 @@ body <- dashboardBody(
     source(file = file.path(config$wd, "ui", "tutorial_ui.R"), local = TRUE)$value,
     
     # Document ----
-    source(file = file.path(config$wd, "ui", "document_ui.R"), local = TRUE)$value,
+    # source(file = file.path(config$wd, "ui", "document_ui.R"), local = TRUE)$value,
 
     # About ----
     source(file = file.path(config$wd, "ui", "contact_ui.R"), local = TRUE)$value
