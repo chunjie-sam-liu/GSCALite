@@ -388,3 +388,33 @@ input[type='radio']:checked:before {
   background-color: #ffffff;
   border: 1px solid #008176;
 }
+
+.bs-callout {
+  padding: 10px;
+  margin: 15px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.bs-callout h3 {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.bs-callout-primary {
+  border-left-color: #2d6fae;
+}
+
+.bs-callout-primary h3 {
+  color: #2d6fae;
+}
+
+.bs-callout-danger {
+  border-left-color: #e72324;
+}
+
+.bs-callout-danger h3{
+  color: #e72324;
+}

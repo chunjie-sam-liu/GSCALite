@@ -32,7 +32,7 @@ fn_expr_help <- function(){
           shiny::tags$a(
             "data-toggle" = "collapse", "href" = "#help_expr",
             shiny::icon(name = "info-circle", class = "fa-fw"),
-            "The detailed methods and results description."
+            "Click here for the detailed description of methods and results."
             )
           )
         ),
@@ -44,9 +44,21 @@ fn_expr_help <- function(){
           class = "panel-body",
           column(
             width = 12, offset = 0,
-            # methods
-            column(
-              width = 10, offset = 1,
+            
+            # Methods
+            shiny::tags$div(
+              class = "bs-callout bs-callout-primary",
+              shiny::tags$h3("Methods"),
+              shiny::tags$p("hello wrold")
+              ),
+            
+            # Results
+            shiny::tags$div(
+              class = "bs-callout bs-callout-danger",
+              shiny::tags$h3("Results"),
+              shiny::tags$p("Hello world")
+            ),
+            
               shiny::tags$h3("Method", class = "text-success"),
               shiny::tags$p(
                 class = "text-justify",
@@ -62,10 +74,9 @@ fn_expr_help <- function(){
                 class = "text-justify",
                 "3. Survival and subtype was analysis across all the cancer types the user chose"
               ),
-              shiny::tags$hr(width = "100%")
-            ),
-            column(
-              width = 10, offset = 1,
+            
+              shiny::tags$hr(width = "100%"),
+
               shiny::tags$h3("Figure and Tables Description", class = "text-success"),
               shiny::tags$table(
                 class = "table table-striped",
@@ -90,7 +101,6 @@ fn_expr_help <- function(){
                   shiny::tags$td("Each gene may have different expression in the different subtypes. This figure represent the gene affect subtype.")
                 )
               )
-            )
           )
         )
       )
