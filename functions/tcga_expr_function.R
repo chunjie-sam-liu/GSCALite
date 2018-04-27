@@ -24,14 +24,14 @@ fn_expr_help <- function(){
     width = 12, offset = 0,
     
     shiny::tags$div(
-      class = "panel panel-default",
+      class = "panel panel-primary",
       shiny::tags$div(
         class = "panel-heading",
         shiny::tags$h3(
           class = "panel-title text-left",
           shiny::tags$a(
             "data-toggle" = "collapse", "href" = "#help_expr",
-            shiny::icon(name = "question", class = "fa-fw"),
+            shiny::icon(name = "info-circle", class = "fa-fw"),
             "Click here for help"
             )
           )
