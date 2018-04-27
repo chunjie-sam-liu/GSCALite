@@ -50,52 +50,45 @@ fn_expr_help <- function(){
               class = "bs-callout bs-callout-primary",
               shiny::tags$h3("Methods"),
               
-              shiny::tags$p(class = "text-justify",
-                "1. The mRNA expression and clinical data was downloaded from", 
-                shiny::tags$a("href" = "https://gdc.cancer.gov/", "NCI Genomic Data Commons")),
-              
-              shiny::tags$p(class = "text-justify",
-                "2. TCGA maintains 33 cancer types, but only 14 cancer types have paired tumor vs. normal data. The  gene set mRNA differential expression was based on the 14 cancer types."
-              ),
-              
-              shiny::tags$p(class = "text-justify",
-                "3. Survival and subtype was analysis across all the cancer types the user chose"
+              shiny::tags$ul(
+                shiny::tags$li(
+                  "The mRNA expression and clinical data was downloaded from", 
+                  shiny::tags$a("href" = "https://gdc.cancer.gov/", "NCI Genomic Data Commons"), "."
+                ),
+                
+                shiny::tags$li("TCGA maintains 33 cancer types, but only 14 cancer types have paired tumor vs. normal data. The  gene set mRNA differential expression was based on the 14 cancer types."),
+                
+                shiny::tags$li("Survival and subtype was analysis across all the cancer types the user chose.")
               )
-              ),
+            ),
             
             # Results
             shiny::tags$div(
               class = "bs-callout bs-callout-danger",
               shiny::tags$h3("Results"),
-              shiny::tags$table(
-                class = "table table-striped",
-                shiny::tags$thead(
-                  shiny::tags$th("Result"),
-                  shiny::tags$th("Description")
-                ),
-                shiny::tags$tr(
-                  shiny::tags$td("Tumor vs. Normal"),
-                  shiny::tags$td("In the result figure, the row is the gene set symbol and column is the selected cancer types. The color from purple to red represent the fold change between tumor vs normal. The size dot indicates the significance. The dot was filtered by the fold change (fc>2) and significance (fdr < 0.05)")
-                ),
-                shiny::tags$tr(
-                  shiny::tags$td("Table of comparison"),
-                  shiny::tags$td("The table provides the detailed information of first figure.")
-                ),
-                shiny::tags$tr(
-                  shiny::tags$td("Survival"),
-                  shiny::tags$td("The dot represent the gene affects survival of the cancer types, the p-value is the Kaplan Meier P-value. The dot color indicates the worse of the high or low expression in the cancer types.")
-                ),
-                shiny::tags$tr(
-                  shiny::tags$td("Subtype"),
-                  shiny::tags$td("Each gene may have different expression in the different subtypes. This figure represent the gene affect subtype.")
-                )
-              )
+              
+              shiny::tags$dl(
+                class = "dl-horizontal",
+                
+                shiny::tags$dt("Tumor vs. Normal:"),
+                shiny::tags$dd("In the result figure, the row is the gene set symbol and column is the selected cancer types. The color from purple to red represent the fold change between tumor vs normal. The size dot indicates the significance. The dot was filtered by the fold change (fc>2) and significance (fdr < 0.05)"),
+                
+                shiny::tags$dt("Table:"),
+                shiny::tags$dd("The table provides the detailed information of first figure"),
+                
+                shiny::tags$dt("Survival:"),
+                shiny::tags$dd("The dot represent the gene affects survival of the cancer types, the p-value is the Kaplan Meier P-value. The dot color indicates the worse of the high or low expression in the cancer types"),
+                
+                shiny::tags$dt("Subtype:"),
+                shiny::tags$dd("Each gene may have different expression in the different subtypes. This figure represent the gene affect subtype")
+                
               )
             )
           )
         )
       )
     )
+  )
 }
 # Expr output -------------------------------------------------------------
 

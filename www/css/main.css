@@ -418,7 +418,13 @@ input[type='radio']:checked:before {
 .bs-callout-danger h3{
   color: #e72324;
 }
-
-p a {
+ul li {
+  text-align: justify;
+}
+ul li a {
   color: #008176;
+}
+
+dl.dl-horizontal dd {
+  text-align: justify;
 }
