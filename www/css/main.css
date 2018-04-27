@@ -418,3 +418,7 @@ input[type='radio']:checked:before {
 .bs-callout-danger h3{
   color: #e72324;
 }
+
+p a {
+  color: #008176;
+}
