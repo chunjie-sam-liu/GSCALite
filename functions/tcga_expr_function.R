@@ -32,7 +32,7 @@ fn_expr_help <- function(){
           shiny::tags$a(
             "data-toggle" = "collapse", "href" = "#help_expr",
             shiny::icon(name = "info-circle", class = "fa-fw"),
-            "Click here for the detailed description of methods and results."
+            "Click here for the detailed description of methods and results"
             )
           )
         ),
