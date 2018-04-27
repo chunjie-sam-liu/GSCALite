@@ -96,7 +96,7 @@ exprOutput <- function(id) {
   ns <- NS(id)
   
   column(
-    width = 10, offset = 1,
+    width = 12, offset = 0,
     shinydashboard::tabBox(
       id = "expr_plot", title = "", width = 12,
       # bubble plot for tumor vs. normal
@@ -148,7 +148,7 @@ fn_expr_result <- function(.expr){
     exprOutput("expr")
   } else{
     column(
-      width = 10, offset = 1,
+      width = 12, offset = 0,
       shiny::tags$div(style = "height=500px;", class = "jumbotron", shiny::tags$h2("This analysis is not selected"))
     )
   }

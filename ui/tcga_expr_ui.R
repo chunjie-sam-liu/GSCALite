@@ -11,8 +11,6 @@ tabItem(
 
   # For help page
   fluidRow(style = "width:80%;", shiny::uiOutput(outputId = "ui_expr_help")),
-  
-  # source(file.path(config$ui,"tcga_cnv_help.R"))$value,
 
   fluidRow(column(width = 10, offset = 1, cancerTypeInput("expr"))),
 
@@ -20,7 +18,7 @@ tabItem(
   fluidRow(selectAndAnalysisInput("expr")),
 
   # Plot result ----
-  fluidRow(shiny::uiOutput(outputId = "ui_expr_result")),
+  fluidRow(style = "width:80%;", shiny::uiOutput(outputId = "ui_expr_result")),
   
   # fluidRow(exprOutput("expr")),
 
