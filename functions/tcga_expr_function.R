@@ -79,7 +79,6 @@ fn_expr_help <- function(){
               )
             ),
             
-            
             # Results
             shiny::tags$div(
               class = "bs-callout bs-callout-danger",
@@ -98,7 +97,7 @@ fn_expr_help <- function(){
                 shiny::tags$dd("The dot represent the gene affects survival of the cancer types, the p-value is the Kaplan Meier P-value. The dot color indicates the worse of the high or low expression in the cancer types."),
                 
                 shiny::tags$dt("Subtype:"),
-                shiny::tags$dd("Each gene may have different expression in the different subtypes. This figure represent the gene affect subtype.")
+                shiny::tags$dd("Each gene may have different expression in the different  subtypes. This figure represent the gene affect subtype.")
                 
               )
             )
