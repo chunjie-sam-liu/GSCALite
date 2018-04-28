@@ -65,11 +65,13 @@ fn_expr_help <- function(){
                   
                   "In the mRNA differential expression analysis, we use TCGA normalized ",
                   
-                
+                  
                 shiny::tags$dt("Survival:"),
                 shiny::tags$dd("Survival and subtype was analysis across all the cancer types the user chose")
+                )
               )
             ),
+            
             
             # Results
             shiny::tags$div(
