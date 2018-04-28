@@ -75,7 +75,7 @@ fn_expr_help <- function(){
                 shiny::tags$dd("For expression survival analysis, we use 33 cancer types clinical tumor data, some uncensored data was left out. Merging mRNA expression and clinical survival data by sample barcode, we use  median RPKM value to divide tumor samples into high and low groups. Then, we use R package", shiny::tags$a("href" = "https://cran.r-project.org/web/packages/survival/index.html", "survival"), "to fit survival time and survival status with two groups. We calculate Cox Proportional-Hazards model for every gene and draw Kaplan-Meier curves with logrank tests for every single gene. The genes with Kaplan-Meier logrank test p-value less than 0.05 would be retained and gathered into final figure."),
                 
                 shiny::tags$dt("Subtype:"),
-                shiny::tags$dd("Hell")
+                shiny::tags$dd("The expression subtype analysis is to find clinical relevant genes which affect cancer subtype, ")
               )
             ),
             
