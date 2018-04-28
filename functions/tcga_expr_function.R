@@ -50,15 +50,24 @@ fn_expr_help <- function(){
               class = "bs-callout bs-callout-primary",
               shiny::tags$h3("Methods"),
               
-              shiny::tags$ul(
-                shiny::tags$li(
-                  "The mRNA expression and clinical data was downloaded from", 
-                  shiny::tags$a("href" = "https://gdc.cancer.gov/", "NCI Genomic Data Commons"), "."
-                ),
+              shiny::tags$dl(
+                class = "dl-horizontal",
                 
-                shiny::tags$li("TCGA maintains 33 cancer types, but only 14 cancer types have paired tumor vs. normal data. The  gene set mRNA differential expression was based on the 14 cancer types."),
+                shiny::tags$dt("Data:"),
+                shiny::tags$dd(
+                  "We collected 10995 mRNA Seq level 3 data and 11160 clinical data from",
+                  shiny::tags$a("href" = "https://gdc.cancer.gov/", "NCI Genomic Data Commons") 
+                  ),
                 
-                shiny::tags$li("Survival and subtype was analysis across all the cancer types the user chose.")
+                shiny::tags$dt("Tumor vs. Normal:"),
+                shiny::tags$dd(
+                  "The number of sample in each cancer types ranges from 48 to 1,098, but only 14 cancer types have over ten paired tumor and normal samples.",
+                  
+                  "In the mRNA differential expression analysis, we use TCGA normalized ",
+                  
+                
+                shiny::tags$dt("Survival:"),
+                shiny::tags$dd("Survival and subtype was analysis across all the cancer types the user chose")
               )
             ),
             
