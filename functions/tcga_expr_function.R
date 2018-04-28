@@ -55,20 +55,24 @@ fn_expr_help <- function(){
                 
                 shiny::tags$dt("Data:"),
                 shiny::tags$dd(
-                  "We collected 10995 mRNA Seq level 3 data and 11160 clinical data from",
-                  shiny::tags$a("href" = "https://gdc.cancer.gov/", "NCI Genomic Data Commons") 
-                  ),
+                  "We collected 10,995 mRNA Seq level 3 and 11,160 clinical data from",
+                  shiny::tags$a("href" = "https://gdc.cancer.gov/", "NCI Genomic Data Commons.")
+                ),
                 
                 shiny::tags$dt("Tumor vs. Normal:"),
                 shiny::tags$dd(
+                  "In the mRNA differential expression analysis, we use TCGA mRNA normalized RKPM.",
+                  
                   "The number of sample in each cancer types ranges from 48 to 1,098, but only 14 cancer types have over ten paired tumor and normal samples.",
                   
-                  "In the mRNA differential expression analysis, we use TCGA normalized ",
+                  "Here, GSCALite provides mRNA differential expression with paired tumor and normal samples.",
                   
-                  
+                  "Gfc = mean(Tumor) / mean(Normal)"
+                
+                ),
+                
                 shiny::tags$dt("Survival:"),
-                shiny::tags$dd("Survival and subtype was analysis across all the cancer types the user chose")
-                )
+                shiny::tags$dd("Survival and subtype was analysis across all the cancer types the user chose.")
               )
             ),
             
@@ -82,16 +86,16 @@ fn_expr_help <- function(){
                 class = "dl-horizontal",
                 
                 shiny::tags$dt("Tumor vs. Normal:"),
-                shiny::tags$dd("In the result figure, the row is the gene set symbol and column is the selected cancer types. The color from purple to red represent the fold change between tumor vs normal. The size dot indicates the significance. The dot was filtered by the fold change (fc>2) and significance (fdr < 0.05)"),
+                shiny::tags$dd("In the result figure, the row is the gene set symbol and column is the selected cancer types. The color from purple to red represent the fold change between tumor vs normal. The size dot indicates the significance. The dot was filtered by the fold change (fc>2) and significance (fdr < 0.05)."),
                 
                 shiny::tags$dt("Table:"),
-                shiny::tags$dd("The table provides the detailed information of first figure"),
+                shiny::tags$dd("The table provides the detailed information of first figure."),
                 
                 shiny::tags$dt("Survival:"),
-                shiny::tags$dd("The dot represent the gene affects survival of the cancer types, the p-value is the Kaplan Meier P-value. The dot color indicates the worse of the high or low expression in the cancer types"),
+                shiny::tags$dd("The dot represent the gene affects survival of the cancer types, the p-value is the Kaplan Meier P-value. The dot color indicates the worse of the high or low expression in the cancer types."),
                 
                 shiny::tags$dt("Subtype:"),
-                shiny::tags$dd("Each gene may have different expression in the different subtypes. This figure represent the gene affect subtype")
+                shiny::tags$dd("Each gene may have different expression in the different subtypes. This figure represent the gene affect subtype.")
                 
               )
             )
