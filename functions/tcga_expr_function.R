@@ -31,7 +31,7 @@ fn_expr_help <- function(){
           class = "panel-title text-left",
           shiny::tags$a(
             "data-toggle" = "collapse", "href" = "#help_expr",
-            shiny::icon(name = "info-circle", class = "fa-fw"),
+            shiny::icon(name = "info-circle"),
             "Click here for the detailed description of methods and results"
             )
           )
@@ -53,26 +53,27 @@ fn_expr_help <- function(){
               shiny::tags$dl(
                 class = "dl-horizontal",
                 
-                shiny::tags$dt("Data:"),
+                shiny::tags$dt("Data & Scripts:"),
                 shiny::tags$dd(
                   "We collected 10,995 mRNA Seq level 3 and 11,160 clinical data from",
-                  shiny::tags$a("href" = "https://gdc.cancer.gov/", "NCI Genomic Data Commons.")
+                  shiny::tags$a("href" = "https://gdc.cancer.gov/", "NCI Genomic Data Commons, "),
+                  "The whole analysis scripts used in the GSCALite were put on the",
+                  shiny::tags$a("href" = "https://github.com/GuoBioinfoLab/GSCALite", shiny::icon(name = "github", lib = "font-awesome")), "."
                 ),
                 
                 shiny::tags$dt("Tumor vs. Normal:"),
                 shiny::tags$dd(
                   "In the mRNA differential expression analysis, we use TCGA mRNA normalized RKPM.",
-                  
                   "The number of sample in each cancer types ranges from 48 to 1,098, but only 14 cancer types have over ten paired tumor and normal samples.",
-                  
                   "Here, GSCALite provides mRNA differential expression with paired tumor and normal samples.",
-                  
-                  "Gfc = mean(Tumor) / mean(Normal)"
-                
+                  "The fold change is mean(Tumor) / mean(Normal), p-value was used t-test and p-value was adjusted by FDR.",
+                  "The genes with fold change (FC > 2) and significance (FDR > 0.05) were retained for the figure production.",
+                  "If there is no significant gene in one cancer type, the cancer type is left out in final figure."
                 ),
                 
                 shiny::tags$dt("Survival:"),
-                shiny::tags$dd("Survival and subtype was analysis across all the cancer types the user chose.")
+                shiny::tags$dd("For expression survival analysis, we use 33 cancer types clinical tumor data, some uncensored data was left out. Merging mRNA expression and clinical survival data by sample barcode, we use  median RPKM value to divide tumor samples into high and low group. Then, we use R package", shiny::tags$a("href" = "https://cran.r-project.org/web/packages/survival/index.html", "survival"), "to fit")
+                
               )
             ),
             
