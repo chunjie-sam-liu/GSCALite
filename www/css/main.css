@@ -407,3 +407,7 @@ ul li a {
 dl.dl-horizontal dd {
   text-align: justify;
 }
+
+dl.dl-horizontal dd a {
+  color: #008176;
+}
