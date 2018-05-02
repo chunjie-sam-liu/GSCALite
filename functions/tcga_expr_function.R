@@ -88,7 +88,7 @@ fn_expr_help <- function(){
                 class = "dl-horizontal",
                 
                 shiny::tags$dt("Tumor vs. Normal:"),
-                shiny::tags$dd("In the result figure, the row is the gene set symbol and column is the selected cancer types. The color from purple to red represent the fold change between tumor vs normal. The size dot indicates the significance. The dot was filtered by the fold change (fc>2) and significance (fdr < 0.05)."),
+                shiny::tags$dd("In the result figure, the row is the gene set symbol and column is the selected cancer types. The color from purple to red represent the fold change between tumor vs normal. The size dot indicates the significance. The dot was filtered by the fold change (FC>2) and significance (FDR < 0.05)."),
                 
                 shiny::tags$dt("Table:"),
                 shiny::tags$dd("The table provides the detailed information of first figure."),

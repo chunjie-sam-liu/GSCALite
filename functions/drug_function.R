@@ -88,7 +88,7 @@ fn_drug_help <- function(){
               shiny::tags$dl(
                 class = "dl-horizontal",
                 
-                shiny::tags$dt("Drug Sensitivity"),
+                shiny::tags$dt("Drug Sensitivity: "),
                 shiny::tags$dd(
                   "The gene set drug resistence analysis from", 
                   shiny::tags$a("GDSC", href = "http://www.cancerrxgene.org/", target = "_blank"),
