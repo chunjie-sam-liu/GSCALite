@@ -4,29 +4,15 @@
 
 tabItem(
   tabName = "GTEx_eqtl", align = "center",
-  shinyjs::useShinyjs(),
 
   ## GTEx eqtl message ----
-  fluidRow(
-    style = "width:80%;",
-    HTML("<div class='section'>
-                      <div class='container'>
-                      <div class='row'>
-                      <div class='col-md-12'>
-                      <h1 class='text-success text-left'>
-                      <i class='fa fa-angle-double-right  fa-fw'></i>Expression quantitative trait locis (eQTLs) in GTEx Dataset
-                      <font color='#777777'>
-                      </font>
-                      </h1>
-                      <hr>
-                      <p class='lead'>The eQTLs of gene set in the selected GTEx normal tissues will be displayed here in the form of table. See detailed explaination for each column in the talble <code>help page</code> below.) </p>
-                      </div>
-                      </div>
-                      </div>
-                      </div>")
-  ),
+  fluidRow(style = "width:80%;", shiny::uiOutput(outputId = "ui_gtex_eqtl_welcome")),
+  
+  fluidRow(style = "width:80%;", shiny::uiOutput(outputId = "ui_gtex_eqtl_help")),
+  
+  fluidRow(style = "width:80%", shiny::tags$hr(style = "width:80%")),
 
-  source(file.path(config$ui, "GTEx_eqtl_help.R"))[1],
+  # source(file.path(config$ui, "GTEx_eqtl_help.R"))[1],
   # shiny::tags$hr(width = "85%"),
 
   # fluidRow(column(width = 12, GTExTissueeqtl("gtex_eqtl"))),
@@ -34,7 +20,7 @@ tabItem(
   # tissue type selection----
   fluidRow(column(width = 10, offset = 1, tissueTypeInput("gtex_eqtl"))),
   # generate result panel ----
-  fluidRow(shiny::uiOutput(outputId = "ui_eqtl_result")),
+  fluidRow(style = "width:80%", shiny::uiOutput(outputId = "ui_eqtl_result")),
   #  GTExTissueType("gtex_eqtl"),
 
   # Selected Tissue show ----
