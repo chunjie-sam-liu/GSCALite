@@ -420,3 +420,7 @@ dl.dl-horizontal dt{
 dl.dl-horizontal dd a {
   color: #008176;
 }
+
+p.text-justify a {
+  color: #008176;
+}
