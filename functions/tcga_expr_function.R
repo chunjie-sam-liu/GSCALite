@@ -56,7 +56,7 @@ fn_expr_help <- function(){
                 shiny::tags$dt("Data & Scripts:"),
                 shiny::tags$dd(
                   "We collected 10,995 mRNA Seq level 3 and 11,160 clinical data from",
-                  shiny::tags$a("href" = "https://gdc.cancer.gov/", "NCI Genomic Data Commons, "),
+                  shiny::tags$a("href" = "https://gdc.cancer.gov/", "NCI Genomic Data Commons,"),
                   "The whole analysis scripts used in the GSCALite were put on the",
                   shiny::tags$a("href" = "https://github.com/GuoBioinfoLab/GSCALite", shiny::icon(name = "github", lib = "font-awesome")), "."
                 ),
