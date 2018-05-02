@@ -53,7 +53,10 @@ fn_gtex_exp_help <- function(){
                 class = "dl-horizontal",
                 
                 shiny::tags$dt("Data & Scripts:"),
-                shiny::tags$dd("")
+                shiny::tags$dd(
+                  shiny::tags$a("The Genotype-Tissue Expression (GTEx)", href = "https://www.gtexportal.org/home/"), 
+                  "project provides valuable insights into the mechanisms of gene expression and regulationship in multiple tissues from health individuals, which offered important information for exploring disease-related perturbations. GTEx Expressiondataset (V7.0) composed of 11,688 samples contains the expression profiles of 56,202 genes from 30 organs (53 tissues), which donated by 714 health individuals."
+                )
               )
             ),
             
@@ -65,8 +68,11 @@ fn_gtex_exp_help <- function(){
               shiny::tags$dl(
                 class = "dl-horizontal",
                 
-                shiny::tags$dt("Data & Scripts:"),
-                shiny::tags$dd("")
+                shiny::tags$dt("Heatmap:"),
+                shiny::tags$dd("Heatmap gives you the expression profiles of your gene set in selected tissues."),
+                
+                shiny::tags$dt("GSVA Boxplot:"),
+                shiny::tags$dd("The Gene Set Variation Analysis (GSVA) boxplot displays the estimating variation of gene set enrichment through the samples in the GTEx expression dataset. The dot denotes a sample in the given tissue.")
               )
             )
           )
