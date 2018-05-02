@@ -4,31 +4,16 @@
 
 tabItem(
   tabName = "gtex_expr", align = "center",
-  shinyjs::useShinyjs(),
 
   ## GTEx expr message ----
-  fluidRow(
-    style = "width:80%;",
-    HTML("<div class='section'>
-                      <div class='container'>
-                      <div class='row'>
-                      <div class='col-md-12'>
-                      <h1 class='text-success text-left'>
-                      <i class='fa fa-angle-double-right  fa-fw'></i>Gene Set Expression in GTEx Dataset
-                      <font color='#777777'>
-                      </font>
-                      </h1>
-                      <hr>
-                      <p class='lead text-left'>expression profiles and gene set variation analysis score (GSVAS) of query gene set in selected GTEx normal tissues will be visualized here in forms of heatmap and boxplot. See details in <code>help page</code> below.) </p>
-                      </div>
-                      </div>
-                      </div>
-                      </div>")
-  ),
+  fluidRow(style = "width:80%;", shiny::uiOutput(outputId = "ui_gtex_exp_welcome")),
+  
+  fluidRow(style = "width:80%;", shiny::uiOutput(outputId = "ui_gtex_exp_help")),
+  
+  fluidRow(style = "width:80%", shiny::tags$hr(style = "width:80%")),
 
-  source(file.path(config$ui, "GTEx_exp_help.R"))[1],
+  # source(file.path(config$ui, "GTEx_exp_help.R"))[1],
 
-  # shiny::tags$hr(width = "85%"),
   
   fluidRow(selectAndAnalysisInput("GTEx_exp")),
   # tissue type selection----
@@ -70,7 +55,7 @@ tabItem(
   fluidRow(selectAndAnalysisInput("gtex_expr")),
   
   # generate result panel ----
-  fluidRow(shiny::uiOutput(outputId = "ui_gexp_result")),
+  fluidRow(style = "width:80%", shiny::uiOutput(outputId = "ui_gexp_result")),
 
 # Plot result ----
 # fluidRow(
