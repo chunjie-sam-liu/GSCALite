@@ -33,25 +33,25 @@ fluidRow(
           column(
             width = 12,
             # overall description----
-            shiny::tags$div(
-              class = "bs-callout bs-callout-primary",
-              shiny::tags$h3("Overall description"),
-
-              shiny::tags$dl(
-                class="dl-horizontal",
-                shiny::tags$dt("What is Methylation"),
-                shiny::tags$dd(
-                  "DNA methylation is a key epigenetic modification to cytosines, often in CpG dinucleotides. This modification has been frequently associated with gene silencing, but the precise role of DNA methylation in development and disease remains a mystery."
-                ),
-                
-                shiny::tags$dt("What you can get"),
-                shiny::tags$dd(
-                  shiny::tags$p("1. Genes methylated differentially between tumor and normal samples."),
-                  shiny::tags$p("2. Genes whose overall survival significantly different from hypermethylation to hypomethylation."),
-                  shiny::tags$p("3. Genes whose expression significantly influenced by methylation level.")
-                  )
-                )
-              ),
+            # shiny::tags$div(
+            #   class = "bs-callout bs-callout-primary",
+            #   shiny::tags$h3("Overall description"),
+            # 
+            #   shiny::tags$dl(
+            #     class="dl-horizontal",
+            #     shiny::tags$dt("What is Methylation"),
+            #     shiny::tags$dd(
+            #       "DNA methylation is a key epigenetic modification to cytosines, often in CpG dinucleotides. This modification has been frequently associated with gene silencing, but the precise role of DNA methylation in development and disease remains a mystery."
+            #     ),
+            #     
+            #     shiny::tags$dt("What you can get"),
+            #     shiny::tags$dd(
+            #       shiny::tags$p("1. Genes methylated differentially between tumor and normal samples."),
+            #       shiny::tags$p("2. Genes whose overall survival significantly different from hypermethylation to hypomethylation."),
+            #       shiny::tags$p("3. Genes whose expression significantly influenced by methylation level.")
+            #       )
+            #     )
+            #   ),
             
             shiny::tags$div(
               class = "bs-callout bs-callout-primary",
