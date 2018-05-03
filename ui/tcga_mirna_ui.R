@@ -9,22 +9,19 @@ tabItem(
   ## SNV message ----
   fluidRow(
     style = "width:85%;",
-    HTML("<div class='section'>
-                      <div class='container'>
-                      <div class='row'>
-                      <div class='col-md-12'>
-                      <h1 class='text-success text-left'>
-                      <i class='fa fa-angle-double-right  fa-fw'></i>miRNA
-                      <font color='#777777'>
-                      <span style='font-size: 23.3999996185303px; line-height: 23.3999996185303px;'>Regulation Network</span>
-                      </font>
-                      </h1>
-                      <hr>
-                      <p class='lead text-justify'>A miRNA regulation network will be given here, you will find which miRNA regulate your genes and have a global understanding by network presentation. miRNA regulation data is collected from databases ( see details on <code>help page</code> below), a network will be drawed for you to visualize the potential regulation of miRNAs to your genes.</p>
-                      </div>
-                      </div>
-                      </div>
-                      </div>")
+    column(
+      width = 12, offset = 0,
+      shiny::tags$h1(
+        class = "text-success text-left",
+        shiny::icon(name = "angle-double-right", class = "fa-fw"),
+        "miRNA Regulation"
+      ),
+      shiny::hr(),
+      shiny::tags$p(
+        class = "lead text-justify",
+        "miRNA Regulation will give you a miRNA regulation network, for you to visualize the potential regulation of miRNAs to your genes."
+      )
+    )
   ),
   ## Hlep message including in tcga_mirna_help.ui----
   source(file.path(config$ui, "tcga_mirna_help.R"))[1],
@@ -37,7 +34,7 @@ tabItem(
   ),
 
   # generate result panel ----
-  fluidRow(shiny::uiOutput(outputId = "ui_mirna_result")),
+  fluidRow(style = "width:85%;",shiny::uiOutput(outputId = "ui_mirna_result")),
 
   # load footer ------------------------------------------------------
   source(file.path(config$ui, "footer.R"))[1]

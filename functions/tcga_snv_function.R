@@ -1,7 +1,7 @@
 snvOutput <- function() {
   # ns <- NS(id)
   column(
-    width = 10, offset = 1,
+    width = 12, offset = 0,
     shinydashboard::tabBox(
       id = "snv_plot", title = "", width = 12,
       # bubble plot for tumor vs. normal
@@ -18,7 +18,7 @@ fn_snv_result <- function(.snv){
     snvOutput()
   } else{
     column(
-      width = 10, offset = 1,
+      width = 12 , offset = 0,
       shiny::tags$div(style = "height=500px;", class = "jumbotron", shiny::tags$h2("This analysis is not selected"))
     )
   }

@@ -9,22 +9,19 @@ tabItem(
   ## RPPA message ----
   fluidRow(
     style = "width:85%;",
-    HTML("<div class='section'>
-                      <div class='container'>
-                      <div class='row'>
-                      <div class='col-md-12'>
-                      <h1 class='text-success text-left'>
-                      <i class='fa fa-angle-double-right  fa-fw'></i>Pathway Activity
-                      <font color='#777777'>
-                      <span style='font-size: 23.3999996185303px; line-height: 23.3999996185303px;'>TCPA RPPA data</span>
-                      </font>
-                      </h1>
-                      <hr>
-                      <p class='lead text-justify'>RPPA data from TCPA are used to calculate score for <b>10 cancer related pathways</b> and <b>32 cancer types</b>, and a relationship is predicted between gene expression and pathway score (see details <code>help page</code> below). Here we show you the relationship between gene expression and pathway activity.</p>
-                      </div>
-                      </div>
-                      </div>
-                      </div>")
+    column(
+      width = 12, offset = 0,
+      shiny::tags$h1(
+        class = "text-success text-left",
+        shiny::icon(name = "angle-double-right", class = "fa-fw"),
+        "Pathway Activity"
+      ),
+      shiny::hr(),
+      shiny::tags$p(
+        class = "lead text-justify",
+        "Pathway Activity module presents the difference of genes expression between pathway activity groups (activation and inhibition) that defined by pathway scores. use RPPA data from TCPA are used to calculate score for <b>10 cancer related pathways</b> and <b>32 cancer types</b>, and a relationship is predicted between gene expression and pathway score (see details <code>help page</code> below). Here we show you the relationship between gene expression and pathway activity."
+      )
+    )
   ),
   ## Hlep message including in tcga_rppa_help.ui----
   source(file.path(config$ui, "tcga_rppa_help.R"))[1],
@@ -39,7 +36,7 @@ tabItem(
   ),
   
   # generate result panel ----
-  fluidRow(shiny::uiOutput(outputId = "ui_rppa_result")),
+  fluidRow(style = "width:85%;",shiny::uiOutput(outputId = "ui_rppa_result")),
   # output plot -------------------------------------------------------------
   # Tabset Panel
   # fluidRow(

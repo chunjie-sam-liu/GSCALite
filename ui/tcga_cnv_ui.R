@@ -9,22 +9,19 @@ tabItem(
   ## SNV message ----
   fluidRow(
     style = "width:85%;",
-    HTML("<div class='section'>
-                <div class='container'>
-                <div class='row'>
-                <div class='col-md-12'>
-                <h1 class='text-success text-left'>
-                <i class='fa fa-angle-double-right  fa-fw'></i>CNV
-                <font color='#777777'>
-                <span style='font-size: 23.3999996185303px; line-height: 23.3999996185303px;'>Copy Number variation</span>
-                </font>
-                </h1>
-                <hr>
-                <p class='lead text-justify'>On Copy Number Variation module, the statistics of hetero-zygous and homozygous CNV of each cancer type are dis-played as pie chat for gene set, and Pearson correlation is performed between gene expression and CNV of each gene in each cancer to help to analyze the gene expression signifi-cantly affected by CNV.</p>
-                </div>
-                </div>
-                </div>
-                </div>")
+    column(
+      width = 12, offset = 0,
+      shiny::tags$h1(
+        class = "text-success text-left",
+        shiny::icon(name = "angle-double-right", class = "fa-fw"),
+        "Copy Number variation"
+      ),
+      shiny::hr(),
+      shiny::tags$p(
+        class = "lead text-justify",
+        "On Copy Number Variation module, the statistics of hetero-zygous and homozygous CNV of each cancer type are dis-played as pie chat for gene set, and Pearson correlation is performed between gene expression and CNV of each gene in each cancer to help to analyze the gene expression signifi-cantly affected by CNV."
+      )
+    )
   ),
   ## Hlep message including in tcga_cnv_help.ui----
   source(file.path(config$ui, "tcga_cnv_help.R"))[1],
@@ -42,7 +39,7 @@ tabItem(
   ),
   
   # generate result panel ----
-  fluidRow(shiny::uiOutput(outputId = "ui_cnv_result")),
+  fluidRow(style = "width:85%;", shiny::uiOutput(outputId = "ui_cnv_result")),
   # output plot -------------------------------------------------------------
   # Tabset Panel
   # fluidRow(

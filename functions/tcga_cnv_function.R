@@ -1,7 +1,7 @@
 cnvOutput <- function() {
   # ns <- NS(id)
   column(
-    width = 10, offset = 1,
+    width = 12, offset = 0,
     shinydashboard::tabBox(id = "cnv_PLOT",title = "",width = 12,
                                                            tabPanel(title="CNV Pie distribution",imagePlotInput(id="cnv_pie",width="100%",height="100%")),
                                                            tabPanel(title= "Hete CNV profile",PlotInput(id="cnv_hete")),
@@ -20,7 +20,7 @@ fn_cnv_result <- function(.cnv){
     cnvOutput()
   } else{
     column(
-      width = 10, offset = 1,
+      width = 12, offset = 0,
       shiny::tags$div(style = "height=500px;", class = "jumbotron", shiny::tags$h2("This analysis is not selected"))
     )
   }

@@ -38,7 +38,7 @@ tabItem(
   ),
   
   # generate result panel ----
-  fluidRow(shiny::uiOutput(outputId = "ui_meth_result")),
+  fluidRow(style = "width:85%;",shiny::uiOutput(outputId = "ui_meth_result")),
 
   # output plot -------------------------------------------------------------
   # Tabset Panel

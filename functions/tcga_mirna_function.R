@@ -56,7 +56,7 @@ download_button_1 <- function(id){
 mirnaOutput <- function() {
   # ns <- NS(id)
   column(
-    width = 10, offset = 1,
+    width = 12, offset = 0,
     shinydashboard::tabBox(id = "mirna_PLOT",title = "",width = 12,
                            tabPanel(title="networkD3",
                                     download_button_1("mirna_net1"),
@@ -78,7 +78,7 @@ fn_mirna_result <- function(.mirna){
     mirnaOutput()
   } else{
     column(
-      width = 10, offset = 1,
+      width = 12, offset = 0,
       shiny::tags$div(style = "height=500px;", class = "jumbotron", shiny::tags$h2("This analysis is not selected"))
     )
   }
