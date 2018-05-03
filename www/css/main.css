@@ -418,7 +418,8 @@ dl.dl-horizontal dt{
 }
 
 dl.dl-horizontal dd a {
-  color: #0000EE;
+  color: #2964fd;
+  font-weight: bold;
 }
 
 p.text-justify a {
