@@ -19,7 +19,7 @@ tabItem(
       shiny::hr(),
       shiny::tags$p(
         class = "lead text-justify",
-        "miRNA Regulation will give you a miRNA regulation network, for you to visualize the potential regulation of miRNAs to your genes."
+        "miRNA Regulation module will give you a miRNA regulation network, for you to visualize the potential regulation of miRNAs to your genes."
       )
     )
   ),
