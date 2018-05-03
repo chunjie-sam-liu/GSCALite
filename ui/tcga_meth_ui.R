@@ -8,7 +8,7 @@ tabItem(
 
   ## meth message ----
   fluidRow(
-    style = "width:80%;",
+    style = "width:85%;",
     HTML("<div class='section'>
                       <div class='container'>
                       <div class='row'>
@@ -19,7 +19,7 @@ tabItem(
                       </font>
                       </h1>
                       <hr>
-                      <p class='lead text-left'>TCGA methylation data will be used to give you a visualization of genes' methylation changes and the effect to survival and expressionyou gene set for seleted cancer types. GSCALite offers different types of results (Differential Methylation, Methylation to Survival, Methylation correlate to gene expression, see details on <code>help page</code> below).</p>
+                      <p class='lead text-justify'>TCGA methylation data will be used to give you a visualization of genes' methylation changes and the effect to survival and expressionyou gene set for seleted cancer types. GSCALite offers different types of results (Differential Methylation, Methylation to Survival, Methylation correlate to gene expression, see details on <code>help page</code> below).</p>
                       </div>
                       </div>
                       </div>

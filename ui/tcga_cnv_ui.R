@@ -8,7 +8,7 @@ tabItem(
 
   ## SNV message ----
   fluidRow(
-    style = "width:80%;",
+    style = "width:85%;",
     HTML("<div class='section'>
                 <div class='container'>
                 <div class='row'>
@@ -20,7 +20,7 @@ tabItem(
                 </font>
                 </h1>
                 <hr>
-                <p class='lead text-left'>TCGA CNV data will be used to give you a visualization of you gene set for seleted cancer types.  GSCALite offers different types of graphic layout (CNV Pie distribution, Hete CNV, Homo CNV, CNV overall frequency distribution and correlation to expression, see details in <code>help page</code> below.).</p>
+                <p class='lead text-justify'>On Copy Number Variation module, the statistics of hetero-zygous and homozygous CNV of each cancer type are dis-played as pie chat for gene set, and Pearson correlation is performed between gene expression and CNV of each gene in each cancer to help to analyze the gene expression signifi-cantly affected by CNV.</p>
                 </div>
                 </div>
                 </div>

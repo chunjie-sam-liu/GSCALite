@@ -8,7 +8,7 @@ tabItem(
 
   ## SNV message --------------------------------------------
   fluidRow(
-    style = "width:80%;",
+    style = "width:85%;",
     HTML("<div class='section'>
                 <div class='container'>
                 <div class='row'>
@@ -20,7 +20,7 @@ tabItem(
                 </font>
                 </h1>
                 <hr>
-                <p class='lead text-left'>Single Nucleotide Variation(SNV) is a variation in a single nucleotide that occurs at a specific position in the genome. The TCGA data is used to give you a visualization about SNV of you gene set for seleted cancer types. GSCALite offers different types of graphic layout (heatmap percentage, summary, oncoplot and survival, see details in <code>help page</code> below).</p>
+                <p class='lead text-justify'>Single Nucleotide Variation(SNV) is a variation in a single nucleotide that occurs at a specific position in the genome. The TCGA data is used to give you a visualization about SNV of you gene set for seleted cancer types. GSCALite offers different types of graphic layout (heatmap percentage, summary, oncoplot and survival, see details in <code>help page</code> below).</p>
                 </div>
                 </div>
                 </div>

@@ -8,7 +8,7 @@ tabItem(
 
   ## SNV message ----
   fluidRow(
-    style = "width:80%;",
+    style = "width:85%;",
     HTML("<div class='section'>
                       <div class='container'>
                       <div class='row'>
@@ -20,7 +20,7 @@ tabItem(
                       </font>
                       </h1>
                       <hr>
-                      <p class='lead text-left'>A miRNA regulation network will be given here, you will find which miRNA regulate your genes and have a global understanding by network presentation. miRNA regulation data is collected from databases ( see details on <code>help page</code> below), a network will be drawed for you to visualize the potential regulation of miRNAs to your genes.</p>
+                      <p class='lead text-justify'>A miRNA regulation network will be given here, you will find which miRNA regulate your genes and have a global understanding by network presentation. miRNA regulation data is collected from databases ( see details on <code>help page</code> below), a network will be drawed for you to visualize the potential regulation of miRNAs to your genes.</p>
                       </div>
                       </div>
                       </div>
@@ -29,7 +29,7 @@ tabItem(
   ## Hlep message including in tcga_mirna_help.ui----
   source(file.path(config$ui, "tcga_mirna_help.R"))[1],
 
-  shiny::tags$hr(width = "85%"),
+  # shiny::tags$hr(width = "85%"),
   
   # Confirm and submit ----
   fluidRow(
