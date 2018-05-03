@@ -18,7 +18,7 @@ tabItem(
            shiny::hr(),
            shiny::tags$p(
              class = "lead text-justify",
-             "Single Nucleotide Variation(SNV) is a variation in a single nucleotide that occurs at a specific position in the genome. The TCGA data is used to give you a visualization about SNV of you gene set for seleted cancer types. GSCALite offers different types of graphic layout (heatmap percentage, summary, oncoplot and survival."
+             "Single Nucleotide Variation(SNV) module presents the SNV frequency and variant types of the gene set in selected cancer types. The effects of mutations to overall survivalOS are given by means of the log-rank test which facilitate to evaluate the relationship between gene set mutations and clinical outcomes."
            )
            )
   ),
