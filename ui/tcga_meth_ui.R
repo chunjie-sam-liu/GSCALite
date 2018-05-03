@@ -9,22 +9,19 @@ tabItem(
   ## meth message ----
   fluidRow(
     style = "width:85%;",
-    HTML("<div class='section'>
-                      <div class='container'>
-                      <div class='row'>
-                      <div class='col-md-12'>
-                      <h1 class='text-success text-left'>
-                      <i class='fa fa-angle-double-right  fa-fw'></i>Methylation
-                      <font color='#777777'>
-                      </font>
-                      </h1>
-                      <hr>
-                      <p class='lead text-justify'>TCGA methylation data will be used to give you a visualization of genes' methylation changes and the effect to survival and expressionyou gene set for seleted cancer types. GSCALite offers different types of results (Differential Methylation, Methylation to Survival, Methylation correlate to gene expression, see details on <code>help page</code> below).</p>
-                      </div>
-                      </div>
-                      </div>
-                      </div>")
-  ),
+    column(
+      width = 12, offset = 0,
+      shiny::tags$h1(
+        class = "text-success text-left",
+        shiny::icon(name = "angle-double-right", class = "fa-fw"),
+        "Methylation"
+      ),
+      shiny::hr(),
+      shiny::tags$p(
+        class = "lead text-justify",
+        "Methylation module explores the differential methylation between tumor and paired normal, the correlation between methylation with expression and the OS affected by methyla-tion level for selected cancer types."
+      )
+  )),
   ## Hlep message including in tcga_meth_help.ui----
   source(file.path(config$ui, "tcga_meth_help.R"))[1],
 
@@ -33,7 +30,7 @@ tabItem(
 
   # cancer type selection and result output---------------------------------------------------
   # cancer type selection----
-  fluidRow(column(width = 10, offset = 1, cancerTypeInput("meth"))),
+  fluidRow(style = "width:85%;",column(width = 10, offset = 1, cancerTypeInput("meth"))),
   
   # Confirm and submit ----
   fluidRow(
