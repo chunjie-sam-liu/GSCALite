@@ -8,7 +8,7 @@ fn_drug_welcome <- function(){
     width = 12, offset = 0,
     shiny::tags$h1(
       class = "text-success text-left",
-      shiny::icon(name = "angle-double-right", class = "fa-fw"),
+      shiny::icon(name = "angle-double-right", class = "fa-fw"), 
       "Drug Sensitivity Analysis"
     ),
     

@@ -3,9 +3,10 @@
 # help file for GTEx expression ui part
 
 fluidRow(
-  style = "width:85%",
+  style = "width:80%",
   column(
-    width = 12,
+    width = 12, offset = 0,
+    
     # collapsable panel
     shiny::tags$div(
       class = "panel panel-default",

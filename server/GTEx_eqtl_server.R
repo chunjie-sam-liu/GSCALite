@@ -5,10 +5,15 @@
 source(file.path(config$wd, "functions", "data_function.R"))
 source(file.path(config$wd, "functions", "gtex_eqtl_function.R"))
 
+output$ui_gtex_eqtl_welcome <- shiny::renderUI({fn_gtex_eqtl_welcome()})
+
+output$ui_gtex_eqtl_help <- shiny::renderUI({fn_gtex_eqtl_help()})
+
 # check box-------------------------
 
 # GTEx_eqtl_tissue <- callModule(GTEx_eqtl_Tissue, "gtex_eqtl")
 # output$eqtl_selected_tissues <- renderText(GTEx_eqtl_tissue())
+
 
 
 

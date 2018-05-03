@@ -482,8 +482,8 @@ tissueTypeInput <- function(id) {
 
   tagList(
     # value box for selected cancer types ----
-    fluidRow(shiny::uiOutput(outputId = ns("tissue_types_select"))),
-    shiny::tags$hr(width = "85%")
+    fluidRow(shiny::uiOutput(outputId = ns("tissue_types_select")))
+    # shiny::tags$hr(width = "85%")
   )
 }
 

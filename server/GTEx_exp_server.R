@@ -7,11 +7,17 @@ source(file.path(config$wd, "functions", "gtex_gexp_function.R"))
 
 
 
+
+
+# welcome information -----------------------------------------------------
+
+output$ui_gtex_exp_welcome <- shiny::renderUI({fn_gtex_exp_welcome()})
+
+output$ui_gtex_exp_help <- shiny::renderUI({fn_gtex_exp_help()})
+
 # generate eqtl result out ui -------------------------------------------------------
 
-output$ui_gexp_result <- shiny::renderUI({
-  fn_gexp_result(selected_analysis$gtex_exp)
-})
+output$ui_gexp_result <- shiny::renderUI({fn_gexp_result(selected_analysis$gtex_exp)})
 
 #  get tissue type --------------------------------------------------------
 # 
