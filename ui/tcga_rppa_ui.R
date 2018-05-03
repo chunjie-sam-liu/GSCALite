@@ -19,7 +19,7 @@ tabItem(
       shiny::hr(),
       shiny::tags$p(
         class = "lead text-justify",
-        "Pathway Activity module presents the difference of genes expression between pathway activity groups (activation and inhibition) that defined by pathway scores. use RPPA data from TCPA are used to calculate score for <b>10 cancer related pathways</b> and <b>32 cancer types</b>, and a relationship is predicted between gene expression and pathway score (see details <code>help page</code> below). Here we show you the relationship between gene expression and pathway activity."
+        "Pathway Activity module presents the difference of genes expression between pathway activity groups (activation and inhibition) that defined by pathway scores. "
       )
     )
   ),
