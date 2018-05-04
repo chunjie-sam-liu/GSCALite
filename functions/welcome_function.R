@@ -156,8 +156,8 @@ fn_guide_result <- function(){
 
 fn_feature_description <- function(){
   column(
-    width = 10,offset = 1 ,
-    style = "margin-top:30px;",
+    width = 12,offset = 0, style = "margin-top:30px;",
+    
     # Descriptions ----
     shinydashboard::box(
       title = "GSCALite Introduction.",
@@ -239,6 +239,22 @@ fn_feature_description <- function(){
         class = "text-left",
         icon("hand-o-right"),
         " GTEx: Gene expression in normal tissue and eQTL."
+      )
+    )
+  )
+}
+
+
+# Featured Figure
+fn_feature_figure <- function(){
+  column(
+    width = 12, offset = 0,
+    shinydashboard::box(
+      title = "Workflow", width = 12,
+      status = "primary", solidHeader = TRUE,
+      shiny::tags$img(
+        src = "./imgs/Figure-1_Schema_of_GSCALite.png",
+        class = "center-block img-responsive"
       )
     )
   )

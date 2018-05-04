@@ -119,6 +119,8 @@ observeEvent(status$trigger, {
 # welcome message ---------------------------------------------------------
 output$ui_welcom_msg <- renderUI({fn_welcom_msg()})
 
+output$ui_feature_figure <- renderUI(fn_feature_figure())
+
 # Search box and examples -------------------------------------------------
 
 output$ui_search_example <- renderUI({fn_search_example()})
