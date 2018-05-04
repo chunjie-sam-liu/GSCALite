@@ -4,7 +4,7 @@
 
 
 tabItem(
-  tabName = "tutorial", align = "center",
+  tabName = "help", align = "center",
 
   # help information ----
   fluidRow(
@@ -16,7 +16,7 @@ tabItem(
       shiny::tags$h1(
         class = "text-success text-left",
         shiny::icon(name = "angle-double-right", class = "fa-fw"),
-        "Tutorial"
+        "Tutorial and Documentation"
       ),
       
       shiny::hr(),

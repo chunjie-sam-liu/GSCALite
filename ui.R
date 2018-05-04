@@ -101,7 +101,7 @@ sidebar <- dashboardSidebar(
     # menuItem("Report", tabName = "downloads", icon = icon("floppy-o")),
     
     # Tutorial ----
-    menuItem("Tutorial", tabName = "tutorial", icon = icon("rocket")),
+    menuItem("Help", tabName = "help", icon = icon("rocket")),
     
     # Help ----
     # menuItem("Document", tabName = "document", icon = icon('file-text')),
