@@ -146,7 +146,7 @@ snv_analysis <- eventReactive(
               callModule(
                 snv_sur_pointPlot, "snv_survival", data = snv_sur_plot_ready, cancer = "cancer_types",
                 gene = "symbol", size = "logP", color = "worse", cancer_rank = snv_sur_cancer_rank,
-                gene_rank = snv_sur_gene_rank, sizename = "logRank P", colorname = "Mutation Worse", title = "Overall survival difference between mutation and non mutation genes.", status_monitor = "analysis", status, downloadname = "SNV_affect_survival"
+                gene_rank = snv_sur_gene_rank, sizename = "logRank P", colorname = "Mutation Worse", title = "OS between mut and non-mut genes.", status_monitor = "analysis", status, downloadname = "SNV_affect_survival"
               )
               .msg_snv_survival <- NULL
             } else {
