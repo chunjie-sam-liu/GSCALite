@@ -30,6 +30,8 @@ tabItem(
   # Feature and descriptions ----
   fluidRow(shiny::uiOutput(outputId = "ui_feature_description")),
   
+  fluidRow(shiny::uiOutput(outputId = "ui_feature_figure")),
+  
   # Load footer ----
   source(file.path(config$wd, "ui", "footer.R"), echo = FALSE, verbose = FALSE)$value
 ) # End of tabItem
