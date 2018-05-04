@@ -69,7 +69,7 @@ tabItem(
       shiny::tags$p("Summary of SNV analysis results. This picture here displays the Variant Type (SNP or DEL), Variant Classification, SNV Class, etc.",align="center"),
       shiny::tags$h3("1.2.3: SNV oncoplot"),
       shiny::tags$img(
-        src = "./imgs/2.snv/oncoplot.png",
+        src = "./imgs/2.snv/SNV_oncoplot.png",
         class = "center-block img-responsive" ),
       shiny::tags$p("Detailed SNV informations of the gene set in the selected TCGA cancer type.", align="center"),
       shiny::tags$h3("1.2.4: SNV survival plot"),
@@ -147,7 +147,7 @@ tabItem(
       shiny::tags$img(
         src = "./imgs/6.miRNA/visnetwork.png",
         class = "center-block img-responsive"),      
-      shiny::tags$p("The pictures above displays the miRNA-mRNA regulatory network in selected cancer type. ", align = "center"),
+      shiny::tags$p("The pictures above displays the miRNA-mRNA regulatory network of input genes.", align = "center"),
       shiny::tags$h2("1.8: Gene profiles in GTEx dataset"),
       shiny::tags$h3("1.8.1: The gene expression profiles in selected tissues."),
       shiny::tags$img(
