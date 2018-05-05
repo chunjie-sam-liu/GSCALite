@@ -434,3 +434,7 @@ div.panel hr {
   border-color: #fff -moz-use-text-color -moz-use-text-color;
   border-width:3px;
 }
+
+div.panel-body p a{
+  color: #008176;
+}

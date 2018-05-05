@@ -213,15 +213,15 @@ fn_document <- function(){
           class = "panel-body",
           column(
             width = 12, offset = 0,
-            shiny::tags$a("Methods for mRNA Expression.", id = "doc_expr"),
-            shiny::tags$a("Methods for Single Nucleotide Variation.", id = "doc_snv"),
-            shiny::tags$a("Methods in Copy Number Variation.", id = "doc_cnv"),
-            shiny::tags$a("Methods in Methylation.", id = "doc_meth"),
-            shiny::tags$a("Methods in Pathway Acitivity.", id = "doc_rppa"),
-            shiny::tags$a("Methods in miRNA Network", id = "doc_mirna"),
-            shiny::tags$a("Methods in Drug Sensitivity", id = "doc_drug"),
-            shiny::tags$a("Methods in GTEx Expression", id = "doc_gtex_expr"),
-            shiny::tags$a("Methods in GTEx eQTL", id = "doc_gtex_eqtl")
+            shiny::tags$p(shiny::tags$a("Methods for mRNA Expression.", id = "doc_expr")),
+            shiny::tags$p(shiny::tags$a("Methods for Single Nucleotide Variation.", id = "doc_snv")),
+            shiny::tags$p(shiny::tags$a("Methods for Copy Number Variation.", id = "doc_cnv")),
+            shiny::tags$p(shiny::tags$a("Methods for Methylation.", id = "doc_meth")),
+            shiny::tags$p(shiny::tags$a("Methods for Pathway Acitivity.", id = "doc_rppa")),
+            shiny::tags$p(shiny::tags$a("Methods for miRNA Network.", id = "doc_mirna")),
+            shiny::tags$p(shiny::tags$a("Methods for Drug Sensitivity.", id = "doc_drug")),
+            shiny::tags$p(shiny::tags$a("Methods for GTEx Expression.", id = "doc_gtex_expr")),
+            shiny::tags$p(shiny::tags$a("Methods for GTEx eQTL.", id = "doc_gtex_eqtl"))
           )
         )
       )
