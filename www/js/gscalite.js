@@ -42,7 +42,8 @@ shinyjs.openTab = function(params){
   $('a', $('.sidebar')).each(function(){
     if(this.getAttribute('data-value') == params.id){
       this.click();
-      setTimeout(function() {$('a.collapsed').click();}, 1000);
+      var help = 'div#help_' + params.id;
+      setTimeout(function() {$(help).collapse("show");}, 1000);
     }
   });
 }
