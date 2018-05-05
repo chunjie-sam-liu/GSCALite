@@ -1,5 +1,6 @@
 # saved as footer.r
 shiny::fluidRow(
+  style = "text-align:center",
   shiny::tags$hr(),
   shiny::tags$p(
     "Copyright ©",
