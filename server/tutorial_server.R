@@ -8,3 +8,4 @@ output$ui_document <- shiny::renderUI({fn_document()})
 
 
 shinyjs::onclick(id = "doc_expr", expr = shinyjs::js$openTab(id="tcga_expr"))
+shinyjs::onclick(id = "doc_snv", expr = shinyjs::js$openTab(id="tcga_snv"))
