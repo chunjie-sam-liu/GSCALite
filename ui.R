@@ -93,8 +93,8 @@ sidebar <- dashboardSidebar(
       tabName = "gtex",
       icon = icon("suitcase"),
       collapsible = TRUE,
-      menuSubItem("GTEx expression", tabName = "gtex_expr"),
-      menuSubItem("GTEx eQTL", tabName = "GTEx_eqtl")
+      menuSubItem("GTEx Expression", tabName = "gtex_expr"),
+      menuSubItem("GTEx eQTL", tabName = "gtex_eqtl")
     ),
 
     # Downloads ----
