@@ -191,6 +191,33 @@ fn_tutorial <- function(){
 
 fn_document <- function(){
   column(width = 12, offset = 0,
-    shiny::tags$div("hello")
+    shiny::tags$div(
+      class = "panel panel-primary", 
+      
+      # heading
+      shiny::tags$div(
+        class = "panel-heading",
+        shiny::tags$h1(
+          class = "panel-title text-left",
+          shiny::tags$a(
+            "data-toggle" = "collapse", "href" = "#help_document",
+            shiny::icon(name = "file-text"),
+            "Document"
+          )
+        )
+      ),
+      
+      # body
+      shiny::tags$div(
+        id = "help_document", class = "panel-collapse collapse",
+        shiny::tags$div(
+          class = "panel-body",
+          column(
+            width = 12, offset = 0,
+            "hell"
+          )
+        )
+      )
+    )
   )
 }
