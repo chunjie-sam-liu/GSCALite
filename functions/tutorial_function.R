@@ -1,5 +1,4 @@
-
-
+# source by "tutorial_server.R"
 
 # tutorial ----------------------------------------------------------------
 
@@ -214,7 +213,8 @@ fn_document <- function(){
           class = "panel-body",
           column(
             width = 12, offset = 0,
-            "hell"
+            shiny::tags$a("Methods in mRNA Expression module!", id = "doc_expr")
+            
           )
         )
       )
