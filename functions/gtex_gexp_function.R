@@ -29,7 +29,7 @@ fn_gtex_exp_help <- function(){
           class = "panel-title text-left",
           
           shiny::tags$a(
-            "data-toggle" = "collapse", "href" = "#sqGTEx_expression",
+            "data-toggle" = "collapse", "href" = "#help_gtex_expr",
             shiny::icon(name = "info-circle", class = "fa-fw"),
             "Click here for the detailed description of methods and results"
           )
@@ -38,7 +38,7 @@ fn_gtex_exp_help <- function(){
       
       # Body
       shiny::tags$div(
-        id = "sqGTEx_expression", class = "panel-collapse collapse",
+        id = "help_gtex_expr", class = "panel-collapse collapse",
         shiny::tags$div(
           class = "panel-body",
           column(

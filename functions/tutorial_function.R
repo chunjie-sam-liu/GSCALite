@@ -217,7 +217,7 @@ fn_document <- function(){
             shiny::tags$a("Methods for Single Nucleotide Variation.", id = "doc_snv"),
             shiny::tags$a("Methods in Copy Number Variation.", id = "doc_cnv"),
             shiny::tags$a("Methods in Methylation.", id = "doc_meth"),
-            shiny::tags$a("Methods in Pathway Acitivity.", id = "doc_path"),
+            shiny::tags$a("Methods in Pathway Acitivity.", id = "doc_rppa"),
             shiny::tags$a("Methods in miRNA Network", id = "doc_mirna"),
             shiny::tags$a("Methods in Drug Sensitivity", id = "doc_drug"),
             shiny::tags$a("Methods in GTEx Expression", id = "doc_gtex_expr"),

@@ -48,7 +48,7 @@ fn_gtex_eqtl_help <- function(){
           class = "panel-title text-left",
           
           shiny::tags$a(
-            "data-toggle" = "collapse", "href" = "#sqGTEx_eqtl",
+            "data-toggle" = "collapse", "href" = "#help_gtex_eqtl",
             shiny::icon(name = "info-circle", class = "fa-fw"),
             "Click here for the detailed description of methods and results"
           )
@@ -57,7 +57,7 @@ fn_gtex_eqtl_help <- function(){
       
       # Body
       shiny::tags$div(
-        id = "sqGTEx_eqtl", class = "panel-collapse collapse",
+        id = "help_gtex_eqtl", class = "panel-collapse collapse",
         shiny::tags$div(
           class = "panel-body",
           column(

@@ -15,7 +15,7 @@ fluidRow(
         shiny::tags$h3(
           class = "panel-title text-left",
           shiny::tags$a(
-            "data-toggle" = "collapse", "href" = "#sqTCGA_mirna",
+            "data-toggle" = "collapse", "href" = "#help_tcga_mirna",
             shiny::icon(name = "info-circle"),
             "Click here for the detailed description of methods and results"
           )
@@ -23,7 +23,7 @@ fluidRow(
       ),
       
       shiny::tags$div(
-        id = "sqTCGA_mirna", class = "panel-collapse collapse",
+        id = "help_tcga_mirna", class = "panel-collapse collapse",
         shiny::tags$div(
           class = "panel-body",
           # here comes the content
