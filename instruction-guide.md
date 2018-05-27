@@ -1,3 +1,6 @@
+# Instruction
+Project instruction for the GSCALite through shiny to build web app.
+
 
 ## Scripts
 
