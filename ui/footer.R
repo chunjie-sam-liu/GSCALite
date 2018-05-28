@@ -18,5 +18,19 @@ shiny::fluidRow(
     " Houston, USA"
   ),
   shiny::tags$p("Any comments and suggestions, please contact us."),
-  shiny::HTML(text='<div style="display:inline-block;width:200px;"><script type="text/javascript" src="//rf.revolvermaps.com/0/0/7.js?i=5yt30uug30e&amp;m=1&amp;c=ff0000&amp;cr1=ffffff&amp;sx=0" async="async"></script></div>')
+  shiny::tags$div(
+    class = "row",
+    shiny::tags$div(
+      class = "col-md-offset-3 col-md-3",
+      shiny::HTML(text = '<div style="display:inline-block;width:200px;">
+              <script type="text/javascript" src="//rf.revolvermaps.com/0/0/7.js?i=5yt30uug30e&amp;m=1&amp;c=ff0000&amp;cr1=ffffff&amp;sx=0" async="async"></script>
+                  </div>')
+    ),
+    shiny::tags$div(
+      class = "col-md-3",
+      shiny::HTML(text = '
+                  <script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
+                  <div style="display:inline-block;width:200px;margin-top:20px;" class="altmetric-embed" data-badge-type="donut" data-altmetric-id="42431062"></div>')
+    )
+  )
 )
