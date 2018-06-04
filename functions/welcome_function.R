@@ -252,6 +252,7 @@ fn_citation <- function(){
     width = 12, offset = 0,
     shinydashboard::box(
       width = 12, status = "primary", solidHeader = FALSE, class = "text-left",
+      shiny::tags$span("Citation:", style = "color:#ff0000"),
       shiny::a(
         href = "https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty411/5001392",
         "GSCALite: A Web Server for Gene Set Cancer Analysis.",
