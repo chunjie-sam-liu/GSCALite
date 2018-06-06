@@ -258,7 +258,7 @@ fn_citation <- function(){
         "GSCALite: A Web Server for Gene Set Cancer Analysis.",
         style = "color:#008176"
       ),
-      "Chun-Jie Liu,  Fei-Fei Hu,  Mengxuan Xia,  Leng Han,  Qiong Zhang,  An-Yuan Guo. Bioinformatics. (2018)."
+      "Liu CJ, Hu FF, Xia M, Han L, Zhang Q, Guo AY. Bioinformatics. (2018)."
     )
   )
 }
