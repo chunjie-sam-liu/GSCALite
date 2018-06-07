@@ -25,8 +25,8 @@ tabItem(
         shiny::fluidRow(
           shiny::column(width = 1, offset = 0, shiny::div(shiny::strong("Email: "))),
           shiny::column(width = 3, offset = 0, shiny::plotOutput(outputId = "ay", height = "20px", width = "200px"))
-          )
-        ),
+        )
+      ),
       
       shiny::tags$address(
         shiny::tags$p(shiny::tags$strong("Chun-Jie Liu, Ph.D. Candidate")),
@@ -49,13 +49,24 @@ tabItem(
           shiny::column(width = 3, offset = 0, shiny::plotOutput(outputId = "zq", height = "20px", width = "250px"))
         )
       )
-      # shiny::tags$img(
-      #   src = "./imgs/about.png",
-      #   class = "center-block img-responsive",
-      #   style = "height: 600px;"
-      # ),
-      # shiny::tags$h1("Main authors contribute to this work.")
     )
+    # column(
+    #   width = 12, offset = 0, align = "left",
+    #   shiny::tags$h2(
+    #     class = "text-success text-left",
+    #     shiny::icon(name = "angle-double-right", class = "fa-fw"),
+    #     "Citation"
+    #   ),
+    #   shiny::hr(),
+    #   shiny::p(
+    #     shiny::a(
+    #       href = "https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty411/5001392",
+    #       "GSCALite: A Web Server for Gene Set Cancer Analysis.",
+    #       style = "color:#008176"
+    #     ),
+    #     "Chun-Jie Liu,  Fei-Fei Hu,  Mengxuan Xia,  Leng Han,  Qiong Zhang,  An-Yuan Guo. Bioinformatics. (2018)."
+    #   )
+    # )
   ),
   # Load footer ----
   source(file.path(config$wd, "ui", "footer.R"), echo = FALSE, verbose = FALSE)$value

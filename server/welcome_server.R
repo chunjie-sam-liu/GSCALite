@@ -119,6 +119,8 @@ observeEvent(status$trigger, {
 # welcome message ---------------------------------------------------------
 output$ui_welcom_msg <- renderUI({fn_welcom_msg()})
 
+output$ui_citation <- renderUI({fn_citation()})
+
 output$ui_feature_figure <- renderUI(fn_feature_figure())
 
 # Search box and examples -------------------------------------------------
@@ -170,13 +172,13 @@ observeEvent(
       output$ui_progressbar <- renderUI({
         NULL
       })
-
+      
       shinyBS::createAlert(
         session = session, anchorId = "ui_hint_alert", alertId = "guide-alert", title = NULL, style = "primary",
         content = HTML("<h3 style='color:red;'> Please check the results on top-left menus of TCGA Cancer/Drug Response/GTEx Normal Tissue.</h3>"), append = FALSE
       )
       
-
+      
       shinyjs::enable(id = "input_gene_set")
       shinyjs::enable(id = "analysis")
       
