@@ -63,7 +63,7 @@ fn_expr_help <- function(){
                 
                 shiny::tags$dt("Tumor vs. Normal:"),
                 shiny::tags$dd(
-                  "In the mRNA differential expression analysis, we use TCGA mRNA normalized RKPM.",
+                  "In the mRNA differential expression analysis, we use TCGA mRNA normalized RPKM.",
                   "The number of sample in each cancer types ranges from 48 to 1,098, but only 14 cancer types have over ten paired tumor and normal samples.",
                   "Here, GSCALite provides mRNA differential expression with paired tumor and normal samples.",
                   "The fold change is mean(Tumor) / mean(Normal), p-value was used t-test and p-value was adjusted by FDR.",
