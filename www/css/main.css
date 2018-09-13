@@ -59,7 +59,7 @@ font-size: 18px !important;
 font-weight: 200 !important;
 line-height: 1.5 !important;
 }
-h1,h3 {
+h1,h2,h3 {
   font-family: Times, TimesNR, 'New Century Schoolbook', Georgia, 'New York', serif;
 }
 
@@ -366,6 +366,7 @@ a.bg-danger:hover {
 
 .jumbotron h2 {
   font-family: Times, TimesNR, 'New Century Schoolbook', Georgia, 'New York', serif;
+  text-align:center;
 }
 
 .bs-callout {
@@ -425,3 +426,23 @@ dl.dl-horizontal dd a {
 p.text-justify a {
   color: #008176;
 }
+
+div#ui_tutorial hr {
+  border-color: #fff -moz-use-text-color -moz-use-text-color;
+  border-width:3px;
+}
+
+div#ui_tutorial p{
+  text-align: justify;
+}
+div#ui_tutorial h1, h2, h3 {
+  text-align:left;
+}
+
+div#ui_document p a{
+  color: #008176;
+}
+div#ui_document p {
+  text-align: left;
+}
+

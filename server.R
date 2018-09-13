@@ -63,6 +63,9 @@ server <- function(input, output, session) {
   
   source(file = file.path(config$server, "contact_server.R"), local = TRUE)
   
+  # Help server
+  source(file = file.path(config$server, "tutorial_server.R"), local = TRUE)
+  
 
 # Loading screen ----------------------------------------------------------
   loading_screen()

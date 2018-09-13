@@ -3,7 +3,7 @@
 # ui elements 'gtex_expr' sub tab of 'gtex' tab
 
 tabItem(
-  tabName = "GTEx_eqtl", align = "center",
+  tabName = "gtex_eqtl", align = "center",
 
   ## GTEx eqtl message ----
   fluidRow(style = "width:80%;", shiny::uiOutput(outputId = "ui_gtex_eqtl_welcome")),

@@ -93,15 +93,15 @@ sidebar <- dashboardSidebar(
       tabName = "gtex",
       icon = icon("suitcase"),
       collapsible = TRUE,
-      menuSubItem("GTEx expression", tabName = "gtex_expr"),
-      menuSubItem("GTEx eQTL", tabName = "GTEx_eqtl")
+      menuSubItem("GTEx Expression", tabName = "gtex_expr"),
+      menuSubItem("GTEx eQTL", tabName = "gtex_eqtl")
     ),
 
     # Downloads ----
     # menuItem("Report", tabName = "downloads", icon = icon("floppy-o")),
     
     # Tutorial ----
-    menuItem("Tutorial", tabName = "tutorial", icon = icon("rocket")),
+    menuItem("Help", tabName = "help", icon = icon("rocket")),
     
     # Help ----
     # menuItem("Document", tabName = "document", icon = icon('file-text')),

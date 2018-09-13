@@ -30,7 +30,7 @@ fn_expr_help <- function(){
         shiny::tags$h3(
           class = "panel-title text-left",
           shiny::tags$a(
-            "data-toggle" = "collapse", "href" = "#help_expr",
+            "data-toggle" = "collapse", "href" = "#help_tcga_expr",
             shiny::icon(name = "info-circle"),
             "Click here for the detailed description of methods and results"
             )
@@ -39,7 +39,7 @@ fn_expr_help <- function(){
       
       # panel body
       shiny::tags$div(
-        id = "help_expr", class = "panel-collapse collapse",
+        id = "help_tcga_expr", class = "panel-collapse collapse",
         shiny::tags$div(
           class = "panel-body",
           column(
@@ -63,7 +63,7 @@ fn_expr_help <- function(){
                 
                 shiny::tags$dt("Tumor vs. Normal:"),
                 shiny::tags$dd(
-                  "In the mRNA differential expression analysis, we use TCGA mRNA normalized RKPM.",
+                  "In the mRNA differential expression analysis, we use TCGA mRNA normalized RPKM.",
                   "The number of sample in each cancer types ranges from 48 to 1,098, but only 14 cancer types have over ten paired tumor and normal samples.",
                   "Here, GSCALite provides mRNA differential expression with paired tumor and normal samples.",
                   "The fold change is mean(Tumor) / mean(Normal), p-value was used t-test and p-value was adjusted by FDR.",

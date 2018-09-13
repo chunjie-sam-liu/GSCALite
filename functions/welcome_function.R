@@ -19,34 +19,34 @@ fn_welcom_msg <- function(){
 
 fn_search_example <- function(){
   tagList(
-
-           column(
-             width = 9, offset = 1,
-             shinyWidgets::searchInput(
-               inputId = "input_gene_set",
-               label = "",
-               placeholder = 'Please input HGNC symbol gene set separated by space or " , "or " ; "',
-               btnSearch = icon("search"),
-               btnReset = icon("remove"),
-               width = "100%"
-             )
-           ),
-           column(
-             width = 1,
-             shiny::tags$div(
-               class = "form-group shiny-input-container",
-               shiny::tags$label("for" = "margin"),
-               shiny::tags$div(
-                 class = "input-group search-text",
-                 shiny::tags$span(
-                   class = "input-group-btn",
-                   shinyBS::bsButton(inputId = "example", label = "Show me example", icon = icon(name = "fire"))
-                 )
-               )
-             )
-           )
-           )
     
+    column(
+      width = 9, offset = 1,
+      shinyWidgets::searchInput(
+        inputId = "input_gene_set",
+        label = "",
+        placeholder = 'Please input HGNC symbol gene set separated by space or " , "or " ; "',
+        btnSearch = icon("search"),
+        btnReset = icon("remove"),
+        width = "100%"
+      )
+    ),
+    column(
+      width = 1,
+      shiny::tags$div(
+        class = "form-group shiny-input-container",
+        shiny::tags$label("for" = "margin"),
+        shiny::tags$div(
+          class = "input-group search-text",
+          shiny::tags$span(
+            class = "input-group-btn",
+            shinyBS::bsButton(inputId = "example", label = "Show me example", icon = icon(name = "fire"))
+          )
+        )
+      )
+    )
+  )
+  
 }
 
 
@@ -107,7 +107,7 @@ fn_multi_cancer_input <- function(.ctps){
                     "GTEx Expression" = "gtex_exp",
                     "GTEx eQTL" = "eqtl"), selected = c("expr", "meth", "drug")
       ),
-       shinyjs::hide(switchInput(
+      shinyjs::hide(switchInput(
         inputId = "ana_switch", label = "Analysis", value = FALSE,
         onLabel = "All", offLabel = "None", size = "large", offStatus = "danger"
       ))
@@ -156,8 +156,8 @@ fn_guide_result <- function(){
 
 fn_feature_description <- function(){
   column(
-    width = 10,offset = 1 ,
-    style = "margin-top:30px;",
+    width = 12,offset = 0, style = "margin-top:30px;",
+    
     # Descriptions ----
     shinydashboard::box(
       title = "GSCALite Introduction.",
@@ -239,6 +239,40 @@ fn_feature_description <- function(){
         class = "text-left",
         icon("hand-o-right"),
         " GTEx: Gene expression in normal tissue and eQTL."
+      )
+    )
+  )
+}
+
+
+# citation ----------------------------------------------------------------
+
+fn_citation <- function(){
+  column(
+    width = 12, offset = 0,
+    shinydashboard::box(
+      width = 12, status = "primary", solidHeader = FALSE, class = "text-left",
+      shiny::tags$span("Citation:", style = "color:#ff0000"),
+      shiny::a(
+        href = "https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty411/5001392",
+        "GSCALite: A Web Server for Gene Set Cancer Analysis.",
+        style = "color:#008176"
+      ),
+      "Liu CJ, Hu FF, Xia M, Han L, Zhang Q, Guo AY. Bioinformatics. (2018)."
+    )
+  )
+}
+
+# Featured Figure
+fn_feature_figure <- function(){
+  column(
+    width = 12, offset = 0,
+    shinydashboard::box(
+      title = "Workflow", width = 12,
+      status = "primary", solidHeader = TRUE,
+      shiny::tags$img(
+        src = "./imgs/Figure-1_Schema_of_GSCALite.png",
+        class = "center-block img-responsive"
       )
     )
   )

@@ -23,6 +23,7 @@ shinyjs.checkall = function() {
   $('input[type="checkbox"]').prop("checked", true);
 };
 
+
 shinyjs.uncheckall = function() {
   $("button.btn.checkbtn.btn-default").removeClass("active");
   $('input[type="checkbox"]').prop("checked", false);
@@ -34,3 +35,15 @@ shinyjs.switch = function(params){
   var selector = $("#" + params.id);
   selector.change();
 };
+
+shinyjs.openTab = function(params){
+  var defaultParams = {id: null};
+  params = shinyjs.getParams(params, defaultParams);
+  $('a', $('.sidebar')).each(function(){
+    if(this.getAttribute('data-value') == params.id){
+      this.click();
+      var help = 'div#help_' + params.id;
+      setTimeout(function() {$(help).collapse("show");}, 1000);
+    }
+  });
+}

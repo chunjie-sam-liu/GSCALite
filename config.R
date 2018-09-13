@@ -30,7 +30,7 @@ config$wd <- "/project/huff/huff/github/GSCALite"
 
 # Database ----------------------------------------------------------------
 # This contains the TCGA, GTEx and Drug data
-config$database <- "/data/GSCALite"
+config$database <- "/data/shiny-data/GSCALite"
 
 # Path bins ---------------------------------------------------------------
 config$bins <- "bins"

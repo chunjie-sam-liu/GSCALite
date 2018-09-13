@@ -29,7 +29,7 @@ fn_gtex_exp_help <- function(){
           class = "panel-title text-left",
           
           shiny::tags$a(
-            "data-toggle" = "collapse", "href" = "#sqGTEx_expression",
+            "data-toggle" = "collapse", "href" = "#help_gtex_expr",
             shiny::icon(name = "info-circle", class = "fa-fw"),
             "Click here for the detailed description of methods and results"
           )
@@ -38,7 +38,7 @@ fn_gtex_exp_help <- function(){
       
       # Body
       shiny::tags$div(
-        id = "sqGTEx_expression", class = "panel-collapse collapse",
+        id = "help_gtex_expr", class = "panel-collapse collapse",
         shiny::tags$div(
           class = "panel-body",
           column(
@@ -86,7 +86,7 @@ fn_gtex_exp_help <- function(){
 gexpOutput <- function() {
   # ns <- NS(id)
   column(
-    width = 10, offset = 1,
+    width = 12, offset = 0,
     fluidRow(shinydashboard::tabBox(
       id = "GTEx_PLOT", title = "", width = 12,
       tabPanel(title = "GTEx expression", PlotInput(id = "GTEx_exp")) #,tabPanel(title = "GSVA score", PlotInput(id="GTEx_gsva"))
@@ -99,7 +99,7 @@ fn_gexp_result <- function(.gexp){
     gexpOutput()
   } else{
     column(
-      width = 10, offset = 1,
+      width = 12, offset = 0,
       shiny::tags$div(style = "height=500px;", class = "jumbotron", shiny::tags$h2("This analysis is not selected"))
     )
   }
