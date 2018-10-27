@@ -28,7 +28,7 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, to
 
 
   gene_set$match <- total_gene_symbol[.v_dedup[.inter]]
-  gene_set$non_match <- .v_dedup[!.inter]
+  gene_set$non_match <- .v[!.inter]    #.v_dedup[!.inter]
   gene_set$n_match <- length(total_gene_symbol[.v_dedup[.inter]])
   gene_set$n_non_match <- length(.v_dedup[!.inter])
   gene_set$n_total <- length(total_gene_symbol[.v_dedup[.inter]]) + length(.v_dedup[!.inter])
