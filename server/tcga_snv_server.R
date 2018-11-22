@@ -88,7 +88,7 @@ snv_analysis <- eventReactive(
                 gene_list_cancer_snv %>%
                   tidyr::drop_na() %>%
                   dplyr::mutate(x_label = paste(cancer_types, " (n=", n, ")", sep = "")) %>%
-                  dplyr::mutate(sm_count = ifelse(sm_count > 0, sm_count, NA)) %>%
+                  # dplyr::mutate(sm_count = ifelse(sm_count > 0, sm_count, NA)) %>%
                   dplyr::mutate(per = ifelse(per > 0.02, per, 0)) -> snv_per_plot_ready
                 snv_per_plot_ready %>%
                   dplyr::group_by(x_label) %>%
