@@ -20,7 +20,7 @@ load_data_snv <- function() {
   if (is.null(mc3_pass)) {
     # load snv data  ----------------------------------------------------------
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} start Load snv data@ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
-    snv <<- readr::read_rds(file.path(config$database, "TCGA", "snv", ".rds_snv_all_gene_snv_count.rds.gz"))
+    snv <<- readr::read_rds(file.path(config$database, "TCGA", "snv", ".rds_snv_all_gene_snv_count-new.rds.gz"))
     mc3_pass <<- readr::read_rds(file.path(config$database, "TCGA", "snv", "01-snv_mutation_mc3_public.pass.filtered_maf.rds.gz"))
     maf_gene_all <<- mc3_pass %>% maftools::getGeneSummary() %>% .$Hugo_Symbol
     maf_cancer_all <<- mc3_pass %>% maftools::getClinicalData() %>% .$Cancer_Types %>% unique()
