@@ -21,24 +21,39 @@ check_gene_set <- function(.s, status = status, error = error) {
 # Validate gene with TCGA gene symbol -------------------------------------
 validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, total_gene_symbol = total_gene_symbol, status = status, error = error, gene_set = gene_set) {
   .log_file <- user_logs$gene_set
-
-
-  .v_dedup <- .v[.v != ""] %>% unique() %>% sapply(FUN = tolower, USE.NAMES = FALSE)
-  .v_dedup %in% names(total_gene_symbol) -> .inter
-
-
-  gene_set$match <- total_gene_symbol[.v_dedup[.inter]]
-  gene_set$non_match <- .v[!.inter]    #.v_dedup[!.inter]
-  gene_set$n_match <- length(total_gene_symbol[.v_dedup[.inter]])
-  gene_set$n_non_match <- length(.v_dedup[!.inter])
-  gene_set$n_total <- length(total_gene_symbol[.v_dedup[.inter]]) + length(.v_dedup[!.inter])
-
+  
+  
+  .v_dedup <- tibble::tibble(input = .v[.v != ""]) %>% unique() %>% 
+    dplyr::mutate(Up = toupper(input))
+  total_gene_symbol %>%
+    dplyr::filter(TCGA_sym %in% .v_dedup$Up) %>%
+    .$TCGA_sym -> .v_tcga
+  total_gene_symbol %>%
+    dplyr::filter(NCBI_sym %in% .v_dedup$Up)  %>%
+    .$NCBI_sym -> .v_ncbi
+  total_gene_symbol %>%
+    dplyr::filter(alias %in% .v_dedup$Up) -> .v_alias
+  
+  gene_set$match <- c(.v_tcga,.v_alias$TCGA_sym) %>% unique()
+  gene_set$match.gtex <- c(.v_ncbi,.v_alias$NCBI_sym) %>% unique()
+  
+  .non_match <- tibble::tibble(Up = c(.v_tcga,.v_ncbi,.v_alias$alias)) %>%
+    unique() %>%
+    dplyr::mutate(match = "TRUE") %>%
+    dplyr::right_join(.v_dedup,by = "Up") %>%
+    dplyr::filter(is.na(match)) %>%
+    .$input
+  gene_set$non_match <- .non_match
+  gene_set$n_match <- length(unique(c(.v_tcga,.v_ncbi,.v_alias$alias)))
+  gene_set$n_non_match <- length(.non_match)
+  gene_set$n_total <- length(unique(c(.v_tcga,.v_ncbi,.v_alias$alias))) + length(.non_match)
+  
   if (length(gene_set$match) < 5) {
     error$gene_set <- "Please input at least five valid gene symbol."
     status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
     status$gene_set <- FALSE
   }
-
+  
   .log <- c(
     glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Input total gene set number is {length(gene_set$n_total)} {paste0(rep('-', 10), collapse = '')}"),
     glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Unique gene set number is {length(.v_dedup)} {paste0(rep('-', 10), collapse = '')}"),
@@ -48,6 +63,36 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, to
   )
   write(x = .log, file = .log_file, append = TRUE)
 }
+# older version of match gene set
+# validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, total_gene_symbol = total_gene_symbol, status = status, error = error, gene_set = gene_set) {
+#   .log_file <- user_logs$gene_set
+# 
+# 
+#   .v_dedup <- .v[.v != ""] %>% unique() %>% sapply(FUN = tolower, USE.NAMES = FALSE)
+#   .v_dedup %in% names(total_gene_symbol) -> .inter
+# 
+# 
+#   gene_set$match <- total_gene_symbol[.v_dedup[.inter]]
+#   gene_set$non_match <- .v[!.inter]    #.v_dedup[!.inter]
+#   gene_set$n_match <- length(total_gene_symbol[.v_dedup[.inter]])
+#   gene_set$n_non_match <- length(.v_dedup[!.inter])
+#   gene_set$n_total <- length(total_gene_symbol[.v_dedup[.inter]]) + length(.v_dedup[!.inter])
+# 
+#   if (length(gene_set$match) < 5) {
+#     error$gene_set <- "Please input at least five valid gene symbol."
+#     status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
+#     status$gene_set <- FALSE
+#   }
+# 
+#   .log <- c(
+#     glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Input total gene set number is {length(gene_set$n_total)} {paste0(rep('-', 10), collapse = '')}"),
+#     glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Unique gene set number is {length(.v_dedup)} {paste0(rep('-', 10), collapse = '')}"),
+#     glue::glue("#Total input gene set: {paste0(.v, collapse = ', ')}"),
+#     glue::glue("#Validated genes: {paste0(gene_set$match, collapse = ', ')}"),
+#     glue::glue("#Invalidated genes: {paste0(gene_set$non_match, collapse = ', ')}")
+#   )
+#   write(x = .log, file = .log_file, append = TRUE)
+# }
 
 
 # cnv bar data prepare ----------------------------------------------------
