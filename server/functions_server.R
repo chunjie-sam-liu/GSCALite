@@ -34,19 +34,25 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, to
   total_gene_symbol %>%
     dplyr::filter(alias %in% .v_dedup$Up) -> .v_alias
   
-  gene_set$match <- c(.v_tcga,.v_alias$TCGA_sym) %>% unique()
-  gene_set$match.gtex <- c(.v_ncbi,.v_alias$NCBI_sym) %>% unique()
+  total_gene_symbol %>%
+    dplyr::filter(alias %in% setdiff(.v_dedup$Up,.v_ncbi)) -> .v_alias.ncbi
   
-  .non_match <- tibble::tibble(Up = c(.v_tcga,.v_ncbi,.v_alias$alias)) %>%
+  total_gene_symbol %>%
+    dplyr::filter(alias %in% setdiff(.v_dedup$Up,.v_tcga)) -> .v_alias.tcga
+  
+  gene_set$match <- c(.v_tcga,.v_alias.tcga$TCGA_sym) %>% unique()
+  gene_set$match.gtex <- c(.v_ncbi,.v_alias.ncbi$NCBI_sym) %>% unique()
+  
+  .non_match <- tibble::tibble(Up = c(.v_tcga,.v_ncbi,.v_alias.tcga$alias, .v_alias.ncbi$alias)) %>%
     unique() %>%
     dplyr::mutate(match = "TRUE") %>%
     dplyr::right_join(.v_dedup,by = "Up") %>%
     dplyr::filter(is.na(match)) %>%
     .$input
   gene_set$non_match <- .non_match
-  gene_set$n_match <- length(unique(c(.v_tcga,.v_ncbi,.v_alias$alias)))
+  gene_set$n_match <- length(unique(c(.v_tcga,.v_ncbi,.v_alias.tcga$alias, .v_alias.ncbi$alias)))
   gene_set$n_non_match <- length(.non_match)
-  gene_set$n_total <- length(unique(c(.v_tcga,.v_ncbi,.v_alias$alias))) + length(.non_match)
+  gene_set$n_total <- length(unique(c(.v_tcga,.v_ncbi,.v_alias.tcga$alias, .v_alias.ncbi$alias))) + length(.non_match)
   
   if (length(gene_set$match) < 5) {
     error$gene_set <- "Please input at least five valid gene symbol."
