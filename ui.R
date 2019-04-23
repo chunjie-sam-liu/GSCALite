@@ -180,7 +180,7 @@ page <- dashboardPage(
 
 # Shiny UI ----------------------------------------------------------------
 ui <- tagList(
-  div(style = "padding:450px", id = "loading-content",h2("Loading...")),
+  div(id = "loading-content",h2("Loading...")),
   shinyjs::hidden(div(id = "app-content", page))
 )
 
