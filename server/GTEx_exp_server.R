@@ -130,7 +130,7 @@ heatmap_gsva_4_geneset <- eventReactive(
         print("start: draw heatmap for the gene set in GTEx dataset")
         gtex_gene_list_expr.mean <- get_gene_mean_profile(gene_set = gene_set$match.gtex, gtex_expr_mean = gtex_expr_mean, tissue_set = input$select_ctps, filter_gene = 1)
         if(nrow(gtex_gene_list_expr.mean)>0){
-          gene_n <- length(gene_set$match.gtex)
+          gene_n <- nrow(gtex_gene_list_expr.mean$Mean[[1]])
           display_matrix <- data.frame(round(matrix(unlist(lapply(gtex_gene_list_expr.mean$Mean,function(.x){.x[2]})), nrow = gene_n), 2))
           colnames(display_matrix) <- gtex_gene_list_expr.mean$SMTS
           display_matrix$GeneName <- gtex_gene_list_expr.mean$Mean[[1]]$symbol
