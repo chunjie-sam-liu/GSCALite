@@ -22,6 +22,8 @@ check_gene_set <- function(.s, status = status, error = error) {
 validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, total_gene_symbol = total_gene_symbol, status = status, error = error, gene_set = gene_set) {
   .log_file <- user_logs$gene_set
   
+  total_gene_symbol %>%
+    dplyr::mutate(alias = toupper(alias)) -> total_gene_symbol
   
   .v_dedup <- tibble::tibble(input = .v[.v != ""]) %>% unique() %>% 
     dplyr::mutate(Up = toupper(input))
@@ -38,7 +40,10 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, to
     dplyr::filter(alias %in% setdiff(.v_dedup$Up,.v_ncbi)) -> .v_alias.ncbi
   
   total_gene_symbol %>%
-    dplyr::filter(alias %in% setdiff(.v_dedup$Up,.v_tcga)) -> .v_alias.tcga
+    dplyr::filter(alias %in% setdiff(.v_dedup$Up,.v_tcga)) -> .v_alias.tcga.1
+  total_gene_symbol %>%
+    dplyr::filter(NCBI_sym %in% setdiff(.v_dedup$Up,.v_tcga)) -> .v_alias.tcga.2
+  rbind(.v_alias.tcga.1,.v_alias.tcga.2) %>% unique() -> .v_alias.tcga
   
   gene_set$match <- c(.v_tcga,.v_alias.tcga$TCGA_sym) %>% unique()
   gene_set$match.gtex <- c(.v_ncbi,.v_alias.ncbi$NCBI_sym) %>% unique()
