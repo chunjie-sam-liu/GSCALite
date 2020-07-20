@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/GuoBioinfoLab/GSCALite.svg?branch=dev)](https://travis-ci.org/GuoBioinfoLab/GSCALite)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](https://github.com/GuoBioinfoLab/GSCALite)
-[![Paper link](https://img.shields.io/badge/Published%20in-Bioinformatics-126888.svg)](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty411/5001392)
+[![Paper link](https://img.shields.io/badge/Published%20in-Bioinformatics-12688.svg)](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty411/5001392)
 
 > Although longitudinal genomic data are currently not available, the large number of patients enabled the use of the concept of statistical ensemble, that is averaging large numbers of patients per stage represents a snap shot of the underlying process.
 
