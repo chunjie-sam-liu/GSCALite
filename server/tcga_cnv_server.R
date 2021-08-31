@@ -284,7 +284,7 @@ cnv_analysis <- eventReactive(
                 dplyr::summarise(rank = sum(spm)) %>%
                 dplyr::arrange(rank) -> cancer_rank.cnvcor
 
-              callModule(methy_diff_pointPlot, "cnv_exp", data = gene_list_cancer_cnv_cor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.cnvcor, gene_rank = gene_rank.cnvcor, sizename = "-Log10(FDR)", colorname = "Pearson Correlation", title = "Pearson Correlation between CNV and mRNA RPKM.", status_monitor = "analysis", status, downloadname = "cnv_correlate_to_expr")
+              callModule(methy_diff_pointPlot, "cnv_exp", data = gene_list_cancer_cnv_cor, cancer = "cancer_types", gene = "symbol", size = "logfdr", color = "spm", cancer_rank = cancer_rank.cnvcor, gene_rank = gene_rank.cnvcor, sizename = "-Log10(FDR)", colorname = "Pearson Correlation", title = "Pearson Correlation between CNV and mRNA RSEM.", status_monitor = "analysis", status, downloadname = "cnv_correlate_to_expr")
               .msg_cnv_exp <- NULL
             } else {
               .msg_cnv_exp <- paste(glue::glue("No significant [CNV to Expression] result of gene: {paste0(gene_set$match, collapse = ',')} in your selected cancer types: {paste0(cancer_in_tcga_data_cnv,collapse=', ')}. Please try more cancers or more genes."), sep = " ")

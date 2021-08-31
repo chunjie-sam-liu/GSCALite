@@ -558,7 +558,8 @@ selectAndAnalysisInput <- function(id) {
       column(
         width = 8, offset = 2,
         shinyBS::bsAlert(anchorId = ns("no_gene_set")),
-        shinyBS::bsAlert(anchorId = ns("no_paired_sample"))
+        shinyBS::bsAlert(anchorId = ns("no_paired_sample")),
+        shinyBS::bsAlert(anchorId = ns("note"))
       )
     )
   )
@@ -742,8 +743,8 @@ heatmap_GTEX_Plot <- function(input, output, session, data, status, downloadname
   # plot function
   plotinput <- function(){
     ggplot(data, aes(Tissue, GeneName)) +
-      geom_tile(aes(fill = RPKM)) +
-      geom_text(aes(label = RPKM)) +
+      geom_tile(aes(fill = TPM)) +
+      geom_text(aes(label = TPM)) +
       scale_fill_gradient(low = "white", high = "red") +
       labs(title = "Expression value of query genes in GTEx dataset") +
       theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, hjust = 1)) -> p
@@ -975,6 +976,8 @@ cnvbarPlot <- function(input, output, session, data, x, y, fill, status_monitor,
 # snv percentage plot -----------------------------------------------------
 
 snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, label, cancer_rank, gene_rank, status_monitor, status, downloadname) {
+  #per_max <- data$per %>% max()
+  
   plotInput <- reactive({
     data %>%
       ggplot(aes_string(x = cancer, y = gene, fill = fill)) +
@@ -984,9 +987,9 @@ snv_per_heatmap <- function(input, output, session, data, cancer, gene, fill, la
       scale_y_discrete(limits = gene_rank$symbol) +
       scale_fill_gradient2(
         name = "Mutation Frequency (%)",
-        limit = c(0, 0.8),
-        breaks = c(seq(0, 0.2, 0.05), seq(0.25, 0.65, 0.1)),
-        label = c("0", "5", "10", "15", "20", "25", "35", "45", "55", "65"),
+        limit = c(0, 1),
+        breaks = c(seq(0, 0.2, 0.05), seq(0.3, 1, 0.1)),
+        label = c("0", "5", "10", "15", "20", "30", "40", "50", "60", "70", "80", "90", "100"),
         high = "red",
         na.value = "white"
       ) +
@@ -1046,9 +1049,11 @@ snv_sur_pointPlot <- function(input, output, session, data, cancer, gene, size, 
         limits = c(-log10(0.05), 15),
         labels = c("0.05", latex2exp::TeX("$10^{-5}$"), latex2exp::TeX("$10^{-10}$"), latex2exp::TeX("$< 10^{-15}$"))
       ) +
-      ggthemes::scale_color_gdocs(
+      #ggthemes::scale_color_gdocs(
+      scale_color_manual(
         name = colorname,
-        labels = c("High", "Low")
+        labels = c("High", "Low"),
+        values = c("#e31a1c", "#1f78b4")
       ) +
       theme(
         axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size = 10),
@@ -1108,8 +1113,8 @@ imagePlotInput <- function(id, width="100%", height=300) {
 
 snv_maf_summaryPlot <- function(input, output, session, gene_list_maf, outfile, status_monitor, status, downloadname) {
   plotInput <- reactive({
-    maftools::plotmafSummary(gene_list_maf, fs = 3, statFontSize = 2) -> p
-    p$plot
+    maftools::plotmafSummary(gene_list_maf, fs = 3) 
+    #p
   })
   output$plot <- renderImage({
     status[[status_monitor]]

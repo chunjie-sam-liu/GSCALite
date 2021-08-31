@@ -7,6 +7,7 @@ check_gene_set <- function(.s, status = status, error = error) {
     stringr::str_split(pattern = "[^[:alnum:]]+", simplify = TRUE) %>%
     .[1, ] %>%
     stringr::str_trim(side = "both") -> .ss
+  #print(.ss)
 
   if (!dplyr::between(length(.ss), 5, 100)) {
     error$gene_set <- "The number of genes should be between 5 and 100."
@@ -19,26 +20,85 @@ check_gene_set <- function(.s, status = status, error = error) {
 
 
 # Validate gene with TCGA gene symbol -------------------------------------
+# can get the old version from github
 validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, total_gene_symbol = total_gene_symbol, status = status, error = error, gene_set = gene_set) {
   .log_file <- user_logs$gene_set
-
-
-  .v_dedup <- .v[.v != ""] %>% unique() %>% sapply(FUN = tolower, USE.NAMES = FALSE)
-  .v_dedup %in% names(total_gene_symbol) -> .inter
-
-
-  gene_set$match <- total_gene_symbol[.v_dedup[.inter]]
-  gene_set$non_match <- .v_dedup[!.inter]
-  gene_set$n_match <- length(total_gene_symbol[.v_dedup[.inter]])
-  gene_set$n_non_match <- length(.v_dedup[!.inter])
-  gene_set$n_total <- length(total_gene_symbol[.v_dedup[.inter]]) + length(.v_dedup[!.inter])
-
+  total_gene_symbol %>%
+    dplyr::mutate(alias = toupper(alias)) %>%
+    dplyr::mutate(NCBI_sym = toupper(NCBI_sym))-> total_gene_symbol
+  
+  .v_dedup <- tibble::tibble(input = .v[.v != ""]) %>% unique() %>% 
+    dplyr::mutate(Up = toupper(input)) 
+  .v_dedup %>% dplyr::rename("TCGA_sym" = "Up") %>%
+    dplyr::inner_join(total_gene_symbol, by ="TCGA_sym") %>%
+    # dplyr::filter(TCGA_sym %in% .v_dedup$Up) %>%
+    # .$TCGA_sym  %>% 
+    unique() -> .v_tcga
+  
+  .v_dedup %>% dplyr::rename("GTEX_sym" = "Up") %>%
+    dplyr::inner_join(total_gene_symbol, by ="GTEX_sym") %>%
+    #dplyr::filter(GTEX_sym %in% .v_dedup$Up)  %>%
+    #.$NCBI_sym %>% 
+    unique() -> .v_gtex
+  
+  # gene id not match in gtex data
+  setdiff(.v_dedup$input,unique(.v_gtex$input)) -> gtex.diff
+  
+  .v_dedup %>% dplyr::rename("alias" = "Up") %>%
+    dplyr::filter(input %in% gtex.diff) %>%
+    dplyr::inner_join(total_gene_symbol, by ="alias") %>%
+    unique() -> .v_alias.gtex.1
+  
+  .v_dedup %>% dplyr::rename("NCBI_sym" = "Up") %>%
+    dplyr::filter(input %in% gtex.diff) %>%
+    dplyr::inner_join(total_gene_symbol, by ="NCBI_sym") %>%
+    unique() -> .v_alias.gtex.2
+  
+  rbind(.v_alias.gtex.1,.v_alias.gtex.2) %>% unique() -> .v_alias.ncbi
+    
+  # gene id not match in TCGA data
+  setdiff(.v_dedup$input,unique(.v_tcga$input)) -> tcga.diff
+  
+  .v_dedup %>% dplyr::rename("alias" = "Up") %>%
+    dplyr::filter(input %in% tcga.diff) %>%
+    dplyr::inner_join(total_gene_symbol, by ="alias") %>%
+    unique() -> .v_alias.tcga.1
+  
+  .v_dedup %>% dplyr::rename("NCBI_sym" = "Up") %>%
+    dplyr::filter(input %in% tcga.diff) %>%
+    dplyr::inner_join(total_gene_symbol, by ="NCBI_sym") %>%
+    unique() -> .v_alias.tcga.2
+  rbind(.v_alias.tcga.1,.v_alias.tcga.2) %>% unique() -> .v_alias.tcga
+  
+  .v_tcga %>%
+    rbind(.v_gtex) %>%
+    rbind(.v_alias.tcga) %>%
+    rbind(.v_alias.ncbi) %>%
+    unique() -> match_all
+  gene_set$match <- match_all %>% dplyr::filter(!is.na(TCGA_sym)) %>% .$TCGA_sym %>% unique()
+  gene_set$match.gtex <- match_all %>% dplyr::filter(!is.na(GTEX_sym)) %>% .$GTEX_sym %>% unique()
+  
+  .non_match <- match_all %>%
+    dplyr::select(input) %>%
+    unique() %>%
+    tidyr::drop_na() %>%
+    dplyr::mutate(match = "TRUE") %>%
+    dplyr::right_join(.v_dedup,by = "input") %>%
+    dplyr::filter(is.na(match)) %>%
+    .$input
+  gene_set$non_match <- .non_match
+  gene_set$n_match <- length(match_all %>%
+                               dplyr::select(input) %>%
+                               unique() %>% .$input)
+  gene_set$n_non_match <- length(.non_match)
+  gene_set$n_total <- gene_set$n_match + gene_set$n_non_match
+  
   if (length(gene_set$match) < 5) {
     error$gene_set <- "Please input at least five valid gene symbol."
     status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
     status$gene_set <- FALSE
   }
-
+  
   .log <- c(
     glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Input total gene set number is {length(gene_set$n_total)} {paste0(rep('-', 10), collapse = '')}"),
     glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Unique gene set number is {length(.v_dedup)} {paste0(rep('-', 10), collapse = '')}"),

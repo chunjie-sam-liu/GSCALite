@@ -262,7 +262,7 @@ survival_bubble_plot <- function(.survival_clean) {
       legend.title = element_text(size = 14),
       legend.key = element_rect(fill = "white", colour = "black")
     ) +
-    scale_color_manual(name = "Survival Worse", values = c("#e31a1c", "#1f78b4")) 
+    scale_color_manual(name = "Effect of high exp. on survival risk", values = c("#e31a1c", "#1f78b4")) 
 }
 
 subtype_bubble_plot <- function(.subtype_clean){

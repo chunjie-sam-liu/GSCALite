@@ -51,7 +51,7 @@ fluidRow(
 
               shiny::tags$dt("Pathways"),
               shiny::tags$dd(
-                "The pathway we included in are: TSC/mTOR, RTK, RAS/MAPK, PI3K/AKT, Hormone ER, Hormone AR, EMT, DNA Damage Response, Cell Cycle, Apoptosis pathways. They are all famous cancer related pathway."
+                "The pathway we included in are: TSC/mTOR, RTK, RAS/MAPK, PI3K/AKT, Hormone ER, Hormone AR, EMT, DNA Damage Response, Cell Cycle, Apoptosis pathways. They are all famous cancer related pathways."
               ),
 
               shiny::tags$dt("Pathway score"),
@@ -83,12 +83,12 @@ fluidRow(
               shiny::tags$dt("Global percentage"),
 
               shiny::tags$dd(
-                "Global percentage of genes in all cancers(32), shows percentage(number of activate or inhibit cancer types/32) of gene's function (activation or inhibition) for each pathway in all cancers."
+                "Global percentage of cancers in which a gene have effect on the pathway among 32 cancers types, shows percentage(number of activate or inhibit cancer types/32 *100%)."
               ),
 
               shiny::tags$dt("Hetmap percentage"),
               shiny::tags$dd(
-                "Heatmap show you genes that have function (inhibit or activate) in at least 5 cancer types. Pathway_a represent activation of this pathway, inhibition in a similar way showed as pathway_i."
+                "Heatmap show you genes that have function (inhibit or activate) in at least 5 cancer types. Pathway_a (red) represent percentage of cancers in which pathway may activated by given genes, inhibition in a similar way showed as pathway_i (blue)."
               ),
 
               shiny::tags$dt("Relation network"),

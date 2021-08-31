@@ -178,7 +178,7 @@ gdsc_plot <- function(gdsc_gene_list_sig_drug,t_gdsc) {
     gdsc_plot_ready %>%
       dplyr::distinct(drug_name, target_pathway, count) %>%
       dplyr::group_by(target_pathway) %>%
-      dplyr::mutate(per = n() / count) %>%
+      dplyr::mutate(per = dplyr::n() / count) %>%
       dplyr::arrange(per) %>%
       dplyr::ungroup() %>%
       dplyr::select(drug_name, target_pathway, per) -> gdsc_drug_per
@@ -186,7 +186,7 @@ gdsc_plot <- function(gdsc_gene_list_sig_drug,t_gdsc) {
     gdsc_plot_ready %>%
       dplyr::left_join(gdsc_drug_per, by = c("drug_name", "target_pathway")) %>%
       dplyr::group_by(drug_name) %>%
-      dplyr::mutate(drug_count = n()) %>%
+      dplyr::mutate(drug_count = dplyr::n()) %>%
       dplyr::ungroup() %>%
       dplyr::arrange(per, target_pathway, drug_count) %>%
       dplyr::select(drug_name, target_pathway, drug_count, per) %>%

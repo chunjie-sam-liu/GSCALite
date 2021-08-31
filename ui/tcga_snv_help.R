@@ -40,12 +40,12 @@ fluidRow(
                 shiny::tags$dd(
                   "We collected 8663 SNV data from",
                   shiny::tags$a("href" = "https://gdc.cancer.gov/", "NCI Genomic Data Commons,"),
-                  "including 33 cancer types."
+                  "including 33 cancer types. The TCGA SNV data include variant type values: Missense_Mutation, Silent, 5'Flank, 3'UTR, RNA, In_Frame_Del, Nonsense_Mutation, Splice_Site, Intron, 5'UTR, In_Frame_Ins, Frame_Shift_Del, Nonstop_Mutation, 3'Flank, Frame_Shift_Ins, Translation_Start_Site. GSCALite filters out Silent, Intron, IGR, 3'UTR, 5'UTR, 3'Flank and 5'Flank for SNV percentage calculation."
                 ),
 
                 shiny::tags$dt("SNV percentage"),
                 shiny::tags$dd(
-                  "SNV percentage was calculate by: Num Of Mutated Sample/Num of Cancer Sample."
+                  "SNV percentage of each gene's coding region was calculate by: Num Of Mutated Sample/Num of Cancer Sample. The SNV summary, oncoplot and survival were all based on this data."
                 ),
 
                 shiny::tags$dt(shiny::tags$p("SNV "),
@@ -76,7 +76,7 @@ fluidRow(
                 class = "dl-horizontal",
                 shiny::tags$dt("SNV percentage"),
                 shiny::tags$dd(
-                  "Give you SNV frequency of genes in each cancers. The deeper of color, the higher of mutate frequency. Numbers in each cells represent number of samples have corresponding mutated gene in corresponding cancers."
+                  "Give you SNV frequency of genes in each cancers. The deeper of color, the higher of mutate frequency. Numbers in each cells represent number of samples have corresponding mutated gene in corresponding cancers. The 0 in the cell indicates there is no mutation in the gene coding region, and blank in the cell indicates there is no mutation in all regions of a gene."
                 ),
 
                 shiny::tags$dt("SNV summary"),

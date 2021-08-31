@@ -43,7 +43,7 @@ shinyjs.openTab = function(params){
     if(this.getAttribute('data-value') == params.id){
       this.click();
       var help = 'div#help_' + params.id;
-      setTimeout(function() {$(help).collapse("show");}, 1000);
+      setTimeout(function() {$(help).collapse("show");}, 500);
     }
   });
 }

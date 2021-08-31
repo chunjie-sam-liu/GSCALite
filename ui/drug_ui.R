@@ -7,6 +7,8 @@ tabItem(
   
   fluidRow(style = "width:80%", shiny::uiOutput(outputId = "ui_drug_help")),
   
+  fluidRow(selectAndAnalysisInput("drug")),
+  
   fluidRow(style = "width:80%", shiny::tags$hr(style = "width:80%")),
   
   fluidRow(style = "width:80%", shiny::uiOutput(outputId = "ui_drug_result")),

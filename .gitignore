@@ -11,3 +11,4 @@
 .gitignore
 
 data_processing
+userdata/

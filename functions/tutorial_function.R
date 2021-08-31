@@ -8,8 +8,8 @@ fn_tutorial <- function(){
     shiny::tags$h1(shiny::icon(name = "hand-o-right"), "Tutorial"),
     
     shiny::tags$h2("1. Video"),
-    shiny::tags$p("Folow the video, users can have a overall understanding about what you can get from GSCALite and how to use it."),
-    shiny::tags$video(src = "./videos/guide_video.mp4", controls = "controls", width = "100%", height = "100%"),
+    shiny::tags$p("Follow the video, users can have a overall understanding about what you can get from GSCALite and how to use it."),
+    #shiny::tags$video(src = "./videos/video.mp4", controls = "controls", width = "100%", height = "100%"),
     
     shiny::tags$h2("2. Step by step"),
     shiny::tags$img(
@@ -117,17 +117,17 @@ fn_tutorial <- function(){
       class = "center-block img-responsive" ),
     shiny::tags$p("This picture here displays the global activity of genes in selected cancer types. The pie of gene in corresponse pathways means the activity/inhibition/non-significant effect contribute to the pathways in specific cancer. The blank means the gene is not in the pathways."),
     
-    shiny::tags$h3("5.2. The detail percentage of genes with activity/inhibition/non-significant profiles in given cancers."),
+    shiny::tags$h3("5.2. The percentage of cancers in which a gene has an effect (activation or inhibition) on the pathway."),
     shiny::tags$img(
       src = "./imgs/5.protein/heatmap_percent.png",
       class = "center-block img-responsive"),
-    shiny::tags$p("Red/blue color indicates genes were actived/inhibited in given pathways across TCGA samples of given cancers(percentage, negative number means inhibited)."), 
+    shiny::tags$p("Red/blue color indicates genes may actived/inhibited given pathways across 32 cancers(percentage, negative number means inhibited)."), 
     
     shiny::tags$h3("5.3. The gene profiles in cancer related pathways across cancer types."),
     shiny::tags$img(
       src = "./imgs/5.protein/network_cancer.png",
       class = "center-block img-responsive"),
-    shiny::tags$p("The link between left and middle column indicates the genes is expressed in the cancer type. And the link between middle and right column shows the gene is activated/inhibited in given cancer type."),
+    shiny::tags$p("The link between left and middle column indicates genes  expressed in a given cancer type. And the link between middle and right column shows the gene may activated/inhibited a given pathway."),
     
     shiny::tags$h2("6. miRNA-mRNA regulation network"),
     shiny::tags$img(

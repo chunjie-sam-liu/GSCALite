@@ -88,7 +88,7 @@ snv_analysis <- eventReactive(
                 gene_list_cancer_snv %>%
                   tidyr::drop_na() %>%
                   dplyr::mutate(x_label = paste(cancer_types, " (n=", n, ")", sep = "")) %>%
-                  dplyr::mutate(sm_count = ifelse(sm_count > 0, sm_count, NA)) %>%
+                  #dplyr::mutate(sm_count = ifelse(sm_count > 0, sm_count, NA)) %>%
                   dplyr::mutate(per = ifelse(per > 0.02, per, 0)) -> snv_per_plot_ready
                 snv_per_plot_ready %>%
                   dplyr::group_by(x_label) %>%
@@ -146,7 +146,7 @@ snv_analysis <- eventReactive(
               callModule(
                 snv_sur_pointPlot, "snv_survival", data = snv_sur_plot_ready, cancer = "cancer_types",
                 gene = "symbol", size = "logP", color = "worse", cancer_rank = snv_sur_cancer_rank,
-                gene_rank = snv_sur_gene_rank, sizename = "logRank P", colorname = "Mutation Worse", title = "OS between mut and non-mut genes.", status_monitor = "analysis", status, downloadname = "SNV_affect_survival"
+                gene_rank = snv_sur_gene_rank, sizename = "logRank P", colorname = "Effect of mutation on survival risk", title = "OS between mut and non-mut genes.", status_monitor = "analysis", status, downloadname = "SNV_affect_survival"
               )
               .msg_snv_survival <- NULL
             } else {

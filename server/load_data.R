@@ -20,7 +20,7 @@ load_data_snv <- function() {
   if (is.null(mc3_pass)) {
     # load snv data  ----------------------------------------------------------
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} start Load snv data@ {Sys.time()}{paste0(rep('-', 10), collapse = '')}"))
-    snv <<- readr::read_rds(file.path(config$database, "TCGA", "snv", ".rds_snv_all_gene_snv_count.rds.gz"))
+    snv <<- readr::read_rds(file.path(config$database, "TCGA", "snv", "gene_list_snv_count.new.new200215.rds.gz"))
     mc3_pass <<- readr::read_rds(file.path(config$database, "TCGA", "snv", "01-snv_mutation_mc3_public.pass.filtered_maf.rds.gz"))
     maf_gene_all <<- mc3_pass %>% maftools::getGeneSummary() %>% .$Hugo_Symbol
     maf_cancer_all <<- mc3_pass %>% maftools::getClinicalData() %>% .$Cancer_Types %>% unique()
@@ -90,7 +90,7 @@ load_data_drug <- function() {
       dplyr::select(drug_name, target_pathway) %>%
       dplyr::distinct() %>%
       dplyr::group_by(target_pathway) %>%
-      dplyr::mutate(count = n()) %>%
+      dplyr::mutate(count = dplyr::n()) %>%
       dplyr::ungroup()
     
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start Load CTRP @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))

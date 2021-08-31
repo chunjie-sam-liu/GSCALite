@@ -16,7 +16,7 @@ config$version <- "1.0.0"
 
 
 # config$wd <- "/project/huff/huff/github/GSCALite"
-config$wd <- "/home/liucj/github/GSCALite"
+config$wd <- "/home/liucj/web/GSCALite"
  # config$wd <- "/home/zhangq/github/GSCALite"
 
 
@@ -30,7 +30,7 @@ config$wd <- "/home/liucj/github/GSCALite"
 
 # Database ----------------------------------------------------------------
 # This contains the TCGA, GTEx and Drug data
-config$database <- "/data/GSCALite"
+config$database <- "/home/liucj/shiny-data/GSCALite"
 
 # Path bins ---------------------------------------------------------------
 config$bins <- "bins"

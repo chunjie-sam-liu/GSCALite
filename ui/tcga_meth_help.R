@@ -96,7 +96,7 @@ fluidRow(
                 shiny::tags$dt(shiny::tags$p("Differential"),
                                shiny::tags$p("Methylation")),
                 shiny::tags$dd(
-                  "Differential Methylation bubble plot show you genes' methylation change between tumor and normal samples in each cancers. Blue points represent a methylation upregulation in tumors, red points represent a methylation downregulation in tumors, the deeper of color, the higher the difference. And size of the point represents statistic significance, the bigger of size, the more significantly."
+                  "Differential Methylation bubble plot show you genes' methylation change between tumor and normal samples in each cancers. Blue points represent a methylation downregulation in tumors, red points represent a methylation upregulation in tumors, the deeper of color, the higher the difference. And size of the point represents statistic significance, the bigger of size, the more significantly."
                 ),
                 
                 shiny::tags$dt(shiny::tags$p("Methylation"),

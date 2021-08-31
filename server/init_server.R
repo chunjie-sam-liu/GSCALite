@@ -203,6 +203,7 @@ selected_ctyps <- reactiveVal()
 # Gene sets ---------------------------------------------------------------
 gene_set <- reactiveValues(
   match = "",
+  match.gtex = "",
   non_match = "",
   n_match = "",
   n_non_match = "",
@@ -213,7 +214,8 @@ gene_set <- reactiveValues(
 
 print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start loading symbol @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
 
-total_gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
+# total_gene_symbol <- readr::read_rds(file.path(config$database, "01_gene_symbol.rds.gz"))
+total_gene_symbol <- readr::read_rds(file.path(config$database, "id_correspond_between_NCBI_TCGA.rds.gz"))
 paired_cancer_types <- readr::read_rds(file.path(config$database, "TCGA", "expr", "paired_cancer_types.rds.gz"))
 pancan_color <- readr::read_tsv(file.path(config$database,"02_pcc.tsv"))
 

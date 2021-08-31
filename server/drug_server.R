@@ -50,6 +50,7 @@ drug_output <- function(input, output, session, ctrp_gene_list_sig_drug, gdsc_ge
     }
   )
   .msg_ctrp <- NULL
+  
   } else {
     .msg_ctrp <- paste(glue::glue("Your selected genes: {paste0(gene_set$match, collapse = ', ')} have on correlation with CTRP drug sensitivity."), sep = " ")
   }
@@ -85,6 +86,11 @@ drug_analysis <- eventReactive(
         dplyr::mutate(cor_drug = purrr::map(.x = drug, .f = fn_filter_drug_ctrp)) %>%
         tidyr::unnest(cor_drug) -> ctrp_gene_list_sig_drug
       
+      .msg_alert <- c("NOTE: Drug module performs correlation analysis for all cancer cell lines. Selecting cancer types at the home page will make no difference for the results.")
+      shinyBS::createAlert(
+        session = session, anchorId = "drug-note", title = "Information", style = "info",
+        content = .msg_alert, append = FALSE
+      )
       callModule(module = drug_output, id = "drug",  ctrp_gene_list_sig_drug, gdsc_gene_list_sig_drug, t_gdsc)
       
     }

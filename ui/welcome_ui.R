@@ -30,6 +30,10 @@ tabItem(
   # Feature and descriptions ----
   fluidRow(shiny::uiOutput(outputId = "ui_feature_description")),
   
+  # citation
+  fluidRow(shiny::uiOutput(outputId = "ui_citation")),
+  
+  # feature figure
   fluidRow(shiny::uiOutput(outputId = "ui_feature_figure")),
   
   # Load footer ----

@@ -12,7 +12,11 @@ fn_welcom_msg <- function(){
       class = "center-block img-responsive",
       style = "height: 150px;"
     ),
-    shiny::tags$h1("GSCALite offers you a web-based platform for Gene Set Cancer Analysis.")
+    shiny::tags$h1("GSCALite offers you a web-based platform for Gene Set Cancer Analysis."),
+    shiny::tags$h1(shiny::tags$p(icon("angellist"),
+                                 "Explore the update version of GSCALite in",style = "color:red",
+                                 shiny::tags$a("GSCA", href = "http://bioinfo.life.hust.edu.cn/GSCA/#/", 
+                                               target = "_blank", style = "color:#008176"),"."))
   )
 }
 # search and examples -----------------------------------------------------
@@ -244,6 +248,24 @@ fn_feature_description <- function(){
   )
 }
 
+
+# citation ----------------------------------------------------------------
+
+fn_citation <- function(){
+  column(
+    width = 12, offset = 0,
+    shinydashboard::box(
+      width = 12, status = "primary", solidHeader = FALSE, class = "text-left",
+      shiny::tags$span("Citation:", style = "color:#ff0000"),
+        shiny::a(
+          href = "https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty411/5001392",
+          "GSCALite: A Web Server for Gene Set Cancer Analysis.",
+          style = "color:#008176"
+        ),
+        "Liu CJ, Hu FF, Xia M, Han L, Zhang Q, Guo AY. Bioinformatics. (2018)."
+    )
+  )
+}
 
 # Featured Figure
 fn_feature_figure <- function(){

@@ -7,6 +7,6 @@ email <- function(.txt) {
 }
 
 output$ay <- shiny::renderPlot({email('guoay@hust.edu.cn')})
-output$cj <- shiny::renderPlot({email('samliu@hust.edu.cn')})
-output$ff <- shiny::renderPlot(email('hufeifei@hust.edu.cn'))
+output$cj <- shiny::renderPlot({email('chunjie-sam-liu@foxmail.com')})
+output$ff <- shiny::renderPlot(email('hufeifei@wust.edu.cn'))
 output$zq <- shiny::renderPlot(email('zhangqiong@hust.edu.cn'))

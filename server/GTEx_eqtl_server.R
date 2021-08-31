@@ -43,7 +43,7 @@ output$ui_eqtl_result <- shiny::renderUI({
 #     if (status$analysis == TRUE) {
 #       status$gtex_eqtl_submit <- TRUE
 #       shinyjs::disable(id = "GTEx_tissue_submit")
-#       as.character(gene_set$match)
+#       as.character(gene_set$match.gtex)
 #     }
 #   }
 # )
@@ -68,7 +68,7 @@ filter_eqtl_4_geneset <- eventReactive(
 
         ##### start: select egenes ######
         print("start: select egenes in GTEx tissues")
-        GTEx_egene %>% dplyr::filter(GTEx_egene$gene_name %in% gene_set$match & GTEx_egene$tissue %in% tissue_set) -> selected_eqtl_result
+        GTEx_egene %>% dplyr::filter(GTEx_egene$gene_name %in% gene_set$match.gtex & GTEx_egene$tissue %in% tissue_set) -> selected_eqtl_result
         print(selected_eqtl_result)
         if (nrow(selected_eqtl_result) > 0) {
           .msg <- glue::glue("Complete")
@@ -79,7 +79,7 @@ filter_eqtl_4_geneset <- eventReactive(
         } else {
           .msg <- glue::glue("No eqtl in gene set for your selected tissue.")
           shinyBS::createAlert(
-            session = session, anchorId = "expr-no_gene_set", title = "Oops", style = "danger",
+            session = session, anchorId = "gtex_eqtl-no_gene_set", title = "Oops", style = "danger",
             content = .msg, append = FALSE
           )
         }

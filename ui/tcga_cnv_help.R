@@ -42,7 +42,7 @@ fluidRow(
                 class="dl-horizontal",
                 shiny::tags$dt("Overall description:"),
                 shiny::tags$dd(
-                  "In this CNV module, we calculate the percentage of CNV, CNV correlation with mRNA of gene in each cancer type. The CNV was devided into 2 subtypes, heterozygous CNV and homozygous CNV, which represent the occurrence of CNV on only one chromosome or both two. Percentage statistic based on subtypes of CNV used GISTIC processed CNV data, and calculation of correlation used raw CNV data and mRNA RPKM data."
+                  "In this CNV module, we calculate the percentage of CNV, CNV correlation with mRNA of gene in each cancer type. The CNV was devided into 2 subtypes, heterozygous CNV and homozygous CNV, which represent the occurrence of CNV on only one chromosome or both two. Percentage statistic based on subtypes of CNV used GISTIC processed CNV data, and calculation of correlation used raw CNV data and mRNA RSEM data."
                 ),
                 shiny::tags$dt("Data:"),
                 shiny::tags$dd(
