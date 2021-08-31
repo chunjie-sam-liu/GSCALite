@@ -67,7 +67,7 @@ snv_analysis <- eventReactive(
             .msg <- c("NOTICE: ")
 
             print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start snv part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-            
+
             # cancer overlap
             .cancer_in_tcga_data_snv <- intersect(selected_ctyps(),tcga_data)
             print(.cancer_in_tcga_data_snv)
@@ -98,7 +98,7 @@ snv_analysis <- eventReactive(
                   dplyr::group_by(symbol) %>%
                   dplyr::summarise(s = sum(sm_count)) %>%
                   dplyr::arrange(s) -> snv_per_gene_rank
-                
+
                 callModule(
                   snv_per_heatmap, "snv_percentage", data = snv_per_plot_ready,
                   cancer = "x_label", gene = "symbol", fill = "per", label = "sm_count",
@@ -170,13 +170,13 @@ snv_analysis <- eventReactive(
               query <- as.expression(paste0("Cancer_Types %in% c('", snv_InpSel, "')"))
               # my_subsetMaf(mc3_pass, genes = gene_set$match, mafObj = T,query = query) -> gene_list_maf #
               gene_set_in_maf <- intersect(maf_gene_all,gene_set$match) %>% length()
-              cancer_in_maf <- intersect(maf_cancer_all,selected_ctyps()) 
+              cancer_in_maf <- intersect(maf_cancer_all,selected_ctyps())
               cancer_noin_maf <- setdiff(.cancer_in_tcga_data_snv,maf_cancer_all)
-              
+
               if(length(cancer_noin_maf)>0){
                 cancer_no_data.msg <- glue::glue(" {paste0(cancer_noin_maf, collapse=',')} don't have data in this analysis.")
               } else {cancer_no_data.msg <- NULL}
-              
+
               if(gene_set_in_maf>=2 && length(cancer_in_maf)>0){
                 maftools::subsetMaf(mc3_pass, genes = gene_set$match, mafObj = T, query = query) -> gene_list_maf
                 # 1. snv summary

@@ -172,13 +172,13 @@ observeEvent(
       output$ui_progressbar <- renderUI({
         NULL
       })
-
+      
       shinyBS::createAlert(
         session = session, anchorId = "ui_hint_alert", alertId = "guide-alert", title = NULL, style = "primary",
         content = HTML("<h3 style='color:red;'> Please check the results on top-left menus of TCGA Cancer/Drug Response/GTEx Normal Tissue.</h3>"), append = FALSE
       )
       
-
+      
       shinyjs::enable(id = "input_gene_set")
       shinyjs::enable(id = "analysis")
       

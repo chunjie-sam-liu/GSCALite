@@ -15,7 +15,7 @@ fn_welcom_msg <- function(){
     shiny::tags$h1("GSCALite offers you a web-based platform for Gene Set Cancer Analysis."),
     shiny::tags$h1(shiny::tags$p(icon("angellist"),
                                  "Explore the update version of GSCALite in",style = "color:red",
-                                 shiny::tags$a("GSCA", href = "http://bioinfo.life.hust.edu.cn/GSCA/#/", 
+                                 shiny::tags$a("GSCA", href = "http://bioinfo.life.hust.edu.cn/GSCA/#/",
                                                target = "_blank", style = "color:#008176"),"."))
   )
 }
@@ -24,33 +24,33 @@ fn_welcom_msg <- function(){
 fn_search_example <- function(){
   tagList(
 
-           column(
-             width = 9, offset = 1,
-             shinyWidgets::searchInput(
-               inputId = "input_gene_set",
-               label = "",
-               placeholder = 'Please input HGNC symbol gene set separated by space or " , "or " ; "',
-               btnSearch = icon("search"),
-               btnReset = icon("remove"),
-               width = "100%"
-             )
-           ),
-           column(
-             width = 1,
-             shiny::tags$div(
-               class = "form-group shiny-input-container",
-               shiny::tags$label("for" = "margin"),
-               shiny::tags$div(
-                 class = "input-group search-text",
-                 shiny::tags$span(
-                   class = "input-group-btn",
-                   shinyBS::bsButton(inputId = "example", label = "Show me example", icon = icon(name = "fire"))
-                 )
-               )
-             )
-           )
-           )
-    
+    column(
+      width = 9, offset = 1,
+      shinyWidgets::searchInput(
+        inputId = "input_gene_set",
+        label = "",
+        placeholder = 'Please input HGNC symbol gene set separated by space or " , "or " ; "',
+        btnSearch = icon("search"),
+        btnReset = icon("remove"),
+        width = "100%"
+      )
+    ),
+    column(
+      width = 1,
+      shiny::tags$div(
+        class = "form-group shiny-input-container",
+        shiny::tags$label("for" = "margin"),
+        shiny::tags$div(
+          class = "input-group search-text",
+          shiny::tags$span(
+            class = "input-group-btn",
+            shinyBS::bsButton(inputId = "example", label = "Show me example", icon = icon(name = "fire"))
+          )
+        )
+      )
+    )
+  )
+
 }
 
 
@@ -62,7 +62,7 @@ fn_gene_set_stat <- function(gene_set){
       outputId = "download_total_gene_set", label = NULL, class = NULL,
       valueBox(value = gene_set$n_total, subtitle = "Total Input Genes", icon = icon("users"), color = "yellow")
     ),
-    
+
     downloadLink(
       outputId = "download_valid_gene_set", label = NULL, class = NULL,
       valueBox(
@@ -91,7 +91,7 @@ fn_multi_cancer_input <- function(.ctps){
         inputId = "select_ctps", label = "Select Cancer or Tissue (Selected in right)",
         choices = .ctps, selected = c('KICH', 'KIRP', 'KIRC', 'LUSC', 'LUAD'), width = "550px"
       ),
-      
+
       shinyjs::hide(switchInput(
         inputId = "ctps_switch", label = "Cancers", value = FALSE,
         onLabel = "All", offLabel = "None", size = "large", offStatus = "danger"
@@ -101,7 +101,7 @@ fn_multi_cancer_input <- function(.ctps){
       width = 4,
       multiInput(
         inputId = "select_analysis", label = "Select Analysis (Selected in right)", width = "550px",
-        choices = c("mRNA Expression" = "expr", 
+        choices = c("mRNA Expression" = "expr",
                     "Single Nucleotide Variation" = "snv",
                     "Copy Number Variation" = "cnv",
                     "Methylation" = "meth",
@@ -111,7 +111,7 @@ fn_multi_cancer_input <- function(.ctps){
                     "GTEx Expression" = "gtex_exp",
                     "GTEx eQTL" = "eqtl"), selected = c("expr", "meth", "drug")
       ),
-       shinyjs::hide(switchInput(
+      shinyjs::hide(switchInput(
         inputId = "ana_switch", label = "Analysis", value = FALSE,
         onLabel = "All", offLabel = "None", size = "large", offStatus = "danger"
       ))
@@ -161,7 +161,7 @@ fn_guide_result <- function(){
 fn_feature_description <- function(){
   column(
     width = 12,offset = 0, style = "margin-top:30px;",
-    
+
     # Descriptions ----
     shinydashboard::box(
       title = "GSCALite Introduction.",
@@ -172,7 +172,7 @@ fn_feature_description <- function(){
         class = "text-justify",
         "GSCALite is a web-based analysis platform for gene set cancer analysis. The alterations on DNA or RNA of cancer related genes may be contribute to the cancer initiation, progress, diagnosis, prognosis, therapy. As the cancer genomics big data available, it is very useful and urgent to provide a platform for gene set analysis in cancer."
       ),
-      
+
       shiny::tags$p(
         style = "margin-top:30px; margin-bottom:10px;",
         class = "text-justify",
@@ -187,10 +187,10 @@ fn_feature_description <- function(){
         "for gene set analysis in a one-in-all data analysis workflow. When the analysis finished, users can download all the results and figures as an interactive HTML report."
       )
     ),
-    
-    
+
+
     # Features ----
-    
+
     shinydashboard::box(
       title = HTML("Users Can Analyze <strong><font color='red'>Gene Set</font></strong> For:"),
       width = 6,

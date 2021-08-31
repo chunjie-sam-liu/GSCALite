@@ -15,8 +15,10 @@ config$version <- "1.0.0"
 
 
 
+
 # config$wd <- "/project/huff/huff/github/GSCALite"
 config$wd <- "/home/liucj/web/GSCALite"
+
  # config$wd <- "/home/zhangq/github/GSCALite"
 
 

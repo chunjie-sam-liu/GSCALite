@@ -92,7 +92,7 @@ load_data_drug <- function() {
       dplyr::group_by(target_pathway) %>%
       dplyr::mutate(count = dplyr::n()) %>%
       dplyr::ungroup()
-    
+
     print(glue::glue("{paste0(rep('-', 10), collapse = '')} Start Load CTRP @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
     t_ctrp <<- readr::read_rds(file.path(config$database, "Drug", "drug_target_ctrp.rds.gz")) %>%
       tidyr::unnest() %>%

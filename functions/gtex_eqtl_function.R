@@ -17,6 +17,7 @@ fn_eqtl_result <- function(.eqtl){
   }
 }
 
+# gtex eqtl welcome information
 fn_gtex_eqtl_welcome <- function(){
   column(
     width = 12, offset = 0,
@@ -34,6 +35,7 @@ fn_gtex_eqtl_welcome <- function(){
   )
 }
 
+# gtex eqtl help information
 fn_gtex_eqtl_help <- function(){
   column(
     width = 12, offset = 0,

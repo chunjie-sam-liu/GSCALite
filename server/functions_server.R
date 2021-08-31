@@ -26,50 +26,50 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, to
   total_gene_symbol %>%
     dplyr::mutate(alias = toupper(alias)) %>%
     dplyr::mutate(NCBI_sym = toupper(NCBI_sym))-> total_gene_symbol
-  
-  .v_dedup <- tibble::tibble(input = .v[.v != ""]) %>% unique() %>% 
-    dplyr::mutate(Up = toupper(input)) 
+
+  .v_dedup <- tibble::tibble(input = .v[.v != ""]) %>% unique() %>%
+    dplyr::mutate(Up = toupper(input))
   .v_dedup %>% dplyr::rename("TCGA_sym" = "Up") %>%
     dplyr::inner_join(total_gene_symbol, by ="TCGA_sym") %>%
     # dplyr::filter(TCGA_sym %in% .v_dedup$Up) %>%
-    # .$TCGA_sym  %>% 
+    # .$TCGA_sym  %>%
     unique() -> .v_tcga
-  
+
   .v_dedup %>% dplyr::rename("GTEX_sym" = "Up") %>%
     dplyr::inner_join(total_gene_symbol, by ="GTEX_sym") %>%
     #dplyr::filter(GTEX_sym %in% .v_dedup$Up)  %>%
-    #.$NCBI_sym %>% 
+    #.$NCBI_sym %>%
     unique() -> .v_gtex
-  
+
   # gene id not match in gtex data
   setdiff(.v_dedup$input,unique(.v_gtex$input)) -> gtex.diff
-  
+
   .v_dedup %>% dplyr::rename("alias" = "Up") %>%
     dplyr::filter(input %in% gtex.diff) %>%
     dplyr::inner_join(total_gene_symbol, by ="alias") %>%
     unique() -> .v_alias.gtex.1
-  
+
   .v_dedup %>% dplyr::rename("NCBI_sym" = "Up") %>%
     dplyr::filter(input %in% gtex.diff) %>%
     dplyr::inner_join(total_gene_symbol, by ="NCBI_sym") %>%
     unique() -> .v_alias.gtex.2
-  
+
   rbind(.v_alias.gtex.1,.v_alias.gtex.2) %>% unique() -> .v_alias.ncbi
-    
+
   # gene id not match in TCGA data
   setdiff(.v_dedup$input,unique(.v_tcga$input)) -> tcga.diff
-  
+
   .v_dedup %>% dplyr::rename("alias" = "Up") %>%
     dplyr::filter(input %in% tcga.diff) %>%
     dplyr::inner_join(total_gene_symbol, by ="alias") %>%
     unique() -> .v_alias.tcga.1
-  
+
   .v_dedup %>% dplyr::rename("NCBI_sym" = "Up") %>%
     dplyr::filter(input %in% tcga.diff) %>%
     dplyr::inner_join(total_gene_symbol, by ="NCBI_sym") %>%
     unique() -> .v_alias.tcga.2
   rbind(.v_alias.tcga.1,.v_alias.tcga.2) %>% unique() -> .v_alias.tcga
-  
+
   .v_tcga %>%
     rbind(.v_gtex) %>%
     rbind(.v_alias.tcga) %>%
@@ -77,7 +77,7 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, to
     unique() -> match_all
   gene_set$match <- match_all %>% dplyr::filter(!is.na(TCGA_sym)) %>% .$TCGA_sym %>% unique()
   gene_set$match.gtex <- match_all %>% dplyr::filter(!is.na(GTEX_sym)) %>% .$GTEX_sym %>% unique()
-  
+
   .non_match <- match_all %>%
     dplyr::select(input) %>%
     unique() %>%
@@ -92,13 +92,13 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, to
                                unique() %>% .$input)
   gene_set$n_non_match <- length(.non_match)
   gene_set$n_total <- gene_set$n_match + gene_set$n_non_match
-  
+
   if (length(gene_set$match) < 5) {
     error$gene_set <- "Please input at least five valid gene symbol."
     status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
     status$gene_set <- FALSE
   }
-  
+
   .log <- c(
     glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Input total gene set number is {length(gene_set$n_total)} {paste0(rep('-', 10), collapse = '')}"),
     glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Unique gene set number is {length(.v_dedup)} {paste0(rep('-', 10), collapse = '')}"),
@@ -108,6 +108,36 @@ validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, to
   )
   write(x = .log, file = .log_file, append = TRUE)
 }
+# older version of match gene set
+# validate_gene_set <- function(.v, user_dir = user_dir, user_logs = user_logs, total_gene_symbol = total_gene_symbol, status = status, error = error, gene_set = gene_set) {
+#   .log_file <- user_logs$gene_set
+#
+#
+#   .v_dedup <- .v[.v != ""] %>% unique() %>% sapply(FUN = tolower, USE.NAMES = FALSE)
+#   .v_dedup %in% names(total_gene_symbol) -> .inter
+#
+#
+#   gene_set$match <- total_gene_symbol[.v_dedup[.inter]]
+#   gene_set$non_match <- .v[!.inter]    #.v_dedup[!.inter]
+#   gene_set$n_match <- length(total_gene_symbol[.v_dedup[.inter]])
+#   gene_set$n_non_match <- length(.v_dedup[!.inter])
+#   gene_set$n_total <- length(total_gene_symbol[.v_dedup[.inter]]) + length(.v_dedup[!.inter])
+#
+#   if (length(gene_set$match) < 5) {
+#     error$gene_set <- "Please input at least five valid gene symbol."
+#     status$trigger <- if (status$trigger == TRUE) FALSE else TRUE
+#     status$gene_set <- FALSE
+#   }
+#
+#   .log <- c(
+#     glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Input total gene set number is {length(gene_set$n_total)} {paste0(rep('-', 10), collapse = '')}"),
+#     glue::glue("{paste0(rep('-', 10), collapse = '')} Notice: Unique gene set number is {length(.v_dedup)} {paste0(rep('-', 10), collapse = '')}"),
+#     glue::glue("#Total input gene set: {paste0(.v, collapse = ', ')}"),
+#     glue::glue("#Validated genes: {paste0(gene_set$match, collapse = ', ')}"),
+#     glue::glue("#Invalidated genes: {paste0(gene_set$non_match, collapse = ', ')}")
+#   )
+#   write(x = .log, file = .log_file, append = TRUE)
+# }
 
 
 # cnv bar data prepare ----------------------------------------------------
@@ -390,7 +420,7 @@ get_rppa_seg <- function(data,cancer_text) {
 get_rppa_seg1 <- function(cancer_text, data) {
   .d_seg <- data.frame(x1 = 0, y1 = 0, x2 = 0, y2 = 0, Cancer = "test", Regulation = "test")
   nrow(data) -> n
-  
+
   for (i in 1:n) {
     data[i, 1] -> cancer
     data[i, 2] -> gene
@@ -409,7 +439,7 @@ get_rppa_seg1 <- function(cancer_text, data) {
       dplyr::filter(text %in% gene) %>%
       dplyr::select(x, y) %>%
       dplyr::mutate(x = x + 0.5) -> g2.pos
-    
+
     cancer_text %>%
       dplyr::filter(text %in% cancer) %>%
       dplyr::select(x, y) -> c.pos
@@ -427,8 +457,8 @@ get_rppa_seg1 <- function(cancer_text, data) {
 
 
 # maftools subsetMaf edit to suit our addition. ---------------------------
-my_subsetMaf <- function (maf, tsb = NULL, genes = NULL, fields = NULL, cancer = NULL, 
-                          mafObj = FALSE, includeSyn = TRUE, isTCGA = FALSE) 
+my_subsetMaf <- function (maf, tsb = NULL, genes = NULL, fields = NULL, cancer = NULL,
+                          mafObj = FALSE, includeSyn = TRUE, isTCGA = FALSE)
 {
   maf.silent <- maf@maf.silent
   maf.dat <- maf@data
@@ -438,7 +468,7 @@ my_subsetMaf <- function (maf, tsb = NULL, genes = NULL, fields = NULL, cancer =
       tsb = substr(x = tsb, start = 1, stop = 12)
     }
     maf.dat = maf.dat[Tumor_Sample_Barcode %in% tsb, ]
-    maf.silent = maf.silent[Tumor_Sample_Barcode %in% tsb, 
+    maf.silent = maf.silent[Tumor_Sample_Barcode %in% tsb,
                             ]
   }
   if (!is.null(genes)) {
@@ -451,16 +481,16 @@ my_subsetMaf <- function (maf, tsb = NULL, genes = NULL, fields = NULL, cancer =
     # maf.silent = maf.silent[eval(parse(text = query))]
     maf.silent = maf.silent[Cancer_Types %in% cancer,]
   }
-  default.fields = c("Hugo_Symbol", "Chromosome", "Start_Position", 
-                     "End_Position", "Reference_Allele", "Tumor_Seq_Allele2", 
+  default.fields = c("Hugo_Symbol", "Chromosome", "Start_Position",
+                     "End_Position", "Reference_Allele", "Tumor_Seq_Allele2",
                      "Variant_Classification", "Variant_Type", "Tumor_Sample_Barcode")
   if (!is.null(fields)) {
     default.fields = unique(c(default.fields, fields))
-    if (length(default.fields[!default.fields %in% colnames(maf.dat)]) > 
+    if (length(default.fields[!default.fields %in% colnames(maf.dat)]) >
         0) {
       message("Missing fields. Ignoring them.. ")
       print(default.fields[!default.fields %in% colnames(maf.dat)])
-      default.fields = default.fields[default.fields %in% 
+      default.fields = default.fields[default.fields %in%
                                         colnames(maf.dat)]
     }
     maf.dat = maf.dat[, default.fields, with = FALSE]
@@ -471,16 +501,16 @@ my_subsetMaf <- function (maf, tsb = NULL, genes = NULL, fields = NULL, cancer =
     maf.dat = droplevels.data.frame(maf.dat)
     maf.anno = droplevels.data.frame(maf.anno)
     mafSummary = my_summarizeMaf(maf.dat, chatty = FALSE, anno = maf.anno)
-    m = my_MAF(data = maf.dat, variants.per.sample = mafSummary$variants.per.sample, 
-            variant.type.summary = mafSummary$variant.type.summary, 
-            variant.classification.summary = mafSummary$variant.classification.summary, 
-            gene.summary = mafSummary$gene.summary, summary = mafSummary$summary, 
+    m = my_MAF(data = maf.dat, variants.per.sample = mafSummary$variants.per.sample,
+            variant.type.summary = mafSummary$variant.type.summary,
+            variant.classification.summary = mafSummary$variant.classification.summary,
+            gene.summary = mafSummary$gene.summary, summary = mafSummary$summary,
             maf.silent = maf.silent, clinical.data = mafSummary$sample.anno)
     return(m)
   }
   else {
     if (includeSyn) {
-      return(rbind(maf.dat, maf.silent, use.names = TRUE, 
+      return(rbind(maf.dat, maf.silent, use.names = TRUE,
                    fill = TRUE))
     }
     else {
@@ -490,11 +520,11 @@ my_subsetMaf <- function (maf, tsb = NULL, genes = NULL, fields = NULL, cancer =
 }
 
 my_summarizeMaf = function(maf, anno = NULL, chatty = TRUE){
-  
+
   if('NCBI_Build' %in% colnames(maf)){
     NCBI_Build = unique(maf[!Variant_Type %in% 'CNV', NCBI_Build])
     NCBI_Build = NCBI_Build[!is.na(NCBI_Build)]
-    
+
     if(chatty){
       if(length(NCBI_Build) > 1){
         message('NOTE: Mutiple reference builds found!')
@@ -505,7 +535,7 @@ my_summarizeMaf = function(maf, anno = NULL, chatty = TRUE){
   }else{
     NCBI_Build = NA
   }
-  
+
   if('Center' %in% colnames(maf)){
     Center = unique(maf[!Variant_Type %in% 'CNV', Center])
     #Center = Center[is.na(Center)]
@@ -519,58 +549,58 @@ my_summarizeMaf = function(maf, anno = NULL, chatty = TRUE){
   }else{
     Center = NA
   }
-  
+
   #nGenes
   nGenes = length(unique(maf[,Hugo_Symbol]))
-  
+
   #Top 20 FLAGS - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4267152/
   flags = c("TTN", "MUC16", "OBSCN", "AHNAK2", "SYNE1", "FLG", "MUC5B",
             "DNAH17", "PLEC", "DST", "SYNE2", "NEB", "HSPG2", "LAMA5", "AHNAK",
             "HMCN1", "USH2A", "DNAH11", "MACF1", "MUC17")
-  
+
   #Variants per TSB
   tsb = maf[,.N, Tumor_Sample_Barcode]
   colnames(tsb)[2] = 'Variants'
   tsb = tsb[order(tsb$Variants, decreasing = TRUE),]
-  
+
   #summarise and casting by 'Variant_Classification'
   vc = maf[,.N, .(Tumor_Sample_Barcode, Variant_Classification )]
   vc.cast = data.table::dcast(data = vc, formula = Tumor_Sample_Barcode ~ Variant_Classification, fill = 0, value.var = 'N')
-  
+
   if(any(colnames(vc.cast) %in% c('Amp', 'Del'))){
     vc.cast.cnv = vc.cast[,c('Tumor_Sample_Barcode', colnames(vc.cast)[colnames(vc.cast) %in% c('Amp', 'Del')]), with =FALSE]
     vc.cast.cnv$CNV_total = rowSums(vc.cast.cnv[,2:ncol(vc.cast.cnv)], na.rm = TRUE)
-    
+
     vc.cast = vc.cast[,!colnames(vc.cast)[colnames(vc.cast) %in% c('Amp', 'Del')], with =FALSE]
     vc.cast[,total:=rowSums(vc.cast[,2:ncol(vc.cast), with = FALSE])]
-    
+
     vc.cast = merge(vc.cast, vc.cast.cnv, by = 'Tumor_Sample_Barcode', all = TRUE)[order(total, CNV_total, decreasing = TRUE)]
-    
+
     vc.mean = as.numeric(as.character(c(NA, NA, NA, NA, apply(vc.cast[,2:ncol(vc.cast), with = FALSE], 2, mean))))
     vc.median = as.numeric(as.character(c(NA, NA, NA, NA, apply(vc.cast[,2:ncol(vc.cast), with = FALSE], 2, median))))
-    
+
   }else{
     vc.cast = vc.cast[,total:=rowSums(vc.cast[,2:ncol(vc.cast), with = FALSE])][order(total, decreasing = TRUE)]
-    
+
     vc.mean = round(as.numeric(as.character(c(NA, NA, NA, NA, apply(vc.cast[,2:ncol(vc.cast), with = FALSE], 2, mean)))), 3)
     vc.median = round(as.numeric(as.character(c(NA, NA, NA, NA, apply(vc.cast[,2:ncol(vc.cast), with = FALSE], 2, median)))), 3)
   }
-  
+
   #summarise and casting by 'Variant_Type'
   vt = maf[,.N, .(Tumor_Sample_Barcode, Variant_Type )]
   vt.cast = data.table::dcast(data = vt, formula = Tumor_Sample_Barcode ~ Variant_Type, value.var = 'N', fill = 0)
-  
+
   if(any(colnames(vt.cast) %in% c('CNV'))){
     vt.cast.cnv = vt.cast[,c('Tumor_Sample_Barcode', colnames(vt.cast)[colnames(vt.cast) %in% c('CNV')]), with =FALSE]
-    
+
     vt.cast = vt.cast[,!colnames(vt.cast)[colnames(vt.cast) %in% c('CNV')], with =FALSE]
     vt.cast = vt.cast[,total:=rowSums(vt.cast[,2:ncol(vt.cast), with = FALSE])]
-    
+
     vt.cast = merge(vt.cast, vt.cast.cnv, by = 'Tumor_Sample_Barcode', all = TRUE)[order(total, CNV, decreasing = TRUE)]
   }else{
     vt.cast = vt.cast[,total:=rowSums(vt.cast[,2:ncol(vt.cast), with = FALSE])][order(total, decreasing = TRUE)]
   }
-  
+
   #summarise and casting by 'Hugo_Symbol'
   hs = maf[,.N, .(Hugo_Symbol, Variant_Classification)]
   hs.cast = data.table::dcast(data = hs, formula = Hugo_Symbol ~Variant_Classification, fill = 0, value.var = 'N')
@@ -578,17 +608,17 @@ my_summarizeMaf = function(maf, anno = NULL, chatty = TRUE){
   if(any(colnames(hs.cast) %in% c('Amp', 'Del'))){
     hs.cast.cnv = hs.cast[,c('Hugo_Symbol', colnames(hs.cast)[colnames(hs.cast) %in% c('Amp', 'Del')]), with = FALSE]
     hs.cast.cnv$CNV_total = rowSums(x = hs.cast.cnv[,2:ncol(hs.cast.cnv), with = FALSE], na.rm = TRUE)
-    
+
     hs.cast = hs.cast[,!colnames(hs.cast)[colnames(hs.cast) %in% c('Amp', 'Del')], with = FALSE]
     hs.cast[,total:=rowSums(hs.cast[,2:ncol(hs.cast), with = FALSE], na.rm = TRUE)]
-    
+
     hs.cast = merge(hs.cast, hs.cast.cnv, by = 'Hugo_Symbol', all = TRUE)[order(total, CNV_total, decreasing = TRUE)]
   }else{
     hs.cast[,total:=rowSums(hs.cast[,2:ncol(hs.cast), with = FALSE])]
     hs.cast = hs.cast[order(total, decreasing = TRUE)]
   }
   #----
-  
+
   #Get in how many samples a gene ismutated
   numMutatedSamples = maf[!Variant_Type %in% 'CNV', .(MutatedSamples = length(unique(Tumor_Sample_Barcode))), by = Hugo_Symbol]
   numAlteredSamples = maf[, .(AlteredSamples = length(unique(Tumor_Sample_Barcode))), by = Hugo_Symbol]
@@ -603,14 +633,14 @@ my_summarizeMaf = function(maf, anno = NULL, chatty = TRUE){
                                    summary = c(NCBI_Build, Center, nrow(vc.cast), nGenes, colSums(vc.cast[,2:ncol(vc.cast), with =FALSE])))
   summary[,Mean := vc.mean]
   summary[,Median := vc.median]
-  
+
   if(chatty){
     print(summary)
-    
+
     message("Gene Summary..")
     print(hs.cast)
   }
-  
+
   #Check for flags.
   if(nrow(hs.cast) > 10){
     topten = hs.cast[1:10, Hugo_Symbol]
@@ -622,12 +652,12 @@ my_summarizeMaf = function(maf, anno = NULL, chatty = TRUE){
       }
     }
   }
-  
-  
+
+
   if(chatty){
     message("Checking clinical data..")
   }
-  
+
   if(is.null(anno)){
     if(chatty){
       message("NOTE: Missing clinical data! It is strongly recommended to provide clinical data associated with samples if available.")
@@ -650,7 +680,7 @@ my_summarizeMaf = function(maf, anno = NULL, chatty = TRUE){
       }
     }
   }
-  
+
   #clean up annotation data
   colnames(sample.anno) = gsub(pattern = ' ', replacement = '_', x = colnames(sample.anno), fixed = TRUE) #replace spaces in column names for annotation data
   sample.anno = as.data.frame(apply(sample.anno, 2, function(y) trimws(y))) #remove trailing whitespaces
@@ -658,18 +688,18 @@ my_summarizeMaf = function(maf, anno = NULL, chatty = TRUE){
   sample.anno = as.data.frame(apply(sample.anno, 2, function(y) gsub(pattern = " ", replacement = "_", x = y))) #replace spaces with _
   data.table::setDT(x = sample.anno)
   colnames(sample.anno)[1] = c("Tumor_Sample_Barcode")
-  
+
   maf.tsbs = levels(tsb[,Tumor_Sample_Barcode])
   sample.anno = sample.anno[Tumor_Sample_Barcode %in% maf.tsbs][!duplicated(Tumor_Sample_Barcode)]
   anno.tsbs = sample.anno[,Tumor_Sample_Barcode]
-  
+
   if(!length(maf.tsbs[!maf.tsbs %in% anno.tsbs]) == 0){
     if(chatty){
       message('Annotation missing for below samples in MAF')
       print(maf.tsbs[!maf.tsbs %in% anno.tsbs])
     }
   }
-  
+
   return(list(variants.per.sample = tsb, variant.type.summary = vt.cast, variant.classification.summary = vc.cast,
               gene.summary = hs.cast, summary = summary, sample.anno = sample.anno))
 }

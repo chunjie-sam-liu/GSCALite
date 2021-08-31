@@ -5,10 +5,10 @@
 
 tabItem(
   tabName = "welcome", align = "center",
-
+  
   # Welcome ----
   fluidRow(shiny::uiOutput(outputId = "ui_welcom_msg")),
-
+  
   # Input gene list ----
   fluidRow(shiny::uiOutput(outputId = "ui_search_example")),
   
@@ -26,7 +26,7 @@ tabItem(
   
   # gene set input stat output ----
   fluidRow(shiny::uiOutput(outputId = "ui_gene_set_stat")),
-
+  
   # Feature and descriptions ----
   fluidRow(shiny::uiOutput(outputId = "ui_feature_description")),
   

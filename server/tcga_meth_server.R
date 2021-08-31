@@ -38,7 +38,7 @@ meth_analysis <- eventReactive(
           .msg <- c("NOTICE: ")
           # load data----
           load_data_meth()
-          
+
           # cancer overlap
           cancer_in_tcga_data_meth <- intersect(selected_ctyps(),tcga_data)
 
@@ -116,7 +116,7 @@ In this analysis, only {nrow(meth_diff)} cancer types have paired samples. They 
             dplyr::filter(cancer_types %in% selected_ctyps()) %>%
             tidyr::unnest() %>%
             tidyr::drop_na() -> gene_list_cancer_methcor
-          
+
           if (nrow(gene_list_cancer_methcor) > 0) {
             gene_list_cancer_methcor %>%
               dplyr::group_by(symbol) %>%
@@ -137,7 +137,7 @@ In this analysis, only {nrow(meth_diff)} cancer types have paired samples. They 
             })
           }
           print(glue::glue("{paste0(rep('-', 10), collapse = '')} End methy part analysis @ {Sys.time()} {paste0(rep('-', 10), collapse = '')}"))
-          
+
           # infomation UI for each part --------------------------
           output[["meth_diff-massage"]] <- renderUI({
             tagList(

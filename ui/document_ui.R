@@ -14,7 +14,7 @@ tabItem(
       width = 12, offset = 0,
       shiny::tags$h1("Simple usage for GSCALite", align = "center"),
       shiny::tags$br(),
-      shiny::tags$video(src = "./videos/guide_video.mp4", controls = "controls", width = "100%", height = "100%"),
+      shiny::tags$video(src = "./videos/video.mp4", controls = "controls", width = "100%", height = "100%"),
       shiny::tags$br(),
       shiny::tags$img(
         src = "./imgs/help_main.png",

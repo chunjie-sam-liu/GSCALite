@@ -123,7 +123,7 @@ fn_tutorial <- function(){
       class = "center-block img-responsive"),
     shiny::tags$p("Red/blue color indicates genes may actived/inhibited given pathways across 32 cancers(percentage, negative number means inhibited)."), 
     
-    shiny::tags$h3("5.3. The gene profiles in cancer related pathways across cancer types."),
+    shiny::tags$h3("5.3. The profiles in cancer related pathways across cancer types."),
     shiny::tags$img(
       src = "./imgs/5.protein/network_cancer.png",
       class = "center-block img-responsive"),

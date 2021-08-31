@@ -1,28 +1,19 @@
-# GSCALite 
+# GSCALite
 
 [![Build Status](https://travis-ci.org/GuoBioinfoLab/GSCALite.svg?branch=dev)](https://travis-ci.org/GuoBioinfoLab/GSCALite)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](https://github.com/GuoBioinfoLab/GSCALite)
+[![Paper link](https://img.shields.io/badge/Published%20in-Bioinformatics-12688.svg)](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty411/5001392)
 
-## Scripts
+> Although longitudinal genomic data are currently not available, the large number of patients enabled the use of the concept of statistical ensemble, that is averaging large numbers of patients per stage represents a snap shot of the underlying process.
 
-1. Follow the [**creatly**](https://creately.com/app/#) diagram or change the diagram as you need.
-2. We build the whole webserver with shiny and shiny related packages. 
-3. For ui design, please follow the ui as shiny provided [tags](http://shiny.rstudio.com/articles/tag-glossary.html). Try not to use write raw HTML.
-4. For server parts, you can use the [module design](http://shiny.rstudio.com/articles/modules.html) as shiny provided. Or, use `source` to load the outer scripts in `server` directory.
-5. The code style is important, you can follow tidyverse recommened [code style](http://style.tidyverse.org/).
+## Citation
+[GSCALite: A Web Server for Gene Set Cancer Analysis.](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty411/5001392) Chun-Jie Liu,  Fei-Fei Hu,  Mengxuan Xia,  Leng Han,  Qiong Zhang,  An-Yuan Guo. Bioinformatics. (2018).
 
+## Summary
+The availability of cancer genomic data makes it possible to analyze genes related to cancer. Cancer is usually the result of a set of genes and the signal of a single gene could be covered by background noise. Here, we present a web server named Gene Set Cancer Analysis (GSCALite) to analyze a set of genes in cancers with the following functional modules. (i) Differential expression in tumor vs normal, and the survival analysis; (ii) Genomic variations and their survival analysis; (iii) Gene expression associated cancer pathway activity; (iv) miRNA regulatory network for genes; (v) Drug sensitivity for genes; (vi) Normal tissue expression and eQTL for genes. GSCALite is a user-friendly web server for dynamic analysis and visualization of gene set in cancer and drug sensitivity correlation, which will be of broad utilities to cancer researchers.
 
-## Collaborations
-
-Please try to collaborate with each other through GitHub, you can read two articles to learn collaboration with GitHub.
-
-1. [Git Workflows for Pros: A Good Git Guide](https://www.toptal.com/git/git-workflows-for-pros-a-good-git-guide)
-
-2. [Collaboration: Git Development Workflow](https://github.com/structureddynamics/OSF-Web-Services/wiki/Collaboration:-Git-Development-Workflow)
-
-
+## Platform Logo
 ![GSCA logo](www/imgs/01.GSCA_logo_01.png)
-
 
 ## The workflow of GSCALite
 ![GSCA pipeline](www/imgs/Figure-1_Schema_of_GSCALite.png)
